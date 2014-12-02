@@ -20,7 +20,7 @@ Version: |gb-major|.\ |gb-minor|
 
 **TODO** remove when we're ready to release
 
-Notes for Project Ara Internal Team Use[a]
+Notes for Project Ara Internal Team Use [#a]_
 
 * Go look at `README FIRST <https://docs.google.com/a/projectara.com/document/d/1-g9uymGyxUrVKOfuJrYCMkl2kqoMvu-GGvqIw3extPE/edit>`_ before doing anything else.
 * Before reading this document, try to get a basic working knowledge of the `MIPI UniPro v1.6 specification <https://docs.google.com/a/projectara.com/file/d/0BxTh4XIogG2qbm1PaEo5M1ZES1U/edit>`_. (At least look at UniPro spec chapter 4 for an architecture overview).
@@ -61,7 +61,7 @@ A Greybus system shall be composed of the following blocks:
 3. One or more “Modules” which physically plug into the endoskeleton and implement service protocol functionality as defined within this document.
    a. The main functional chipsets on modules may either communicate via a native UniPro℠interface or via “Bridges,” special-purpose ASICs which translate legacy protocols into UniPro traffic that can be routed to nodes on a UniPro℠ network. Bridges shall implement the Greybus application protocol specification.
 
-An example Greybus[b][c] system using Bridge ASICs and native Unipro℠ interfaces is shown in the following figure.
+An example Greybus [#b]_ [#c]_ system using Bridge ASICs and native Unipro℠ interfaces is shown in the following figure.
 
 **TODO** add figure
 
@@ -102,10 +102,10 @@ All data found in message structures defined below shall adhere to the following
 * All string descriptors shall consist of UTF-8 encoded characters.
 * All major structures (like the module manifest header) and interface protocols (like that between the AP and SVC) shall be versioned, to allow future extensions (or fixes) to be added and recognized.
 
-Module Manifest[d][e]
----------------------
+Module Manifest
+---------------
 
-The Module Manifest is a contiguous buffer that includes a Manifest Header and a set of Descriptors.  When read, a Module Manifest is transferred in its entirety.  This allows the module to be described to the host all at once, alleviating the need for multiple communication messages during the enumeration phase of the module.
+The Module Manifest [#d]_ [#e]_ is a contiguous buffer that includes a Manifest Header and a set of Descriptors.  When read, a Module Manifest is transferred in its entirety.  This allows the module to be described to the host all at once, alleviating the need for multiple communication messages during the enumeration phase of the module.
 
 Manifest Header
 ^^^^^^^^^^^^^^^
@@ -150,8 +150,10 @@ Descriptors
 
 Following the Manifest Header is one or more Descriptors.  Each Descriptor is composed of a Descriptor Header followed by Descriptor Data. The format of the Descriptor Data depends on the type of the descriptor, which is specified in the header. These Descriptor formats are laid out below.
 
-Descriptor Header[f][g]
-"""""""""""""""""""""""
+Descriptor Header
+"""""""""""""""""
+
+ [#f]_ [#g]_
 
 .. list-table::
    :header-rows: 1
@@ -270,11 +272,11 @@ The *vendor* field is a value assigned by Google.  All vendors should apply for 
 
 The *product* field is controlled by the vendor, and should be unique per type of module that is created.
 
-The *version* field is the version of the module that is present. This number shall be changed if the module firmware functionality changes in such a way that the operating system needs to know about it.[h][i][j][k]
+The *version* field is the version of the module that is present. This number shall be changed if the module firmware functionality changes in such a way that the operating system needs to know about it. [#h]_ [#i]_ [#j]_ [#k]_
 
-*vendor_string_id* is a reference to a specific string descriptor value that provides a human-readable[l][m][n] description of the vendor who created the module.  If there is no string present for this value in the Module Manifest, this value shall be 0x00.
+*vendor_string_id* is a reference to a specific string descriptor value that provides a human-readable [#l]_ [#m]_ [#n]_ description of the vendor who created the module.  If there is no string present for this value in the Module Manifest, this value shall be 0x00.
 
-*product_string_id* is a reference to a specific string descriptor value that provides a human-readable[o] description of the product.  If there is no string present for this value in the Module Manifest, this value shall be 0x00.
+*product_string_id* is a reference to a specific string descriptor value that provides a human-readable [#o]_ description of the product.  If there is no string present for this value in the Module Manifest, this value shall be 0x00.
 
 The *unique_id* field is an 8 byte Unique ID that is written into each Greybus compliant chip during manufacturing. Google manages the Unique IDs, providing each manufacturer with the means to generate compliant Unique IDs for their products. In a module that contains multiple interfaces, there will be more than one hardware Unique ID available. It is the responsibility of the module designer to designate one primary interface and expose that primary Unique ID in this field.
 
@@ -357,7 +359,7 @@ An interface descriptor describes an access point for a module to the UniPro net
 CPort Descriptor
 ^^^^^^^^^^^^^^^^
 
-This descriptor describes a CPort implemented within the module. Each CPort is associated with one of the module’s interfaces, and has an id unique for that interface.  Every CPort defines the protocol used by the AP to interact with the CPort. A special control CPort [p][q]shall be defined for every interface, and shall be defined to use the “control” protocol. The details of these protocols are defined in the section Function Class Protocols below.
+This descriptor describes a CPort implemented within the module. Each CPort is associated with one of the module’s interfaces, and has an id unique for that interface.  Every CPort defines the protocol used by the AP to interact with the CPort. A special control CPort  [#p]_ [#q]_shall be defined for every interface, and shall be defined to use the “control” protocol. The details of these protocols are defined in the section Function Class Protocols below.
 
 **FIXME** "Function class protocols" is an invalid link
 
@@ -416,7 +418,7 @@ Protocol
    * - Control
      - 0x00
 
-   * - AP[r][s]
+   * - AP [#r]_ [#s]_
      - 0x01
 
    * - GPIO
@@ -522,7 +524,7 @@ The following table summarizes the format of an operation message header.
 
 The *size* includes the operation message header as well as any payload that follows it. As mentioned earlier, the meaning of a type value depends on the protocol in use on the connection carrying the message. Only 127 operations are available for a given protocol, 0x01..0x7f. Operation 0x00 is reserved as an invalid value.  The high bit (0x80) of an operation type is used as a flag that distinguishes a request operation from its response.  For requests, this bit is 0, for responses, it is 1.  For example operation 0x0a will contain 0x0a in the request message’s type field and 0x8a in the response message’s type field. The id allows many operations to be “in flight” on a connection at once.
 
-A connection protocol is defined by describing the format of the payload portions of the request and response messages used for the protocol, along with all actions or state changes that take place as a result of successfully completing the operation[av][aw][ax].
+A connection protocol is defined by describing the format of the payload portions of the request and response messages used for the protocol, along with all actions or state changes that take place as a result of successfully completing the operation [#av]_ [#aw]_ [#ax]_.
 
 Connection Protocols
 ====================
@@ -531,7 +533,7 @@ The following sections define the request and response message formats for all o
 
 Each response begins with a status byte, which communicates whether any error occurred in delivering or processing a requested operation.  If the operation completed successfully the status value is 0.  Otherwise the reason it was not successful will be conveyed by one of the positive values defined in the following table.
 
-A protocol can define its own status values if needed[ay][az][ba][bb][bc]; every status byte with a MSB set to one beside 0xff will be considered as a protocol status value.
+A protocol can define its own status values if needed [#ay]_ [#az]_ [#ba]_ [#bb]_ [#bc]_; every status byte with a MSB set to one beside 0xff will be considered as a protocol status value.
 
 .. list-table::
    :header-rows: 1
@@ -572,9 +574,9 @@ Protocol Versions
 
 Every protocol has a version, which comprises two one-byte values, major and minor. A protocol definition can evolve to add new capabilities, and as it does so, its version changes. If existing (or old) protocol handling code which complies with this specification can function properly with the new feature in place, only the minor version of the protocol will change. Any time a protocol changes in a way that requires the handling code be updated to function properly, the protocol’s major version will change.
 
-Two modules may implement different versions of a protocol, and as a result they shall negotiate a common version of the protocol to use. This is done by each side exchanging information about the version of the protocol it supports at the time an initial handshake between module interfaces is performed (for the control protocol), or when a connection between CPorts is established (for all other protocols).  The version of a particular protocol advertised by a module is the same as the version of the document that defines the protocol (so for protocols defined herein, the version is  |gb-major|.\ |gb-minor|).[bd][be]
+Two modules may implement different versions of a protocol, and as a result they shall negotiate a common version of the protocol to use. This is done by each side exchanging information about the version of the protocol it supports at the time an initial handshake between module interfaces is performed (for the control protocol), or when a connection between CPorts is established (for all other protocols).  The version of a particular protocol advertised by a module is the same as the version of the document that defines the protocol (so for protocols defined herein, the version is  |gb-major|.\ |gb-minor|). [#bd]_ [#be]_
 
-To agree on a protocol, an operation request supplies the (greatest) major and minor version of the protocol supported by the source of a request. The request destination compares that version with the (greatest) version of the protocol it supports.  If the destination supports a protocol version with major number equal to that supplied by the source, and a minor number greater than or equal to that supplied by the source, it shall communicate using the protocol version equal to thatsupplied by the source. Otherwise, it decides that its own version of the protocol will be the one to be used[bf][bg]. In either case, the chosen version is sent back in the response, and the source interface will honor that decision and use the selected version of the protocol. As a consequence of this, protocol handlers must be capable of handling all prior versions of the protocol.
+To agree on a protocol, an operation request supplies the (greatest) major and minor version of the protocol supported by the source of a request. The request destination compares that version with the (greatest) version of the protocol it supports.  If the destination supports a protocol version with major number equal to that supplied by the source, and a minor number greater than or equal to that supplied by the source, it shall communicate using the protocol version equal to thatsupplied by the source. Otherwise, it decides that its own version of the protocol will be the one to be used [#bf]_ [#bg]_. In either case, the chosen version is sent back in the response, and the source interface will honor that decision and use the selected version of the protocol. As a consequence of this, protocol handlers must be capable of handling all prior versions of the protocol.
 
 Device Class Connection Protocols
 =================================
@@ -613,10 +615,10 @@ The operations in the Greybus vibrator protocol are:
 
     Turns off the vibrator immediately.
 
-Greybus Vibrator Message Types[bh][bi][bj]
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus Vibrator Message Types
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This table describes the Greybus vibrator operation types and their values. A message type consists of an operation type combined with a flag (0x80) indicating whether the operation is a request or a response.
+This table describes the Greybus vibrator operation types [#bh]_ [#bi]_ [#bj]_ and their values. A message type consists of an operation type combined with a flag (0x80) indicating whether the operation is a request or a response.
 
 .. list-table::
    :header-rows: 1
@@ -826,12 +828,12 @@ Conceptually, the operations in the Greybus battery protocol are:
 
 ..
 
-    Returns a value indicating the current voltage[bk] of the battery.
+    Returns a value indicating the current voltage [#bk]_ of the battery.
 
-Greybus Battery Message Types[bl][bm][bn]
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus Battery Message Types
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This table describes the Greybus battery operation types and their values. A message type consists of an operation type combined with a flag (0x80) indicating whether the operation is a request or a response.
+This table describes the Greybus battery operation types [#bl]_ [#bm]_ [#bn]_ and their values. A message type consists of an operation type combined with a flag (0x80) indicating whether the operation is a request or a response.
 
 .. list-table::
    :header-rows: 1
@@ -1025,7 +1027,7 @@ This table describes the defined battery status values defined for Greybus batte
    * - Unknown
      - 0x0000
    * - Charging
-     - 0x0001[bo]
+     - 0x0001 [#bo]_
    * - Discharging
      - 0x0002
    * - Not Charging
@@ -1384,7 +1386,7 @@ Conceptually, the GPIO protocol operations are:
 Greybus GPIO Protocol Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-All operations sent to a GPIO controller are contained within a Greybus GPIO request message. Every  operation request will result in a matching response[bp][bq][br][bs] from the GPIO controller, also taking the form of a GPIO controller message.  The request and response messages for each GPIO operation are defined below.
+All operations sent to a GPIO controller are contained within a Greybus GPIO request message. Every  operation request will result in a matching response [#bp]_ [#bq]_ [#br]_ [#bs]_ from the GPIO controller, also taking the form of a GPIO controller message.  The request and response messages for each GPIO operation are defined below.
 
 The following table describes the Greybus GPIO protocol operation types and their values. Both the request type and response type values are shown.
 
@@ -1782,10 +1784,10 @@ Greybus GPIO Set Operation
 
 The Greybus GPIO set operation requests the GPIO controller to set a line configured to be used for output to have either a low or high value.
 
-Greybus GPIO Set Request[bt][bu]
-""""""""""""""""""""""""""""""""
+Greybus GPIO Set Request
+""""""""""""""""""""""""
 
-The Greybus GPIO set request supplies the number of the line and the value to be set.
+The Greybus GPIO set request [#bt]_ [#bu]_ supplies the number of the line and the value to be set.
 
 .. list-table::
    :header-rows: 1
@@ -3379,7 +3381,7 @@ Conceptually, the operations in the Greybus control protocol are:
     the module resides on that endo, which interface it is on that
     module, as well as the UniPro device id assigned to the
     interface. The destination supplies in its response the
-    number[bv] of additional device ids it requires[bw] to
+    number [#bv]_ of additional device ids it requires [#bw]_ to
     represent the range of CPort ids it supports. The destination
     also provides additional identifying information in its
     response. All versions of the control protocol support the
@@ -3465,7 +3467,7 @@ Conceptually, the operations in the Greybus control protocol are:
 
 ::
 
-    int connect_peer(u8 src_device_id, u16 dst_cport_id[bx][by],
+    int connect_peer(u8 src_device_id, u16 dst_cport_id,
                      u8 peer_device_id, u16 peer_cport_id);
 
 ..
@@ -3474,18 +3476,18 @@ Conceptually, the operations in the Greybus control protocol are:
     interface establish a connection with an interface in another peer
     module. The destination interface responds to this request by
     initiating a connection request between the indicated destination
-    CPort and the one on the indicated peer interface.
+    CPort [#bx]_ [#by]_ and the one on the indicated peer interface.
 
 ::
 
-    int disconnect_peer[bz][ca](u8 src_device_id, u16 dst_cport_id);
+    int disconnect_peer(u8 src_device_id, u16 dst_cport_id);
 
 ..
 
     This operation is used to tear down a previously-established
-    connection between a CPort on the destination interface and a
+    connection [#bz]_ [#ca]_ between a CPort on the destination interface and a
     CPort on one of its peer interfaces. The CPort id on the
-    destination[cb][cc][cd] is sufficient to identify the connection
+    destination [#cb]_ [#cc]_ [#cd]_ is sufficient to identify the connection
     to be torn down. The destination will complete a disconnect of its
     peer connection before responding to the disconnect_peer request.
 
@@ -3558,7 +3560,7 @@ Conceptually, the operations in the Greybus control protocol are:
     ids. Initially routes are in a disabled state; traffic flow will
     only be allowed when the route has been enabled. **Note: in ES1,
     routing is based only on destination address, and it is not
-    possible to disable a route[ce][cf].**
+    possible to disable a route [#ce]_ [#cf]_.**
 
 ::
 
@@ -3698,7 +3700,7 @@ Like all control protocol requests, the Greybus control identify request begins 
 Greybus Control Identify Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus control identify response begins with a status byte.  If the value of the status byte is non-zero, all other bytes in the response shall be ignored.  Following the status byte is a one-byte value indicating how many additional device ids the interface requires to account for its range of CPort ids (normally this is 0). Finally, the response contains additional data to identify the interface, beginning with a two-byte size field.  The identity data is padded if necessary [cg]to ensure the response payload size is a multiple of 4 bytes.
+The Greybus control identify response begins with a status byte.  If the value of the status byte is non-zero, all other bytes in the response shall be ignored.  Following the status byte is a one-byte value indicating how many additional device ids the interface requires to account for its range of CPort ids (normally this is 0). Finally, the response contains additional data to identify the interface, beginning with a two-byte size field.  The identity data is padded if necessary  [#cg]_to ensure the response payload size is a multiple of 4 bytes.
 
 .. list-table::
    :header-rows: 1
@@ -3720,11 +3722,11 @@ The Greybus control identify response begins with a status byte.  If the value o
      - Number of additional device ids required
    * - 2
      - Identity data size
-     - 2[ch]
+     - 2 [#ch]_
      - N
      - Number of bytes of identity data
    * - 4
-     - Identity data[ci][cj][ck]
+     - Identity data [#ci]_ [#cj]_ [#ck]_
      - N
      -
      - Identity data from the interface (padded)
@@ -3795,7 +3797,7 @@ The Greybus control handshake response begins with a status byte.  If the value 
 Greybus Control Register AP Operation
 -------------------------------------
 
-This operation is used by an AP to register itself with the SVC as the single legitimate AP. The SVC uses this to determine where to send event notifications (such as hotplug events). More generally, this can be used to control whether certain requests (such as switch configuration) are allowed.  This request includes a block of data intended to ensure only an authenticated AP can successfully complete this operation. Details about the content of this data is not yet specified[cl].
+This operation is used by an AP to register itself with the SVC as the single legitimate AP. The SVC uses this to determine where to send event notifications (such as hotplug events). More generally, this can be used to control whether certain requests (such as switch configuration) are allowed.  This request includes a block of data intended to ensure only an authenticated AP can successfully complete this operation. Details about the content of this data is not yet specified [#cl]_.
 
 Greybus Control Register AP Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -3848,7 +3850,7 @@ The register AP response contains only the status byte.  The SVC uses the authen
 Greybus Control Register Battery Operation
 ------------------------------------------
 
-This operation is used by a battery module to register itself with the SVC as a legitimate battery. More than one battery can be registered. The SVC uses this to know which modules can supply power.  This request includes a block of data intended to ensure only an authenticated battery can successfully complete this operation. Details about the content of this data is not yet specified[cm][cn][co].
+This operation is used by a battery module to register itself with the SVC as a legitimate battery. More than one battery can be registered. The SVC uses this to know which modules can supply power.  This request includes a block of data intended to ensure only an authenticated battery can successfully complete this operation. Details about the content of this data is not yet specified [#cm]_ [#cn]_ [#co]_.
 
 Greybus Control Register Battery Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -3899,7 +3901,7 @@ The register battery response contains only the status byte.  The SVC uses the a
 Greybus Control Connect Operation
 ---------------------------------
 
-The Greybus control connect operation is used to establish a connection between a CPort associated with one interface with a CPort associated with another interface[cp][cq]. The protocol used over the connection is the one advertised in the module manifest as being associated with the destination CPort. The connect operation allows the version of that protocol to be used over the connection to be determined.  Operations defined for the protocol can only be performed on the connection when a connection has been established.   A connection is defined by a CPort and device id for one interface and a CPort and device id for another interface.
+The Greybus control connect operation is used to establish a connection between a CPort associated with one interface with a CPort associated with another interface [#cp]_ [#cq]_. The protocol used over the connection is the one advertised in the module manifest as being associated with the destination CPort. The connect operation allows the version of that protocol to be used over the connection to be determined.  Operations defined for the protocol can only be performed on the connection when a connection has been established.   A connection is defined by a CPort and device id for one interface and a CPort and device id for another interface.
 
 Greybus Control Connect Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -3915,7 +3917,7 @@ The connect request begins with the source device id.  This is required for cont
      - Value
      - Description
    * - 0
-     - Source device id[cr][cs]
+     - Source device id [#cr]_ [#cs]_
      - 1
      -
      - Device id of source
@@ -4020,7 +4022,7 @@ The disconnect response contains only the status byte, indicating whether the co
 Greybus Control Connect Peer Operation
 --------------------------------------
 
-The Greybus control connect peer operation is used to request a connection be established between CPorts on two other interfaces[ct]--separate from the interface over which the request is sent. This is used by the AP only, to set up a direct communication channel between CPorts on two other modules. Before responding, the destination will initiate a connection with the peer interface, using the destination CPort id at its end of the connection and the peer’s CPort id at the other end.  If necessary, the destination will first perform a handshake with the peer interface. Once the connection has been established between the destination and its peer, the destination will reply to the source with the status of the request.
+The Greybus control connect peer operation is used to request a connection be established between CPorts on two other interfaces [#ct]_--separate from the interface over which the request is sent. This is used by the AP only, to set up a direct communication channel between CPorts on two other modules. Before responding, the destination will initiate a connection with the peer interface, using the destination CPort id at its end of the connection and the peer’s CPort id at the other end.  If necessary, the destination will first perform a handshake with the peer interface. Once the connection has been established between the destination and its peer, the destination will reply to the source with the status of the request.
 
 Greybus Control Connect Peer Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -4041,7 +4043,7 @@ The connect peer request is only initiated by the AP, and this fact is reflected
      -
      - Device id of source for response
    * - 1
-     - Destination CPort id[cu][cv]
+     - Destination CPort id [#cu]_ [#cv]_
      - 2
      -
      - CPort at destination to use for connection
@@ -4491,3 +4493,548 @@ The disable route response contains only the status byte.
      - 1
      -
      - Success, or reason for failure
+
+Footnotes
+=========
+
+.. rubric:: Footnotes
+
+.. [#a] TODO: remove these links when we are ready to incorporate this doc
+        into the MDK.
+
+.. [#b] Also, is "Endpoint" in the diagram well-defined?  Does it
+        represent what you're later referring to as a "function?"  If
+        so I suggest you update the diagram that way also.
+
+.. [#c] Answer:  "Endpoint" in this diagram is *not* well-defined.
+
+.. [#d] In what way can the host get the module manifest information?
+
+.. [#e] The SVC will provide the module manifest via messages to the
+        AP. We have stated that a hotplug event will supply the
+        manifest. Some of the details of this have not yet been fully
+        specified.
+
+.. [#f] I suggest the total size of the header is word aligned(4bytes
+        aligned). Also , the other message's part better to be word aligned.
+
+.. [#g] Any objections to just making this so?  I think we may have
+        already done so in the code.
+
+.. [#h] This is a pretty vague statement. Any idea how to make it
+        sharper? Why not have major/minor versions for this as well, so
+        m odule vendors can handle compatibility breaks vs. bugfixes
+        the same way we do?
+
+.. [#i] Given later Greybus changes (we version protocols
+        independently), does the operating system even need to
+        interpret this value at all? Does it make sense to instead
+        specify that it's for the vendor's use, and is not given
+        special interpretation by the operating system?
+        +elder_alex@projectara.com
+
+.. [#j] The purpose for this version field is to version the module *as
+        a whole*.  In my mind, yes, it's an attribute fully under
+        control of the vendor.  I could envision a class driver of some
+        kind making use of this information, but to date we don't use
+        it. Your questions highlight that we should clarify how we
+        expect each of these fields are to be used.  If they don't
+        serve a particular purpose we should just remove them.
+
+.. [#k] So shouldn't we just remove this one, if we don't have a use
+        for it yet?
+
+.. [#l] suggest adding "but not internationalized"
+
+.. [#m] You mean it should be in English?  I'm not sure what
+        "internationalized" means.
+
+.. [#n] Right, it's human readable, but it's only in one language
+        (presumably English)
+
+.. [#o] ditto here
+
+.. [#p] This will be CPort 0 if possible.  If we can't reserve it for
+        our exclusive use it will be CPort 1.
+
+.. [#q] ...or whatever we can get.
+
+.. [#r] I think there will be no "AP" protocol. This table is currently
+        tentative.  To date, only GPIO, I2C, and PWM protocols are
+        well-defined.
+
+.. [#s] On the other hand, I believe there will be an "SVC" protocol
+        that will implement certain requests between the AP and the SVC
+        (such as setting routes, or the SVC notifying the AP about
+        battery status and module events).
+
+.. [#t] Class Device descriptor?  I'd like to distinguish between a
+        "class" of device and an instance of a device of a certain
+        class.
+
+.. [#u] I'm just going to state for the record that the notion of a
+        "class" is still not very well defined.  We have a pretty clear
+        idea of protocols and CPorts now, and how certain simple device
+        functionality (like GPIO) can be implemented using them. But a
+        class will offer a higher level of functionality, and it might
+        span the use of multiple CPorts.  This is still a bit fuzzy and
+        how exactly this will look is still under discussion.
+
+.. [#v] I mention in an e-mail the possibility of implementing SVC
+        communication by defining it as a distinct function type.
+
+.. [#w] In addition, we could define a "multiplexor" function type.
+        This would have a one-byte payload which defines which of up to
+        256 "actual" functions within a device a message should be
+        directed to.  I.e., it would provide a natural way of
+        multiplexing communication with more than one function using a
+        single CPort.
+
+.. [#x] Supporting a multiplexor function would be pretty easy.  The
+        MUX function would claim the CPort; then each of the
+        multiplexed functions would point also use the same CPort,
+        indicating also a unique "which function" number to be used to
+        address messages to the function.  I suspect that might mean we
+        reserve function 0 to communicate with the MUX function itself.
+
+.. [#y] More specific?  I suspect this is unnecessarily copied from
+        USB.  DME access and UniPro configuration, which covers much of
+        the same purpose, has a dedicated protocol. While some devices
+        also use the control pipe for part of the application protocol,
+        others do not, and there's no need to special case it anyway.
+        (It's special cased precisely because it also handles USB
+        configuration—see above.)  Given our constraints, requiring
+        extra cports that devices don't need seems like a poor choice.
+
+.. [#z] DME does not cover the UniPro application layer, which is
+        explicitly the layer for which Greybus is defined.
+
+        Perhaps, rather than dedicating one of the CPorts to the
+        Control "function," we could assert that CPort 0 shall support
+        (in addition to any other functionality it offers) the
+        control-related features.  This would require all control
+        operations to be distinct from all other operations defined
+        over the connection.
+
+.. [#aa] This won't be a class, it'll be a "control CPort" that runs
+         the "control" protocol.  I have defined some control protocol
+         functionality and will be adding it to this document soon.
+
+.. [#ab] I had a lot of questions about how everything is wired
+         together as I looked through this, and they are probably
+         covered in other documentation.
+
+         For example:
+
+         - Is the AP module distinguished from others in any way other
+           than how it responds to power-up events?  E.g., is there a
+           special physical connection to tell the SVC *this* module is
+           the AP?
+
+         - Is the AP module limited in which physical Ara "slots" it can reside in?
+
+         - Is it possible to have more than one AP module on an Ara "handset" (or Endo?)?
+
+         - The SVC must manage the Unipro network using its own
+           out-of-band communication medium. Does all the AP <-> SVC
+           communication require any connection in addition to the
+           Unipro channel?  (It seems like it shouldn't.)
+
+.. [#ac] We are in the process of redefining the SVC <--> AP
+         interactions in terms of the "operations" protocol currently
+         defined later in this document.
+
+.. [#ad] Based on the diagram below, it appears the AP *sets/defines*
+         routes, while the SVC implements them (that is, configures the
+         switch hardware). Is there any reason the SVC should somehow
+         verify the sanity of what gets set by an authenticated AP?  (I
+         presume not.)
+
+.. [#ae] The "Bootup sequence" mostly clarifies this as SVC
+         independently setting up the initial state so communication
+         can occur between it and the AP. The use cases in the Ara
+         UniPro Network functional spec also confirm this in more
+         detail as to how the SVC sets up initial state after power on
+         reset. In that document it's unclear who owns the post setup
+         route configuration, but step 6 below confirms that the AP
+         owns route configuration requests with the SVC merely
+         implementing those requests as you say.
+
+.. [#af] Is the model for when modules can be plugged in and unplugged
+         defined somewhere?  Can a module be unplugged without AP
+         knowledge/involvement when the OS is booted?
+
+.. [#ag] Yes. There's now an RFC sequence diagram for what happens in
+         this case in the SVC section of the software architecture doc.
+
+.. [#ah] I was going to suggest this term.
+
+         Do you prefer something else, to avoid confusion because this
+         is *not* using Unipro protocol?  If that is the case, perhaps
+         using a completely different set of terms would make
+         distinguishing them clearer.
+
+.. [#ai] Is it your intention to impose the same sort of restrictions
+         on these structures as were made for the descriptors,
+         earlier?  Sizes rounded up to 4 byte multiples, etc.?
+
+.. [#aj] Is a reply message expected?
+
+.. [#ak] Once we switch over to the operations model, yes, there will
+         be a reply.
+
+.. [#al] I have now defined operations for all of these in a "control
+         protocol" found at the end of this document.
+
+.. [#am] The module Id needs to convey the physical location of the
+         module within the Endo. Application software may need to know
+         this in order to function properly.
+
+.. [#an] Furthermore the SVC need to be able to communicate what model
+         of Endo is in use, to allow correct interpretation of this
+         position information.
+
+.. [#ao] The "October 8th" proposal I just sent out will address these
+         issues.
+
+.. [#ap] (Referencing the comment above.)
+
+         In this case, we *are* talking about a module id.  I think an
+         interface block would be tightly coupled with the notion of a
+         UniPro device, and looking ahead we are not limited to one
+         interface block per module.  I expect an endo would define a
+         mapping between the interface blocks in each module and their
+         device numbers (along with the physical position of each
+         module).
+
+.. [#aq] MDK 0.2 Draft Figure 5.5 defines unique IDs for each IB in the
+         mini and medium endos (large is not yet defined). As mentioned
+         in my proposal, we can define a unique Module ID using the
+         unique IB IDs that have that physical positioning attribute
+         defined in the MDK.
+
+.. [#ar] Given the above comments, I would like to rename this field
+         "position" or something along those lines, to emphasize that
+         it is more than simply a unique identifier within the Endo.
+
+.. [#as] Is there any need (or ability) to determine the current state
+         of an EPM?
+
+.. [#at] Don't we also need resume commands to be passed from modules
+         to the AP (via the SVC)?
+
+.. [#au] No suspend message types yet...
+
+.. [#av] +elder_alex@projectara.com Presumably, protocols are defined
+         also in terms of state changes due to e.g. error handling for
+         failed operations as well, no?
+
+.. [#aw] I'm not completely sure what you mean.  Are you just
+         questioning the word "successfully" in this sentence?  If so,
+         you're right--error behavior should be well-defined for every
+         operation too.
+
+.. [#ax] Yes, just questioning the word "successfully"
+
+.. [#ay] Is it worth adding symbolic constants for these (e.g. reuse
+         the equivalent errno defines)? So Invalid=EINVAL, etc.
+
+         CC: +elder_alex@projectara.com
+
+.. [#az] Marked as resolved
+
+.. [#ba] Re-opened
+
+.. [#bb] Whoops.
+
+.. [#bc] There are some symbolic constants we've been using in the
+         code, and I think it would be a good idea to duplicate them here.
+
+         As far as matching existing symbols like EINVAL, etc., I don't
+         like that idea.  If our meaning exactly matches the POSIX
+         EINVAL meaning, then that would be fine, but I wouldn't want
+         to assume that.  I think we need to define our own name space
+         with our own precise meaning attached to each symbol.
+
+.. [#bd] I believe this is no longer correct, since we allow protocols
+         to change versions independently from one another.
+
+         Is that correct? If so, I will update the text.
+
+         CC +elder_alex@projectara.com
+
+.. [#be] It is technically correct at the moment.  If these sections
+         split into separate (and separately-versioned) documents, then
+         it would be correct for those as well.
+
+         It doesn't matter to me.  We could state what version is
+         documented for each protocol.
+
+.. [#bf] This is kind of vague.
+
+         Since the backwards compatibility requirement implies that
+         protocol versions form a total order (X.Y is less than X.(Y+n)
+         and X.Y is less than (X+n).Z for nonnegative integers X,Y,Z,
+         and positive integers n), perhaps we can introduce formal
+         language that more clearly defines the "greater" and "greater
+         than or equal to" relations between protocol versions, and
+         rely on that with more precision here?
+
+.. [#bg] That would be great.
+
+         I found it very cumbersome to try to explain this, and in the
+         end it is fairly simple logic.  I would love to have it
+         improved but at the moment won't try myself.
+
+
+         Similarly we should probably explain that "X.Y" is a notation
+         we use for major version X, minor version Y (if, in fact,
+         that's what we're doing...).
+
+.. [#bh] Can we add -
+
+         "get_shutdowntemperature" - shutdown temperature at which
+         device should get turned off..(60 or 80 or 70 Celsius etc..)
+
+         "get_totalcapacity" - Total (design) battery capacity in mAh.
+
+         "get_lowwarning" - when system should raise low warning level
+
+         This is to update few parameters in android framework. I see
+         these parameters vary from battery to battery.
+
+.. [#bi] for shutdown temp, would that be the
+         POWER_SUPPLY_PROP_TEMP_ALERT_MAX value in the kernel?
+
+         For total capacity, is that POWER_SUPPLY_PROP_CURRENT_MAX ?
+
+         As for "low warning", I don't understand how that works from
+         the kernel side, is there a value you read from the kernel for
+         this?  Or does Android take the existing capacity % and just
+         use it (less than 10% is an issue)?
+
+.. [#bj] yes, we use "POWER_SUPPLY_PROP_TEMP_ALERT_MAX" - get the alert
+         value for shutdown temp
+
+         At present, no idea if we can calculate total capacity in mAh
+         from "POWER_SUPPLY_PROP_CURRENT_MAX" ? Do you have any ?  Need
+         to look further for this.
+
+         "low warning" level is statically defined in user space config
+         file for each vendor. But you are right We can use static
+         value for all - 10/15% to indicate low warning level.. - I am
+         ok with that
+
+.. [#bk] typo: voltage instead of current
+
+.. [#bl] Can we add -
+
+         "get_shutdowntemperature" - shutdown temperature at which
+         device should get turned off..(60 or 80 or 70 Celsius etc..)
+
+         "get_totalcapacity" - Total (design) battery capacity in mAh.
+
+         "get_lowwarning" - when system should raise low warning level
+
+         This is to update few parameters in android framework. I see
+         these parameters vary from battery to battery.
+
+.. [#bm] for shutdown temp, would that be the
+         POWER_SUPPLY_PROP_TEMP_ALERT_MAX value in the kernel?
+
+         For total capacity, is that POWER_SUPPLY_PROP_CURRENT_MAX ?
+
+         As for "low warning", I don't understand how that works from
+         the kernel side, is there a value you read from the kernel for
+         this?  Or does Android take the existing capacity % and just
+         use it (less than 10% is an issue)?
+
+.. [#bn] yes, we use "POWER_SUPPLY_PROP_TEMP_ALERT_MAX" - get the alert
+         value for shutdown temp
+
+         At present, no idea if we can calculate total capacity in mAh
+         from "POWER_SUPPLY_PROP_CURRENT_MAX" ? Do you have any ?  Need
+         to look further for this.
+
+         "low warning" level is statically defined in user space config
+         file for each vendor. But you are right We can use static
+         value for all - 10/15% to indicate low warning level.. - I am
+         ok with that
+
+.. [#bo] in the case of a weak USB charger (like a regular USB port),
+         there is actually a possibility that the battery is "charging
+         but discharging", i.e. the charging current is less that the
+         current consumed by the phone. Would should be the status
+         reported then? also note the get_current() function returns
+         unsigned value, so cannot be used to handle it.
+
+.. [#bp] If the AP send out a request, it will automatically receive a
+         response through CPort Rx path, right? So, the AP need to
+         decode the response message to see what the message is .
+
+.. [#bq] Yes.  The response can be as simple as acknowledging that the
+         request was received, but a few request types may supply
+         additional information.
+
+.. [#br] If the response is just acknowledging that the request was
+         received, it my be useless for AP to get this
+         information. But, AP does not know whether it's a simple
+         acknowledge or not. So, there will always an interrupt to
+         notify the AP that a response messages received. Then AP will
+         be busy to serve the interrupt.
+
+.. [#bs] We have discussed having an option for sending requests
+         without a response for cases where the sender really doesn't
+         care.  I am only now updating the document to reflect some
+         other changes; I believe the no-response option will be added
+         before this is finalized.
+
+.. [#bt] Each request can only set one line? Why cannt it set multiple
+         lines with each request?
+
+.. [#bu] Good question.  I suppose we could encode a mask of the GPIOs
+         to be affected rather than just indicating a single one.
+
+.. [#bv] There are 2^12 unique CPort ids (defined by 7-bit encoded
+         device id and 5-bit CPort id). The absolute maximum number
+         required by an interface would be half that.  That means no
+         more than 64 device ids can be assigned to an interface.
+
+.. [#bw] What happens if the response contains an invalid number of
+         additional device ids?
+
+         What happens if we are unable to allocate the number that are
+         required?  This protocol assumes the response is acceptable.
+         (This is why a revoke operation might be needed.)
+
+         We could resolve this with a weird nested request--where the
+         destination requests more before responding to the
+         assign_device_id request.
+
+.. [#bx] Should this be src_cport_id?
+
+.. [#by] No.
+
+         There are three interfaces involved here.  The "source" (the
+         AP); the "destination" (to which the request is sent); and
+         the "peer" (the one with which the destination will establish
+         a connection).
+
+         The source device id defines where the destination should
+         send its response.
+
+         The destination device id is implied, because the destination
+         receives the request and knows its own device id.
+
+         The destination CPort id names the "local" (with respect to
+         the destination interface) end of the connection.
+
+         The peer device id and peer CPort id define the "remote"
+         (again with respect to the destination interface) end of the
+         connection to be established.
+
+.. [#bz] Is this really any different from disconnect()? You seem to be
+           providing the same amount of data
+
+.. [#ca] Yes.
+
+         A normal disconnect is a structured tear-down (as opposed to
+         one end simply becoming unresponsive) of a connection,
+         initiated by one of the interfaces involved in the connection.
+
+         A peer disconnect is requesting another interface begin the
+         tear-down of a connection it has with a (third) peer
+         interface.
+
+         They have the same parameters but they have different
+         semantics.
+
+.. [#cb] The term destination here makes this seem somewhat
+         directional. Do you really have to disconnect the destination
+         side of the connection as set up? Or does disconnecting the
+         connected cport on either device side of the connection
+         suffice?
+
+.. [#cc] Your observation is correct, it's really generally intended
+         to be a symmetric relationship.
+
+         I was using "sender" and "receiver" initially, but Matt
+         requested I use "source" and "destination" because it was a
+         pair of terms he thought were very familiar and frequently
+         used.
+
+         I never did like the implication of direction that "source"
+         and "destination" have, so if people feel some other terms
+         are better I'm very open to switching.
+
+.. [#cd] Oh, and to answer your question, unless it turns out to not
+         be possible in implementation, my intention is to allow
+         either end of a connection to send a disconnect to the other.
+
+.. [#ce] TBC: the destination device can be disabled in the attributes;
+         it is possible to re-route the traffic to the SVC's port.
+
+.. [#cf] The reason why I said it can't be disabled is that disabling
+         a particular (from, to) route is not possible in ES1.  If you
+         want to disable one path through the switch to a destination,
+         you have to disable them all.
+
+         I'm not sure what you mean by re-routing the traffic to the
+         SVC (nor why you'd want to do that).
+
+.. [#cg] Is this actually important? I don't really think so.  Already
+         the header is making the alignment unpredictable.
+
+.. [#ch] I would like to make the identity data be fairly
+         limited--like the vendor id, product id, version, and maybe
+         unique id.  In that case I would want to switch this size
+         field to be one byte, to emphasize it's intended to be a
+         small amount of data.
+
+.. [#ci] This would be the module manifest as currently specified.
+
+.. [#cj] What is the expected size of the manifest data? Should it be
+         sent in multiple messages?
+
+.. [#ck] We've talked about this. Most of the data is small-on the
+         order of a few bytes.  But strings can be 255 bytes each, and
+         there could be dozens of CPorts.  So I'd say on the order of
+         1KB would be reasonable.
+
+         Everything we send will be done using a single UniPro
+         message.  This will be broken up by UniPro into segments as
+         needed.
+
+.. [#cl] These details need to be nailed down.
+
+.. [#cm] These details need to be nailed down.
+
+.. [#cn] The folowing info is needed: battery capacity, charge (%) so
+         that the SVC knows if there is sufficient power for the boot
+         sequence
+
+.. [#co] Yes, this is the subject of an ongoing e-mail thread.  The
+         power information might be exchanged during an earlier
+         pre-boot phase of operation.  Or, we may include this in the
+         "identify" operation described earlier.
+
+.. [#cp] This doesn't apply to ES1
+
+.. [#cq] Do you say this because ES1 can't support it, or because our
+        schedule dictates that we won't be doing this for the upcoming demo?
+
+.. [#cr] Is the destination device id also needed? Ditto for the
+         disconnect message
+
+.. [#cs] The message is sent to the destination device (by specifying
+         its device id in the UniPro header).  So it's sort of
+         implied, and not part of the message itself.
+
+.. [#ct] This doesn't apply to ES1
+
+.. [#cu] Is the source device id is also needed (aka 'Destination
+         device id' in the table)? Ditto for the disconnect message
+
+.. [#cv] The request will be sent to the destination device.  Each
+         interface knows its own device id, so the destination device
+         is implied.
