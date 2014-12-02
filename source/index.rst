@@ -481,59 +481,6 @@ Protocol
    * - Vendor Specific
      - 0xff
 
-Class Descriptor[t][u]
-^^^^^^^^^^^^^^^^^^^^^^
-
-This descriptor describes functionality supplied by a module.  A module can offer more than one class of functionality, and can have more than one instance of one class.  Examples of class types are “SDIO”, “I2C”, and “GPIO”.  The next section provides a set of the valid class types.
-
-The way a particular class operates is defined by its class type[v][w][x]. For example, a class defined with type I2C will be associated with an AP-resident driver that’s appropriate for an I2C device.
-
-All modules shall have a Class Descriptor of the type “Control” which is required to be able to handle the module’s control functionality.[y][z][aa]
-
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-
-   * - 0
-     - size
-     - 2
-     - 0x0004
-     - Size of this descriptor record
-
-   * - 2
-     - type
-     - 1
-     - 0x05
-     - Type of the descriptor (Class)
-
-   * - 3
-     - class
-     - 1
-     -
-     - Class type this function implements
-
-Class Type
-""""""""""
-
-.. list-table::
-   :header-rows: 1
-
-   * - Class type
-     - Value
-   * - Control
-     - 0x00
-   * - GP Bridge
-     - 0x01
-   * - (All other values reserved)
-     - 0x02..0xfe
-   * - Vendor Specific
-     - 0xff
-
 Greybus Operations
 ==================
 
