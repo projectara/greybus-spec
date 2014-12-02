@@ -1,0 +1,271 @@
+
+[a]TODO: remove these links when we are ready to incorporate this doc into the MDK.
+[b]Also, is "Endpoint" in the diagram well-defined?  Does it represent what you're later referring to as a "function?"  If so I suggest you update the diagram that way also.
+[c]Answer:  "Endpoint" in this diagram is *not* well-defined.
+[d]In what way can the host get the module manifest information?
+[e]The SVC will provide the module manifest via messages to the AP. We have stated that a hotplug event will supply the manifest. Some of the details of this have not yet been fully specified.
+[f]I suggest the total size of the header is word aligned(4bytes aligned). Also , the other message's part better to be word aligned.
+[g]Any objections to just making this so?  I think we may have already done so in the code.
+[h]This is a pretty vague statement. Any idea how to make it sharper?
+
+
+Why not have major/minor versions for this as well, so module vendors can handle compatibility breaks vs. bugfixes the same way we do?
+[i]Given later Greybus changes (we version protocols independently), does the operating system even need to interpret this value at all?
+
+
+Does it make sense to instead specify that it's for the vendor's use, and is not given special interpretation by the operating system?
+
+
++elder_alex@projectara.com
+[j]The purpose for this version field is to version the module *as a whole*.  In my mind, yes, it's an attribute fully under control of the vendor.  I could envision a class driver of some kind making use of this information, but to date we don't use it.
+
+
+Your questions highlight that we should clarify how we expect each of these fields are to be used.  If they don't serve a particular purpose we should just remove them.
+[k]So shouldn't we just remove this one, if we don't have a use for it yet?
+[l]suggest adding "but not internationalized"
+[m]You mean it should be in English?  I'm not sure what "internationalized" means.
+[n]Right, it's human readable, but it's only in one language (presumably English)
+[o]ditto here
+[p]This will be CPort 0 if possible.  If we can't reserve it for our exclusive use it will be CPort 1.
+[q]...or whatever we can get.
+[r]I think there will be no "AP" protocol. This table is currently tentative.  To date, only GPIO, I2C, and PWM protocols are well-defined.
+[s]On the other hand, I believe there will be an "SVC" protocol that will implement certain requests between the AP and the SVC (such as setting routes, or the SVC notifying the AP about battery status and module events).
+[t]Class Device descriptor?  I'd like to distinguish between a "class" of device and an instance of a device of a certain class.
+[u]I'm just going to state for the record that the notion of a "class" is still not very well defined.  We have a pretty clear idea of protocols and CPorts now, and how certain simple device functionality (like GPIO) can be implemented using them.
+
+
+But a class will offer a higher level of functionality, and it might span the use of multiple CPorts.  This is still a bit fuzzy and how exactly this will look is still under discussion.
+[v]I mention in an e-mail the possibility of implementing SVC communication by defining it as a distinct function type.
+[w]In addition, we could define a "multiplexor" function type.  This would have a one-byte payload which defines which of up to 256 "actual" functions within a device a message should be directed to.  I.e., it would provide a natural way of multiplexing communication with more than one function using a single CPort.
+[x]Supporting a multiplexor function would be pretty easy.  The MUX function would claim the CPort;  then each of the multiplexed functions would point also use the same CPort, indicating also a unique "which function" number to be used to address messages to the function.  I suspect that might mean we reserve function 0 to communicate with the MUX function itself.
+[y]More specific?  I suspect this is unnecessarily copied from USB.  DME access and UniPro configuration, which covers much of the same purpose, has a dedicated protocol.
+
+
+While some devices also use the control pipe for part of the application protocol, others do not, and there's no need to special case it anyway.  (It's special cased precisely because it also handles USB configuration—see above.)  Given our constraints, requiring extra cports that devices don't need seems like a poor choice.
+[z]DME does not cover the UniPro application layer, which is explicitly the layer for which Greybus is defined.
+
+
+Perhaps, rather than dedicating one of the CPorts to the Control "function," we could assert that CPort 0 shall support (in addition to any other functionality it offers) the control-related features.  This would require all control operations to be distinct from all other operations defined over the connection.
+[aa]This won't be a class, it'll be a "control CPort" that runs the "control" protocol.  I have defined some control protocol functionality and will be adding it to this document soon.
+[ab]I had a lot of questions about how everything is wired together as I looked through this, and they are probably covered in other documentation.
+For example:
+- Is the AP module distinguished from others in any way other than how it responds to power-up events?  E.g., is there a special physical connection to tell the SVC *this* module is the AP?
+- Is the AP module limited in which physical Ara "slots" it can reside in?
+- Is it possible to have more than one AP module on an Ara "handset" (or Endo?)?
+- The SVC must manage the Unipro network using its own out-of-band communication medium. Does all the AP <-> SVC communication require any connection in addition to the Unipro channel?  (It seems like it shouldn't.)
+[ac]We are in the process of redefining the SVC <--> AP interactions in terms of the "operations" protocol currently defined later in this document.
+[ad]Based on the diagram below, it appears the AP *sets/defines* routes, while the SVC implements them (that is, configures the switch hardware). Is there any reason the SVC should somehow verify the sanity of what gets set by an authenticated AP?  (I presume not.)
+[ae]The "Bootup sequence" mostly clarifies this as SVC independently setting up the initial state so communication can occur between it and the AP. The use cases in the Ara UniPro Network functional spec also confirm this in more detail as to how the SVC sets up initial state after power on reset. In that document it's unclear who owns the post setup route configuration, but step 6 below confirms that the AP owns route configuration requests with the SVC merely implementing those requests as you say.
+[af]Is the model for when modules can be plugged in and unplugged defined somewhere?  Can a module be unplugged without AP knowledge/involvement when the OS is booted?
+[ag]Yes. There's now an RFC sequence diagram for what happens in this case in the SVC section of the software architecture doc.
+[ah]I was going to suggest this term.
+
+
+Do you prefer something else, to avoid confusion because this is *not* using Unipro protocol?  If that is the case, perhaps using a completely different set of terms would make distinguishing them clearer.
+[ai]Is it your intention to impose the same sort of restrictions on these structures as were made for the descriptors, earlier?  Sizes rounded up to 4 byte multiples, etc.?
+[aj]Is a reply message expected?
+[ak]Once we switch over to the operations model, yes, there will be a reply.
+[al]I have now defined operations for all of these in a "control protocol" found at the end of this document.
+[am]The module Id needs to convey the physical location of the module within the Endo. Application software may need to know this in order to function properly.
+[an]Furthermore the SVC need to be able to communicate what model of Endo is in use, to allow correct interpretation of this position information.
+[ao]The "October 8th" proposal I just sent out will address these issues.
+[ap](Referencing the comment above.)
+
+
+In this case, we *are* talking about
+a module id.  I think an interface
+block would be tightly coupled with
+the notion of a UniPro device, and
+looking ahead we are not limited to
+one interface block per module.
+I expect an endo would define a
+mapping between the interface
+blocks in each module and their
+device numbers (along with the
+physical position of each module).
+[aq]MDK 0.2 Draft Figure 5.5 defines unique IDs for each IB in the mini and medium endos (large is not yet defined). As mentioned in my proposal, we can define a unique Module ID using the unique IB IDs that have that physical positioning attribute defined in the MDK.
+[ar]Given the above comments, I would like to rename this field "position" or something along those lines, to emphasize that it is more than simply a unique identifier within the Endo.
+[as]Is there any need (or ability) to determine the current state of an EPM?
+[at]Don't we also need resume commands to be passed from modules to the AP (via the SVC)?
+[au]No suspend message types yet...
+[av]+elder_alex@projectara.com
+
+
+Presumably, protocols are defined also in terms of state changes due to e.g. error handling for failed operations as well, no?
+[aw]I'm not completely sure what you mean.  Are you just questioning the word "successfully" in this sentence?  If so, you're right--error behavior should be well-defined for every operation too.
+[ax]Yes, just questioning the word "successfully"
+[ay]Is it worth adding symbolic constants for these (e.g. reuse the equivalent errno defines)? So Invalid=EINVAL, etc.
+
+
+CC: +elder_alex@projectara.com
+[az]_Marked as resolved_
+[ba]_Re-opened_
+[bb]Whoops.
+[bc]There are some symbolic constants we've been using in the code, and I think it would be a good idea to duplicate them here.
+
+
+As far as matching existing symbols like EINVAL, etc., I don't like that idea.  If our meaning exactly matches the POSIX EINVAL meaning, then that would be fine, but I wouldn't want to assume that.  I think we need to define our own name space with our own precise meaning attached to each symbol.
+[bd]I believe this is no longer correct, since we allow protocols to change versions independently from one another.
+
+
+Is that correct? If so, I will update the text.
+
+
+CC +elder_alex@projectara.com
+[be]It is technically correct at the moment.  If these sections split into separate (and separately-versioned) documents, then it would be correct for those as well.
+
+
+It doesn't matter to me.  We could state what version is documented for each protocol.
+[bf]This is kind of vague.
+
+
+Since the backwards compatibility requirement implies that protocol versions form a total order (X.Y is less than X.(Y+n) and X.Y is less than (X+n).Z for nonnegative integers X,Y,Z, and positive integers n), perhaps we can introduce formal language that more clearly defines the "greater" and "greater than or equal to" relations between protocol versions, and rely on that with more precision here?
+[bg]That would be great.
+
+
+I found it very cumbersome to try to explain this, and in the end it is fairly simple logic.  I would love to have it improved but at the moment won't try myself.
+
+
+Similarly we should probably explain that "X.Y" is a notation we use for major version X, minor version Y (if, in fact, that's what we're doing...).
+[bh]Can we add -
+
+
+"get_shutdowntemperature"  - shutdown temperature at which device should get turned off..(60 or 80 or  70 Celsius etc..)
+
+
+"get_totalcapacity" - Total (design) battery capacity in mAh.
+
+
+"get_lowwarning" - when system should raise low warning level
+
+
+
+
+This is to update few parameters in android framework. I see these parameters vary from battery to battery.
+[bi]for shutdown temp, would that be the POWER_SUPPLY_PROP_TEMP_ALERT_MAX value in the kernel?
+
+
+For total capacity, is that POWER_SUPPLY_PROP_CURRENT_MAX ?
+
+
+As for "low warning", I don't understand how that works from the kernel side, is there a value you read from the kernel for this?  Or does Android take the existing capacity % and just use it (less than 10% is an issue)?
+[bj]yes, we use "POWER_SUPPLY_PROP_TEMP_ALERT_MAX" - get the alert value for shutdown temp
+
+
+At present, no idea if we can calculate total capacity in mAh from "POWER_SUPPLY_PROP_CURRENT_MAX" ? Do you have any ?
+Need to look further for this.
+
+
+
+
+"low warning" level is statically defined in user space config file for each vendor. But you  are right We can use static value for all - 10/15% to indicate low warning level.. - I am ok with that
+[bk]typo: voltage instead of current
+[bl]Can we add -
+
+
+"get_shutdowntemperature"  - shutdown temperature at which device should get turned off..(60 or 80 or  70 Celsius etc..)
+
+
+"get_totalcapacity" - Total (design) battery capacity in mAh.
+
+
+"get_lowwarning" - when system should raise low warning level
+
+
+
+
+This is to update few parameters in android framework. I see these parameters vary from battery to battery.
+[bm]for shutdown temp, would that be the POWER_SUPPLY_PROP_TEMP_ALERT_MAX value in the kernel?
+
+
+For total capacity, is that POWER_SUPPLY_PROP_CURRENT_MAX ?
+
+
+As for "low warning", I don't understand how that works from the kernel side, is there a value you read from the kernel for this?  Or does Android take the existing capacity % and just use it (less than 10% is an issue)?
+[bn]yes, we use "POWER_SUPPLY_PROP_TEMP_ALERT_MAX" - get the alert value for shutdown temp
+
+
+At present, no idea if we can calculate total capacity in mAh from "POWER_SUPPLY_PROP_CURRENT_MAX" ? Do you have any ?
+Need to look further for this.
+
+
+
+
+"low warning" level is statically defined in user space config file for each vendor. But you  are right We can use static value for all - 10/15% to indicate low warning level.. - I am ok with that
+[bo]in the case of a weak USB charger (like a regular USB port), there is actually a possibility that the battery is "charging but discharging", i.e. the charging current is less that the current consumed by the phone. Would should be the status reported then? also note the get_current() function returns unsigned value, so cannot be used to handle it.
+[bp]If the AP send out a request, it will automatically receive  a response through CPort Rx path, right? So, the
+AP need to decode the response message to see what the message is .
+[bq]Yes.  The response can be as simple as acknowledging that the request was received, but a few request types may supply additional information.
+[br]If the response is just acknowledging that the request was received, it my be useless for AP to get this information. But, AP does not know whether it's a simple acknowledge or not. So, there will always an interrupt to notify the AP that a response messages received. Then AP will be busy to serve the interrupt.
+[bs]We have discussed having an option for sending requests without a response for cases where the sender really doesn't care.  I am only now updating the document to reflect some other changes; I believe the no-response option will be added before this is finalized.
+[bt]Each request can only set one line? Why cannt it set multiple lines with each request?
+[bu]Good question.  I suppose we could encode a mask of the GPIOs to be affected rather than just indicating a single one.
+[bv]There are 2^12 unique CPort ids (defined by 7-bit encoded device id and 5-bit CPort id). The absolute maximum number required by an interface would be half that.  That means no more than 64 device ids can be assigned to an interface.
+[bw]What happens if the response contains an invalid number of additional device ids?
+
+
+What happens if we are unable to allocate the number that are required?  This protocol assumes the response is acceptable.  (This is why a revoke operation might be needed.)
+
+
+We could resolve this with a weird nested request--where the destination requests more before responding to the assign_device_id request.
+[bx]Should this be src_cport_id?
+[by]No.
+
+
+There are three interfaces involved here.  The "source" (the AP); the "destination" (to which the request is sent); and the "peer" (the one with which the destination will establish a connection).
+
+
+The source device id defines where the destination should send its response.
+
+
+The destination device id is implied, because the destination receives the request and knows its own device id.
+
+
+The destination CPort id names the "local" (with respect to the destination interface) end of the connection.
+
+
+The peer device id and peer CPort id define the "remote" (again with respect to the destination interface) end of the connection to be established.
+[bz]Is this really any different from disconnect()? You seem to be providing the same amount of data
+[ca]Yes.
+
+
+A normal disconnect is a structured tear-down (as opposed to one end simply becoming unresponsive) of a connection, initiated by one of the interfaces involved in the connection.
+
+
+A peer disconnect is requesting another interface begin the tear-down of a connection it has with a (third) peer interface.
+
+
+They have the same parameters but they have different semantics.
+[cb]The term destination here makes this seem somewhat directional. Do you really have to disconnect the destination side of the connection as set up? Or does disconnecting the connected cport on either device side of the connection suffice?
+[cc]Your observation is correct, it's really generally intended to be a symmetric relationship.
+
+
+I was using "sender" and "receiver" initially, but Matt requested I use "source" and "destination" because it was a pair of terms he thought were very familiar and frequently used.
+
+
+I never did like the implication of direction that "source" and "destination" have, so if people feel some other terms are better I'm very open to switching.
+[cd]Oh, and to answer your question, unless it turns out to not be possible in implementation, my intention is to allow either end of a connection to send a disconnect to the other.
+[ce]TBC: the destination device can be disabled in the attributes; it is possible to re-route the traffic to the SVC's port.
+[cf]The reason why I said it can't be disabled is that disabling a particular (from, to) route is not possible in ES1.  If you want to disable one path through the switch to a destination, you have to disable them all.
+
+
+I'm not sure what you mean by re-routing the traffic to the SVC (nor why you'd want to do that).
+[cg]Is this actually important? I don't really think so.  Already the header is making the alignment unpredictable.
+[ch]I would like to make the identity data be fairly limited--like the vendor id, product id, version, and maybe unique id.  In that case I would want to switch this size field to be one byte, to emphasize it's intended to be a small amount of data.
+[ci]This would be the module manifest as currently specified.
+[cj]What is the expected size of the manifest data? Should it be sent in multiple messages?
+[ck]We've talked about this. Most of the data is small-on the order of a few bytes.  But strings can be 255 bytes each, and there could be dozens of CPorts.  So I'd say on the order of 1KB would be reasonable.
+
+
+Everything we send will be done using a single UniPro message.  This will be broken up by UniPro into segments as needed.
+[cl]These details need to be nailed down.
+[cm]These details need to be nailed down.
+[cn]The folowing info is needed: battery capacity, charge (%) so that the SVC knows if there is sufficient power for the boot sequence
+[co]Yes, this is the subject of an ongoing e-mail thread.  The power information might be exchanged during an earlier pre-boot phase of operation.  Or, we may include this in the "identify" operation described earlier.
+[cp]This doesn't apply to ES1
+[cq]Do you say this because ES1 can't support it, or because our schedule dictates that we won't be doing this for the upcoming demo?
+[cr]Is the destination device id also needed? Ditto for the disconnect message
+[cs]The message is sent to the destination device (by specifying its device id in the UniPro header).  So it's sort of implied, and not part of the message itself.
+[ct]This doesn't apply to ES1
+[cu]Is the source device id is also needed (aka 'Destination device id' in the table)? Ditto for the disconnect message
+[cv]The request will be sent to the destination device.  Each interface knows its own device id, so the destination device is implied.
