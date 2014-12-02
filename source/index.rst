@@ -15,19 +15,6 @@
 Greybus Application Protocol
 ============================
 
-Contents:
-
-.. toctree::
-   :maxdepth: 2
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
 Greybus Application Protocol
 Version: |gb-major|.\ |gb-minor|
 
