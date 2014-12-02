@@ -1,4 +1,6 @@
-﻿.. These substitution definitions allow us to rev the Greybus protocol
+﻿.. highlight:: none
+
+.. These substitution definitions allow us to rev the Greybus protocol
    consistently throughout the document.
 
 .. |gb-major| replace:: 0
@@ -599,14 +601,30 @@ This section defines the operations used on a connection implementing the Greybu
 
 The operations in the Greybus vibrator protocol are:
 
-    ``int get_version(u8 *major, u8 *minor);``
-        Returns the major and minor Greybus vibrator protocol version number supported by the vibrator adapter.
+::
 
-    ``int vibrator_on(u16 timeout_ms);``
-        Turns on the vibrator for the number of specified milliseconds.
+    int get_version(u8 *major, u8 *minor);
 
-    ``int vibrator_off(void);``
-        Turns off the vibrator immediately.
+..
+
+    Returns the major and minor Greybus vibrator protocol version
+    number supported by the vibrator adapter.
+
+::
+
+   int vibrator_on(u16 timeout_ms);
+
+..
+
+   Turns on the vibrator for the number of specified milliseconds.
+
+::
+
+   int vibrator_off(void);
+
+..
+
+    Turns off the vibrator immediately.
 
 Greybus Vibrator Message Types[bh][bi][bj]
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -756,22 +774,72 @@ This section defines the operations used on a connection implementing the Greybu
 
 Conceptually, the operations in the Greybus battery protocol are:
 
-    ``int get_version(u8 *major, u8 *minor);``
-        Returns the major and minor Greybus battery protocol version number supported by the battery adapter.
-    ``int get_technology(u16 *technology);``
-        Returns a value indicating the technology type that this battery adapter controls.
-    ``int get_status(u16 *status);``
-        Returns a value indicating the current status of the battery.
-    ``int get_max_voltage(u32 *voltage);``
-        Returns a value indicating the maximum voltage that the battery supports.
-    ``int get_percent_capacity(u32 *capacity);``
-        Returns a value indicating the current percent capacity of the battery.
-    ``int get_temperature(u32 *temperature);``
-        Returns a value indicating the current temperature of the battery.
-    ``int get_voltage(u32 *voltage);``
-        Returns a value indicating the current voltage of the battery.
-    ``int get_current(u32 *current);``
-        Returns a value indicating the current voltage[bk] of the battery.
+::
+
+    int get_version(u8 *major, u8 *minor);
+
+..
+
+    Returns the major and minor Greybus battery protocol version
+    number supported by the battery adapter.
+
+::
+
+    int get_technology(u16 *technology);
+
+..
+
+    Returns a value indicating the technology type that this battery
+    adapter controls.
+
+::
+
+    int get_status(u16 *status);
+
+..
+
+    Returns a value indicating the current status of the battery.
+
+::
+
+    int get_max_voltage(u32 *voltage);
+
+..
+
+    Returns a value indicating the maximum voltage that the battery supports.
+
+::
+
+    int get_percent_capacity(u32 *capacity);
+
+..
+
+    Returns a value indicating the current percent capacity of the
+    battery.
+
+::
+
+    int get_temperature(u32 *temperature);
+
+..
+
+    Returns a value indicating the current temperature of the battery.
+
+::
+
+    int get_voltage(u32 *voltage);
+
+..
+
+    Returns a value indicating the current voltage of the battery.
+
+ ::
+
+    int get_current(u32 *current);
+
+..
+
+    Returns a value indicating the current voltage[bk] of the battery.
 
 Greybus Battery Message Types[bl][bm][bn]
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1234,26 +1302,97 @@ A connection using GPIO protocol on a UniPro network is used to manage a simple 
 
 Conceptually, the GPIO protocol operations are:
 
-    ``int get_version(u8 *major, u8 *minor);``
-        Returns the major and minor Greybus GPIO protocol version number supported by the GPIO controller. GPIO controllers adhering to the protocol specified herein shall report major version 0, minor version 1.
-    ``int line_count(u8 *count);``
-        Returns one less than the number of lines managed by the Greybus GPIO controller. This means the minimum number of lines is 1 and the maximum is 256.
-    ``int activate(u8 which);``
-        Notifies the GPIO controller that one of its lines has been assigned for use.
-    ``int deactivate(u8 which);``
-        Notifies the GPIO controller that a previously-activated line has been unassigned and can be deactivated.
-    ``int get_direction(u8 which, u8 *direction);``
-        Requests the GPIO controller return a line’s configured direction (0 for output, 1 for input).
-    ``int direction_input(u8 which);``
-        Requests the GPIO controller configure a line for input.
-    ``int direction_output(u8 which, u8 value);``
-        Requests the GPIO controller configure a line for output, and sets its initial output value (0 for low, 1 for high).
-    ``int get_value(u8 which, u8 *value);``
-        Requests the GPIO controller return the current value sensed on a line (0 for low, 1 for high).
-    ``int set_value(u8 which, u8 value);``
-        Requests the GPIO controller set the value (0 for low, 1 for high) for a line configured for output.
-    ``int set_debounce(u8 which, u16 usec);``
-        Requests the GPIO controller set the debounce period (in microseconds).
+::
+
+    int get_version(u8 *major, u8 *minor);
+
+..
+
+    Returns the major and minor Greybus GPIO protocol version number
+    supported by the GPIO controller. GPIO controllers adhering to the
+    protocol specified herein shall report major version 0, minor
+    version 1.
+
+::
+
+    int line_count(u8 *count);
+
+..
+
+    Returns one less than the number of lines managed by the Greybus
+    GPIO controller. This means the minimum number of lines is 1 and
+    the maximum is 256.
+
+::
+
+    int activate(u8 which);
+
+..
+
+    Notifies the GPIO controller that one of its lines has been
+    assigned for use.
+
+::
+
+    int deactivate(u8 which);
+
+..
+
+    Notifies the GPIO controller that a previously-activated line has
+    been unassigned and can be deactivated.
+
+::
+
+    int get_direction(u8 which, u8 *direction);
+
+..
+
+    Requests the GPIO controller return a line’s configured direction
+    (0 for output, 1 for input).
+
+::
+
+    int direction_input(u8 which);
+
+..
+
+    Requests the GPIO controller configure a line for input.
+
+::
+
+    int direction_output(u8 which, u8 value);
+
+..
+
+    Requests the GPIO controller configure a line for output, and sets
+    its initial output value (0 for low, 1 for high).
+
+::
+
+    int get_value(u8 which, u8 *value);
+
+..
+
+    Requests the GPIO controller return the current value sensed on a
+    line (0 for low, 1 for high).
+
+::
+
+    int set_value(u8 which, u8 value);
+
+..
+
+    Requests the GPIO controller set the value (0 for low, 1 for high)
+    for a line configured for output.
+
+::
+
+    int set_debounce(u8 which, u16 usec);
+
+..
+
+    Requests the GPIO controller set the debounce period (in
+    microseconds).
 
 Greybus GPIO Protocol Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1759,20 +1898,66 @@ A connection using the UART protocol on a UniPro network is used to manage a sim
 
 The operations that can be performed on a Greybus UART controller are:
 
-    ``int get_version(u8 *major, u8 *minor);``
-        Returns the major and minor Greybus UART protocol version number supported by the UART device.
-    ``int send_data(u16 size, u8 *data);``
-        Requests that the UART device begin transmitting characters. One or more bytes to be transmitted will be supplied.
-    ``int receive_data(u16 size, u8 *data);``
-        Receive data from the UART.  One or more bytes will be supplied.
-    ``int set_line_coding(u32 rate, u8 format, u8 parity, u8 data);``
-        Sets the line settings of the UART to the specified baud rate, format, parity, and data bits.
-    ``int set_control_line_state(u8 state);``
-        Controls RTS and DTR line states of the UART.
-    ``int send_break(u8 state);``
-        Requests that the UART generate a break condition on its transmit line.
-    ``int serial_state(u16 *state);``
-        Receives the state of the UART’s control lines and any line errors that might have occurred.
+::
+
+    int get_version(u8 *major, u8 *minor);
+
+..
+
+    Returns the major and minor Greybus UART protocol version number
+    supported by the UART device.
+
+::
+
+    int send_data(u16 size, u8 *data);
+
+..
+
+    Requests that the UART device begin transmitting characters. One
+    or more bytes to be transmitted will be supplied.
+
+::
+
+    int receive_data(u16 size, u8 *data);
+
+..
+
+    Receive data from the UART.  One or more bytes will be supplied.
+
+::
+
+    int set_line_coding(u32 rate, u8 format, u8 parity, u8 data);
+
+..
+
+   Sets the line settings of the UART to the specified baud rate,
+   format, parity, and data bits.
+
+::
+
+    int set_control_line_state(u8 state);
+
+..
+
+    Controls RTS and DTR line states of the UART.
+
+::
+
+    int send_break(u8 state);
+
+..
+
+    Requests that the UART generate a break condition on its transmit
+    line.
+
+::
+
+    int serial_state(u16 *state);
+
+..
+
+    Receives the state of the UART’s control lines and any line errors
+    that might have occurred.
 
 UART Protocol Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2237,22 +2422,80 @@ A connection using PWM protocol on a UniPro network is used to manage a simple P
 
 Conceptually, the PWM protocol operations are:
 
-    ``int get_version(u8 *major, u8 *minor);``
-        Returns the major and minor Greybus PWM protocol version number supported by the PWM controller. PWM controllers adhering to the protocol specified herein shall report major version 0, minor version 1.
-    ``int pwm_count(u8 *count);``
-        Returns one less than the number of instances managed by the Greybus PWM controller. This means the minimum number of PWMs is 1 and the maximum is 256.
-    ``int activate(u8 which);``
-        Notifies the PWM controller that one of its instances has been assigned for use.
-    ``int deactivate(u8 which);``
-        Notifies the PWM controller that a previously-activated instance has been unassigned and can be deactivated.
-    ``int config(u8 which, u32 duty, u32 period);``
-        Requests the PWM controller configure an instance for a particular duty cycle and period (in units of nanoseconds).
-    ``int set_polarity(u8 which, u8 polarity);``
-        Requests the PWM controller configure an instance as normally active or inversed.
-    ``int enable(u8 which);``
-        Requests the PWM controller enable a PWM instance to begin toggling.
-    ``int disable(u8 which);``
-        Requests the PWM controller disable a previously enabled PWM instance
+::
+
+    int get_version(u8 *major, u8 *minor);
+
+..
+
+    Returns the major and minor Greybus PWM protocol version number
+    supported by the PWM controller. PWM controllers adhering to the
+    protocol specified herein shall report major version 0, minor
+    version 1.
+
+::
+
+    int pwm_count(u8 *count);
+
+..
+
+    Returns one less than the number of instances managed by the
+    Greybus PWM controller. This means the minimum number of PWMs is 1
+    and the maximum is 256.
+
+::
+
+    int activate(u8 which);
+
+..
+
+    Notifies the PWM controller that one of its instances has been
+    assigned for use.
+
+::
+
+    int deactivate(u8 which);
+
+..
+
+    Notifies the PWM controller that a previously-activated instance
+    has been unassigned and can be deactivated.
+
+::
+
+    int config(u8 which, u32 duty, u32 period);
+
+..
+
+    Requests the PWM controller configure an instance for a particular
+    duty cycle and period (in units of nanoseconds).
+
+::
+
+    int set_polarity(u8 which, u8 polarity);
+
+..
+
+    Requests the PWM controller configure an instance as normally
+    active or inversed.
+
+::
+
+    int enable(u8 which);
+
+..
+
+    Requests the PWM controller enable a PWM instance to begin
+    toggling.
+
+::
+
+    int disable(u8 which);
+
+..
+
+    Requests the PWM controller disable a previously enabled PWM
+    instance
 
 Greybus PWM Protocol Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2656,16 +2899,50 @@ This section defines the operations used on a connection implementing the Greybu
 
 Conceptually, the five operations in the Greybus I2C protocol are:
 
-    ``int get_version(u8 *major, u8 *minor);``
-        Returns the major and minor Greybus i2c protocol version number supported by the i2c adapter.
-    ``int get_functionality(u32 *functionality);``
-        Returns a bitmask indicating the features supported by the i2c adapter.
-    ``int set_timeout(u16 timeout_ms);``
-        Sets the timeout (in milliseconds) the i2c adapter should allow before giving up on an addressed client.
-    ``int set_retries(u8 retries);``
-        Sets the number of times an adapter should retry an i2c op before giving up.
-    ``int transfer(u8 op_count, struct i2c_op *ops);``
-        Performs an i2c transaction made up of one or more “steps” defined in the supplied i2c op array.
+::
+
+    int get_version(u8 *major, u8 *minor);
+
+..
+
+    Returns the major and minor Greybus i2c protocol version number
+    supported by the i2c adapter.
+
+::
+
+    int get_functionality(u32 *functionality);
+
+..
+
+    Returns a bitmask indicating the features supported by the i2c
+    adapter.
+
+::
+
+    int set_timeout(u16 timeout_ms);
+
+..
+
+   Sets the timeout (in milliseconds) the i2c adapter should allow
+   before giving up on an addressed client.
+
+::
+
+    int set_retries(u8 retries);
+
+..
+
+   Sets the number of times an adapter should retry an i2c op before
+   giving up.
+
+::
+
+    int transfer(u8 op_count, struct i2c_op *ops);
+
+..
+
+   Performs an i2c transaction made up of one or more “steps” defined
+   in the supplied i2c op array.
 
 A transfer is made up of an array of “I2C ops”, each of which specifies an I2C slave address, flags controlling message behavior, and a length of data to be transferred. For write requests, the data is sent following the array of messages; for read requests, the data is returned in a response message from the I2C adapter.
 
@@ -3101,54 +3378,221 @@ The control protocol is used to inform an interface of the device it it has been
 
 Conceptually, the operations in the Greybus control protocol are:
 
-    ``int identify(u8 svc_device_id, u16 endo_id, u8 module_id, u8 interface_id, u8 device_id, u8 *extra_device_ids, u16 *id_data_size, u8 *id_data);``
-        The SVC initiates this operation after it has first determined a UniPro link is up. The request  informs the interface of its whereabouts, including the type of endo it resides in, where the module resides on that endo, which interface it is on that module, as well as the UniPro device id assigned to the interface. The destination supplies in its response the number[bv] of additional device ids it requires[bw] to represent the range of CPort ids it supports. The destination also provides additional identifying information in its response. All versions of the control protocol support the identify operation, so this operation can be sent prior to performing a handshake between interfaces.
+::
 
-    ``int handshake(u8 src_device_id, u8 src_major, u8 src_minor, u8 *major, u8 *minor);``
-        Connections between interfaces are set up using the control protocol. Once an interface has been identified by the SVC, it can initiate a handshake operation with the SVC interface in order to have both sides agree on the version of the control connection they will use. The source sends the highest version of the control protocol it supports. The destination responds with its own version, or if that is higher than what was sent it responds with (and thereafter uses) the source interface’s version. The SVC uses the version found in the response. If each of two interfaces simultaneously initiates a handshake with the other, the one with the lower device id will proceed; the interface with the higher device id will fail. Once a handshake has succeeded, either interface can send operations to the other.
+    int identify(u8 svc_device_id, u16 endo_id, u8 module_id,
+                 u8 interface_id, u8 device_id, u8 *extra_device_ids,
+                 u16 *id_data_size, u8 *id_data);
 
-    ``int register_ap(u8 src_device_id);``
-        This operation is sent by the AP (on one of its interfaces) to the SVC, in order to tell the SVC where it should send subsequent event notifications. The device id serves both to indicate where the response should go and to tell the SVC which interface should be sent (e.g.) hotplug and link status change indications.
+..
 
-    ``int register_battery(u8 src_device_id);``
-        This operation is sent by a module to the SVC to tell the SVC this interface is associated with a battery. The SVC can then use battery protocol operations in order to further inquire about the battery’s status. The device id indicates where the response should go and and tells the SVC the interface through which a battery connection can be established.
+    The SVC initiates this operation after it has first determined
+    a UniPro link is up. The request informs the interface of its
+    whereabouts, including the type of endo it resides in, where
+    the module resides on that endo, which interface it is on that
+    module, as well as the UniPro device id assigned to the
+    interface. The destination supplies in its response the
+    number[bv] of additional device ids it requires[bw] to
+    represent the range of CPort ids it supports. The destination
+    also provides additional identifying information in its
+    response. All versions of the control protocol support the
+    identify operation, so this operation can be sent prior to
+    performing a handshake between interfaces.
 
-    ``int connect(u8 src_device_id, u16 src_cport_id, u16 dst_cport_id, u8 src_major, u8 src_minor, u8 *major, u8 *minor);``
-        This operation is used to establish a connection between two interfaces. It is most often sent by the AP to set up a connection with another interface, but this can also be initiated between two peer interfaces using a separate (peer_connect) operation initiated by the AP.  The  protocol used for the connection is the one associated with the destination CPort, and the version of the protocol used is agreed to as a result of the message exchange. As with the handshake operation, the sender supplies the highest version of the protocol it supports.  The receiver supplies in its response the highest version it supports, or if that exceeds what the sender supports it supplies the sender’s version. The version in the response is the version that will be used by both sides thereafter.
+::
 
-    ``int disconnect(u8 src_device_id, u16 dst_cport_id);``
-      This operation is used to tear down a previously-established connection between two interfaces. The CPort id on the destination is sufficient to identify the connection to be torn down. Either end of a connection can initiate the operation.
+    int handshake(u8 src_device_id, u8 src_major, u8 src_minor,
+                  u8 *major, u8 *minor);
 
-    ``int connect_peer(u8 src_device_id, u16 dst_cport_id[bx][by], u8 peer_device_id, u16 peer_cport_id);``
-        This operation is used by the AP to request the destination interface establish a connection with an interface in another peer module. The destination interface responds to this request by initiating a connection request between the indicated destination CPort and the one on the indicated peer interface.
+..
 
-    ``int disconnect_peer[bz][ca](u8 src_device_id, u16 dst_cport_id);``
-        This operation is used to tear down a previously-established connection between a CPort on the destination interface and a CPort on one of its peer interfaces. The CPort id on the destination[cb][cc][cd] is sufficient to identify the connection to be torn down. The destination will complete a disconnect of its peer connection before responding to the disconnect_peer request.
+    Connections between interfaces are set up using the control
+    protocol. Once an interface has been identified by the SVC, it can
+    initiate a handshake operation with the SVC interface in order to
+    have both sides agree on the version of the control connection
+    they will use. The source sends the highest version of the control
+    protocol it supports. The destination responds with its own
+    version, or if that is higher than what was sent it responds with
+    (and thereafter uses) the source interface’s version. The SVC uses
+    the version found in the response. If each of two interfaces
+    simultaneously initiates a handshake with the other, the one with
+    the lower device id will proceed; the interface with the higher
+    device id will fail. Once a handshake has succeeded, either
+    interface can send operations to the other.
+
+::
+
+    int register_ap(u8 src_device_id);
+
+..
+
+    This operation is sent by the AP (on one of its interfaces) to the
+    SVC, in order to tell the SVC where it should send subsequent event
+    notifications. The device id serves both to indicate where the
+    response should go and to tell the SVC which interface should be
+    sent (e.g.) hotplug and link status change indications.
+
+::
+
+    int register_battery(u8 src_device_id);
+
+..
+
+    This operation is sent by a module to the SVC to tell the SVC this
+    interface is associated with a battery. The SVC can then use battery
+    protocol operations in order to further inquire about the battery’s
+    status. The device id indicates where the response should go and and
+    tells the SVC the interface through which a battery connection can
+    be established.
+
+::
+
+    int connect(u8 src_device_id, u16 src_cport_id, u16 dst_cport_id,
+                u8 src_major, u8 src_minor, u8 *major, u8 *minor);
+
+..
+
+    This operation is used to establish a connection between two
+    interfaces. It is most often sent by the AP to set up a connection
+    with another interface, but this can also be initiated between two
+    peer interfaces using a separate (peer_connect) operation initiated by
+    the AP.  The protocol used for the connection is the one associated
+    with the destination CPort, and the version of the protocol used is
+    agreed to as a result of the message exchange. As with the handshake
+    operation, the sender supplies the highest version of the protocol it
+    supports.  The receiver supplies in its response the highest version
+    it supports, or if that exceeds what the sender supports it supplies
+    the sender’s version. The version in the response is the version that
+    will be used by both sides thereafter.
+
+::
+
+    int disconnect(u8 src_device_id, u16 dst_cport_id);
+
+..
+
+    This operation is used to tear down a previously-established
+    connection between two interfaces. The CPort id on the destination
+    is sufficient to identify the connection to be torn down. Either
+    end of a connection can initiate the operation.
+
+::
+
+    int connect_peer(u8 src_device_id, u16 dst_cport_id[bx][by],
+                     u8 peer_device_id, u16 peer_cport_id);
+
+..
+
+    This operation is used by the AP to request the destination
+    interface establish a connection with an interface in another peer
+    module. The destination interface responds to this request by
+    initiating a connection request between the indicated destination
+    CPort and the one on the indicated peer interface.
+
+::
+
+    int disconnect_peer[bz][ca](u8 src_device_id, u16 dst_cport_id);
+
+..
+
+    This operation is used to tear down a previously-established
+    connection between a CPort on the destination interface and a
+    CPort on one of its peer interfaces. The CPort id on the
+    destination[cb][cc][cd] is sufficient to identify the connection
+    to be torn down. The destination will complete a disconnect of its
+    peer connection before responding to the disconnect_peer request.
 
 .. note::
 
-   The following additional operations are also defined to be part of the control protocol.  They are only exchanged between the SVC and AP, and may be segregated into a separate “SVC protocol” in the future. As with all control protocol operations, the first value is the UniPro device id of the source of the request.
+   The following additional operations are also defined to be part of
+   the control protocol.  They are only exchanged between the SVC and
+   AP, and may be segregated into a separate “SVC protocol” in the
+   future. As with all control protocol operations, the first value is
+   the UniPro device id of the source of the request.
 
-    ``int hotplug(u8 svc_device_id, u8 module_id, u16 id_data_size, u8 id_data[]);``
-        This operation is sent by the SVC to the AP to inform it that a module has been inserted and is now present in the endo. The module id indicates the subject of the request. The hotplug notification provides identifying data that the SVC acquired from the module in its response to the SVC identify request.
+::
 
-    ``int hotunplug(u8 svc_device_id, u8 module_id);``
-        This operation is sent by the SVC to the AP to inform it that a module that had previously been subject of a hotplug operation has been removed from the endo.
+    int hotplug(u8 svc_device_id, u8 module_id, u16 id_data_size,
+                u8 id_data[]);
 
-    ``int link_up(u8 svc_device_id, u8 module_id, u8 interface_id, u8 device_id);``
-        This operation is sent by the SVC to the AP to inform it that an interface on a module has indicated its link is functioning. The module will have previously been the subject of a hotplug operation. A module can have more than one interface; the interface id (whose value is normally 0) is used to distinguish among them if there is more than one. The device id tells the AP what UniPro device id is assigned to that interface.
+..
 
-    ``int link_down(u8 svc_device_id, u8 device_id);``
-        This operation is sent by the SVC to the AP to report that an interface that was previously reported to be up is no longer functional.  The device id is sufficient to identify the link that has gone down.
+    This operation is sent by the SVC to the AP to inform it that a
+    module has been inserted and is now present in the endo. The module
+    id indicates the subject of the request. The hotplug notification
+    provides identifying data that the SVC acquired from the module in
+    its response to the SVC identify request.
 
-    ``int set_route(u8 ap_device_id, u8 from_device_id, u8 to_device_id);``
-        This operation is sent by the AP to the SVC to request that a bidirectional route be set up in the UniPro switching network that allows traffic to flow between the two indicated device ids. Initially routes are in a disabled state; traffic flow will only be allowed when the route has been enabled. **Note: in ES1, routing is based only on destination address, and it is not possible to disable a route[ce][cf].**
+::
 
-    ``int enable_route(u8 ap_device_id, u8 from_device_id, u8 to_device_id);``
-        This operation is sent by the AP to the SVC to request that a route defined by an earlier set route call should be enabled, allowing traffic to flow.
+    int hotunplug(u8 svc_device_id, u8 module_id);
 
-    ``int disable_route(u8 ap_device_id, u8 from_device_id, u8 to_device_id);``
-        This operation is sent by the AP to the SVC to request that a route defined by an earlier set route call should be disabled, preventing any further traffic flow between the indicated interfaces.
+..
+
+    This operation is sent by the SVC to the AP to inform it that a
+    module that had previously been subject of a hotplug operation has
+    been removed from the endo.
+
+::
+
+    int link_up(u8 svc_device_id, u8 module_id, u8 interface_id,
+                u8 device_id);
+
+..
+
+   This operation is sent by the SVC to the AP to inform it that an
+   interface on a module has indicated its link is functioning. The
+   module will have previously been the subject of a hotplug
+   operation. A module can have more than one interface; the interface
+   id (whose value is normally 0) is used to distinguish among them if
+   there is more than one. The device id tells the AP what UniPro
+   device id is assigned to that interface.
+
+::
+
+    int link_down(u8 svc_device_id, u8 device_id);
+
+..
+
+    This operation is sent by the SVC to the AP to report that an
+    interface that was previously reported to be up is no longer
+    functional.  The device id is sufficient to identify the link that
+    has gone down.
+
+::
+
+    int set_route(u8 ap_device_id, u8 from_device_id, u8 to_device_id);
+
+..
+
+    This operation is sent by the AP to the SVC to request that a
+    bidirectional route be set up in the UniPro switching network that
+    allows traffic to flow between the two indicated device
+    ids. Initially routes are in a disabled state; traffic flow will
+    only be allowed when the route has been enabled. **Note: in ES1,
+    routing is based only on destination address, and it is not
+    possible to disable a route[ce][cf].**
+
+::
+
+    int enable_route(u8 ap_device_id, u8 from_device_id, u8 to_device_id);
+
+..
+
+    This operation is sent by the AP to the SVC to request that a
+    route defined by an earlier set route call should be enabled,
+    allowing traffic to flow.
+
+::
+
+    int disable_route(u8 ap_device_id, u8 from_device_id, u8 to_device_id);
+
+..
+
+    This operation is sent by the AP to the SVC to request that a
+    route defined by an earlier set route call should be disabled,
+    preventing any further traffic flow between the indicated
+    interfaces.
 
 Greybus Control Message Types
 -----------------------------
