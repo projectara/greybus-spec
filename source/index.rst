@@ -4489,5 +4489,5 @@ The disable route response contains only the status byte.
    * - 0
      - Status
      - 1
-     - .
+     -
      - Success, or reason for failure
