@@ -30,10 +30,10 @@
 
    Google Confidential/Restricted. ###Page###/###Total###
 
-Greybus Application Protocol
-============================
+Greybus Specification
+=====================
 
-Greybus Application Protocol
+Greybus Specification
 Version: |gb-major|.\ |gb-minor|
 
 .. warning::

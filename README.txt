@@ -1,4 +1,4 @@
-This is the Greybus Application Protocol as a Sphinx project.
+This is the Greybus Specification.
 
 Requirements:
 
