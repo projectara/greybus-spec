@@ -6,6 +6,11 @@
 .. |gb-major| replace:: 0
 .. |gb-minor| replace:: 1
 
+.. These are for all you legal eagles out there
+
+.. |unipro| replace:: UniPro℠
+.. |mipi| replace:: MIPI®
+
 .. Headers and footers
 
 .. footer::
@@ -36,20 +41,20 @@ Introduction
                     | Good artists copy, great artists steal.
                     | — Pablo Picasso
 
-The UniPro℠ specification is created by the MIPI Alliance.  In the
+The |unipro| specification is created by the |mipi| Alliance.  In the
 specification for the protocol, it is left as an “implementation
 detail” to describe the Application layer of the protocol.  As the
-MIPI Alliance has decided to not define an application layer, and for
+|mipi| Alliance has decided to not define an application layer, and for
 the purposes of Project Ara we need an application layer that can
 handle dynamic devices being added and removed from the system at any
 point in time, and showing up at any place on the “bus”, it is up to
 us to define an Application layer protocol, as well as hooks into the
-Transport layer in order to control the UniPro℠ switch controller
+Transport layer in order to control the |unipro| switch controller
 properly.  This document aims to define this protocol and interaction
-with the UniPro stack and hardware.  Because this protocol can not
-claim to be “UniPro℠” officially at all, it should be called “Greybus”
+with the |unipro| stack and hardware.  Because this protocol can not
+claim to be “|unipro|” officially at all, it should be called “Greybus”
 in reference to the first phone that this protocol should be publicly
-available for.  If the MIPI Alliance, or anyone else, wishes to adopt
+available for.  If the |mipi| Alliance, or anyone else, wishes to adopt
 this protocol layer and rename it, they need to follow the license of
 this document.
 
@@ -68,7 +73,7 @@ smidgen as popular and influential.
 This document details a preliminary specification for a Greybus
 system. It should be noted that the information contained within is at
 a very early draft stage and has not yet been implemented. Especially
-for service protocol definitions, we will leverage existing MIPI
+for service protocol definitions, we will leverage existing |mipi|
 standards heavily where possible.
 
 Terminology
@@ -108,19 +113,19 @@ A Greybus system shall be composed of the following blocks:
    the “AP.”
 2. An “Endoskeleton,” consisting of the following elements:
    a. One Supervisory Controller, hereafter referred to as the “SVC.”
-   b. One or more UniPro℠ switches which distribute UniPro network
+   b. One or more |unipro| switches which distribute |unipro| network
       traffic throughout the Greybus network.
 3. One or more “Modules” which physically plug into the endoskeleton
    and implement service protocol functionality as defined within this
    document.
    a. The main functional chipsets on modules may either communicate
-      via a native UniPro℠interface or via “Bridges,” special-purpose
-      ASICs which translate legacy protocols into UniPro traffic that
-      can be routed to nodes on a UniPro℠ network. Bridges shall
+      via a native |unipro| interface or via “Bridges,” special-purpose
+      ASICs which translate legacy protocols into |unipro| traffic that
+      can be routed to nodes on a |unipro| network. Bridges shall
       implement the Greybus application protocol specification.
 
 An example Greybus [#b]_ [#c]_ system using Bridge ASICs and native
-Unipro℠ interfaces is shown in the following figure.
+|unipro| interfaces is shown in the following figure.
 
 .. figure:: _static/example-system.png
    :alt: Example Greybus system
@@ -135,8 +140,8 @@ Introduction
 
 A Greybus “module” is a device that slides into a physical slot on a
 Project Ara endoskeleton.  Each module communicates with other modules
-on the network via one or more UniPro℠ CPorts. A CPort is a
-bidirectional pipe through which UniPro℠ traffic is exchanged. Modules
+on the network via one or more |unipro| CPorts. A CPort is a
+bidirectional pipe through which |unipro| traffic is exchanged. Modules
 send “Messages” via CPorts.
 
 Module Information
@@ -146,9 +151,9 @@ Module Information
                     | — Charles Caleb Colton
 
 A Greybus module must contain self-descriptive information in order to
-identify itself to the UniPro network. This information is found in
+identify itself to the |unipro| network. This information is found in
 the Module Manifest, which describes components present within the
-module that are accessible via UniPro. The Module Manifest includes a
+module that are accessible via |unipro|. The Module Manifest includes a
 set of Descriptors which present a functional description of the
 module.  Together, these define what the module is from an application
 protocol layer, including its capabilities, and how it should be
@@ -452,8 +457,8 @@ Interface Descriptor
 ^^^^^^^^^^^^^^^^^^^^
 
 An interface descriptor describes an access point for a module to the
-UniPro network. Each interface represents a single physical port
-through which UniPro packets are transferred. Every module shall have
+|unipro| network. Each interface represents a single physical port
+through which |unipro| packets are transferred. Every module shall have
 at least one interface. Each interface has an id whose value is unique
 within the module.  The first interface shall have id 0, the second
 (if present) shall have value 1, and so on. The purpose of these Ids
@@ -544,7 +549,7 @@ traffic to this CPort. The IDs for CPorts using the same interface
 must be unique. Certain low-numbered CPort identifiers (such as the
 control CPort) are reserved. Implementors shall assign CPorts
 low-numbered id values, generally no higher than 31. (Higher-numbered
-CPort ids impact on the total usable number of UniPro devices and
+CPort ids impact on the total usable number of |unipro| devices and
 typically should not be used.)
 
 Protocol
@@ -618,11 +623,11 @@ Protocol
 Greybus Operations
 ==================
 
-Greybus communication is built on the use of UniPro messages to send
-information between modules. And although UniPro offers reliable
+Greybus communication is built on the use of |unipro| messages to send
+information between modules. And although |unipro| offers reliable
 transfer of data frames between interfaces, it is often necessary for
 the sender to know whether the effects of sending a message were what
-was expected. For example, a request sent to a UniPro switch
+was expected. For example, a request sent to a |unipro| switch
 controller requesting a reconfiguration of the routing table could
 fail, and proceeding as if a failure had not occurred in this case
 leads to undefined (and dangerous) behavior.  Similarly, the AP module
@@ -646,10 +651,10 @@ failure.
 
 Operations are performed over Greybus Connections.  A connection is a
 communication path between two modules.  Each end of a connection is
-UniPro CPort, associated with a particular interface in a Greybus
+|unipro| CPort, associated with a particular interface in a Greybus
 module.  A connection can be established once the AP learns of the
 existence of a CPort in another module.  The AP will allocate a CPort
-for its end of the connection, and once the UniPro network switch is
+for its end of the connection, and once the |unipro| network switch is
 configured properly the connection can be used for data transfer (and
 in particular, for operations).
 
@@ -739,7 +744,7 @@ most often (but not always) initiated by the AP. Each request has a
 unique identifier, supplied by the requestor, and each response will
 include the identifier of the request with which it is associated.
 This allows operations to complete asynchronously, so multiple
-operations can be “in flight” between the AP and a UniPro-attached
+operations can be “in flight” between the AP and a |unipro|-attached
 adapter at once.
 
 Each response begins with a status byte, which communicates whether
@@ -1593,7 +1598,7 @@ Bridged PHY Connection Protocols
 This section defines a group of protocols whose purpose is to support
 communication with modules on the Greybus network which do not comply
 with an existing device class protocol, and which include integrated
-circuits using alternative physical interfaces to UniProSM. Modules
+circuits using alternative physical interfaces to |unipro|. Modules
 which implement any of the protocols defined in this section are said
 to be *non-device class conformant*.
 
@@ -1608,7 +1613,7 @@ Details TBD.
 GPIO Protocol
 -------------
 
-A connection using GPIO protocol on a UniPro network is used to manage
+A connection using GPIO protocol on a |unipro| network is used to manage
 a simple GPIO controller. Such a GPIO controller implements one or
 more (up to 256) GPIO lines, and each of the operations below
 specifies the line to which the operation applies. This protocol
@@ -2256,7 +2261,7 @@ TBD.
 UART Protocol
 -------------
 
-A connection using the UART protocol on a UniPro network is used to
+A connection using the UART protocol on a |unipro| network is used to
 manage a simple UART controller.  This protocol is very close to the
 CDC protocol for serial modems from the USB-IF specification, and
 consists of the operations defined in this section.
@@ -2822,7 +2827,7 @@ device, and contains only the status byte.
 PWM Protocol
 ------------
 
-A connection using PWM protocol on a UniPro network is used to manage
+A connection using PWM protocol on a |unipro| network is used to manage
 a simple PWM controller. Such a PWM controller implements one or more
 (up to 256) PWM devices, and each of the operations below specifies
 the line to which the operation applies. This protocol consists of the
@@ -3887,10 +3892,10 @@ Conceptually, the operations in the Greybus control protocol are:
 ..
 
     The SVC initiates this operation after it has first determined
-    a UniPro link is up. The request informs the interface of its
+    a |unipro| link is up. The request informs the interface of its
     whereabouts, including the type of endo it resides in, where
     the module resides on that endo, which interface it is on that
-    module, as well as the UniPro device id assigned to the
+    module, as well as the |unipro| device id assigned to the
     interface. The destination supplies in its response the
     number [#bv]_ of additional device ids it requires [#bw]_ to
     represent the range of CPort ids it supports. The destination
@@ -4008,7 +4013,7 @@ Conceptually, the operations in the Greybus control protocol are:
    the control protocol.  They are only exchanged between the SVC and
    AP, and may be segregated into a separate “SVC protocol” in the
    future. As with all control protocol operations, the first value is
-   the UniPro device id of the source of the request.
+   the |unipro| device id of the source of the request.
 
 ::
 
@@ -4045,7 +4050,7 @@ Conceptually, the operations in the Greybus control protocol are:
    module will have previously been the subject of a hotplug
    operation. A module can have more than one interface; the interface
    id (whose value is normally 0) is used to distinguish among them if
-   there is more than one. The device id tells the AP what UniPro
+   there is more than one. The device id tells the AP what |unipro|
    device id is assigned to that interface.
 
 ::
@@ -4066,7 +4071,7 @@ Conceptually, the operations in the Greybus control protocol are:
 ..
 
     This operation is sent by the AP to the SVC to request that a
-    bidirectional route be set up in the UniPro switching network that
+    bidirectional route be set up in the |unipro| switching network that
     allows traffic to flow between the two indicated device
     ids. Initially routes are in a disabled state; traffic flow will
     only be allowed when the route has been enabled. **Note: in ES1,
@@ -4168,14 +4173,14 @@ Greybus Control Identify Operation
 
 The Greybus control protocol identify operation is sent by the SVC to
 supply an interface with information about its physical location, as
-well the UniPro device id it has been assigned. The physical location
+well the |unipro| device id it has been assigned. The physical location
 is partially defined by the unique Endo type that contains the
 system. The request indicates where within the Endo the module
 resides, and which of a module’s interfaces is the destination of the
-request. Finally, the request tells the interface the UniPro device id
+request. Finally, the request tells the interface the |unipro| device id
 that it has been assigned.
 
-Normally an interface (with a single UniPro device id) supports up to
+Normally an interface (with a single |unipro| device id) supports up to
 32 CPorts.  It is possible to support more than that by allotting a
 contiguous range of more than one device id to a single interface.
 Two device ids can support 64 CPorts, three can support 96, and so
@@ -4232,7 +4237,7 @@ destination interface.
      - Device id
      - 1
      -
-     - UniPro device id assigned to destination
+     - |unipro| device id assigned to destination
 
 Greybus Control Identify Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -4887,7 +4892,7 @@ Greybus Control Link Up Operation
 
 The Greybus control link up operation is sent by the SVC to the AP to
 notify it that an interface on a module that was the subject of a
-previous hotplug message reports it has a functioning UniPro link.
+previous hotplug message reports it has a functioning |unipro| link.
 
 Greybus Control Link Up Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -4896,8 +4901,8 @@ The first byte of the link up request is the SVC device id, for the
 response. The second byte indicates which module contains the
 interface whose link up condition is being reported. The third byte is
 used for modules with more than one interface to indicate which
-interface on the module now has a functioning UniPro link. The final
-byte indicates the UniPro device id that was assigned to that link.
+interface on the module now has a functioning |unipro| link. The final
+byte indicates the |unipro| device id that was assigned to that link.
 
 .. list-table::
    :header-rows: 1
@@ -4926,7 +4931,7 @@ byte indicates the UniPro device id that was assigned to that link.
      - Device id
      -
      -
-     - UniPro device id for this link
+     - |unipro| device id for this link
 
 Greybus Control Link Up Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -4952,7 +4957,7 @@ Greybus Control Link Down Operation
 
 The Greybus control link down operation is sent by the SVC to the AP
 to notify it that an interface on a module that was previously
-reported “up” no longer has a functional UniPro link.
+reported “up” no longer has a functional |unipro| link.
 
 Greybus Control Link Down Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -4978,7 +4983,7 @@ gone down.
      - Device id
      - 1
      - .
-     - UniPro device id for this link
+     - |unipro| device id for this link
 
 Greybus Control Link Down Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -5003,7 +5008,7 @@ Greybus Control Set Route Operation
 -----------------------------------
 
 The Greybus control set route operation is sent by the AP to the SVC
-to request it that the UniPro switch network be configured to allow
+to request it that the |unipro| switch network be configured to allow
 traffic to flow between two interfaces.
 
 Greybus Control Set Route Request
@@ -5035,12 +5040,12 @@ be enabled.
      - From device id
      - 1
      -
-     - First UniPro device id
+     - First |unipro| device id
    * - 2
      - To device id
      - 1
      -
-     - Second UniPro device id
+     - Second |unipro| device id
 
 Greybus Control Set Route Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -5093,12 +5098,12 @@ does not support disabled routes; all routes will be enabled.
      - From device id
      - 1
      -
-     - First UniPro device id
+     - First |unipro| device id
    * - 2
      - To device id
      - 1
      -
-     - Second UniPro device id
+     - Second |unipro| device id
 
 Greybus Control Enable Route Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -5123,7 +5128,7 @@ Greybus Control Disable Route Operation
 ---------------------------------------
 
 The Greybus control disable route operation is sent by the AP to the
-SVC to request it that a previously enabled UniPro switch network
+SVC to request it that a previously enabled |unipro| switch network
 route be disabled, preventing further traffic flow.
 
 Greybus Control Disable Route Request
@@ -5152,12 +5157,12 @@ enabled.
      - From device id
      - 1
      -
-     - First UniPro device id
+     - First |unipro| device id
    * - 2
      - To device id
      - 1
      -
-     - Second UniPro device id
+     - Second |unipro| device id
 
 Greybus Control Disable Route Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -5282,7 +5287,7 @@ Footnotes
         reserve function 0 to communicate with the MUX function itself.
 
 .. [#y] More specific?  I suspect this is unnecessarily copied from
-        USB.  DME access and UniPro configuration, which covers much of
+        USB.  DME access and |unipro| configuration, which covers much of
         the same purpose, has a dedicated protocol. While some devices
         also use the control pipe for part of the application protocol,
         others do not, and there's no need to special case it anyway.
@@ -5290,7 +5295,7 @@ Footnotes
         configuration—see above.)  Given our constraints, requiring
         extra cports that devices don't need seems like a poor choice.
 
-.. [#z] DME does not cover the UniPro application layer, which is
+.. [#z] DME does not cover the |unipro| application layer, which is
         explicitly the layer for which Greybus is defined.
 
         Perhaps, rather than dedicating one of the CPorts to the
@@ -5319,10 +5324,10 @@ Footnotes
 
          - Is it possible to have more than one AP module on an Ara "handset" (or Endo?)?
 
-         - The SVC must manage the Unipro network using its own
+         - The SVC must manage the |unipro| network using its own
            out-of-band communication medium. Does all the AP <-> SVC
            communication require any connection in addition to the
-           Unipro channel?  (It seems like it shouldn't.)
+           |unipro| channel?  (It seems like it shouldn't.)
 
 .. [#ac] We are in the process of redefining the SVC <--> AP
          interactions in terms of the "operations" protocol currently
@@ -5337,7 +5342,7 @@ Footnotes
 .. [#ae] The "Bootup sequence" mostly clarifies this as SVC
          independently setting up the initial state so communication
          can occur between it and the AP. The use cases in the Ara
-         UniPro Network functional spec also confirm this in more
+         |unipro| Network functional spec also confirm this in more
          detail as to how the SVC sets up initial state after power on
          reset. In that document it's unclear who owns the post setup
          route configuration, but step 6 below confirms that the AP
@@ -5354,7 +5359,7 @@ Footnotes
 .. [#ah] I was going to suggest this term.
 
          Do you prefer something else, to avoid confusion because this
-         is *not* using Unipro protocol?  If that is the case, perhaps
+         is *not* using |unipro| protocol?  If that is the case, perhaps
          using a completely different set of terms would make
          distinguishing them clearer.
 
@@ -5385,7 +5390,7 @@ Footnotes
 
          In this case, we *are* talking about a module id.  I think an
          interface block would be tightly coupled with the notion of a
-         UniPro device, and looking ahead we are not limited to one
+         |unipro| device, and looking ahead we are not limited to one
          interface block per module.  I expect an endo would define a
          mapping between the interface blocks in each module and their
          device numbers (along with the physical position of each
@@ -5685,8 +5690,8 @@ Footnotes
          there could be dozens of CPorts.  So I'd say on the order of
          1KB would be reasonable.
 
-         Everything we send will be done using a single UniPro
-         message.  This will be broken up by UniPro into segments as
+         Everything we send will be done using a single |unipro|
+         message.  This will be broken up by |unipro| into segments as
          needed.
 
 .. [#cl] These details need to be nailed down.
@@ -5711,7 +5716,7 @@ Footnotes
          disconnect message
 
 .. [#cs] The message is sent to the destination device (by specifying
-         its device id in the UniPro header).  So it's sort of
+         its device id in the |unipro| header).  So it's sort of
          implied, and not part of the message itself.
 
 .. [#ct] This doesn't apply to ES1
