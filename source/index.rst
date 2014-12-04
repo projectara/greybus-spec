@@ -834,6 +834,8 @@ the selected version of the protocol. As a consequence of this,
 protocol handlers must be capable of handling all prior versions of
 the protocol.
 
+.. _device-class-protocols:
+
 Device Class Connection Protocols
 =================================
 
@@ -1594,7 +1596,7 @@ WiFi Protocol
 
 TBD
 
-.. _bridged-phy-connection-protocols:
+.. _bridged-phy-protocols:
 
 Bridged PHY Connection Protocols
 ================================
@@ -3866,6 +3868,8 @@ SDIO Protocol
 -------------
 
 TBD
+
+.. _control-protocol:
 
 Control Protocol
 ================
