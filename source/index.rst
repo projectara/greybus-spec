@@ -559,7 +559,11 @@ typically should not be used.)
 Protocol
 """"""""
 
-**TODO** Cross-reference with existing protocols below
+.. XXX cross-reference these with the below protocols.
+
+   (It's probably worth allocating all of the protocols we ever plan
+   on implementing once, adding protocol version operations for each
+   of them, and numbering them with substitution definitions.)
 
 .. list-table::
    :header-rows: 1
