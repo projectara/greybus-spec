@@ -111,18 +111,22 @@ A Greybus system shall be composed of the following blocks:
 
 1. Exactly one Application Processor module, hereafter referred to as
    the “AP.”
+
 2. An “Endoskeleton,” consisting of the following elements:
-   a. One Supervisory Controller, hereafter referred to as the “SVC.”
-   b. One or more |unipro| switches which distribute |unipro| network
-      traffic throughout the Greybus network.
+
+   - One Supervisory Controller, hereafter referred to as the “SVC.”
+   - One or more |unipro| switches which distribute |unipro| network
+     traffic throughout the Greybus network.
+
 3. One or more “Modules” which physically plug into the endoskeleton
    and implement service protocol functionality as defined within this
    document.
-   a. The main functional chipsets on modules may either communicate
-      via a native |unipro| interface or via “Bridges,” special-purpose
-      ASICs which translate legacy protocols into |unipro| traffic that
-      can be routed to nodes on a |unipro| network. Bridges shall
-      implement the Greybus application protocol specification.
+
+   The main functional chipsets on modules may either communicate via
+   a native |unipro| interface or via “Bridges,” special-purpose ASICs
+   which translate legacy protocols into |unipro| traffic that can be
+   routed to nodes on a |unipro| network. Bridges shall implement the
+   Greybus application protocol specification.
 
 An example Greybus [#b]_ [#c]_ system using Bridge ASICs and native
 |unipro| interfaces is shown in the following figure.
