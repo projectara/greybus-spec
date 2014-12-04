@@ -22,8 +22,13 @@ Version: |gb-major|.\ |gb-minor|
 
 Notes for Project Ara Internal Team Use [#a]_
 
-* Go look at `README FIRST <https://docs.google.com/a/projectara.com/document/d/1-g9uymGyxUrVKOfuJrYCMkl2kqoMvu-GGvqIw3extPE/edit>`_ before doing anything else.
-* Before reading this document, try to get a basic working knowledge of the `MIPI UniPro v1.6 specification <https://docs.google.com/a/projectara.com/file/d/0BxTh4XIogG2qbm1PaEo5M1ZES1U/edit>`_. (At least look at UniPro spec chapter 4 for an architecture overview).
+* Go look at `README FIRST
+  <https://docs.google.com/a/projectara.com/document/d/1-g9uymGyxUrVKOfuJrYCMkl2kqoMvu-GGvqIw3extPE/edit>`_
+  before doing anything else.
+* Before reading this document, try to get a basic working knowledge
+  of the `MIPI UniPro v1.6 specification
+  <https://docs.google.com/a/projectara.com/file/d/0BxTh4XIogG2qbm1PaEo5M1ZES1U/edit>`_. (At
+  least look at UniPro spec chapter 4 for an architecture overview).
 
 Introduction
 ============
@@ -31,37 +36,91 @@ Introduction
                     | Good artists copy, great artists steal.
                     | — Pablo Picasso
 
-The UniPro℠ specification is created by the MIPI Alliance.  In the specification for the protocol, it is left as an “implementation detail” to describe the Application layer of the protocol.  As the MIPI Alliance has decided to not define an application layer, and for the purposes of Project Ara we need an application layer that can handle dynamic devices being added and removed from the system at any point in time, and showing up at any place on the “bus”, it is up to us to define an Application layer protocol, as well as hooks into the Transport layer in order to control the UniPro℠ switch controller properly.  This document aims to define this protocol and interaction with the UniPro stack and hardware.  Because this protocol can not claim to be “UniPro℠” officially at all, it should be called “Greybus” in reference to the first phone that this protocol should be publicly available for.  If the MIPI Alliance, or anyone else, wishes to adopt this protocol layer and rename it, they need to follow the license of this document.
+The UniPro℠ specification is created by the MIPI Alliance.  In the
+specification for the protocol, it is left as an “implementation
+detail” to describe the Application layer of the protocol.  As the
+MIPI Alliance has decided to not define an application layer, and for
+the purposes of Project Ara we need an application layer that can
+handle dynamic devices being added and removed from the system at any
+point in time, and showing up at any place on the “bus”, it is up to
+us to define an Application layer protocol, as well as hooks into the
+Transport layer in order to control the UniPro℠ switch controller
+properly.  This document aims to define this protocol and interaction
+with the UniPro stack and hardware.  Because this protocol can not
+claim to be “UniPro℠” officially at all, it should be called “Greybus”
+in reference to the first phone that this protocol should be publicly
+available for.  If the MIPI Alliance, or anyone else, wishes to adopt
+this protocol layer and rename it, they need to follow the license of
+this document.
 
-The notion of a device bus that is self-descriptive and can handle a multitude of device types has been proven by the great popularity of USB, as defined by the USB-IF specifications.  Because we do not wish to reinvent the wheel, you will notice that many of the descriptor definitions, actions, and protocol types are heavily influenced by USB, if not direct copies in some places.  Hopefully this is not seen as a slight, but rather, proof that the USB-IF has done a wonderful job in creating a system that has worked so well as to be able to survive for 20 years and still evolving to look to last 20+ more.  We could only be so fortunate if the Greybus protocol were to be one smidgen as popular and influential.
+The notion of a device bus that is self-descriptive and can handle a
+multitude of device types has been proven by the great popularity of
+USB, as defined by the USB-IF specifications.  Because we do not wish
+to reinvent the wheel, you will notice that many of the descriptor
+definitions, actions, and protocol types are heavily influenced by
+USB, if not direct copies in some places.  Hopefully this is not seen
+as a slight, but rather, proof that the USB-IF has done a wonderful
+job in creating a system that has worked so well as to be able to
+survive for 20 years and still evolving to look to last 20+ more.  We
+could only be so fortunate if the Greybus protocol were to be one
+smidgen as popular and influential.
 
-This document details a preliminary specification for a Greybus system. It should be noted that the information contained within is at a very early draft stage and has not yet been implemented. Especially for service protocol definitions, we will leverage existing MIPI standards heavily where possible.
+This document details a preliminary specification for a Greybus
+system. It should be noted that the information contained within is at
+a very early draft stage and has not yet been implemented. Especially
+for service protocol definitions, we will leverage existing MIPI
+standards heavily where possible.
 
 Terminology
 ===========
 
-Like all good specifications, we are abiding by Section 13.1 of the IEEE Standards Style Manual, which describes the use of the words “shall”, “should”, “may”, and “can” in a document as:
+Like all good specifications, we are abiding by Section 13.1 of the
+IEEE Standards Style Manual, which describes the use of the words
+“shall”, “should”, “may”, and “can” in a document as:
 
-- The word *shall* is used to indicate mandatory requirements strictly to be followed in order to conform to the Specification and from which no deviation is permitted (*shall* equals *is required to*).
-- The use of the word *must* is deprecated and shall not be used when stating mandatory requirements; must is used only to describe unavoidable situations
-- The use of the word *will* is depreciated and shall not be used when stating mandatory requirements; will is only used in statements of fact
-- The word *should* is used to indicate that among several possibilities one is recommended as particularly suitable, without mentioning or excluding others; or that a certain course of action is preferred but not necessarily required; or that (in the negative form) a certain course of action is deprecated but not prohibited (*should* equals *is recommended that*).
-- The word *may* is used to indicate a course of action permissible within the limits of the Specification (*may* equals *is permitted to*).
-- The word *can* is used for statements of possibility and capability, whether material, physical, or casual (*can* equals *is able to*).
+- The word *shall* is used to indicate mandatory requirements strictly
+  to be followed in order to conform to the Specification and from
+  which no deviation is permitted (*shall* equals *is required to*).
+- The use of the word *must* is deprecated and shall not be used when
+  stating mandatory requirements; must is used only to describe
+  unavoidable situations
+- The use of the word *will* is depreciated and shall not be used when
+  stating mandatory requirements; will is only used in statements of
+  fact
+- The word *should* is used to indicate that among several
+  possibilities one is recommended as particularly suitable, without
+  mentioning or excluding others; or that a certain course of action
+  is preferred but not necessarily required; or that (in the negative
+  form) a certain course of action is deprecated but not prohibited
+  (*should* equals *is recommended that*).
+- The word *may* is used to indicate a course of action permissible
+  within the limits of the Specification (*may* equals *is permitted
+  to*).
+- The word *can* is used for statements of possibility and capability,
+  whether material, physical, or casual (*can* equals *is able to*).
 
 Greybus System Description
 ==========================
 
 A Greybus system shall be composed of the following blocks:
 
-1. Exactly one Application Processor module, hereafter referred to as the “AP.”
+1. Exactly one Application Processor module, hereafter referred to as
+   the “AP.”
 2. An “Endoskeleton,” consisting of the following elements:
    a. One Supervisory Controller, hereafter referred to as the “SVC.”
-   b. One or more UniPro℠ switches which distribute UniPro network traffic throughout the Greybus network.
-3. One or more “Modules” which physically plug into the endoskeleton and implement service protocol functionality as defined within this document.
-   a. The main functional chipsets on modules may either communicate via a native UniPro℠interface or via “Bridges,” special-purpose ASICs which translate legacy protocols into UniPro traffic that can be routed to nodes on a UniPro℠ network. Bridges shall implement the Greybus application protocol specification.
+   b. One or more UniPro℠ switches which distribute UniPro network
+      traffic throughout the Greybus network.
+3. One or more “Modules” which physically plug into the endoskeleton
+   and implement service protocol functionality as defined within this
+   document.
+   a. The main functional chipsets on modules may either communicate
+      via a native UniPro℠interface or via “Bridges,” special-purpose
+      ASICs which translate legacy protocols into UniPro traffic that
+      can be routed to nodes on a UniPro℠ network. Bridges shall
+      implement the Greybus application protocol specification.
 
-An example Greybus [#b]_ [#c]_ system using Bridge ASICs and native Unipro℠ interfaces is shown in the following figure.
+An example Greybus [#b]_ [#c]_ system using Bridge ASICs and native
+Unipro℠ interfaces is shown in the following figure.
 
 .. figure:: _static/example-system.png
    :alt: Example Greybus system
@@ -74,7 +133,11 @@ Greybus Hardware Model
 Introduction
 ------------
 
-A Greybus “module” is a device that slides into a physical slot on a Project Ara endoskeleton.  Each module communicates with other modules on the network via one or more UniPro℠ CPorts. A CPort is a bidirectional pipe through which UniPro℠ traffic is exchanged. Modules send “Messages” via CPorts.
+A Greybus “module” is a device that slides into a physical slot on a
+Project Ara endoskeleton.  Each module communicates with other modules
+on the network via one or more UniPro℠ CPorts. A CPort is a
+bidirectional pipe through which UniPro℠ traffic is exchanged. Modules
+send “Messages” via CPorts.
 
 Module Information
 ==================
@@ -82,34 +145,55 @@ Module Information
                     | Imitation is the sincerest form of flattery.
                     | — Charles Caleb Colton
 
-A Greybus module must contain self-descriptive information in order to identify itself to the UniPro network. This information is found in the Module Manifest, which describes components present within the module that are accessible via UniPro. The Module Manifest includes a set of Descriptors which present a functional description of the module.  Together, these define what the module is from an application protocol layer, including its capabilities, and how it should be communicated with.
+A Greybus module must contain self-descriptive information in order to
+identify itself to the UniPro network. This information is found in
+the Module Manifest, which describes components present within the
+module that are accessible via UniPro. The Module Manifest includes a
+set of Descriptors which present a functional description of the
+module.  Together, these define what the module is from an application
+protocol layer, including its capabilities, and how it should be
+communicated with.
 
 .. _general-requirements:
 
 General Requirements
 --------------------
 
-All data found in message structures defined below shall adhere to the following general requirements:
+All data found in message structures defined below shall adhere to the
+following general requirements:
 
 * All numeric values shall be unsigned unless explicitly stated otherwise.
 * Numeric values prefixed with 0x are hexadecimal; they are decimal otherwise.
-* All headers and descriptor data within a Module Manifest shall be implicitly followed by pad bytes if necessary to bring the size to a multiple of 4 bytes.
+* All headers and descriptor data within a Module Manifest shall be
+  implicitly followed by pad bytes if necessary to bring the size to a
+  multiple of 4 bytes.
 * Accordingly, the low-order two bits of all header “size” field values shall be 00.
-* Any reserved or unused space (including implicit padding) in a header or descriptor shall be ignored when read, and zero-filled when written.
+* Any reserved or unused space (including implicit padding) in a
+  header or descriptor shall be ignored when read, and zero-filled
+  when written.
 * All descriptor field values shall have little endian format.
-* All offset and size values are expressed in units of bytes unless explicitly stated otherwise.
+* All offset and size values are expressed in units of bytes unless
+  explicitly stated otherwise.
 * All string descriptors shall consist of UTF-8 encoded characters.
-* All major structures (like the module manifest header) and interface protocols (like that between the AP and SVC) shall be versioned, to allow future extensions (or fixes) to be added and recognized.
+* All major structures (like the module manifest header) and interface
+  protocols (like that between the AP and SVC) shall be versioned, to
+  allow future extensions (or fixes) to be added and recognized.
 
 Module Manifest
 ---------------
 
-The Module Manifest [#d]_ [#e]_ is a contiguous buffer that includes a Manifest Header and a set of Descriptors.  When read, a Module Manifest is transferred in its entirety.  This allows the module to be described to the host all at once, alleviating the need for multiple communication messages during the enumeration phase of the module.
+The Module Manifest [#d]_ [#e]_ is a contiguous buffer that includes a
+Manifest Header and a set of Descriptors.  When read, a Module
+Manifest is transferred in its entirety.  This allows the module to be
+described to the host all at once, alleviating the need for multiple
+communication messages during the enumeration phase of the module.
 
 Manifest Header
 ^^^^^^^^^^^^^^^
 
-The Manifest Header is present at the beginning of the Module Manifest and defines its size in bytes and the version of the Greybus protocol with which the Manifest complies.
+The Manifest Header is present at the beginning of the Module Manifest
+and defines its size in bytes and the version of the Greybus protocol
+with which the Manifest complies.
 
 .. list-table::
    :header-rows: 1
@@ -138,16 +222,29 @@ The Manifest Header is present at the beginning of the Module Manifest and defin
      - |gb-minor|
      - Greybus minor version
 
-The values of version_major and version_minor values shall refer to the highest version of this document (currently |gb-major|.\ |gb-minor|) with which the format complies.
+The values of version_major and version_minor values shall refer to
+the highest version of this document (currently |gb-major|.\
+|gb-minor|) with which the format complies.
 
-Minor versions increment with additions to the existing descriptor definition, in such a way that reading of the Module Manifest by any protocol handler that understands the version_major should not fail. A changed version_major indicates major differences in the Module Manifest format, and it is not expected that parsers of older major versions would be able to understand newer ones.
+Minor versions increment with additions to the existing descriptor
+definition, in such a way that reading of the Module Manifest by any
+protocol handler that understands the version_major should not fail. A
+changed version_major indicates major differences in the Module
+Manifest format, and it is not expected that parsers of older major
+versions would be able to understand newer ones.
 
-All Module Manifest parsers shall be able to interpret manifests formatted using older Greybus versions, such that they will still work properly (i.e. backwards compatibility is required).
+All Module Manifest parsers shall be able to interpret manifests
+formatted using older Greybus versions, such that they will still work
+properly (i.e. backwards compatibility is required).
 
 Descriptors
 ^^^^^^^^^^^
 
-Following the Manifest Header is one or more Descriptors.  Each Descriptor is composed of a Descriptor Header followed by Descriptor Data. The format of the Descriptor Data depends on the type of the descriptor, which is specified in the header. These Descriptor formats are laid out below.
+Following the Manifest Header is one or more Descriptors.  Each
+Descriptor is composed of a Descriptor Header followed by Descriptor
+Data. The format of the Descriptor Data depends on the type of the
+descriptor, which is specified in the header. These Descriptor formats
+are laid out below.
 
 Descriptor Header
 """""""""""""""""
@@ -208,7 +305,9 @@ This table describes the known descriptor types and their values:
 Module Descriptor
 ^^^^^^^^^^^^^^^^^
 
-This descriptor describes module-specific values as set by the vendor who created the module. Every module manifest shall have exactly one module descriptor.
+This descriptor describes module-specific values as set by the vendor
+who created the module. Every module manifest shall have exactly one
+module descriptor.
 
 .. list-table::
    :header-rows: 1
@@ -267,22 +366,48 @@ This descriptor describes module-specific values as set by the vendor who create
      -
      - Unique ID of the module
 
-The *vendor* field is a value assigned by Google.  All vendors should apply for a Project Ara vendor ID in order to properly mark their modules. Contact ara-dev@google.com for more information regarding the vendor ID application process.
+The *vendor* field is a value assigned by Google.  All vendors should
+apply for a Project Ara vendor ID in order to properly mark their
+modules. Contact ara-dev@google.com for more information regarding the
+vendor ID application process.
 
-The *product* field is controlled by the vendor, and should be unique per type of module that is created.
+The *product* field is controlled by the vendor, and should be unique
+per type of module that is created.
 
-The *version* field is the version of the module that is present. This number shall be changed if the module firmware functionality changes in such a way that the operating system needs to know about it. [#h]_ [#i]_ [#j]_ [#k]_
+The *version* field is the version of the module that is present. This
+number shall be changed if the module firmware functionality changes
+in such a way that the operating system needs to know about it. [#h]_
+[#i]_ [#j]_ [#k]_
 
-*vendor_string_id* is a reference to a specific string descriptor value that provides a human-readable [#l]_ [#m]_ [#n]_ description of the vendor who created the module.  If there is no string present for this value in the Module Manifest, this value shall be 0x00.
+*vendor_string_id* is a reference to a specific string descriptor
+ value that provides a human-readable [#l]_ [#m]_ [#n]_ description of
+ the vendor who created the module.  If there is no string present for
+ this value in the Module Manifest, this value shall be 0x00.
 
-*product_string_id* is a reference to a specific string descriptor value that provides a human-readable [#o]_ description of the product.  If there is no string present for this value in the Module Manifest, this value shall be 0x00.
+*product_string_id* is a reference to a specific string descriptor
+ value that provides a human-readable [#o]_ description of the
+ product.  If there is no string present for this value in the Module
+ Manifest, this value shall be 0x00.
 
-The *unique_id* field is an 8 byte Unique ID that is written into each Greybus compliant chip during manufacturing. Google manages the Unique IDs, providing each manufacturer with the means to generate compliant Unique IDs for their products. In a module that contains multiple interfaces, there will be more than one hardware Unique ID available. It is the responsibility of the module designer to designate one primary interface and expose that primary Unique ID in this field.
+The *unique_id* field is an 8 byte Unique ID that is written into each
+Greybus compliant chip during manufacturing. Google manages the Unique
+IDs, providing each manufacturer with the means to generate compliant
+Unique IDs for their products. In a module that contains multiple
+interfaces, there will be more than one hardware Unique ID
+available. It is the responsibility of the module designer to
+designate one primary interface and expose that primary Unique ID in
+this field.
 
 String Descriptor
 ^^^^^^^^^^^^^^^^^
 
-A string descriptor provides a human-readable form of a string for a specific value, like a vendor or product string.  Any string that is not an even multiple of 4 bytes in length shall be padded out to a 4-byte boundary with 0x00 values.  Strings consist of UTF-8 characters and are not required to be zero terminated. A string descriptor shall be referenced only once within the manifest, e.g. only one product (or vendor) string field may refer to string id 2.
+A string descriptor provides a human-readable form of a string for a
+specific value, like a vendor or product string.  Any string that is
+not an even multiple of 4 bytes in length shall be padded out to a
+4-byte boundary with 0x00 values.  Strings consist of UTF-8 characters
+and are not required to be zero terminated. A string descriptor shall
+be referenced only once within the manifest, e.g. only one product (or
+vendor) string field may refer to string id 2.
 
 .. list-table::
    :header-rows: 1
@@ -326,7 +451,14 @@ A string descriptor provides a human-readable form of a string for a specific va
 Interface Descriptor
 ^^^^^^^^^^^^^^^^^^^^
 
-An interface descriptor describes an access point for a module to the UniPro network. Each interface represents a single physical port through which UniPro packets are transferred. Every module shall have at least one interface. Each interface has an id whose value is unique within the module.  The first interface shall have id 0, the second (if present) shall have value 1, and so on. The purpose of these Ids is to allow CPort descriptors to define which interface they are associated with.
+An interface descriptor describes an access point for a module to the
+UniPro network. Each interface represents a single physical port
+through which UniPro packets are transferred. Every module shall have
+at least one interface. Each interface has an id whose value is unique
+within the module.  The first interface shall have id 0, the second
+(if present) shall have value 1, and so on. The purpose of these Ids
+is to allow CPort descriptors to define which interface they are
+associated with.
 
 .. list-table::
    :header-rows: 1
@@ -358,7 +490,13 @@ An interface descriptor describes an access point for a module to the UniPro net
 CPort Descriptor
 ^^^^^^^^^^^^^^^^
 
-This descriptor describes a CPort implemented within the module. Each CPort is associated with one of the module’s interfaces, and has an id unique for that interface.  Every CPort defines the protocol used by the AP to interact with the CPort. A special control CPort  [#p]_ [#q]_shall be defined for every interface, and shall be defined to use the “control” protocol. The details of these protocols are defined in the section Function Class Protocols below.
+This descriptor describes a CPort implemented within the module. Each
+CPort is associated with one of the module’s interfaces, and has an id
+unique for that interface.  Every CPort defines the protocol used by
+the AP to interact with the CPort. A special control CPort [#p]_
+[#q]_shall be defined for every interface, and shall be defined to use
+the “control” protocol. The details of these protocols are defined in
+the section Function Class Protocols below.
 
 **FIXME** "Function class protocols" is an invalid link
 
@@ -401,7 +539,13 @@ This descriptor describes a CPort implemented within the module. Each CPort is a
      -
      - Protocol used for this CPort
 
-The *id* field is the CPort identifier used by other modules to direct traffic to this CPort. The IDs for CPorts using the same interface must be unique. Certain low-numbered CPort identifiers (such as the control CPort) are reserved. Implementors shall assign CPorts low-numbered id values, generally no higher than 31. (Higher-numbered CPort ids impact on the total usable number of UniPro devices and typically should not be used.)
+The *id* field is the CPort identifier used by other modules to direct
+traffic to this CPort. The IDs for CPorts using the same interface
+must be unique. Certain low-numbered CPort identifiers (such as the
+control CPort) are reserved. Implementors shall assign CPorts
+low-numbered id values, generally no higher than 31. (Higher-numbered
+CPort ids impact on the total usable number of UniPro devices and
+typically should not be used.)
 
 Protocol
 """"""""
@@ -474,20 +618,68 @@ Protocol
 Greybus Operations
 ==================
 
-Greybus communication is built on the use of UniPro messages to send information between modules. And although UniPro offers reliable transfer of data frames between interfaces, it is often necessary for the sender to know whether the effects of sending a message were what was expected. For example, a request sent to a UniPro switch controller requesting a reconfiguration of the routing table could fail, and proceeding as if a failure had not occurred in this case leads to undefined (and dangerous) behavior.  Similarly, the AP module will likely need to retrieve information from other modules; this requires that a message requesting information be paired with a returned message containing the information requested.
+Greybus communication is built on the use of UniPro messages to send
+information between modules. And although UniPro offers reliable
+transfer of data frames between interfaces, it is often necessary for
+the sender to know whether the effects of sending a message were what
+was expected. For example, a request sent to a UniPro switch
+controller requesting a reconfiguration of the routing table could
+fail, and proceeding as if a failure had not occurred in this case
+leads to undefined (and dangerous) behavior.  Similarly, the AP module
+will likely need to retrieve information from other modules; this
+requires that a message requesting information be paired with a
+returned message containing the information requested.
 
-For this reason, Greybus performs communication between modules using Greybus Operations.  A Greybus Operation defines an activity (such as a data transfer) initiated in one module that is implemented (or executed) by another. The particular activity performed is defined by the operation’s type. An operation is implemented by a pair of messages--one containing a request, and the other containing a response. Both messages contain a simple header that includes the type of the module and size of the message. In addition, each operation has a unique id, and both messages in an operation contain this value so the response can be associated with the request. Finally, all responses contain at least one byte; the first byte of a response communicates status of the operation, either success or a reason for a failure.
+For this reason, Greybus performs communication between modules using
+Greybus Operations.  A Greybus Operation defines an activity (such as
+a data transfer) initiated in one module that is implemented (or
+executed) by another. The particular activity performed is defined by
+the operation’s type. An operation is implemented by a pair of
+messages--one containing a request, and the other containing a
+response. Both messages contain a simple header that includes the type
+of the module and size of the message. In addition, each operation has
+a unique id, and both messages in an operation contain this value so
+the response can be associated with the request. Finally, all
+responses contain at least one byte; the first byte of a response
+communicates status of the operation, either success or a reason for a
+failure.
 
-Operations are performed over Greybus Connections.  A connection is a communication path between two modules.  Each end of a connection is UniPro CPort, associated with a particular interface in a Greybus module.  A connection can be established once the AP learns of the existence of a CPort in another module.  The AP will allocate a CPort for its end of the connection, and once the UniPro network switch is configured properly the connection can be used for data transfer (and in particular, for operations).
+Operations are performed over Greybus Connections.  A connection is a
+communication path between two modules.  Each end of a connection is
+UniPro CPort, associated with a particular interface in a Greybus
+module.  A connection can be established once the AP learns of the
+existence of a CPort in another module.  The AP will allocate a CPort
+for its end of the connection, and once the UniPro network switch is
+configured properly the connection can be used for data transfer (and
+in particular, for operations).
 
-Each CPort in a Greybus module has associated with it a protocol.  The protocol dictates the way the CPort interprets incoming operation messages.  Stated another way, the meaning of the operation type found in a request message will depend on the protocol connection uses.  Operation type 5 might mean “receive data” in one protocol, while operation 5 might mean “go to sleep” in another. When the AP establishes a connection with a CPort in another module, that connection will use the CPort’s advertised protocol.
+Each CPort in a Greybus module has associated with it a protocol.  The
+protocol dictates the way the CPort interprets incoming operation
+messages.  Stated another way, the meaning of the operation type found
+in a request message will depend on the protocol connection uses.
+Operation type 5 might mean “receive data” in one protocol, while
+operation 5 might mean “go to sleep” in another. When the AP
+establishes a connection with a CPort in another module, that
+connection will use the CPort’s advertised protocol.
 
-The Greybus Operations mechanism forms a base layer on which other protocols are built. Protocols define the format of request messages, their expected response data, and the effect of the request on state in one or both modules. Users of a protocol can rely on Greybus getting the operation request message to its intended target, and transferring the operation status and any other data back. In the explanations that follow, we refer to the interface through which a request operation is sent as the source, and the interface from which the response will be sent as the destination.
+The Greybus Operations mechanism forms a base layer on which other
+protocols are built. Protocols define the format of request messages,
+their expected response data, and the effect of the request on state
+in one or both modules. Users of a protocol can rely on Greybus
+getting the operation request message to its intended target, and
+transferring the operation status and any other data back. In the
+explanations that follow, we refer to the interface through which a
+request operation is sent as the source, and the interface from which
+the response will be sent as the destination.
 
 Operation Messages
 ------------------
 
-Operation request messages and operation response messages have the same basic format. Each begins with a short header, and is followed by payload data.  In the case of a response message, the payload will always be at least one byte (the status); request messages can have zero-byte payload.
+Operation request messages and operation response messages have the
+same basic format. Each begins with a short header, and is followed by
+payload data.  In the case of a response message, the payload will
+always be at least one byte (the status); request messages can have
+zero-byte payload.
 
 Operation Message Header
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -521,18 +713,44 @@ The following table summarizes the format of an operation message header.
      -
      - Type of Greybus operation (protocol-specific)
 
-The *size* includes the operation message header as well as any payload that follows it. As mentioned earlier, the meaning of a type value depends on the protocol in use on the connection carrying the message. Only 127 operations are available for a given protocol, 0x01..0x7f. Operation 0x00 is reserved as an invalid value.  The high bit (0x80) of an operation type is used as a flag that distinguishes a request operation from its response.  For requests, this bit is 0, for responses, it is 1.  For example operation 0x0a will contain 0x0a in the request message’s type field and 0x8a in the response message’s type field. The id allows many operations to be “in flight” on a connection at once.
+The *size* includes the operation message header as well as any
+payload that follows it. As mentioned earlier, the meaning of a type
+value depends on the protocol in use on the connection carrying the
+message. Only 127 operations are available for a given protocol,
+0x01..0x7f. Operation 0x00 is reserved as an invalid value.  The high
+bit (0x80) of an operation type is used as a flag that distinguishes a
+request operation from its response.  For requests, this bit is 0, for
+responses, it is 1.  For example operation 0x0a will contain 0x0a in
+the request message’s type field and 0x8a in the response message’s
+type field. The id allows many operations to be “in flight” on a
+connection at once.
 
-A connection protocol is defined by describing the format of the payload portions of the request and response messages used for the protocol, along with all actions or state changes that take place as a result of successfully completing the operation [#av]_ [#aw]_ [#ax]_.
+A connection protocol is defined by describing the format of the
+payload portions of the request and response messages used for the
+protocol, along with all actions or state changes that take place as a
+result of successfully completing the operation [#av]_ [#aw]_ [#ax]_.
 
 Connection Protocols
 ====================
 
-The following sections define the request and response message formats for all operations for specific connection protocols. Requests are most often (but not always) initiated by the AP. Each request has a unique identifier, supplied by the requestor, and each response will include the identifier of the request with which it is associated.  This allows operations to complete asynchronously, so multiple operations can be “in flight” between the AP and a UniPro-attached adapter at once.
+The following sections define the request and response message formats
+for all operations for specific connection protocols. Requests are
+most often (but not always) initiated by the AP. Each request has a
+unique identifier, supplied by the requestor, and each response will
+include the identifier of the request with which it is associated.
+This allows operations to complete asynchronously, so multiple
+operations can be “in flight” between the AP and a UniPro-attached
+adapter at once.
 
-Each response begins with a status byte, which communicates whether any error occurred in delivering or processing a requested operation.  If the operation completed successfully the status value is 0.  Otherwise the reason it was not successful will be conveyed by one of the positive values defined in the following table.
+Each response begins with a status byte, which communicates whether
+any error occurred in delivering or processing a requested operation.
+If the operation completed successfully the status value is 0.
+Otherwise the reason it was not successful will be conveyed by one of
+the positive values defined in the following table.
 
-A protocol can define its own status values if needed [#ay]_ [#az]_ [#ba]_ [#bb]_ [#bc]_; every status byte with a MSB set to one beside 0xff will be considered as a protocol status value.
+A protocol can define its own status values if needed [#ay]_ [#az]_
+[#ba]_ [#bb]_ [#bc]_; every status byte with a MSB set to one beside
+0xff will be considered as a protocol status value.
 
 .. list-table::
    :header-rows: 1
@@ -560,32 +778,70 @@ A protocol can define its own status values if needed [#ay]_ [#az]_ [#ba]_ [#bb]
      - Reserved for future use
    * -
      - 0x80 to 0xfe
-     - Status defined by the protocol (see protocol definitions in following sections)
+     - Status defined by the protocol (see protocol definitions in
+       following sections)
    * - Bad
      - 0xff
      - Initial value; never set by response
 
-
-All protocols defined herein are subject to the :ref:`general-requirements` listed above.
+All protocols defined herein are subject to the
+:ref:`general-requirements` listed above.
 
 Protocol Versions
 -----------------
 
-Every protocol has a version, which comprises two one-byte values, major and minor. A protocol definition can evolve to add new capabilities, and as it does so, its version changes. If existing (or old) protocol handling code which complies with this specification can function properly with the new feature in place, only the minor version of the protocol will change. Any time a protocol changes in a way that requires the handling code be updated to function properly, the protocol’s major version will change.
+Every protocol has a version, which comprises two one-byte values,
+major and minor. A protocol definition can evolve to add new
+capabilities, and as it does so, its version changes. If existing (or
+old) protocol handling code which complies with this specification can
+function properly with the new feature in place, only the minor
+version of the protocol will change. Any time a protocol changes in a
+way that requires the handling code be updated to function properly,
+the protocol’s major version will change.
 
-Two modules may implement different versions of a protocol, and as a result they shall negotiate a common version of the protocol to use. This is done by each side exchanging information about the version of the protocol it supports at the time an initial handshake between module interfaces is performed (for the control protocol), or when a connection between CPorts is established (for all other protocols).  The version of a particular protocol advertised by a module is the same as the version of the document that defines the protocol (so for protocols defined herein, the version is  |gb-major|.\ |gb-minor|). [#bd]_ [#be]_
+Two modules may implement different versions of a protocol, and as a
+result they shall negotiate a common version of the protocol to
+use. This is done by each side exchanging information about the
+version of the protocol it supports at the time an initial handshake
+between module interfaces is performed (for the control protocol), or
+when a connection between CPorts is established (for all other
+protocols).  The version of a particular protocol advertised by a
+module is the same as the version of the document that defines the
+protocol (so for protocols defined herein, the version is |gb-major|.\
+|gb-minor|). [#bd]_ [#be]_
 
-To agree on a protocol, an operation request supplies the (greatest) major and minor version of the protocol supported by the source of a request. The request destination compares that version with the (greatest) version of the protocol it supports.  If the destination supports a protocol version with major number equal to that supplied by the source, and a minor number greater than or equal to that supplied by the source, it shall communicate using the protocol version equal to thatsupplied by the source. Otherwise, it decides that its own version of the protocol will be the one to be used [#bf]_ [#bg]_. In either case, the chosen version is sent back in the response, and the source interface will honor that decision and use the selected version of the protocol. As a consequence of this, protocol handlers must be capable of handling all prior versions of the protocol.
+To agree on a protocol, an operation request supplies the (greatest)
+major and minor version of the protocol supported by the source of a
+request. The request destination compares that version with the
+(greatest) version of the protocol it supports.  If the destination
+supports a protocol version with major number equal to that supplied
+by the source, and a minor number greater than or equal to that
+supplied by the source, it shall communicate using the protocol
+version equal to thatsupplied by the source. Otherwise, it decides
+that its own version of the protocol will be the one to be used [#bf]_
+[#bg]_. In either case, the chosen version is sent back in the
+response, and the source interface will honor that decision and use
+the selected version of the protocol. As a consequence of this,
+protocol handlers must be capable of handling all prior versions of
+the protocol.
 
 Device Class Connection Protocols
 =================================
 
-This section defines a group of protocols whose purpose is to provide a device abstraction for functionality commonly found on mobile handsets. Modules which implement at least one of the protocols defined in this section, and which do not implement any of the protocols defined below in :ref:`bridged-phy-connection-protocols`, are said to be *device class conformant*.
+This section defines a group of protocols whose purpose is to provide
+a device abstraction for functionality commonly found on mobile
+handsets. Modules which implement at least one of the protocols
+defined in this section, and which do not implement any of the
+protocols defined below in :ref:`bridged-phy-connection-protocols`,
+are said to be *device class conformant*.
 
 Vibrator Protocol
 -----------------
 
-This section defines the operations used on a connection implementing the Greybus vibrator protocol.  This protocol allows an AP to manager a vibrator device present on a module.  The protocol is very simple, and maps almost directly to the userspace HAL vibrator interface.
+This section defines the operations used on a connection implementing
+the Greybus vibrator protocol.  This protocol allows an AP to manager
+a vibrator device present on a module.  The protocol is very simple,
+and maps almost directly to the userspace HAL vibrator interface.
 
 The operations in the Greybus vibrator protocol are:
 
@@ -617,7 +873,10 @@ The operations in the Greybus vibrator protocol are:
 Greybus Vibrator Message Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This table describes the Greybus vibrator operation types [#bh]_ [#bi]_ [#bj]_ and their values. A message type consists of an operation type combined with a flag (0x80) indicating whether the operation is a request or a response.
+This table describes the Greybus vibrator operation types [#bh]_
+[#bi]_ [#bj]_ and their values. A message type consists of an
+operation type combined with a flag (0x80) indicating whether the
+operation is a request or a response.
 
 .. list-table::
    :header-rows: 1
@@ -641,17 +900,24 @@ This table describes the Greybus vibrator operation types [#bh]_ [#bi]_ [#bj]_ a
 Greybus Vibrator Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus vibrator protocol version operation allows the AP to determine the version of this protocol to which the vibrator adapter complies.
+The Greybus vibrator protocol version operation allows the AP to
+determine the version of this protocol to which the vibrator adapter
+complies.
 
 Greybus Vibrator Protocol Version Request
 """""""""""""""""""""""""""""""""""""""""
 
-The Greybus vibrator protocol version request contains no data beyond the Greybus vibrator message header.
+The Greybus vibrator protocol version request contains no data beyond
+the Greybus vibrator message header.
 
 Greybus Vibrator Protocol Version Response
 """"""""""""""""""""""""""""""""""""""""""
 
-The Greybus vibrator protcol version response contains a status byte, followed by two 1-byte values. If the value of the status byte is non-zero, any other bytes in the response shall be ignored. A Greybus vibrator adapter adhering to the protocol specified herein shall report major version |gb-major|, minor version |gb-minor|.
+The Greybus vibrator protcol version response contains a status byte,
+followed by two 1-byte values. If the value of the status byte is
+non-zero, any other bytes in the response shall be ignored. A Greybus
+vibrator adapter adhering to the protocol specified herein shall
+report major version |gb-major|, minor version |gb-minor|.
 
 .. list-table::
    :header-rows: 1
@@ -683,12 +949,14 @@ The Greybus vibrator protcol version response contains a status byte, followed b
 Greybus Vibrator On Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus Vibrator on operation allows the AP to request the vibrator be enabled for the specified number of milliseconds.
+The Greybus Vibrator on operation allows the AP to request the
+vibrator be enabled for the specified number of milliseconds.
 
 Greybus Vibrator On Control Request
 """""""""""""""""""""""""""""""""""
 
-The Greybus Vibrator on request supplies the amount of time that the vibrator should now be enabled for.
+The Greybus Vibrator on request supplies the amount of time that the
+vibrator should now be enabled for.
 
 .. list-table::
    :header-rows: 1
@@ -728,12 +996,14 @@ The Greybus Vibrator on control response contains only the status byte.
 Greybus Vibrator Off Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus Vibrator off operation allows the AP to request the vibrator be turned off as soon as possible.
+The Greybus Vibrator off operation allows the AP to request the
+vibrator be turned off as soon as possible.
 
 Greybus Vibrator Off Control Request
 """"""""""""""""""""""""""""""""""""
 
-The Greybus Vibrator off request contains no data beyond the Greybus Vibrator message header.
+The Greybus Vibrator off request contains no data beyond the Greybus
+Vibrator message header.
 
 Greybus Vibrator Off Control Response
 """""""""""""""""""""""""""""""""""""
@@ -758,7 +1028,11 @@ The Greybus Vibrator off control response contains only the status byte.
 Battery Protocol
 ----------------
 
-This section defines the operations used on a connection implementing the Greybus battery protocol. This protocol allows an AP to manage a battery device present on a module. The protocol consists of few basic operations, whose request and response message formats are defined here.
+This section defines the operations used on a connection implementing
+the Greybus battery protocol. This protocol allows an AP to manage a
+battery device present on a module. The protocol consists of few basic
+operations, whose request and response message formats are defined
+here.
 
 Conceptually, the operations in the Greybus battery protocol are:
 
@@ -832,7 +1106,10 @@ Conceptually, the operations in the Greybus battery protocol are:
 Greybus Battery Message Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This table describes the Greybus battery operation types [#bl]_ [#bm]_ [#bn]_ and their values. A message type consists of an operation type combined with a flag (0x80) indicating whether the operation is a request or a response.
+This table describes the Greybus battery operation types [#bl]_ [#bm]_
+[#bn]_ and their values. A message type consists of an operation type
+combined with a flag (0x80) indicating whether the operation is a
+request or a response.
 
 .. list-table::
    :header-rows: 1
@@ -884,17 +1161,24 @@ This table describes the Greybus battery operation types [#bl]_ [#bm]_ [#bn]_ an
 Greybus Battery Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus battery protocol version operation allows the AP to determine the version of this protocol to which the battery adapter complies.
+The Greybus battery protocol version operation allows the AP to
+determine the version of this protocol to which the battery adapter
+complies.
 
 Greybus Battery Protocol Version Request
 """"""""""""""""""""""""""""""""""""""""
 
-The Greybus battery protocol version request contains no data beyond the Greybus battery message header.
+The Greybus battery protocol version request contains no data beyond
+the Greybus battery message header.
 
 Greybus Battery Protocol Version Response
 """""""""""""""""""""""""""""""""""""""""
 
-The Greybus battery protcol version response contains a status byte, followed by two 1-byte values. If the value of the status byte is non-zero, any other bytes in the response shall be ignored. A Greybus battery adapter adhering to the protocol specified herein shall report major version |gb-major|, minor version |gb-minor|.
+The Greybus battery protcol version response contains a status byte,
+followed by two 1-byte values. If the value of the status byte is
+non-zero, any other bytes in the response shall be ignored. A Greybus
+battery adapter adhering to the protocol specified herein shall report
+major version |gb-major|, minor version |gb-minor|.
 
 .. list-table::
    :header-rows: 1
@@ -923,17 +1207,22 @@ The Greybus battery protcol version response contains a status byte, followed by
 Greybus Battery Technology Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus battery technology operation allows the AP to determine the details of the battery technology controller by the battery adapter.
+The Greybus battery technology operation allows the AP to determine
+the details of the battery technology controller by the battery
+adapter.
 
 Greybus Battery Technology Request
 """"""""""""""""""""""""""""""""""
 
-The Greybus battery functionality request contains no data beyond the battery message header.
+The Greybus battery functionality request contains no data beyond the
+battery message header.
 
 Greybus Battery Technology Response
 """""""""""""""""""""""""""""""""""
 
-The Greybus battery functionality response contains the status byte and a 2-byte value that represents the type of battery being controlled.
+The Greybus battery functionality response contains the status byte
+and a 2-byte value that represents the type of battery being
+controlled.
 
 .. list-table::
    :header-rows: 1
@@ -957,7 +1246,9 @@ The Greybus battery functionality response contains the status byte and a 2-byte
 Greybus Battery Technology Types
 """"""""""""""""""""""""""""""""
 
-This table describes the defined battery technologies defined for Greybus battery adapters.  These values are taken directly from the <linux/power_supply.h> header file.
+This table describes the defined battery technologies defined for
+Greybus battery adapters.  These values are taken directly from the
+<linux/power_supply.h> header file.
 
 .. list-table::
    :header-rows: 1
@@ -982,17 +1273,20 @@ This table describes the defined battery technologies defined for Greybus batter
 Greybus Battery Status Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus battery status operation allows the AP to determine the status of the battery by the battery adapter.
+The Greybus battery status operation allows the AP to determine the
+status of the battery by the battery adapter.
 
 Greybus Battery Status Request
 """"""""""""""""""""""""""""""
 
-The Greybus battery status request contains no data beyond the battery message header.
+The Greybus battery status request contains no data beyond the battery
+message header.
 
 Greybus Battery Status Response
 """""""""""""""""""""""""""""""
 
-The Greybus battery status response contains the status byte and a 2-byte value that represents the status of battery being controlled.
+The Greybus battery status response contains the status byte and a
+2-byte value that represents the status of battery being controlled.
 
 .. list-table::
    :header-rows: 1
@@ -1016,7 +1310,9 @@ The Greybus battery status response contains the status byte and a 2-byte value 
 Greybus Battery Status Types
 """"""""""""""""""""""""""""
 
-This table describes the defined battery status values defined for Greybus battery adapters.  These values are taken directly from the <linux/power_supply.h> header file.
+This table describes the defined battery status values defined for
+Greybus battery adapters.  These values are taken directly from the
+<linux/power_supply.h> header file.
 
 .. list-table::
    :header-rows: 1
@@ -1037,17 +1333,21 @@ This table describes the defined battery status values defined for Greybus batte
 Greybus Battery Max Voltage Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus battery Max Voltage operation allows the AP to determine the maximum possible voltage of the battery.
+The Greybus battery Max Voltage operation allows the AP to determine
+the maximum possible voltage of the battery.
 
 Greybus Battery Max Voltage Request
 """""""""""""""""""""""""""""""""""
 
-The Greybus battery max voltage request contains no data beyond the battery message header.
+The Greybus battery max voltage request contains no data beyond the
+battery message header.
 
 Greybus Battery Max Voltage Response
 """"""""""""""""""""""""""""""""""""
 
-The Greybus battery max voltage response contains the status byte and a 4-byte value that represents the maximum voltage of the battery being controlled, in µV.
+The Greybus battery max voltage response contains the status byte and
+a 4-byte value that represents the maximum voltage of the battery
+being controlled, in µV.
 
 .. list-table::
    :header-rows: 1
@@ -1071,17 +1371,21 @@ The Greybus battery max voltage response contains the status byte and a 4-byte v
 Greybus Battery Capacity Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus battery Capacity operation allows the AP to determine the current capacity percent of the battery.
+The Greybus battery Capacity operation allows the AP to determine the
+current capacity percent of the battery.
 
 Greybus Battery Percent Capacity Request
 """"""""""""""""""""""""""""""""""""""""
 
-The Greybus battery capacity request contains no data beyond the battery message header.
+The Greybus battery capacity request contains no data beyond the
+battery message header.
 
 Greybus Battery Percent Capacity Response
 """""""""""""""""""""""""""""""""""""""""
 
-The Greybus battery capacity response contains the status byte and a 4-byte value that represents the capacity of the battery being controlled, in percentage.
+The Greybus battery capacity response contains the status byte and a
+4-byte value that represents the capacity of the battery being
+controlled, in percentage.
 
 .. list-table::
    :header-rows: 1
@@ -1105,17 +1409,21 @@ The Greybus battery capacity response contains the status byte and a 4-byte valu
 Greybus Battery Temperature Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus battery temperature operation allows the AP to determine the current temperature of the battery.
+The Greybus battery temperature operation allows the AP to determine
+the current temperature of the battery.
 
 Greybus Battery Temperature Request
 """""""""""""""""""""""""""""""""""
 
-The Greybus battery temperature request contains no data beyond the battery message header.
+The Greybus battery temperature request contains no data beyond the
+battery message header.
 
 Greybus Battery Temperature Response
 """"""""""""""""""""""""""""""""""""
 
-The Greybus battery temperature response contains the status byte and a 4-byte value that represents the temperature of the battery being controlled, in ⅒℃.
+The Greybus battery temperature response contains the status byte and
+a 4-byte value that represents the temperature of the battery being
+controlled, in ⅒℃.
 
 .. list-table::
    :header-rows: 1
@@ -1139,17 +1447,21 @@ The Greybus battery temperature response contains the status byte and a 4-byte v
 Greybus Battery Voltage Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus battery Voltage operation allows the AP to determine the current voltage of the battery.
+The Greybus battery Voltage operation allows the AP to determine the
+current voltage of the battery.
 
 Greybus Battery Voltage Request
 """""""""""""""""""""""""""""""
 
-The Greybus battery voltage request contains no data beyond the battery message header.
+The Greybus battery voltage request contains no data beyond the
+battery message header.
 
 Greybus Battery Voltage Response
 """"""""""""""""""""""""""""""""
 
-The Greybus battery voltage response contains the status byte and a 4-byte value that represents the voltage of the battery being controlled, in µV.
+The Greybus battery voltage response contains the status byte and a
+4-byte value that represents the voltage of the battery being
+controlled, in µV.
 
 .. list-table::
    :header-rows: 1
@@ -1173,17 +1485,21 @@ The Greybus battery voltage response contains the status byte and a 4-byte value
 Greybus Battery Current Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus battery Current operation allows the AP to determine the current current of the battery.
+The Greybus battery Current operation allows the AP to determine the
+current current of the battery.
 
 Greybus Battery Current Request
 """""""""""""""""""""""""""""""
 
-The Greybus battery current request contains no data beyond the battery message header.
+The Greybus battery current request contains no data beyond the
+battery message header.
 
 Greybus Battery Current Response
 """"""""""""""""""""""""""""""""
 
-The Greybus battery current response contains the status byte and a 4-byte value that represents the current of the battery being controlled, in µA.
+The Greybus battery current response contains the status byte and a
+4-byte value that represents the current of the battery being
+controlled, in µA.
 
 .. list-table::
    :header-rows: 1
@@ -1274,19 +1590,29 @@ TBD
 Bridged PHY Connection Protocols
 ================================
 
-This section defines a group of protocols whose purpose is to support communication with modules on the Greybus network which do not comply with an existing device class protocol, and which include integrated circuits using alternative physical interfaces to UniProSM. Modules which implement any of the protocols defined in this section are said to be *non-device class conformant*.
+This section defines a group of protocols whose purpose is to support
+communication with modules on the Greybus network which do not comply
+with an existing device class protocol, and which include integrated
+circuits using alternative physical interfaces to UniProSM. Modules
+which implement any of the protocols defined in this section are said
+to be *non-device class conformant*.
 
 USB Protocol
 ------------
 
-We will support bulk, control, and interrupt transfers, but not isochronous at this point in time.
+We will support bulk, control, and interrupt transfers, but not
+isochronous at this point in time.
 
 Details TBD.
 
 GPIO Protocol
 -------------
 
-A connection using GPIO protocol on a UniPro network is used to manage a simple GPIO controller. Such a GPIO controller implements one or more (up to 256) GPIO lines, and each of the operations below specifies the line to which the operation applies. This protocol consists of the operations defined in this section.
+A connection using GPIO protocol on a UniPro network is used to manage
+a simple GPIO controller. Such a GPIO controller implements one or
+more (up to 256) GPIO lines, and each of the operations below
+specifies the line to which the operation applies. This protocol
+consists of the operations defined in this section.
 
 Conceptually, the GPIO protocol operations are:
 
@@ -1385,9 +1711,16 @@ Conceptually, the GPIO protocol operations are:
 Greybus GPIO Protocol Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-All operations sent to a GPIO controller are contained within a Greybus GPIO request message. Every  operation request will result in a matching response [#bp]_ [#bq]_ [#br]_ [#bs]_ from the GPIO controller, also taking the form of a GPIO controller message.  The request and response messages for each GPIO operation are defined below.
+All operations sent to a GPIO controller are contained within a
+Greybus GPIO request message. Every operation request will result in a
+matching response [#bp]_ [#bq]_ [#br]_ [#bs]_ from the GPIO
+controller, also taking the form of a GPIO controller message.  The
+request and response messages for each GPIO operation are defined
+below.
 
-The following table describes the Greybus GPIO protocol operation types and their values. Both the request type and response type values are shown.
+The following table describes the Greybus GPIO protocol operation
+types and their values. Both the request type and response type values
+are shown.
 
 .. list-table::
    :header-rows: 1
@@ -1435,17 +1768,23 @@ The following table describes the Greybus GPIO protocol operation types and thei
 Greybus GPIO Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus GPIO version operation allows the AP to determine the version of this protocol to which the GPIO controller complies.
+The Greybus GPIO version operation allows the AP to determine the
+version of this protocol to which the GPIO controller complies.
 
 Greybus GPIO Protocol Version Request
 """""""""""""""""""""""""""""""""""""
 
-The Greybus GPIO protocol version request contains no data beyond the Greybus GPIO message header.
+The Greybus GPIO protocol version request contains no data beyond the
+Greybus GPIO message header.
 
 Greybus GPIO Protocol Version Response
 """"""""""""""""""""""""""""""""""""""
 
-The Greybus GPIO protocol version response contains a status byte, followed by two 1-byte values. If the value of the status byte is non-zero, any other bytes in the response shall be ignored. A Greybus GPIO controller adhering to the protocol specified herein shall report major version 0, minor version 1.
+The Greybus GPIO protocol version response contains a status byte,
+followed by two 1-byte values. If the value of the status byte is
+non-zero, any other bytes in the response shall be ignored. A Greybus
+GPIO controller adhering to the protocol specified herein shall report
+major version 0, minor version 1.
 
 .. list-table::
    :header-rows: 1
@@ -1474,17 +1813,24 @@ The Greybus GPIO protocol version response contains a status byte, followed by t
 Greybus GPIO Line Count Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus GPIO line count operation allows the AP to determine how many GPIO lines are implemented by the GPIO controller.
+The Greybus GPIO line count operation allows the AP to determine how
+many GPIO lines are implemented by the GPIO controller.
 
 Greybus GPIO Line Count Request
 """""""""""""""""""""""""""""""
 
-The Greybus GPIO line count request contains no data beyond the Greybus GPIO message header.
+The Greybus GPIO line count request contains no data beyond the
+Greybus GPIO message header.
 
 Greybus GPIO Line Count Response
 """"""""""""""""""""""""""""""""
 
-The Greybus GPIO line count response contains a status byte, followed by a 1-byte value defining the number of lines managed by the controller, minus 1. That is, a count value of 0 represents a single GPIO line, while a (maximal) count value of 255 represents 256 lines. The lines are numbered sequentially starting with 0 (i.e., no gaps in the numbering).
+The Greybus GPIO line count response contains a status byte, followed
+by a 1-byte value defining the number of lines managed by the
+controller, minus 1. That is, a count value of 0 represents a single
+GPIO line, while a (maximal) count value of 255 represents 256
+lines. The lines are numbered sequentially starting with 0 (i.e., no
+gaps in the numbering).
 
 .. list-table::
    :header-rows: 1
@@ -1508,12 +1854,16 @@ The Greybus GPIO line count response contains a status byte, followed by a 1-byt
 Greybus GPIO Activate Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus GPIO activate operation notifies the GPIO controller that one of its GPIO lines has been allocated for use. This provides a chance to do initial setup for the line, such as enabling power and clock signals.
+The Greybus GPIO activate operation notifies the GPIO controller that
+one of its GPIO lines has been allocated for use. This provides a
+chance to do initial setup for the line, such as enabling power and
+clock signals.
 
 Greybus GPIO Activate Request
 """""""""""""""""""""""""""""
 
-The Greybus GPIO activate request supplies only the number of the line to be activated.
+The Greybus GPIO activate request supplies only the number of the line
+to be activated.
 
 .. list-table::
    :header-rows: 1
@@ -1551,12 +1901,15 @@ The Greybus GPIO activate response contains only the status byte.
 Greybus GPIO Deactivate Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus GPIO deactivate operation notifies the GPIO controller that a previously-activated line is no longer in use and can be deactivated.
+The Greybus GPIO deactivate operation notifies the GPIO controller
+that a previously-activated line is no longer in use and can be
+deactivated.
 
 Greybus GPIO Deactivate Request
 """""""""""""""""""""""""""""""
 
-The Greybus GPIO deactivate request supplies only the number of the line to be deactivated.
+The Greybus GPIO deactivate request supplies only the number of the
+line to be deactivated.
 
 .. list-table::
    :header-rows: 1
@@ -1594,7 +1947,9 @@ The Greybus GPIO deactivate response contains only the status byte.
 Greybus GPIO Get Direction Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus GPIO get direction operation requests the GPIO controller respond with the direction of transfer (in or out) for which a line is configured.
+The Greybus GPIO get direction operation requests the GPIO controller
+respond with the direction of transfer (in or out) for which a line is
+configured.
 
 Greybus GPIO Get Direction Request
 """"""""""""""""""""""""""""""""""
@@ -1618,7 +1973,10 @@ The Greybus GPIO get direction request supplies only the target line number.
 Greybus Get Direction Response
 """"""""""""""""""""""""""""""
 
-The Greybus GPIO get direction response contains the status byte and one byte indicating whether the line in question is configured for input or output. If the value of the status byte is non-zero, the direction byte shall be ignored.
+The Greybus GPIO get direction response contains the status byte and
+one byte indicating whether the line in question is configured for
+input or output. If the value of the status byte is non-zero, the
+direction byte shall be ignored.
 
 .. list-table::
    :header-rows: 1
@@ -1642,12 +2000,14 @@ The Greybus GPIO get direction response contains the status byte and one byte in
 Greybus GPIO Direction Input Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus GPIO direction input operation requests the GPIO controller to configure a line to be used for input.
+The Greybus GPIO direction input operation requests the GPIO
+controller to configure a line to be used for input.
 
 Greybus GPIO Direction Input Request
 """"""""""""""""""""""""""""""""""""
 
-The Greybus GPIO direction input request supplies only the number of the line.
+The Greybus GPIO direction input request supplies only the number of
+the line.
 
 .. list-table::
    :header-rows: 1
@@ -1666,7 +2026,8 @@ The Greybus GPIO direction input request supplies only the number of the line.
 Greybus Direction Input Response
 """"""""""""""""""""""""""""""""
 
-The Greybus GPIO direction input response contains only the status byte.
+The Greybus GPIO direction input response contains only the status
+byte.
 
 .. list-table::
    :header-rows: 1
@@ -1685,12 +2046,15 @@ The Greybus GPIO direction input response contains only the status byte.
 Greybus GPIO Direction Output Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus GPIO direction output operation requests the GPIO controller to configure a line to be used for output, and specifies its initial value.
+The Greybus GPIO direction output operation requests the GPIO
+controller to configure a line to be used for output, and specifies
+its initial value.
 
 Greybus GPIO Direction Output Request
 """""""""""""""""""""""""""""""""""""
 
-The Greybus GPIO direction output request supplies the number of the line and its initial value.
+The Greybus GPIO direction output request supplies the number of the
+line and its initial value.
 
 .. list-table::
    :header-rows: 1
@@ -1714,7 +2078,8 @@ The Greybus GPIO direction output request supplies the number of the line and it
 Greybus Direction Output Response
 """""""""""""""""""""""""""""""""
 
-The Greybus GPIO direction output response contains only the status byte.
+The Greybus GPIO direction output response contains only the status
+byte.
 
 .. list-table::
    :header-rows: 1
@@ -1733,7 +2098,8 @@ The Greybus GPIO direction output response contains only the status byte.
 Greybus GPIO Get Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus GPIO get operation requests the GPIO controller respond with the current value (high or low) on a line.
+The Greybus GPIO get operation requests the GPIO controller respond
+with the current value (high or low) on a line.
 
 Greybus GPIO Get Request
 """"""""""""""""""""""""
@@ -1757,7 +2123,9 @@ The Greybus GPIO get request supplies only the target line number.
 Greybus Get Response
 """"""""""""""""""""
 
-The Greybus GPIO get response contains the status byte, plus one byte indicating the value on the line in question.  If the value of the status byte is non-zero, the value byte shall be ignored.
+The Greybus GPIO get response contains the status byte, plus one byte
+indicating the value on the line in question.  If the value of the
+status byte is non-zero, the value byte shall be ignored.
 
 .. list-table::
    :header-rows: 1
@@ -1781,12 +2149,15 @@ The Greybus GPIO get response contains the status byte, plus one byte indicating
 Greybus GPIO Set Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus GPIO set operation requests the GPIO controller to set a line configured to be used for output to have either a low or high value.
+The Greybus GPIO set operation requests the GPIO controller to set a
+line configured to be used for output to have either a low or high
+value.
 
 Greybus GPIO Set Request
 """"""""""""""""""""""""
 
-The Greybus GPIO set request [#bt]_ [#bu]_ supplies the number of the line and the value to be set.
+The Greybus GPIO set request [#bt]_ [#bu]_ supplies the number of the
+line and the value to be set.
 
 .. list-table::
    :header-rows: 1
@@ -1829,12 +2200,15 @@ The Greybus GPIO set response contains only the status byte.
 Greybus GPIO Set Debounce Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus GPIO set debounce operation requests the GPIO controller to set the debounce delay configured to be used for a line.
+The Greybus GPIO set debounce operation requests the GPIO controller
+to set the debounce delay configured to be used for a line.
 
 Greybus GPIO Set Debounce Request
 """""""""""""""""""""""""""""""""
 
-The Greybus GPIO set debounce request supplies the number of the line and the time period (in microseconds) to be used for the line.  If the period specified is 0, debounce is disabled.
+The Greybus GPIO set debounce request supplies the number of the line
+and the time period (in microseconds) to be used for the line.  If the
+period specified is 0, debounce is disabled.
 
 .. list-table::
    :header-rows: 1
@@ -1882,7 +2256,10 @@ TBD.
 UART Protocol
 -------------
 
-A connection using the UART protocol on a UniPro network is used to manage a simple UART controller.  This protocol is very close to the CDC protocol for serial modems from the USB-IF specification, and consists of the operations defined in this section.
+A connection using the UART protocol on a UniPro network is used to
+manage a simple UART controller.  This protocol is very close to the
+CDC protocol for serial modems from the USB-IF specification, and
+consists of the operations defined in this section.
 
 The operations that can be performed on a Greybus UART controller are:
 
@@ -1950,12 +2327,17 @@ The operations that can be performed on a Greybus UART controller are:
 UART Protocol Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-This section defines the operations for a connection using the UART protocol.  UART protocol allows an AP to control a UART device contained within a Greybus module.
+This section defines the operations for a connection using the UART
+protocol.  UART protocol allows an AP to control a UART device
+contained within a Greybus module.
 
 Greybus UART Message Types
 """"""""""""""""""""""""""
 
-This table describes the known Greybus UART operation types and their values. A message type consists of an operation type combined with a flag (0x80) indicating whether the operation is a request or a response.  There are 127 valid operation type values.
+This table describes the known Greybus UART operation types and their
+values. A message type consists of an operation type combined with a
+flag (0x80) indicating whether the operation is a request or a
+response.  There are 127 valid operation type values.
 
 .. list-table::
    :header-rows: 1
@@ -1994,17 +2376,23 @@ This table describes the known Greybus UART operation types and their values. A 
 Greybus UART Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus UART protocol version operation allows the AP to determine the version of this protocol to which the UART device complies.
+The Greybus UART protocol version operation allows the AP to determine
+the version of this protocol to which the UART device complies.
 
 Greybus UART Protocol Version Request
 """""""""""""""""""""""""""""""""""""
 
-The Greybus UART protocol version request contains no data beyond the Greybus UART message header.
+The Greybus UART protocol version request contains no data beyond the
+Greybus UART message header.
 
 Greybus UART Protocol Version Response
 """"""""""""""""""""""""""""""""""""""
 
-The Greybus UART protocol version response contains a status byte, followed by two 1-byte values. If the value of the status byte is non-zero, any other bytes in the response shall be ignored. A Greybus UART device adhering to the protocol specified herein shall report major version |gb-major|, minor version |gb-minor|.
+The Greybus UART protocol version response contains a status byte,
+followed by two 1-byte values. If the value of the status byte is
+non-zero, any other bytes in the response shall be ignored. A Greybus
+UART device adhering to the protocol specified herein shall report
+major version |gb-major|, minor version |gb-minor|.
 
 .. list-table::
    :header-rows: 1
@@ -2033,12 +2421,17 @@ The Greybus UART protocol version response contains a status byte, followed by t
 Greybus UART Send Data Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus UART start transmission operation allows the AP to request the UART device begin transmission of characters.  One or more characters to be transmitted may optionally be provided with this request.
+The Greybus UART start transmission operation allows the AP to request
+the UART device begin transmission of characters.  One or more
+characters to be transmitted may optionally be provided with this
+request.
 
 Greybus UART Send Data Request
 """"""""""""""""""""""""""""""
 
-The Greybus UART start transmission request shall request the UART device begin transmitting.  The request optionally contains one or more characters to to be transmitted.
+The Greybus UART start transmission request shall request the UART
+device begin transmitting.  The request optionally contains one or
+more characters to to be transmitted.
 
 .. list-table::
    :header-rows: 1
@@ -2062,7 +2455,8 @@ The Greybus UART start transmission request shall request the UART device begin 
 Greybus UART Send Data Response
 """""""""""""""""""""""""""""""
 
-The Greybus UART start transmission response contains only the status byte.
+The Greybus UART start transmission response contains only the status
+byte.
 
 .. list-table::
    :header-rows: 1
@@ -2081,12 +2475,15 @@ The Greybus UART start transmission response contains only the status byte.
 Greybus UART Receive Data Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Unlike most other Greybus UART operations, the Greybus UART event operation is initiated by the UART device and received by the AP. It notifies the AP that a data has been received by the UART.
+Unlike most other Greybus UART operations, the Greybus UART event
+operation is initiated by the UART device and received by the AP. It
+notifies the AP that a data has been received by the UART.
 
 Greybus UART Receive Data Request
 """""""""""""""""""""""""""""""""
 
-The Greybus UART receive data request contains the size of the data to be received, and the data bytes to be received.
+The Greybus UART receive data request contains the size of the data to
+be received, and the data bytes to be received.
 
 .. list-table::
    :header-rows: 1
@@ -2110,7 +2507,8 @@ The Greybus UART receive data request contains the size of the data to be receiv
 Greybus UART Received Data Response
 """""""""""""""""""""""""""""""""""
 
-The Greybus UART event response is sent by the AP to the UART device, and contains only the status byte.
+The Greybus UART event response is sent by the AP to the UART device,
+and contains only the status byte.
 
 .. list-table::
    :header-rows: 1
@@ -2129,12 +2527,14 @@ The Greybus UART event response is sent by the AP to the UART device, and contai
 Greybus UART Set Line Coding Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus UART set line coding operation allows the AP to request the UART to be set up to a specific set of line coding values.
+The Greybus UART set line coding operation allows the AP to request
+the UART to be set up to a specific set of line coding values.
 
 Greybus UART Set Line Coding State Request
 """"""""""""""""""""""""""""""""""""""""""
 
-The Greybus UART set line coding state request contains the specific line coding values to be set.
+The Greybus UART set line coding state request contains the specific
+line coding values to be set.
 
 .. list-table::
    :header-rows: 1
@@ -2200,7 +2600,8 @@ The Greybus UART set line coding state request contains the specific line coding
 Greybus UART Set Line Coding State Response
 """""""""""""""""""""""""""""""""""""""""""
 
-The Greybus UART set line coding state response contains only a status byte.
+The Greybus UART set line coding state response contains only a status
+byte.
 
 .. list-table::
    :header-rows: 1
@@ -2219,12 +2620,14 @@ The Greybus UART set line coding state response contains only a status byte.
 Greybus UART Set Control Line State Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus UART set control line state allows the AP to request the UART device set “outbound” UART status values.
+The Greybus UART set control line state allows the AP to request the
+UART device set “outbound” UART status values.
 
 Greybus UART Set Control Line State Request
 """""""""""""""""""""""""""""""""""""""""""
 
-The Greybus UART set modem status request contains no data beyond the Greybus UART message header.
+The Greybus UART set modem status request contains no data beyond the
+Greybus UART message header.
 
 .. list-table::
    :header-rows: 1
@@ -2240,7 +2643,9 @@ The Greybus UART set modem status request contains no data beyond the Greybus UA
      -
      - Modem status flag values (see below)
 
-This table describes the values supplied as flag values for the Greybus UART set modem request. Any combination of these values may be supplied in a single request.
+This table describes the values supplied as flag values for the
+Greybus UART set modem request. Any combination of these values may be
+supplied in a single request.
 
 .. list-table::
    :header-rows: 1
@@ -2261,7 +2666,8 @@ This table describes the values supplied as flag values for the Greybus UART set
 Greybus UART Set Control Line State Response
 """"""""""""""""""""""""""""""""""""""""""""
 
-The Greybus UART set control line state response contains only a status byte.
+The Greybus UART set control line state response contains only a
+status byte.
 
 .. list-table::
    :header-rows: 1
@@ -2280,12 +2686,16 @@ The Greybus UART set control line state response contains only a status byte.
 Greybus UART Send Break Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus UART send break operation allows the AP to request the UART device set the break condition on its transmit line to be either on or off.
+The Greybus UART send break operation allows the AP to request the
+UART device set the break condition on its transmit line to be either
+on or off.
 
 Greybus UART Break Control Request
 """"""""""""""""""""""""""""""""""
 
-The Greybus UART break control request supplies the duration of the break condition that should be generated by the UART device transmit line.
+The Greybus UART break control request supplies the duration of the
+break condition that should be generated by the UART device transmit
+line.
 
 .. list-table::
    :header-rows: 1
@@ -2323,12 +2733,16 @@ The Greybus UART break control response contains only the status byte.
 Greybus UART Serial State Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Unlike most other Greybus UART operations, the Greybus UART serial state operation is initiated by the UART device and received by the AP. It notifies the AP that a control line status has changed, or that there is an error with the UART.
+Unlike most other Greybus UART operations, the Greybus UART serial
+state operation is initiated by the UART device and received by the
+AP. It notifies the AP that a control line status has changed, or that
+there is an error with the UART.
 
 Greybus UART Serial State Request
 """""""""""""""""""""""""""""""""
 
-The Greybus UART serial state request contains the control value that the UART is currently in.
+The Greybus UART serial state request contains the control value that
+the UART is currently in.
 
 .. list-table::
    :header-rows: 1
@@ -2351,7 +2765,8 @@ The Greybus UART serial state request contains the control value that the UART i
 
 **Greybus UART Control Flags**
 
-The following table defines the flag values used for a Greybus UART Serial State request.
+The following table defines the flag values used for a Greybus UART
+Serial State request.
 
 .. list-table::
    :header-rows: 1
@@ -2387,7 +2802,8 @@ The following table defines the flag values used for a Greybus UART Serial State
 Greybus UART Serial State Response
 """"""""""""""""""""""""""""""""""
 
-The Greybus UART serial state response is sent by the AP to the UART device, and contains only the status byte.
+The Greybus UART serial state response is sent by the AP to the UART
+device, and contains only the status byte.
 
 .. list-table::
    :header-rows: 1
@@ -2406,7 +2822,11 @@ The Greybus UART serial state response is sent by the AP to the UART device, and
 PWM Protocol
 ------------
 
-A connection using PWM protocol on a UniPro network is used to manage a simple PWM controller. Such a PWM controller implements one or more (up to 256) PWM devices, and each of the operations below specifies the line to which the operation applies. This protocol consists of the operations defined in this section.
+A connection using PWM protocol on a UniPro network is used to manage
+a simple PWM controller. Such a PWM controller implements one or more
+(up to 256) PWM devices, and each of the operations below specifies
+the line to which the operation applies. This protocol consists of the
+operations defined in this section.
 
 Conceptually, the PWM protocol operations are:
 
@@ -2488,9 +2908,15 @@ Conceptually, the PWM protocol operations are:
 Greybus PWM Protocol Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-All operations sent to a PWM controller are contained within a Greybus PWM request message. Every operation request will result in a response from the PWM controller, also taking the form of a PWM controller message.  The request and response messages for each PWM operation are defined below.
+All operations sent to a PWM controller are contained within a Greybus
+PWM request message. Every operation request will result in a response
+from the PWM controller, also taking the form of a PWM controller
+message.  The request and response messages for each PWM operation are
+defined below.
 
-The following table describes the Greybus PWM  protocol operation types and their values. Both the request type and response type values are shown.
+The following table describes the Greybus PWM protocol operation types
+and their values. Both the request type and response type values are
+shown.
 
 .. list-table::
    :header-rows: 1
@@ -2532,17 +2958,23 @@ The following table describes the Greybus PWM  protocol operation types and thei
 Greybus PWM Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus PWM version operation allows the AP to determine the version of this protocol to which the PWM controller complies.
+The Greybus PWM version operation allows the AP to determine the
+version of this protocol to which the PWM controller complies.
 
 Greybus PWM Protocol Version Request
 """"""""""""""""""""""""""""""""""""
 
-The Greybus PWM protocol version request contains no data beyond the Greybus PWM message header.
+The Greybus PWM protocol version request contains no data beyond the
+Greybus PWM message header.
 
 Greybus PWM Protocol Version Response
 """""""""""""""""""""""""""""""""""""
 
-The Greybus PWM protocol version response contains a status byte, followed by two 1-byte values. If the value of the status byte is non-zero, any other bytes in the response shall be ignored. A Greybus PWM controller adhering to the protocol specified herein shall report major version 0, minor version 1.
+The Greybus PWM protocol version response contains a status byte,
+followed by two 1-byte values. If the value of the status byte is
+non-zero, any other bytes in the response shall be ignored. A Greybus
+PWM controller adhering to the protocol specified herein shall report
+major version 0, minor version 1.
 
 .. list-table::
    :header-rows: 1
@@ -2571,17 +3003,24 @@ The Greybus PWM protocol version response contains a status byte, followed by tw
 Greybus PWM Count Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus PWM count operation allows the AP to determine how many PWM instances are implemented by the PWM controller.
+The Greybus PWM count operation allows the AP to determine how many
+PWM instances are implemented by the PWM controller.
 
 Greybus PWM Count Request
 """""""""""""""""""""""""
 
-The Greybus PWM count request contains no data beyond the Greybus PWM message header.
+The Greybus PWM count request contains no data beyond the Greybus PWM
+message header.
 
 Greybus PWM Count Response
 """"""""""""""""""""""""""
 
-The Greybus PWM count response contains a status byte, followed by a 1-byte value defining the number of PWM instances managed by the controller, minus 1. That is, a count value of 0 represents a single PWM instance, while a (maximal) count value of 255 represents 256 instances. The lines are numbered sequentially starting with 0 (i.e., no gaps in the numbering).
+The Greybus PWM count response contains a status byte, followed by a
+1-byte value defining the number of PWM instances managed by the
+controller, minus 1. That is, a count value of 0 represents a single
+PWM instance, while a (maximal) count value of 255 represents 256
+instances. The lines are numbered sequentially starting with 0 (i.e.,
+no gaps in the numbering).
 
 .. list-table::
    :header-rows: 1
@@ -2605,12 +3044,16 @@ The Greybus PWM count response contains a status byte, followed by a 1-byte valu
 Greybus PWM Activate Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus PWM activate operation notifies the PWM controller that one of its PWM instances has been allocated for use. This provides a chance to do initial setup for the PWM instance, such as enabling power and clock signals.
+The Greybus PWM activate operation notifies the PWM controller that
+one of its PWM instances has been allocated for use. This provides a
+chance to do initial setup for the PWM instance, such as enabling
+power and clock signals.
 
 Greybus PWM Activate Request
 """"""""""""""""""""""""""""
 
-The Greybus PWM activate request supplies only the number of the instance to be activated.
+The Greybus PWM activate request supplies only the number of the
+instance to be activated.
 
 .. list-table::
    :header-rows: 1
@@ -2648,12 +3091,15 @@ The Greybus PWM activate response contains only the status byte.
 Greybuf PWM Deactivate Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus PWM instance deactivate operation notifies the PWM controller that a previously-activated instance is no longer in use and can be deactivated.
+The Greybus PWM instance deactivate operation notifies the PWM
+controller that a previously-activated instance is no longer in use
+and can be deactivated.
 
 Greybus PWM Deactivate Request
 """"""""""""""""""""""""""""""
 
-The Greybus PWM deactivate request supplies only the number of the instance to be deactivated.
+The Greybus PWM deactivate request supplies only the number of the
+instance to be deactivated.
 
 .. list-table::
    :header-rows: 1
@@ -2691,12 +3137,14 @@ The Greybus PWM deactivate response contains only the status byte.
 Greybus PWM Config Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus PWM config operation requests the PWM controller configure a PWM instance with the given duty cycle and period.
+The Greybus PWM config operation requests the PWM controller configure
+a PWM instance with the given duty cycle and period.
 
 Greybus PWM Config Request
 """"""""""""""""""""""""""
 
-The Greybus PWM Config request supplies the target instance number, duty cycle, and period of the cycle.
+The Greybus PWM Config request supplies the target instance number,
+duty cycle, and period of the cycle.
 
 .. list-table::
    :header-rows: 1
@@ -2744,12 +3192,15 @@ The Greybus PWM Config response contains only the status byte.
 Greybus PWM Polarity Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus PWM polarity operation requests the PWM controller configure a PWM instance with the given polarity.
+The Greybus PWM polarity operation requests the PWM controller
+configure a PWM instance with the given polarity.
 
 Greybus PWM Polarity Request
 """"""""""""""""""""""""""""
 
-The Greybus PWM Polarity request supplies the target instance number and polarity (normal or inversed). The polarity may not be configured when a PWM instance is enabled and will respond with a busy failure.
+The Greybus PWM Polarity request supplies the target instance number
+and polarity (normal or inversed). The polarity may not be configured
+when a PWM instance is enabled and will respond with a busy failure.
 
 .. list-table::
    :header-rows: 1
@@ -2792,12 +3243,14 @@ The Greybus PWM Config response contains only the status byte.
 Greybus PWM Enable Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus PWM enable operation enables a PWM instance to begin toggling.
+The Greybus PWM enable operation enables a PWM instance to begin
+toggling.
 
 Greybus PWM Enable Request
 """"""""""""""""""""""""""
 
-The Greybus PWM enable request supplies only the number of the instance to be enabled.
+The Greybus PWM enable request supplies only the number of the
+instance to be enabled.
 
 .. list-table::
    :header-rows: 1
@@ -2835,12 +3288,14 @@ The Greybus PWM enable response contains only the status byte.
 Greybus PWM Disable Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus PWM disable operation stops a PWM instance that has previously been enabled.
+The Greybus PWM disable operation stops a PWM instance that has
+previously been enabled.
 
 Greybus PWM Disable Request
 """""""""""""""""""""""""""
 
-The Greybus PWM disable request supplies only the number of the instance to be disabled.
+The Greybus PWM disable request supplies only the number of the
+instance to be disabled.
 
 .. list-table::
    :header-rows: 1
@@ -2883,7 +3338,11 @@ TBD.
 I2C Protocol
 ------------
 
-This section defines the operations used on a connection implementing the Greybus I2C protocol. This protocol allows an AP to manage an I2C device present on a module. The protocol consists of five basic operations, whose request and response message formats are defined here.
+This section defines the operations used on a connection implementing
+the Greybus I2C protocol. This protocol allows an AP to manage an I2C
+device present on a module. The protocol consists of five basic
+operations, whose request and response message formats are defined
+here.
 
 Conceptually, the five operations in the Greybus I2C protocol are:
 
@@ -2932,12 +3391,19 @@ Conceptually, the five operations in the Greybus I2C protocol are:
    Performs an i2c transaction made up of one or more “steps” defined
    in the supplied i2c op array.
 
-A transfer is made up of an array of “I2C ops”, each of which specifies an I2C slave address, flags controlling message behavior, and a length of data to be transferred. For write requests, the data is sent following the array of messages; for read requests, the data is returned in a response message from the I2C adapter.
+A transfer is made up of an array of “I2C ops”, each of which
+specifies an I2C slave address, flags controlling message behavior,
+and a length of data to be transferred. For write requests, the data
+is sent following the array of messages; for read requests, the data
+is returned in a response message from the I2C adapter.
 
 Greybus I2C Message Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This table describes the Greybus I2C operation types and their values. A message type consists of an operation type combined with a flag (0x80) indicating whether the operation is a request or a response.
+This table describes the Greybus I2C operation types and their
+values. A message type consists of an operation type combined with a
+flag (0x80) indicating whether the operation is a request or a
+response.
 
 .. list-table::
    :header-rows: 1
@@ -2970,17 +3436,23 @@ This table describes the Greybus I2C operation types and their values. A message
 Greybus I2C Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus I2C protocol version operation allows the AP to determine the version of this protocol to which the I2C adapter complies.
+The Greybus I2C protocol version operation allows the AP to determine
+the version of this protocol to which the I2C adapter complies.
 
 Greybus I2C Protocol Version Request
 """"""""""""""""""""""""""""""""""""
 
-The Greybus I2C protocol version request contains no data beyond the Greybus I2C message header.
+The Greybus I2C protocol version request contains no data beyond the
+Greybus I2C message header.
 
 Greybus I2C Protocol Version Response
 """""""""""""""""""""""""""""""""""""
 
-The Greybus I2C protcol version response contains a status byte, followed by two 1-byte values. If the value of the status byte is non-zero, any other bytes in the response shall be ignored. A Greybus I2C adapter adhering to the protocol specified herein shall report major version 0, minor version 1.
+The Greybus I2C protcol version response contains a status byte,
+followed by two 1-byte values. If the value of the status byte is
+non-zero, any other bytes in the response shall be ignored. A Greybus
+I2C adapter adhering to the protocol specified herein shall report
+major version 0, minor version 1.
 
 .. list-table::
    :header-rows: 1
@@ -3009,17 +3481,21 @@ The Greybus I2C protcol version response contains a status byte, followed by two
 Greybus I2C Functionality Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus I2C functionality operation allows the AP to determine the details of the functionality provided by the I2C adapter.
+The Greybus I2C functionality operation allows the AP to determine the
+details of the functionality provided by the I2C adapter.
 
 Greybus I2C Functionality Request
 """""""""""""""""""""""""""""""""
 
-The Greybus I2C functionality request contains no data beyond the I2C message header.
+The Greybus I2C functionality request contains no data beyond the I2C
+message header.
 
 Greybus I2C Functionality Response
 """"""""""""""""""""""""""""""""""
 
-The Greybus I2C functionality response contains the status byte and a 4-byte value whose bits represent support or presence of certain functionality in the I2C adapter.
+The Greybus I2C functionality response contains the status byte and a
+4-byte value whose bits represent support or presence of certain
+functionality in the I2C adapter.
 
 .. list-table::
    :header-rows: 1
@@ -3042,7 +3518,10 @@ The Greybus I2C functionality response contains the status byte and a 4-byte val
 
 **Greybus I2C Functionality Bits**
 
-This table describes the defined functionality bit values defined for Greybus I2C adapters. These include a set of bits describing SMBus capabilities.  These values are taken directly from the <linux/i2c.h> header file.
+This table describes the defined functionality bit values defined for
+Greybus I2C adapters. These include a set of bits describing SMBus
+capabilities.  These values are taken directly from the <linux/i2c.h>
+header file.
 
 .. list-table::
    :header-rows: 1
@@ -3114,12 +3593,16 @@ This table describes the defined functionality bit values defined for Greybus I2
 Greybus I2C Set Timeout Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus I2C set timeout operation allows the AP to set the timeout value to be used by the I2C adapter for non-responsive slave devices.
+The Greybus I2C set timeout operation allows the AP to set the timeout
+value to be used by the I2C adapter for non-responsive slave devices.
 
 Greybus I2C Set Timeout Request
 """""""""""""""""""""""""""""""
 
-The Greybus I2C set timeout request contains a 16-bit value representing the timeout to be used by an I2C adapter, expressed in milliseconds. If the value supplied is 0, an I2C adapter-defined shall be used.
+The Greybus I2C set timeout request contains a 16-bit value
+representing the timeout to be used by an I2C adapter, expressed in
+milliseconds. If the value supplied is 0, an I2C adapter-defined shall
+be used.
 
 .. list-table::
    :header-rows: 1
@@ -3157,12 +3640,14 @@ The Greybus I2C set timeout response contains only the status byte.
 Greybus I2C Set Retries Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus I2C set retries operation allows the AP to set the number of times the I2C adapter retries I2C messages.
+The Greybus I2C set retries operation allows the AP to set the number
+of times the I2C adapter retries I2C messages.
 
 Greybus I2C Set Retries Request
 """""""""""""""""""""""""""""""
 
-The Greybus I2C set timeout request contains an 8-bit value representing the number of retries to be used by an I2C adapter.
+The Greybus I2C set timeout request contains an 8-bit value
+representing the number of retries to be used by an I2C adapter.
 
 .. list-table::
    :header-rows: 1
@@ -3200,12 +3685,22 @@ The Greybus I2C set retries response contains only the status byte.
 Greybus I2C Transfer Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus I2C transfer operation allows the AP to request the I2C adapter perform an I2C transaction. The operation consists of a set of one or more “i2c ops” to be performed by the I2C adapter. The transfer operation request will include data for each I2C op involving a write operation.  The data will be concatenated (without padding) and will be be sent immediately after the set of I2C op descriptors. The transfer operation response will include data for each I2C op involving a read operation, with all read data transferred contiguously.
+The Greybus I2C transfer operation allows the AP to request the I2C
+adapter perform an I2C transaction. The operation consists of a set of
+one or more “i2c ops” to be performed by the I2C adapter. The transfer
+operation request will include data for each I2C op involving a write
+operation.  The data will be concatenated (without padding) and will
+be be sent immediately after the set of I2C op descriptors. The
+transfer operation response will include data for each I2C op
+involving a read operation, with all read data transferred
+contiguously.
 
 Greybus I2C Transfer Request
 """"""""""""""""""""""""""""
 
-The Greybus I2C transfer request contains a message count, an array of message descriptors, and a block of 0 or more bytes of data to be written.
+The Greybus I2C transfer request contains a message count, an array of
+message descriptors, and a block of 0 or more bytes of data to be
+written.
 
 **Greybus I2C Op**
 
@@ -3237,7 +3732,8 @@ A Greybus I2C op describes a segment of an I2C transaction.
 
 **Greybus I2C Op Flag Bits**
 
-This table describes the defined flag bit values defined for Greybus I2C ops. They are taken directly from the <linux/i2c.h> header file.
+This table describes the defined flag bit values defined for Greybus
+I2C ops. They are taken directly from the <linux/i2c.h> header file.
 
 .. list-table::
    :header-rows: 1
@@ -3316,12 +3812,17 @@ Here is the structure of a Greybus I2C transfer request.
      -
      - Data for last write op in the transfer
 
-Any data to be written will follow the last op descriptor.  Data for the first write op in the array will immediately follow the last op in the array, and no padding shall be inserted between data sent for distinct I2C ops.
+Any data to be written will follow the last op descriptor.  Data for
+the first write op in the array will immediately follow the last op in
+the array, and no padding shall be inserted between data sent for
+distinct I2C ops.
 
 Greybus I2C Transfer Response
 """""""""""""""""""""""""""""
 
-The Greybus I2C transfer response contains a status byte followed by the data read as a result of messages.  If the value of the status byte is non-zero, the data that follows (if any) shall be ignored.
+The Greybus I2C transfer response contains a status byte followed by
+the data read as a result of messages.  If the value of the status
+byte is non-zero, the data that follows (if any) shall be ignored.
 
 .. list-table::
    :header-rows: 1
@@ -3360,9 +3861,20 @@ TBD
 Control Protocol
 ================
 
-This section defines the operations used on an interface using the Greybus Control protocol. This protocol is different from all other protocols, because it operates over a pseudo connection rather than a “real” connection. Every interface must have a control CPort running the control protocol, and any module interface can send control protocol operation requests from its own control CPort to the control CPort on another interface.  In order to allow this multiplexing of the control CPort, every control protocol request begins with a one-byte source device id so the destination of the request knows where the response to a request should be sent.
+This section defines the operations used on an interface using the
+Greybus Control protocol. This protocol is different from all other
+protocols, because it operates over a pseudo connection rather than a
+“real” connection. Every interface must have a control CPort running
+the control protocol, and any module interface can send control
+protocol operation requests from its own control CPort to the control
+CPort on another interface.  In order to allow this multiplexing of
+the control CPort, every control protocol request begins with a
+one-byte source device id so the destination of the request knows
+where the response to a request should be sent.
 
-The control protocol is used to inform an interface of the device it it has been assigned, and thereafter it is used to set up and tear down connections between CPorts.
+The control protocol is used to inform an interface of the device it
+it has been assigned, and thereafter it is used to set up and tear
+down connections between CPorts.
 
 Conceptually, the operations in the Greybus control protocol are:
 
@@ -3585,7 +4097,10 @@ Conceptually, the operations in the Greybus control protocol are:
 Greybus Control Message Types
 -----------------------------
 
-This table describes the Greybus control operation types and their values. A message type consists of an operation type combined with a flag (0x80) indicating whether the operation is a request or a response.
+This table describes the Greybus control operation types and their
+values. A message type consists of an operation type combined with a
+flag (0x80) indicating whether the operation is a request or a
+response.
 
 .. list-table::
    :header-rows: 1
@@ -3651,16 +4166,39 @@ This table describes the Greybus control operation types and their values. A mes
 Greybus Control Identify Operation
 ----------------------------------
 
-The Greybus control protocol identify operation is sent by the SVC to supply an interface with information about its physical location, as well the UniPro device id it has been assigned. The physical location is partially defined by the unique Endo type that contains the system. The request indicates where within the Endo the module resides, and which of a module’s interfaces is the destination of the request. Finally, the request tells the interface the UniPro device id that it has been assigned.
+The Greybus control protocol identify operation is sent by the SVC to
+supply an interface with information about its physical location, as
+well the UniPro device id it has been assigned. The physical location
+is partially defined by the unique Endo type that contains the
+system. The request indicates where within the Endo the module
+resides, and which of a module’s interfaces is the destination of the
+request. Finally, the request tells the interface the UniPro device id
+that it has been assigned.
 
-Normally an interface (with a single UniPro device id) supports up to 32 CPorts.  It is possible to support more than that by allotting a contiguous range of more than one device id to a single interface.  Two device ids can support 64 CPorts, three can support 96, and so on. The response to an identify request allows an interface to indicate how many additional device ids it requires to support its CPorts.  The SVC can then account for this as it allocates additional device ids.
+Normally an interface (with a single UniPro device id) supports up to
+32 CPorts.  It is possible to support more than that by allotting a
+contiguous range of more than one device id to a single interface.
+Two device ids can support 64 CPorts, three can support 96, and so
+on. The response to an identify request allows an interface to
+indicate how many additional device ids it requires to support its
+CPorts.  The SVC can then account for this as it allocates additional
+device ids.
 
-The identify response finally allows an interface to supply an additional block of identifying information of an arbitrary size (up to 64KB). This information will be supplied to the AP with a hotplug event the SVC sends associated with the interface.
+The identify response finally allows an interface to supply an
+additional block of identifying information of an arbitrary size (up
+to 64KB). This information will be supplied to the AP with a hotplug
+event the SVC sends associated with the interface.
 
 Greybus Control Identify Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Like all control protocol requests, the Greybus control identify request begins with a one-byte source device id field. In this case, only the SVC sends this request, and the field name reflects that. This request also contains the endo, module, and interface ids that represent the physical location of the destination interface.  It finally contains the device id that has been assigned to the destination interface.
+Like all control protocol requests, the Greybus control identify
+request begins with a one-byte source device id field. In this case,
+only the SVC sends this request, and the field name reflects
+that. This request also contains the endo, module, and interface ids
+that represent the physical location of the destination interface.  It
+finally contains the device id that has been assigned to the
+destination interface.
 
 .. list-table::
    :header-rows: 1
@@ -3699,7 +4237,15 @@ Like all control protocol requests, the Greybus control identify request begins 
 Greybus Control Identify Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus control identify response begins with a status byte.  If the value of the status byte is non-zero, all other bytes in the response shall be ignored.  Following the status byte is a one-byte value indicating how many additional device ids the interface requires to account for its range of CPort ids (normally this is 0). Finally, the response contains additional data to identify the interface, beginning with a two-byte size field.  The identity data is padded if necessary  [#cg]_to ensure the response payload size is a multiple of 4 bytes.
+The Greybus control identify response begins with a status byte.  If
+the value of the status byte is non-zero, all other bytes in the
+response shall be ignored.  Following the status byte is a one-byte
+value indicating how many additional device ids the interface requires
+to account for its range of CPort ids (normally this is 0). Finally,
+the response contains additional data to identify the interface,
+beginning with a two-byte size field.  The identity data is padded if
+necessary [#cg]_to ensure the response payload size is a multiple of 4
+bytes.
 
 .. list-table::
    :header-rows: 1
@@ -3733,12 +4279,21 @@ The Greybus control identify response begins with a status byte.  If the value o
 Greybus Control Handshake Operation
 -----------------------------------
 
-Once an interface has been identified it can arrange to connect with other interfaces. Connections are established using the Greybus control protocol, and the handshake operation is used to agree on a version of that protocol to use between interfaces. No connections may be established until a handshake between the involved interfaces has been completed. If handshake operations between two interfaces are initiated by interfaces at the same time, the one initiated by the interface with the higher assigned device id will fail.
+Once an interface has been identified it can arrange to connect with
+other interfaces. Connections are established using the Greybus
+control protocol, and the handshake operation is used to agree on a
+version of that protocol to use between interfaces. No connections may
+be established until a handshake between the involved interfaces has
+been completed. If handshake operations between two interfaces are
+initiated by interfaces at the same time, the one initiated by the
+interface with the higher assigned device id will fail.
 
 Greybus Control Handshake Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The first byte of a handshake request is the device id to which the response should be sent. The other two bytes are the highest version of the control protocol the source interface supports.
+The first byte of a handshake request is the device id to which the
+response should be sent. The other two bytes are the highest version
+of the control protocol the source interface supports.
 
 .. list-table::
    :header-rows: 1
@@ -3767,7 +4322,15 @@ The first byte of a handshake request is the device id to which the response sho
 Greybus Control Handshake Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus control handshake response begins with a status byte.  If the value of the status byte is non-zero, all other bytes in the response shall be ignored.  The major and minor version in the response message are the highest control protocol version  that are mutually usable by the source and destination interfaces.  It will be the same as what was in the handshake request, or something lower if the destination interface cannot support that version. Both ends of the connection shall use the version of the control protocol indicated in the response.
+The Greybus control handshake response begins with a status byte.  If
+the value of the status byte is non-zero, all other bytes in the
+response shall be ignored.  The major and minor version in the
+response message are the highest control protocol version that are
+mutually usable by the source and destination interfaces.  It will be
+the same as what was in the handshake request, or something lower if
+the destination interface cannot support that version. Both ends of
+the connection shall use the version of the control protocol indicated
+in the response.
 
 .. list-table::
    :header-rows: 1
@@ -3796,12 +4359,25 @@ The Greybus control handshake response begins with a status byte.  If the value 
 Greybus Control Register AP Operation
 -------------------------------------
 
-This operation is used by an AP to register itself with the SVC as the single legitimate AP. The SVC uses this to determine where to send event notifications (such as hotplug events). More generally, this can be used to control whether certain requests (such as switch configuration) are allowed.  This request includes a block of data intended to ensure only an authenticated AP can successfully complete this operation. Details about the content of this data is not yet specified [#cl]_.
+This operation is used by an AP to register itself with the SVC as the
+single legitimate AP. The SVC uses this to determine where to send
+event notifications (such as hotplug events). More generally, this can
+be used to control whether certain requests (such as switch
+configuration) are allowed.  This request includes a block of data
+intended to ensure only an authenticated AP can successfully complete
+this operation. Details about the content of this data is not yet
+specified [#cl]_.
 
 Greybus Control Register AP Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Like all control protocol requests, this request begins with a byte indicating where the response should be directed.  This is followed by a two-byte size field, which defines how many bytes of authentication data follow.  This is allowed to have value 0.  The authentication data itself is of arbitrary length, but this field is implicitly padded with zero bytes sufficient to make the size of the payload a multiple of four bytes.
+Like all control protocol requests, this request begins with a byte
+indicating where the response should be directed.  This is followed by
+a two-byte size field, which defines how many bytes of authentication
+data follow.  This is allowed to have value 0.  The authentication
+data itself is of arbitrary length, but this field is implicitly
+padded with zero bytes sufficient to make the size of the payload a
+multiple of four bytes.
 
 .. list-table::
    :header-rows: 1
@@ -3830,7 +4406,9 @@ Like all control protocol requests, this request begins with a byte indicating w
 Greybus Control Register AP Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The register AP response contains only the status byte.  The SVC uses the authentication data in the request to determine whether to accept the AP as legitimate; it responds with an error if not.
+The register AP response contains only the status byte.  The SVC uses
+the authentication data in the request to determine whether to accept
+the AP as legitimate; it responds with an error if not.
 
 .. list-table::
    :header-rows: 1
@@ -3849,7 +4427,13 @@ The register AP response contains only the status byte.  The SVC uses the authen
 Greybus Control Register Battery Operation
 ------------------------------------------
 
-This operation is used by a battery module to register itself with the SVC as a legitimate battery. More than one battery can be registered. The SVC uses this to know which modules can supply power.  This request includes a block of data intended to ensure only an authenticated battery can successfully complete this operation. Details about the content of this data is not yet specified [#cm]_ [#cn]_ [#co]_.
+This operation is used by a battery module to register itself with the
+SVC as a legitimate battery. More than one battery can be
+registered. The SVC uses this to know which modules can supply power.
+This request includes a block of data intended to ensure only an
+authenticated battery can successfully complete this
+operation. Details about the content of this data is not yet specified
+[#cm]_ [#cn]_ [#co]_.
 
 Greybus Control Register Battery Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -3881,7 +4465,9 @@ Greybus Control Register Battery Request
 Greybus Control Register Battery Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The register battery response contains only the status byte.  The SVC uses the authentication data in the request to determine whether to accept the battery as legitimate; it responds with an error if not.
+The register battery response contains only the status byte.  The SVC
+uses the authentication data in the request to determine whether to
+accept the battery as legitimate; it responds with an error if not.
 
 .. list-table::
    :header-rows: 1
@@ -3900,12 +4486,27 @@ The register battery response contains only the status byte.  The SVC uses the a
 Greybus Control Connect Operation
 ---------------------------------
 
-The Greybus control connect operation is used to establish a connection between a CPort associated with one interface with a CPort associated with another interface [#cp]_ [#cq]_. The protocol used over the connection is the one advertised in the module manifest as being associated with the destination CPort. The connect operation allows the version of that protocol to be used over the connection to be determined.  Operations defined for the protocol can only be performed on the connection when a connection has been established.   A connection is defined by a CPort and device id for one interface and a CPort and device id for another interface.
+The Greybus control connect operation is used to establish a
+connection between a CPort associated with one interface with a CPort
+associated with another interface [#cp]_ [#cq]_. The protocol used
+over the connection is the one advertised in the module manifest as
+being associated with the destination CPort. The connect operation
+allows the version of that protocol to be used over the connection to
+be determined.  Operations defined for the protocol can only be
+performed on the connection when a connection has been established.  A
+connection is defined by a CPort and device id for one interface and a
+CPort and device id for another interface.
 
 Greybus Control Connect Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The connect request begins with the source device id.  This is required for control operations, but it also is used in this case to identify to the destination the device id used for the “other end” of the connection. The CPort ids for both ends of the connection are supplied in the request as well. The source supplies the major and minor version number of the highest version of the protocol it supports.
+The connect request begins with the source device id.  This is
+required for control operations, but it also is used in this case to
+identify to the destination the device id used for the “other end” of
+the connection. The CPort ids for both ends of the connection are
+supplied in the request as well. The source supplies the major and
+minor version number of the highest version of the protocol it
+supports.
 
 .. list-table::
    :header-rows: 1
@@ -3944,7 +4545,13 @@ The connect request begins with the source device id.  This is required for cont
 Greybus Control Connect Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The connect response contains the status byte, and if it is non-zero the remainder of the response shall be ignored. The major and minor version contained in the response is the same as those supplied in the request, or the highest version supported by the destination if it is not able to support the source’s version.  Both ends of the connection shall use the version of the protocol in the response once it has been received.
+The connect response contains the status byte, and if it is non-zero
+the remainder of the response shall be ignored. The major and minor
+version contained in the response is the same as those supplied in the
+request, or the highest version supported by the destination if it is
+not able to support the source’s version.  Both ends of the connection
+shall use the version of the protocol in the response once it has been
+received.
 
 .. list-table::
    :header-rows: 1
@@ -3973,12 +4580,20 @@ The connect response contains the status byte, and if it is non-zero the remaind
 Greybus Control Disconnect Operation
 ------------------------------------
 
-The Greybus control disconnect operation abolishes a connection that was previously established by a connect operation.  Either end of a connection can issue the disconnect operation. All that’s required to identify the connection to be abolished is the CPort id on the destination interface used by the connection. Disconnect requests can only be issued by an interface involved in the connection.
+The Greybus control disconnect operation abolishes a connection that
+was previously established by a connect operation.  Either end of a
+connection can issue the disconnect operation. All that’s required to
+identify the connection to be abolished is the CPort id on the
+destination interface used by the connection. Disconnect requests can
+only be issued by an interface involved in the connection.
 
 Greybus Control Disconnect Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The first byte of the disconnect request is the device id for the response. This device id is also used to ensure the disconnect request is coming from an interface used by the connection. The second byte identifies which connection should be torn down.
+The first byte of the disconnect request is the device id for the
+response. This device id is also used to ensure the disconnect request
+is coming from an interface used by the connection. The second byte
+identifies which connection should be torn down.
 
 .. list-table::
    :header-rows: 1
@@ -4002,7 +4617,8 @@ The first byte of the disconnect request is the device id for the response. This
 Greybus Control Disconnect Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The disconnect response contains only the status byte, indicating whether the connection was successfully torn down.
+The disconnect response contains only the status byte, indicating
+whether the connection was successfully torn down.
 
 .. list-table::
    :header-rows: 1
@@ -4021,12 +4637,30 @@ The disconnect response contains only the status byte, indicating whether the co
 Greybus Control Connect Peer Operation
 --------------------------------------
 
-The Greybus control connect peer operation is used to request a connection be established between CPorts on two other interfaces [#ct]_--separate from the interface over which the request is sent. This is used by the AP only, to set up a direct communication channel between CPorts on two other modules. Before responding, the destination will initiate a connection with the peer interface, using the destination CPort id at its end of the connection and the peer’s CPort id at the other end.  If necessary, the destination will first perform a handshake with the peer interface. Once the connection has been established between the destination and its peer, the destination will reply to the source with the status of the request.
+The Greybus control connect peer operation is used to request a
+connection be established between CPorts on two other interfaces
+[#ct]_--separate from the interface over which the request is
+sent. This is used by the AP only, to set up a direct communication
+channel between CPorts on two other modules. Before responding, the
+destination will initiate a connection with the peer interface, using
+the destination CPort id at its end of the connection and the peer’s
+CPort id at the other end.  If necessary, the destination will first
+perform a handshake with the peer interface. Once the connection has
+been established between the destination and its peer, the destination
+will reply to the source with the status of the request.
 
 Greybus Control Connect Peer Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The connect peer request is only initiated by the AP, and this fact is reflected in the name of the “respond-to” device id that begins the request message.  The connection to be established will use the destination interface, and the CPort id on that interface.  The destination will initiate a connect request with the peer device and device id specified.  Note that the protocol that will be used on the connection is defined by the peer CPort’s protocol (listed in its module manifest), and the destination and its peer will independently negotiate the version of that protocol to use.
+The connect peer request is only initiated by the AP, and this fact is
+reflected in the name of the “respond-to” device id that begins the
+request message.  The connection to be established will use the
+destination interface, and the CPort id on that interface.  The
+destination will initiate a connect request with the peer device and
+device id specified.  Note that the protocol that will be used on the
+connection is defined by the peer CPort’s protocol (listed in its
+module manifest), and the destination and its peer will independently
+negotiate the version of that protocol to use.
 
 .. list-table::
    :header-rows: 1
@@ -4060,7 +4694,8 @@ The connect peer request is only initiated by the AP, and this fact is reflected
 Greybus Control Connect Peer Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The connect peer response contains only the status byte, indicating whether the peer connection was successfully established.
+The connect peer response contains only the status byte, indicating
+whether the peer connection was successfully established.
 
 .. list-table::
    :header-rows: 1
@@ -4082,7 +4717,14 @@ Greybus Control Disconnect Peer Operation
 Greybus Control Disconnect Peer Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus control disconnect peer operation requests that the destination interface disconnect a connection that was previously established as a result of a peer connect operation.  This operation must be sent to the same interface that received its corresponding connect peer operation. All that’s required to identify the connection to be abolished is the CPort id on the destination interface used by the connection. Disconnect requests can only be issued by an AP interface.
+The Greybus control disconnect peer operation requests that the
+destination interface disconnect a connection that was previously
+established as a result of a peer connect operation.  This operation
+must be sent to the same interface that received its corresponding
+connect peer operation. All that’s required to identify the connection
+to be abolished is the CPort id on the destination interface used by
+the connection. Disconnect requests can only be issued by an AP
+interface.
 
 .. list-table::
    :header-rows: 1
@@ -4106,7 +4748,8 @@ The Greybus control disconnect peer operation requests that the destination inte
 Greybus Control Disconnect Peer Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The disconnect peer response contains only the status byte, indicating whether the connection was successfully torn down.
+The disconnect peer response contains only the status byte, indicating
+whether the connection was successfully torn down.
 
 .. list-table::
    :header-rows: 1
@@ -4125,12 +4768,19 @@ The disconnect peer response contains only the status byte, indicating whether t
 Greybus Control Hotplug Operation
 ---------------------------------
 
-The Greybus control hotplug operation is sent by the SVC to the AP to notify it that a module has been inserted and is present in the Endo.
+The Greybus control hotplug operation is sent by the SVC to the AP to
+notify it that a module has been inserted and is present in the Endo.
 
 Greybus Control Hotplug Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The first byte of the hotplug request is the SVC device id, for the response. The second byte indicates which module’s presence is being reported. The identifying data is the data that the SVC originally collected in the “identify” operation it performed when it first detected the module was present. The SVC will not send any “link up” messages for interfaces on a module until after the module’s hotplug request has completed.
+The first byte of the hotplug request is the SVC device id, for the
+response. The second byte indicates which module’s presence is being
+reported. The identifying data is the data that the SVC originally
+collected in the “identify” operation it performed when it first
+detected the module was present. The SVC will not send any “link up”
+messages for interfaces on a module until after the module’s hotplug
+request has completed.
 
 .. list-table::
    :header-rows: 1
@@ -4183,12 +4833,16 @@ The hotplug response contains only the status byte.
 Greybus Control Hot Unplug Operation
 ------------------------------------
 
-The Greybus control hotplug operation is sent by the SVC to the AP to notify it that a module has been inserted and is present in the Endo.
+The Greybus control hotplug operation is sent by the SVC to the AP to
+notify it that a module has been inserted and is present in the Endo.
 
 Greybus Control Hot Unplug Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The first byte of the disconnect request is the SVC device id, for the response. The second byte indicates which module has become unplugged.  The hot unplug request will not occur until “link down” operations for all interfaces on the module have completed.
+The first byte of the disconnect request is the SVC device id, for the
+response. The second byte indicates which module has become unplugged.
+The hot unplug request will not occur until “link down” operations for
+all interfaces on the module have completed.
 
 .. list-table::
    :header-rows: 1
@@ -4231,12 +4885,19 @@ The hotplug response contains only the status byte.
 Greybus Control Link Up Operation
 ---------------------------------
 
-The Greybus control link up operation is sent by the SVC to the AP to notify it that an interface on a module that was the subject of a previous hotplug message reports it has a functioning UniPro link.
+The Greybus control link up operation is sent by the SVC to the AP to
+notify it that an interface on a module that was the subject of a
+previous hotplug message reports it has a functioning UniPro link.
 
 Greybus Control Link Up Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The first byte of the link up request is the SVC device id, for the response. The second byte indicates which module contains the interface whose link up condition is being reported. The third byte is used for modules with more than one interface to indicate which interface on the module now has a functioning UniPro link. The final byte indicates the UniPro device id that was assigned to that link.
+The first byte of the link up request is the SVC device id, for the
+response. The second byte indicates which module contains the
+interface whose link up condition is being reported. The third byte is
+used for modules with more than one interface to indicate which
+interface on the module now has a functioning UniPro link. The final
+byte indicates the UniPro device id that was assigned to that link.
 
 .. list-table::
    :header-rows: 1
@@ -4289,12 +4950,16 @@ The link up response contains only the status byte.
 Greybus Control Link Down Operation
 -----------------------------------
 
-The Greybus control link down operation is sent by the SVC to the AP to notify it that an interface on a module that was previously reported “up” no longer has a functional UniPro link.
+The Greybus control link down operation is sent by the SVC to the AP
+to notify it that an interface on a module that was previously
+reported “up” no longer has a functional UniPro link.
 
 Greybus Control Link Down Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The first byte of the link down request is the SVC device id, for the response. The second byte indicates device id of the link that has gone down.
+The first byte of the link down request is the SVC device id, for the
+response. The second byte indicates device id of the link that has
+gone down.
 
 .. list-table::
    :header-rows: 1
@@ -4337,12 +5002,21 @@ The link down response contains only the status byte.
 Greybus Control Set Route Operation
 -----------------------------------
 
-The Greybus control set route operation is sent by the AP to the SVC to request it that the UniPro switch network be configured to allow traffic to flow between two interfaces.
+The Greybus control set route operation is sent by the AP to the SVC
+to request it that the UniPro switch network be configured to allow
+traffic to flow between two interfaces.
 
 Greybus Control Set Route Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The first byte of the set route request is the AP interface device id, for the response. The second and third bytes indicate the device ids of the interfaces between which traffic should be routed. Switch routing is always configured to be bidirectional. A configured route is by default in a disabled state; this means that despite the route existing, no traffic will be allowed until that route has been enabled. Note: ES1 does not support disabled routes; all routes will be enabled.
+The first byte of the set route request is the AP interface device id,
+for the response. The second and third bytes indicate the device ids
+of the interfaces between which traffic should be routed. Switch
+routing is always configured to be bidirectional. A configured route
+is by default in a disabled state; this means that despite the route
+existing, no traffic will be allowed until that route has been
+enabled. Note: ES1 does not support disabled routes; all routes will
+be enabled.
 
 .. list-table::
    :header-rows: 1
@@ -4390,12 +5064,17 @@ The set route response contains only the status byte.
 Greybus Control Enable Route Operation
 --------------------------------------
 
-The Greybus control enable route operation is sent by the AP to the SVC to request it that a route that was previously set between two interfaces be enabled.
+The Greybus control enable route operation is sent by the AP to the
+SVC to request it that a route that was previously set between two
+interfaces be enabled.
 
 Greybus Control Enable Route Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The first byte of the enable route request is the AP interface device id, for the response. The second and third bytes indicate the device ids of the interfaces whose route is to allow traffic flow.  Note: ES1 does not support disabled routes; all routes will be enabled.
+The first byte of the enable route request is the AP interface device
+id, for the response. The second and third bytes indicate the device
+ids of the interfaces whose route is to allow traffic flow.  Note: ES1
+does not support disabled routes; all routes will be enabled.
 
 .. list-table::
    :header-rows: 1
@@ -4443,12 +5122,18 @@ The enable route response contains only the status byte.
 Greybus Control Disable Route Operation
 ---------------------------------------
 
-The Greybus control disable route operation is sent by the AP to the SVC to request it that a previously enabled UniPro switch network route be disabled, preventing further traffic flow.
+The Greybus control disable route operation is sent by the AP to the
+SVC to request it that a previously enabled UniPro switch network
+route be disabled, preventing further traffic flow.
 
 Greybus Control Disable Route Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The first byte of the disable route request is the AP interface device id, for the response. The second and third bytes indicate the device ids of the interfaces between which traffic flow should be stopp. Note: ES1 does not support disabled routes; all routes will be enabled.
+The first byte of the disable route request is the AP interface device
+id, for the response. The second and third bytes indicate the device
+ids of the interfaces between which traffic flow should be
+stopp. Note: ES1 does not support disabled routes; all routes will be
+enabled.
 
 .. list-table::
    :header-rows: 1
