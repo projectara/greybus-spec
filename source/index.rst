@@ -63,7 +63,10 @@ A Greybus system shall be composed of the following blocks:
 
 An example Greybus [#b]_ [#c]_ system using Bridge ASICs and native Unipro℠ interfaces is shown in the following figure.
 
-**TODO** add figure
+.. figure:: _static/example-system.png
+   :alt: Example Greybus system
+   :figwidth: 6in
+   :align: center
 
 Greybus Hardware Model
 ======================
@@ -72,10 +75,6 @@ Introduction
 ------------
 
 A Greybus “module” is a device that slides into a physical slot on a Project Ara endoskeleton.  Each module communicates with other modules on the network via one or more UniPro℠ CPorts. A CPort is a bidirectional pipe through which UniPro℠ traffic is exchanged. Modules send “Messages” via CPorts.
-
-A basic block diagram of a module with 3 CPorts is as follows.
-
-**TODO** add figure
 
 Module Information
 ==================
