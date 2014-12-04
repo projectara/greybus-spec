@@ -1,4 +1,17 @@
-﻿.. highlight:: none
+﻿.. ----------------------------------------------------------------------
+.. Notes for Project Ara Internal Team Use
+
+.. Go look at README FIRST before doing anything else:
+   https://docs.google.com/a/projectara.com/document/d/1-g9uymGyxUrVKOfuJrYCMkl2kqoMvu-GGvqIw3extPE/edit
+
+.. Before reading this document, try to get a basic working knowledge
+   of the MIPI UniPro v1.6 specification:
+   https://docs.google.com/a/projectara.com/file/d/0BxTh4XIogG2qbm1PaEo5M1ZES1U/edit>`_.
+
+   At a bare minimum, read chapter 4 for an architecture overview.
+.. ----------------------------------------------------------------------
+
+.. highlight:: none
 
 .. These substitution definitions allow us to rev the Greybus protocol
    consistently throughout the document.
@@ -23,17 +36,14 @@ Greybus Application Protocol
 Greybus Application Protocol
 Version: |gb-major|.\ |gb-minor|
 
-**TODO** remove when we're ready to release
+.. warning::
 
-Notes for Project Ara Internal Team Use [#a]_
-
-* Go look at `README FIRST
-  <https://docs.google.com/a/projectara.com/document/d/1-g9uymGyxUrVKOfuJrYCMkl2kqoMvu-GGvqIw3extPE/edit>`_
-  before doing anything else.
-* Before reading this document, try to get a basic working knowledge
-  of the `MIPI UniPro v1.6 specification
-  <https://docs.google.com/a/projectara.com/file/d/0BxTh4XIogG2qbm1PaEo5M1ZES1U/edit>`_. (At
-  least look at UniPro spec chapter 4 for an architecture overview).
+   This document contains a preliminary specification for various
+   aspects of a Greybus system's communication. It is important to
+   note that the information contained within is in a draft stage, and
+   has not yet been fully implemented. The specifications defined
+   herein are **unstable**, and may change incompatibly in future
+   versions of this document.
 
 Terminology
 ===========
@@ -63,90 +73,130 @@ and “can” in a document as follows.
 - The word *can* is used for statements of possibility and capability,
   whether material, physical, or casual (*can* equals *is able to*).
 
-Introduction
-============
+Unless explicitly designated informative, all sections are normative.
+
+Glossary
+========
+
+MDK
+    Project Ara Module Developer's Kit. This comprises various
+    documents which collectively define the Ara platform.
+
+Introduction (Informative)
+==========================
 
                     | Good artists copy, great artists steal.
                     | — Pablo Picasso
 
-The |unipro| specification is created by the |mipi| Alliance.  In the
-specification for the protocol, it is left as an “implementation
-detail” to describe the Application layer of the protocol.  As the
-|mipi| Alliance has decided to not define an application layer, and for
-the purposes of Project Ara we need an application layer that can
-handle dynamic devices being added and removed from the system at any
-point in time, and showing up at any place on the “bus”, it is up to
-us to define an Application layer protocol, as well as hooks into the
-Transport layer in order to control the |unipro| switch controller
-properly.  This document aims to define this protocol and interaction
-with the |unipro| stack and hardware.  Because this protocol can not
-claim to be “|unipro|” officially at all, it should be called “Greybus”
-in reference to the first phone that this protocol should be publicly
-available for.  If the |mipi| Alliance, or anyone else, wishes to adopt
-this protocol layer and rename it, they need to follow the license of
-this document.
+The Greybus Specification describes a suite of communications
+protocols required to support the Project Ara modular cell phone
+platform.
 
-The notion of a device bus that is self-descriptive and can handle a
-multitude of device types has been proven by the great popularity of
-USB, as defined by the USB-IF specifications.  Because we do not wish
-to reinvent the wheel, you will notice that many of the descriptor
-definitions, actions, and protocol types are heavily influenced by
-USB, if not direct copies in some places.  Hopefully this is not seen
-as a slight, but rather, proof that the USB-IF has done a wonderful
-job in creating a system that has worked so well as to be able to
-survive for 20 years and still evolving to look to last 20+ more.  We
-could only be so fortunate if the Greybus protocol were to be one
-smidgen as popular and influential.
+The Project Ara Module Developer's Kit (MDK) is the official Project
+Ara platform definition; it comprises various documents which
+collectively define the Ara platform, including its industrial,
+mechanical, electrical, and software design and requirements. Refer to
+the main MDK document for an introduction to the platform and its
+components. Familiarity with this document is assumed throughout this
+document; its definitions are incorporated here by reference.
 
-This document details a preliminary specification for a Greybus
-system. It should be noted that the information contained within is at
-a very early draft stage and has not yet been implemented. Especially
-for service protocol definitions, we will leverage existing |mipi|
-standards heavily where possible.
+The Greybus Specification is included within the MDK; its purpose is
+to define software interfaces whose data and control flow crosses
+module boundaries. This is required to ensure software compatibility
+and interoperability between modules and the endoskeleton.
 
-Greybus System Description
-==========================
+Project Ara utilizes the |unipro| protocol for inter-module
+communication. The |unipro| specification is defined by the |mipi|
+Alliance. |unipro|\ 's design follows a layered architecture, and
+specifies how communication shall occur up to the Application layer in
+the `OSI model
+<http://www.ecma-international.org/activities/Communications/TG11/s020269e.pdf>`_.
+Project Ara's architecture requires an application layer specification
+which can handle dynamic device insertion and removal from the system
+at any time and at variable locations. It also requires that existing
+modules interoperate with modules introduced at later dates. This
+document aims to define a suite of application layer protocols which
+meet these needs.
 
-A Greybus system shall be composed of the following blocks:
+In addition to |unipro|, Project Ara also specifies a small number of
+other interfaces between modules and the endoskeleton. These include a
+power bus, signals which enable hotplug and power management
+functions, and interface pins for modules which emit radio
+signals. The Greybus Specification also defines the behavior of the
+system's software with respect to these interfaces.
 
-1. Exactly one Application Processor module, hereafter referred to as
-   the “AP.”
+A Project Ara “module” is a device that slides into a physical slot on
+a Project Ara endoskeleton.  Each module communicates with other
+modules on the network via one or more |unipro| CPorts. A CPort is a
+bidirectional pipe through which |unipro| traffic is
+exchanged. Modules send “messages” via CPorts; messages are datagrams
+with ancillary metadata. All CPort traffic is peer-to-peer; multicast
+communication is not supported.
 
-2. An “Endoskeleton,” consisting of the following elements:
+Project Ara presently requires that exactly one application processor
+(AP) is present on the system for storing user data and executing
+applications. The module which contains the AP is the *AP module*; the
+Greybus specification defines a :ref:`control-protocol` to allow the
+AP module to accomplish its tasks.
 
-   - One Supervisory Controller, hereafter referred to as the “SVC.”
-   - One or more |unipro| switches which distribute |unipro| network
+In order to ensure interoperability between the wide array of
+application processors and hardware peripherals commonly available on
+mobile handsets, the Greybus Specification defines a suite of
+:ref:`device-class-protocols`, which allow for communication between
+the various modules on the system, regardless of the particulars of
+the chipsets involved.
+
+The main functional chipsets on modules may communicate via a native
+|unipro| interface or via “bridges,” special-purpose ASICs which
+intermediate between these chipsets and the |unipro| network. In order
+to provide a transition path for chipsets without native UniPro
+interfaces, the Greybus Specification defines a variety of
+:ref`bridged-phy-protocols`, which allow module developers to expose
+these existing protocols to the network. In addition to providing a
+"on-ramp" to the platform, this also allows the implementation of
+modules which require communication that does not comply with a device
+class protocol.
+
+Greybus Hardware Model
+======================
+
+An implementation of the Project Ara platform which complies with the
+Greybus Specification is a *Greybus system*.
+
+A Greybus system shall be composed of the following physical
+components:
+
+1. An “endoskeleton,” consisting of the following elements:
+
+   - One or more |unipro| switches, which distribute |unipro| network
      traffic throughout the Greybus network.
 
-3. One or more “Modules” which physically plug into the endoskeleton
-   and implement service protocol functionality as defined within this
-   document.
+   - One or more *interface blocks*. These are the connectors which
+     expose the endoskeleton's communication interface to other
+     elements in a Greybus system.
 
-   The main functional chipsets on modules may either communicate via
-   a native |unipro| interface or via “Bridges,” special-purpose ASICs
-   which translate legacy protocols into |unipro| traffic that can be
-   routed to nodes on a |unipro| network. Bridges shall implement the
-   Greybus application protocol specification.
+   - Exactly one Supervisory Controller, hereafter referred to as the
+     “SVC.” The SVC administers the Greybus system, including the
+     system's UniPro switches, its power bus, its wake/detect pins,
+     and its RF bus.
+
+2. One or more modules, which are physically inserted into slots on
+   the endoskeleton. Modules shall implement communication protocols
+   in accordance with this document's specifications.
+
+2. Exactly one Application Processor module, hereafter referred to as
+   the “AP.”
 
 An example Greybus [#b]_ [#c]_ system using Bridge ASICs and native
 |unipro| interfaces is shown in the following figure.
+
+.. TODO: rework this diagram, which was done in a hurry for a MIPI SW
+   working group meeting.
 
 .. figure:: _static/example-system.png
    :alt: Example Greybus system
    :figwidth: 6in
    :align: center
-
-Greybus Hardware Model
-======================
-
-Introduction
-------------
-
-A Greybus “module” is a device that slides into a physical slot on a
-Project Ara endoskeleton.  Each module communicates with other modules
-on the network via one or more |unipro| CPorts. A CPort is a
-bidirectional pipe through which |unipro| traffic is exchanged. Modules
-send “Messages” via CPorts.
 
 Module Information
 ==================
@@ -174,8 +224,8 @@ following general requirements:
 * All numeric values shall be unsigned unless explicitly stated otherwise.
 * Numeric values prefixed with 0x are hexadecimal; they are decimal otherwise.
 * All headers and descriptor data within a Module Manifest shall be
-  implicitly followed by pad bytes if necessary to bring the size to a
-  multiple of 4 bytes.
+  implicitly followed by pad bytes as necessary to bring the
+  structure's total size to a multiple of 4 bytes.
 * Accordingly, the low-order two bits of all header “size” field values shall be 00.
 * Any reserved or unused space (including implicit padding) in a
   header or descriptor shall be ignored when read, and zero-filled
