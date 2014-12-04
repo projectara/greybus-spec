@@ -38,9 +38,9 @@ Notes for Project Ara Internal Team Use [#a]_
 Terminology
 ===========
 
-Like all good specifications, we are abiding by Section 13.1 of the
-IEEE Standards Style Manual, which describes the use of the words
-“shall”, “should”, “may”, and “can” in a document as:
+This document abides by Section 13.1 of the IEEE Standards Style
+Manual, which describes the use of the words “shall”, “should”, “may”,
+and “can” in a document as follows.
 
 - The word *shall* is used to indicate mandatory requirements strictly
   to be followed in order to conform to the Specification and from
@@ -48,7 +48,7 @@ IEEE Standards Style Manual, which describes the use of the words
 - The use of the word *must* is deprecated and shall not be used when
   stating mandatory requirements; must is used only to describe
   unavoidable situations
-- The use of the word *will* is depreciated and shall not be used when
+- The use of the word *will* is deprecated and shall not be used when
   stating mandatory requirements; will is only used in statements of
   fact
 - The word *should* is used to indicate that among several
