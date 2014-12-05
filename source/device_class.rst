@@ -16,7 +16,7 @@ Vibrator Protocol
 -----------------
 
 This section defines the operations used on a connection implementing
-the Greybus vibrator protocol.  This protocol allows an AP to manager
+the Greybus vibrator protocol.  This protocol allows an AP to manage
 a vibrator device present on a module.  The protocol is very simple,
 and maps almost directly to the userspace HAL vibrator interface.
 
@@ -278,7 +278,8 @@ Conceptually, the operations in the Greybus battery protocol are:
 
 ..
 
-    Returns a value indicating the current voltage [#bk]_ of the battery.
+    Returns a value indicating the current current supplied or drawn
+    [#bk]_ of the battery.
 
 Greybus Battery Message Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

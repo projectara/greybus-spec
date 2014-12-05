@@ -87,7 +87,7 @@ request. The request destination compares that version with the
 supports a protocol version with major number equal to that supplied
 by the source, and a minor number greater than or equal to that
 supplied by the source, it shall communicate using the protocol
-version equal to thatsupplied by the source. Otherwise, it decides
+version equal to that supplied by the source. Otherwise, it decides
 that its own version of the protocol will be the one to be used [#bf]_
 [#bg]_. In either case, the chosen version is sent back in the
 response, and the source interface will honor that decision and use

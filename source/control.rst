@@ -572,12 +572,11 @@ Greybus Control Register Battery Operation
 ------------------------------------------
 
 This operation is used by a battery module to register itself with the
-SVC as a legitimate battery. More than one battery can be
-registered. The SVC uses this to know which modules can supply power.
-This request includes a block of data intended to ensure only an
-authenticated battery can successfully complete this
-operation. Details about the content of this data is not yet specified
-[#cm]_ [#cn]_ [#co]_.
+SVC as a battery. More than one battery can be registered. The SVC
+uses this to know which modules can supply power.  This request
+includes a block of data intended to ensure only an authenticated
+battery can successfully complete this operation. Details about the
+content of this data is not yet specified [#cm]_ [#cn]_ [#co]_.
 
 Greybus Control Register Battery Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -977,8 +976,8 @@ The hotplug response contains only the status byte.
 Greybus Control Hot Unplug Operation
 ------------------------------------
 
-The Greybus control hotplug operation is sent by the SVC to the AP to
-notify it that a module has been inserted and is present in the Endo.
+The Greybus control hot unplug operation is sent by the SVC to the AP
+to notify it that a module has been removed from the endo.
 
 Greybus Control Hot Unplug Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1276,7 +1275,7 @@ Greybus Control Disable Route Request
 The first byte of the disable route request is the AP interface device
 id, for the response. The second and third bytes indicate the device
 ids of the interfaces between which traffic flow should be
-stopp. Note: ES1 does not support disabled routes; all routes will be
+stop. Note: ES1 does not support disabled routes; all routes will be
 enabled.
 
 .. list-table::
