@@ -1767,8 +1767,8 @@ Conceptually, the five operations in the Greybus I2C protocol are:
 
 ..
 
-    Returns the major and minor Greybus i2c protocol version number
-    supported by the i2c adapter.
+    Returns the major and minor Greybus I2C protocol version number
+    supported by the I2C adapter.
 
 ::
 
@@ -1776,7 +1776,7 @@ Conceptually, the five operations in the Greybus I2C protocol are:
 
 ..
 
-    Returns a bitmask indicating the features supported by the i2c
+    Returns a bitmask indicating the features supported by the I2C
     adapter.
 
 ::
@@ -1785,7 +1785,7 @@ Conceptually, the five operations in the Greybus I2C protocol are:
 
 ..
 
-   Sets the timeout (in milliseconds) the i2c adapter should allow
+   Sets the timeout (in milliseconds) the I2C adapter should allow
    before giving up on an addressed client.
 
 ::
@@ -1794,7 +1794,7 @@ Conceptually, the five operations in the Greybus I2C protocol are:
 
 ..
 
-   Sets the number of times an adapter should retry an i2c op before
+   Sets the number of times an adapter should retry an I2C op before
    giving up.
 
 ::
@@ -1803,8 +1803,8 @@ Conceptually, the five operations in the Greybus I2C protocol are:
 
 ..
 
-   Performs an i2c transaction made up of one or more “steps” defined
-   in the supplied i2c op array.
+   Performs an I2C transaction made up of one or more “steps” defined
+   in the supplied I2C op array.
 
 A transfer is made up of an array of “I2C ops”, each of which
 specifies an I2C slave address, flags controlling message behavior,
