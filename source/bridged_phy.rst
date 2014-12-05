@@ -1546,7 +1546,7 @@ The Greybus PWM deactivate response contains only the status byte.
    * - 0
      - status
      - 1
-     - .
+     -
      - Success, or reason for failure
 
 Greybus PWM Config Operation
@@ -1880,7 +1880,7 @@ major version 0, minor version 1.
    * - 0
      - status
      - 1
-     - .
+     -
      - Success, or reason for failure
    * - 1
      - version_major
@@ -1950,7 +1950,7 @@ header file.
    * - I2C_FUNC_10BIT_ADDR
      - 10-bit addressing is supported
      - 0x00000002
-   * - .
+   * -
      - (Reserved)
      - 0x00000004
    * - I2C_FUNC_SMBUS_PEC
@@ -1959,7 +1959,7 @@ header file.
    * - I2C_FUNC_NOSTART
      - Repeated start sequence can be skipped
      - 0x00000010
-   * - .
+   * -
      - (Reserved range)
      - 0x00000020..0x00004000
    * - I2C_FUNC_SMBUS_BLOCK_PROC_CALL
@@ -2001,7 +2001,7 @@ header file.
    * - I2C_FUNC_SMBUS_WRITE_I2C_BLOCK
      - SMBus write_i2c_block_data command supported
      - 0x08000000
-   * - .
+   * -
      - (All other values reserved)
      - 0x10000000..0x80000000
 
@@ -2159,25 +2159,25 @@ I2C ops. They are taken directly from the <linux/i2c.h> header file.
    * - I2C_M_RD
      - Data is to be read (from slave to master)
      - 0x0001
-   * - .
+   * -
      - (Reserved range)
      - 0x0002..0x0008
    * - I2C_M_TEN
      - 10-bit addressing is supported
      - 0x0010
-   * - .
+   * -
      - (Reserved range)
      - 0x0020..0x0200
    * - I2C_M_RECV_LEN
      - First byte received contains length
      - 0x0400
-   * - .
+   * -
      - (Reserved range)
      - 0x0800..0x2000
    * - I2C_M_NOSTART
      - Skip repeated start sequence
      - 0x4000
-   * - .
+   * -
      - (Reserved)
      - 0x8000
 
