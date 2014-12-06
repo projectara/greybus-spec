@@ -22,28 +22,16 @@ and maps almost directly to the userspace HAL vibrator interface.
 
 The operations in the Greybus vibrator protocol are:
 
-::
-
-    int get_version(u8 *major, u8 *minor);
-
-..
+.. c:function:: int get_version(u8 *major, u8 *minor);
 
     Returns the major and minor Greybus vibrator protocol version
     number supported by the vibrator adapter.
 
-::
-
-   int vibrator_on(u16 timeout_ms);
-
-..
+.. c:function:: int vibrator_on(u16 timeout_ms);
 
    Turns on the vibrator for the number of specified milliseconds.
 
-::
-
-   int vibrator_off(void);
-
-..
+.. c:function:: int vibrator_off(void);
 
     Turns off the vibrator immediately.
 
@@ -212,70 +200,38 @@ here.
 
 Conceptually, the operations in the Greybus battery protocol are:
 
-::
-
-    int get_version(u8 *major, u8 *minor);
-
-..
+.. c:function:: int get_version(u8 *major, u8 *minor);
 
     Returns the major and minor Greybus battery protocol version
     number supported by the battery adapter.
 
-::
-
-    int get_technology(u16 *technology);
-
-..
+.. c:function:: int get_technology(u16 *technology);
 
     Returns a value indicating the technology type that this battery
     adapter controls.
 
-::
-
-    int get_status(u16 *status);
-
-..
+.. c:function:: int get_status(u16 *status);
 
     Returns a value indicating the current status of the battery.
 
-::
-
-    int get_max_voltage(u32 *voltage);
-
-..
+.. c:function:: int get_max_voltage(u32 *voltage);
 
     Returns a value indicating the maximum voltage that the battery supports.
 
-::
-
-    int get_percent_capacity(u32 *capacity);
-
-..
+.. c:function:: int get_percent_capacity(u32 *capacity);
 
     Returns a value indicating the current percent capacity of the
     battery.
 
-::
-
-    int get_temperature(u32 *temperature);
-
-..
+.. c:function:: int get_temperature(u32 *temperature);
 
     Returns a value indicating the current temperature of the battery.
 
-::
-
-    int get_voltage(u32 *voltage);
-
-..
+.. c:function:: int get_voltage(u32 *voltage);
 
     Returns a value indicating the current voltage of the battery.
 
- ::
-
-    int get_current(u32 *current);
-
-..
+.. c:function:: int get_current(u32 *current);
 
     Returns a value indicating the current voltage [#bk]_ of the battery.
 
