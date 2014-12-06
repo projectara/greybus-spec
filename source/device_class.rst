@@ -50,10 +50,9 @@ The operations in the Greybus vibrator protocol are:
 Greybus Vibrator Message Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This table describes the Greybus vibrator operation types [#bh]_
-[#bi]_ [#bj]_ and their values. A message type consists of an
-operation type combined with a flag (0x80) indicating whether the
-operation is a request or a response.
+This table describes the Greybus vibrator operation types and their
+values. A message type consists of an operation type combined with a
+flag (0x80) indicating whether the operation is a request or a response.
 
 .. list-table::
    :header-rows: 1
@@ -767,40 +766,6 @@ TBD
 .. =========
 
 .. rubric:: Footnotes
-
-.. [#bh] Can we add -
-
-         "get_shutdowntemperature" - shutdown temperature at which
-         device should get turned off..(60 or 80 or 70 Celsius etc..)
-
-         "get_totalcapacity" - Total (design) battery capacity in mAh.
-
-         "get_lowwarning" - when system should raise low warning level
-
-         This is to update few parameters in android framework. I see
-         these parameters vary from battery to battery.
-
-.. [#bi] for shutdown temp, would that be the
-         POWER_SUPPLY_PROP_TEMP_ALERT_MAX value in the kernel?
-
-         For total capacity, is that POWER_SUPPLY_PROP_CURRENT_MAX ?
-
-         As for "low warning", I don't understand how that works from
-         the kernel side, is there a value you read from the kernel for
-         this?  Or does Android take the existing capacity % and just
-         use it (less than 10% is an issue)?
-
-.. [#bj] yes, we use "POWER_SUPPLY_PROP_TEMP_ALERT_MAX" - get the alert
-         value for shutdown temp
-
-         At present, no idea if we can calculate total capacity in mAh
-         from "POWER_SUPPLY_PROP_CURRENT_MAX" ? Do you have any ?  Need
-         to look further for this.
-
-         "low warning" level is statically defined in user space config
-         file for each vendor. But you are right We can use static
-         value for all - 10/15% to indicate low warning level.. - I am
-         ok with that
 
 .. [#bk] typo: voltage instead of current
 
