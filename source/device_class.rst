@@ -22,38 +22,25 @@ and maps almost directly to the userspace HAL vibrator interface.
 
 The operations in the Greybus vibrator protocol are:
 
-::
-
-    int get_version(u8 *major, u8 *minor);
-
-..
+.. c:function:: int get_version(u8 *major, u8 *minor);
 
     Returns the major and minor Greybus vibrator protocol version
     number supported by the vibrator adapter.
 
-::
-
-   int vibrator_on(u16 timeout_ms);
-
-..
+.. c:function:: int vibrator_on(u16 timeout_ms);
 
    Turns on the vibrator for the number of specified milliseconds.
 
-::
-
-   int vibrator_off(void);
-
-..
+.. c:function:: int vibrator_off(void);
 
     Turns off the vibrator immediately.
 
 Greybus Vibrator Message Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This table describes the Greybus vibrator operation types [#bh]_
-[#bi]_ [#bj]_ and their values. A message type consists of an
-operation type combined with a flag (0x80) indicating whether the
-operation is a request or a response.
+This table describes the Greybus vibrator operation types and their
+values. A message type consists of an operation type combined with a
+flag (0x80) indicating whether the operation is a request or a response.
 
 .. list-table::
    :header-rows: 1
@@ -213,70 +200,38 @@ here.
 
 Conceptually, the operations in the Greybus battery protocol are:
 
-::
-
-    int get_version(u8 *major, u8 *minor);
-
-..
+.. c:function:: int get_version(u8 *major, u8 *minor);
 
     Returns the major and minor Greybus battery protocol version
     number supported by the battery adapter.
 
-::
-
-    int get_technology(u16 *technology);
-
-..
+.. c:function:: int get_technology(u16 *technology);
 
     Returns a value indicating the technology type that this battery
     adapter controls.
 
-::
-
-    int get_status(u16 *status);
-
-..
+.. c:function:: int get_status(u16 *status);
 
     Returns a value indicating the current status of the battery.
 
-::
-
-    int get_max_voltage(u32 *voltage);
-
-..
+.. c:function:: int get_max_voltage(u32 *voltage);
 
     Returns a value indicating the maximum voltage that the battery supports.
 
-::
-
-    int get_percent_capacity(u32 *capacity);
-
-..
+.. c:function:: int get_percent_capacity(u32 *capacity);
 
     Returns a value indicating the current percent capacity of the
     battery.
 
-::
-
-    int get_temperature(u32 *temperature);
-
-..
+.. c:function:: int get_temperature(u32 *temperature);
 
     Returns a value indicating the current temperature of the battery.
 
-::
-
-    int get_voltage(u32 *voltage);
-
-..
+.. c:function:: int get_voltage(u32 *voltage);
 
     Returns a value indicating the current voltage of the battery.
 
- ::
-
-    int get_current(u32 *current);
-
-..
+.. c:function:: int get_current(u32 *current);
 
     Returns a value indicating the current current supplied or drawn
     [#bk]_ of the battery.
@@ -768,40 +723,6 @@ TBD
 .. =========
 
 .. rubric:: Footnotes
-
-.. [#bh] Can we add -
-
-         "get_shutdowntemperature" - shutdown temperature at which
-         device should get turned off..(60 or 80 or 70 Celsius etc..)
-
-         "get_totalcapacity" - Total (design) battery capacity in mAh.
-
-         "get_lowwarning" - when system should raise low warning level
-
-         This is to update few parameters in android framework. I see
-         these parameters vary from battery to battery.
-
-.. [#bi] for shutdown temp, would that be the
-         POWER_SUPPLY_PROP_TEMP_ALERT_MAX value in the kernel?
-
-         For total capacity, is that POWER_SUPPLY_PROP_CURRENT_MAX ?
-
-         As for "low warning", I don't understand how that works from
-         the kernel side, is there a value you read from the kernel for
-         this?  Or does Android take the existing capacity % and just
-         use it (less than 10% is an issue)?
-
-.. [#bj] yes, we use "POWER_SUPPLY_PROP_TEMP_ALERT_MAX" - get the alert
-         value for shutdown temp
-
-         At present, no idea if we can calculate total capacity in mAh
-         from "POWER_SUPPLY_PROP_CURRENT_MAX" ? Do you have any ?  Need
-         to look further for this.
-
-         "low warning" level is statically defined in user space config
-         file for each vendor. But you are right We can use static
-         value for all - 10/15% to indicate low warning level.. - I am
-         ok with that
 
 .. [#bk] typo: voltage instead of current
 

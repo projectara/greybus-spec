@@ -31,94 +31,54 @@ consists of the operations defined in this section.
 
 Conceptually, the GPIO protocol operations are:
 
-::
-
-    int get_version(u8 *major, u8 *minor);
-
-..
+.. c:function:: int get_version(u8 *major, u8 *minor);
 
     Returns the major and minor Greybus GPIO protocol version number
     supported by the GPIO controller. GPIO controllers adhering to the
     protocol specified herein shall report major version 0, minor
     version 1.
 
-::
-
-    int line_count(u8 *count);
-
-..
+.. c:function:: int line_count(u8 *count);
 
     Returns one less than the number of lines managed by the Greybus
     GPIO controller. This means the minimum number of lines is 1 and
     the maximum is 256.
 
-::
-
-    int activate(u8 which);
-
-..
+.. c:function:: int activate(u8 which);
 
     Notifies the GPIO controller that one of its lines has been
     assigned for use.
 
-::
-
-    int deactivate(u8 which);
-
-..
+.. c:function:: int deactivate(u8 which);
 
     Notifies the GPIO controller that a previously-activated line has
     been unassigned and can be deactivated.
 
-::
-
-    int get_direction(u8 which, u8 *direction);
-
-..
+.. c:function:: int get_direction(u8 which, u8 *direction);
 
     Requests the GPIO controller return a line’s configured direction
     (0 for output, 1 for input).
 
-::
-
-    int direction_input(u8 which);
-
-..
+.. c:function:: int direction_input(u8 which);
 
     Requests the GPIO controller configure a line for input.
 
-::
-
-    int direction_output(u8 which, u8 value);
-
-..
+.. c:function:: int direction_output(u8 which, u8 value);
 
     Requests the GPIO controller configure a line for output, and sets
     its initial output value (0 for low, 1 for high).
 
-::
-
-    int get_value(u8 which, u8 *value);
-
-..
+.. c:function:: int get_value(u8 which, u8 *value);
 
     Requests the GPIO controller return the current value sensed on a
     line (0 for low, 1 for high).
 
-::
-
-    int set_value(u8 which, u8 value);
-
-..
+.. c:function:: int set_value(u8 which, u8 value);
 
     Requests the GPIO controller set the value (0 for low, 1 for high)
     for a line configured for output.
 
-::
-
-    int set_debounce(u8 which, u16 usec);
-
-..
+.. c:function:: int set_debounce(u8 which, u16 usec);
 
     Requests the GPIO controller set the debounce period (in
     microseconds).
@@ -678,63 +638,35 @@ consists of the operations defined in this section.
 
 The operations that can be performed on a Greybus UART controller are:
 
-::
-
-    int get_version(u8 *major, u8 *minor);
-
-..
+.. c:function:: int get_version(u8 *major, u8 *minor);
 
     Returns the major and minor Greybus UART protocol version number
     supported by the UART device.
 
-::
-
-    int send_data(u16 size, u8 *data);
-
-..
+.. c:function:: int send_data(u16 size, u8 *data);
 
     Requests that the UART device begin transmitting characters. One
     or more bytes to be transmitted will be supplied.
 
-::
-
-    int receive_data(u16 size, u8 *data);
-
-..
+.. c:function:: int receive_data(u16 size, u8 *data);
 
     Receive data from the UART.  One or more bytes will be supplied.
 
-::
-
-    int set_line_coding(u32 rate, u8 format, u8 parity, u8 data);
-
-..
+.. c:function:: int set_line_coding(u32 rate, u8 format, u8 parity, u8 data);
 
    Sets the line settings of the UART to the specified baud rate,
    format, parity, and data bits.
 
-::
-
-    int set_control_line_state(u8 state);
-
-..
+.. c:function:: int set_control_line_state(u8 state);
 
     Controls RTS and DTR line states of the UART.
 
-::
-
-    int send_break(u8 state);
-
-..
+.. c:function:: int send_break(u8 state);
 
     Requests that the UART generate a break condition on its transmit
     line.
 
-::
-
-    int serial_state(u16 *state);
-
-..
+.. c:function:: int serial_state(u16 *state);
 
     Receives the state of the UART’s control lines and any line errors
     that might have occurred.
@@ -1245,77 +1177,45 @@ operations defined in this section.
 
 Conceptually, the PWM protocol operations are:
 
-::
-
-    int get_version(u8 *major, u8 *minor);
-
-..
+.. c:function:: int get_version(u8 *major, u8 *minor);
 
     Returns the major and minor Greybus PWM protocol version number
     supported by the PWM controller. PWM controllers adhering to the
     protocol specified herein shall report major version 0, minor
     version 1.
 
-::
-
-    int pwm_count(u8 *count);
-
-..
+.. c:function:: int pwm_count(u8 *count);
 
     Returns one less than the number of instances managed by the
     Greybus PWM controller. This means the minimum number of PWMs is 1
     and the maximum is 256.
 
-::
-
-    int activate(u8 which);
-
-..
+.. c:function:: int activate(u8 which);
 
     Notifies the PWM controller that one of its instances has been
     assigned for use.
 
-::
-
-    int deactivate(u8 which);
-
-..
+.. c:function:: int deactivate(u8 which);
 
     Notifies the PWM controller that a previously-activated instance
     has been unassigned and can be deactivated.
 
-::
-
-    int config(u8 which, u32 duty, u32 period);
-
-..
+.. c:function:: int config(u8 which, u32 duty, u32 period);
 
     Requests the PWM controller configure an instance for a particular
     duty cycle and period (in units of nanoseconds).
 
-::
-
-    int set_polarity(u8 which, u8 polarity);
-
-..
+.. c:function:: int set_polarity(u8 which, u8 polarity);
 
     Requests the PWM controller configure an instance as normally
     active or inversed.
 
-::
-
-    int enable(u8 which);
-
-..
+.. c:function:: int enable(u8 which);
 
     Requests the PWM controller enable a PWM instance to begin
     toggling.
 
-::
-
-    int disable(u8 which);
-
-..
+.. c:function:: int disable(u8 which);
 
     Requests the PWM controller disable a previously enabled PWM
     instance
@@ -1761,47 +1661,27 @@ here.
 
 Conceptually, the five operations in the Greybus I2C protocol are:
 
-::
-
-    int get_version(u8 *major, u8 *minor);
-
-..
+.. c:function:: int get_version(u8 *major, u8 *minor);
 
     Returns the major and minor Greybus I2C protocol version number
     supported by the I2C adapter.
 
-::
-
-    int get_functionality(u32 *functionality);
-
-..
+.. c:function:: int get_functionality(u32 *functionality);
 
     Returns a bitmask indicating the features supported by the I2C
     adapter.
 
-::
-
-    int set_timeout(u16 timeout_ms);
-
-..
+.. c:function:: int set_timeout(u16 timeout_ms);
 
    Sets the timeout (in milliseconds) the I2C adapter should allow
    before giving up on an addressed client.
 
-::
-
-    int set_retries(u8 retries);
-
-..
+.. c:function:: int set_retries(u8 retries);
 
    Sets the number of times an adapter should retry an I2C op before
    giving up.
 
-::
-
-    int transfer(u8 op_count, struct i2c_op *ops);
-
-..
+.. c:function:: int transfer(u8 op_count, struct i2c_op *ops);
 
    Performs an I2C transaction made up of one or more “steps” defined
    in the supplied I2C op array.
