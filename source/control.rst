@@ -22,13 +22,7 @@ down connections between CPorts.
 
 Conceptually, the operations in the Greybus control protocol are:
 
-::
-
-    int identify(u8 svc_device_id, u16 endo_id, u8 module_id,
-                 u8 interface_id, u8 device_id, u8 *extra_device_ids,
-                 u16 *id_data_size, u8 *id_data);
-
-..
+.. c:function:: int identify(u8 svc_device_id, u16 endo_id, u8 module_id, u8 interface_id, u8 device_id, u8 *extra_device_ids, u16 *id_data_size, u8 *id_data);
 
     The SVC initiates this operation after it has first determined
     a |unipro| link is up. The request informs the interface of its
@@ -43,12 +37,7 @@ Conceptually, the operations in the Greybus control protocol are:
     identify operation, so this operation can be sent prior to
     performing a handshake between interfaces.
 
-::
-
-    int handshake(u8 src_device_id, u8 src_major, u8 src_minor,
-                  u8 *major, u8 *minor);
-
-..
+.. c:function:: int handshake(u8 src_device_id, u8 src_major, u8 src_minor, u8 *major, u8 *minor);
 
     Connections between interfaces are set up using the control
     protocol. Once an interface has been identified by the SVC, it can
@@ -64,11 +53,7 @@ Conceptually, the operations in the Greybus control protocol are:
     device id will fail. Once a handshake has succeeded, either
     interface can send operations to the other.
 
-::
-
-    int register_ap(u8 src_device_id);
-
-..
+.. c:function:: int register_ap(u8 src_device_id);
 
     This operation is sent by the AP (on one of its interfaces) to the
     SVC, in order to tell the SVC where it should send subsequent event
@@ -76,11 +61,7 @@ Conceptually, the operations in the Greybus control protocol are:
     response should go and to tell the SVC which interface should be
     sent (e.g.) hotplug and link status change indications.
 
-::
-
-    int register_battery(u8 src_device_id);
-
-..
+.. c:function:: int register_battery(u8 src_device_id);
 
     This operation is sent by a module to the SVC to tell the SVC this
     interface is associated with a battery. The SVC can then use battery
@@ -89,12 +70,7 @@ Conceptually, the operations in the Greybus control protocol are:
     tells the SVC the interface through which a battery connection can
     be established.
 
-::
-
-    int connect(u8 src_device_id, u16 src_cport_id, u16 dst_cport_id,
-                u8 src_major, u8 src_minor, u8 *major, u8 *minor);
-
-..
+.. c:function:: int connect(u8 src_device_id, u16 src_cport_id, u16 dst_cport_id, u8 src_major, u8 src_minor, u8 *major, u8 *minor);
 
     This operation is used to establish a connection between two
     interfaces. It is most often sent by the AP to set up a connection
@@ -109,23 +85,14 @@ Conceptually, the operations in the Greybus control protocol are:
     the sender’s version. The version in the response is the version that
     will be used by both sides thereafter.
 
-::
-
-    int disconnect(u8 src_device_id, u16 dst_cport_id);
-
-..
+.. c:function:: int disconnect(u8 src_device_id, u16 dst_cport_id);
 
     This operation is used to tear down a previously-established
     connection between two interfaces. The CPort id on the destination
     is sufficient to identify the connection to be torn down. Either
     end of a connection can initiate the operation.
 
-::
-
-    int connect_peer(u8 src_device_id, u16 dst_cport_id,
-                     u8 peer_device_id, u16 peer_cport_id);
-
-..
+.. c:function:: int connect_peer(u8 src_device_id, u16 dst_cport_id, u8 peer_device_id, u16 peer_cport_id);
 
     This operation is used by the AP to request the destination
     interface establish a connection with an interface in another peer
@@ -133,11 +100,7 @@ Conceptually, the operations in the Greybus control protocol are:
     initiating a connection request between the indicated destination
     CPort [#bx]_ [#by]_ and the one on the indicated peer interface.
 
-::
-
-    int disconnect_peer(u8 src_device_id, u16 dst_cport_id);
-
-..
+.. c:function:: int disconnect_peer(u8 src_device_id, u16 dst_cport_id);
 
     This operation is used to tear down a previously-established
     connection [#bz]_ [#ca]_ between a CPort on the destination interface and a
@@ -154,12 +117,7 @@ Conceptually, the operations in the Greybus control protocol are:
    future. As with all control protocol operations, the first value is
    the |unipro| device id of the source of the request.
 
-::
-
-    int hotplug(u8 svc_device_id, u8 module_id, u16 id_data_size,
-                u8 id_data[]);
-
-..
+.. c:function:: int hotplug(u8 svc_device_id, u8 module_id, u16 id_data_size, u8 id_data[]);
 
     This operation is sent by the SVC to the AP to inform it that a
     module has been inserted and is now present in the endo. The module
@@ -167,22 +125,13 @@ Conceptually, the operations in the Greybus control protocol are:
     provides identifying data that the SVC acquired from the module in
     its response to the SVC identify request.
 
-::
-
-    int hotunplug(u8 svc_device_id, u8 module_id);
-
-..
+.. c:function:: int hotunplug(u8 svc_device_id, u8 module_id);
 
     This operation is sent by the SVC to the AP to inform it that a
     module that had previously been subject of a hotplug operation has
     been removed from the endo.
 
-::
-
-    int link_up(u8 svc_device_id, u8 module_id, u8 interface_id,
-                u8 device_id);
-
-..
+.. c:function:: int link_up(u8 svc_device_id, u8 module_id, u8 interface_id, u8 device_id);
 
    This operation is sent by the SVC to the AP to inform it that an
    interface on a module has indicated its link is functioning. The
@@ -192,22 +141,14 @@ Conceptually, the operations in the Greybus control protocol are:
    there is more than one. The device id tells the AP what |unipro|
    device id is assigned to that interface.
 
-::
-
-    int link_down(u8 svc_device_id, u8 device_id);
-
-..
+.. c:function:: int link_down(u8 svc_device_id, u8 device_id);
 
     This operation is sent by the SVC to the AP to report that an
     interface that was previously reported to be up is no longer
     functional.  The device id is sufficient to identify the link that
     has gone down.
 
-::
-
-    int set_route(u8 ap_device_id, u8 from_device_id, u8 to_device_id);
-
-..
+.. c:function:: int set_route(u8 ap_device_id, u8 from_device_id, u8 to_device_id);
 
     This operation is sent by the AP to the SVC to request that a
     bidirectional route be set up in the |unipro| switching network that
@@ -217,21 +158,13 @@ Conceptually, the operations in the Greybus control protocol are:
     routing is based only on destination address, and it is not
     possible to disable a route [#ce]_ [#cf]_.**
 
-::
-
-    int enable_route(u8 ap_device_id, u8 from_device_id, u8 to_device_id);
-
-..
+.. c:function:: int enable_route(u8 ap_device_id, u8 from_device_id, u8 to_device_id);
 
     This operation is sent by the AP to the SVC to request that a
     route defined by an earlier set route call should be enabled,
     allowing traffic to flow.
 
-::
-
-    int disable_route(u8 ap_device_id, u8 from_device_id, u8 to_device_id);
-
-..
+.. c:function:: int disable_route(u8 ap_device_id, u8 from_device_id, u8 to_device_id);
 
     This operation is sent by the AP to the SVC to request that a
     route defined by an earlier set route call should be disabled,
