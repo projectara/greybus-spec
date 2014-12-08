@@ -88,14 +88,16 @@ Greybus GPIO Protocol Operations
 
 All operations sent to a GPIO controller are contained within a
 Greybus GPIO request message. Every operation request will result in a
-matching response [#bp]_ [#bq]_ [#br]_ [#bs]_ from the GPIO
-controller, also taking the form of a GPIO controller message.  The
-request and response messages for each GPIO operation are defined
-below.
+matching response from the GPIO controller, also taking the form of a
+GPIO controller message.  The request and response messages for each
+GPIO operation are defined below.
 
 The following table describes the Greybus GPIO protocol operation
 types and their values. Both the request type and response type values
 are shown.
+
+**TODO - Add GPIO "interrupt" type requests from the device that are
+unsolicited.**
 
 .. list-table::
    :header-rows: 1
@@ -2159,27 +2161,6 @@ TBD
 
 .. rubric:: Footnotes
 
-
-.. [#bp] If the AP send out a request, it will automatically receive a
-         response through CPort Rx path, right? So, the AP need to
-         decode the response message to see what the message is .
-
-.. [#bq] Yes.  The response can be as simple as acknowledging that the
-         request was received, but a few request types may supply
-         additional information.
-
-.. [#br] If the response is just acknowledging that the request was
-         received, it my be useless for AP to get this
-         information. But, AP does not know whether it's a simple
-         acknowledge or not. So, there will always an interrupt to
-         notify the AP that a response messages received. Then AP will
-         be busy to serve the interrupt.
-
-.. [#bs] We have discussed having an option for sending requests
-         without a response for cases where the sender really doesn't
-         care.  I am only now updating the document to reflect some
-         other changes; I believe the no-response option will be added
-         before this is finalized.
 
 .. [#bt] Each request can only set one line? Why cannt it set multiple
          lines with each request?
