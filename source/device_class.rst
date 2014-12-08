@@ -432,7 +432,7 @@ Greybus battery adapters.  These values are taken directly from the
    * - Unknown
      - 0x0000
    * - Charging
-     - 0x0001 [#bo]_
+     - 0x0001
    * - Discharging
      - 0x0002
    * - Not Charging
@@ -728,18 +728,4 @@ WiFi Protocol
 -------------
 
 TBD
-
-
-.. Footnotes
-.. =========
-
-.. rubric:: Footnotes
-
-.. [#bo] in the case of a weak USB charger (like a regular USB port),
-         there is actually a possibility that the battery is "charging
-         but discharging", i.e. the charging current is less that the
-         current consumed by the phone. Would should be the status
-         reported then? also note the get_current() function returns
-         unsigned value, so cannot be used to handle it.
-
 
