@@ -1,15 +1,19 @@
 # Makefile for Sphinx documentation
 #
 
+# try to determine the local copy of sphinx, different distros name it
+# different things.  Yeah for Python breaking version compatility!  :(
+SPHINX := $(shell { command -v sphinx-build || command -v sphinx-build2; } 2>/dev/null)
+
 # You can set these variables from the command line.
 SPHINXOPTS    =
-SPHINXBUILD   = sphinx-build
+SPHINXBUILD   ?= $(SPHINX)
 PAPER         =
 BUILDDIR      = build
 
 # User-friendly check for sphinx-build
 ifeq ($(shell which $(SPHINXBUILD) >/dev/null 2>&1; echo $$?), 1)
-$(error The '$(SPHINXBUILD)' command was not found. Make sure you have Sphinx installed, then set the SPHINXBUILD environment variable to point to the full path of the '$(SPHINXBUILD)' executable. Alternatively you can add the directory with the executable to your PATH. If you don't have Sphinx installed, grab it from http://sphinx-doc.org/)
+$(error The 'sphinx-build' command was not found. Make sure you have Sphinx installed, then set the SPHINXBUILD environment variable to point to the full path of the '$(SPHINXBUILD)' executable. Alternatively you can add the directory with the executable to your PATH. If you don't have Sphinx installed, grab it from http://sphinx-doc.org/)
 endif
 
 # ' (this line works around an Emacs makefile-mode bug)
