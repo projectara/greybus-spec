@@ -23,7 +23,7 @@ PAPEROPT_a4     = -D latex_paper_size=a4
 PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
 
-.PHONY: help clean html pdf
+.PHONY: help clean html pdf all
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
@@ -42,3 +42,5 @@ pdf:
 	$(SPHINXBUILD) -b pdf $(ALLSPHINXOPTS) $(BUILDDIR)/pdf
 	@echo
 	@echo "Build finished. The PDF files are in $(BUILDDIR)/pdf."
+
+all:	html pdf
