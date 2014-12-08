@@ -110,8 +110,6 @@ are laid out below.
 Descriptor Header
 """""""""""""""""
 
- [#f]_ [#g]_
-
 .. list-table::
    :header-rows: 1
 
@@ -484,12 +482,6 @@ Protocol
 .. =========
 
 .. rubric:: Footnotes
-
-.. [#f] I suggest the total size of the header is word aligned(4bytes
-        aligned). Also , the other message's part better to be word aligned.
-
-.. [#g] Any objections to just making this so?  I think we may have
-        already done so in the code.
 
 .. [#h] This is a pretty vague statement. Any idea how to make it
         sharper? Why not have major/minor versions for this as well, so
