@@ -234,7 +234,7 @@ Conceptually, the operations in the Greybus battery protocol are:
 .. c:function:: int get_current(u32 *current);
 
     Returns a value indicating the current current supplied or drawn
-    [#bk]_ of the battery.
+    of the battery.
 
 Greybus Battery Message Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -723,8 +723,6 @@ TBD
 .. =========
 
 .. rubric:: Footnotes
-
-.. [#bk] typo: voltage instead of current
 
 .. [#bl] Can we add -
 
