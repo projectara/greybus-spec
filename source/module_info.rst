@@ -43,7 +43,7 @@ following general requirements:
 Module Manifest
 ---------------
 
-The Module Manifest [#d]_ [#e]_ is a contiguous buffer that includes a
+The Module Manifest is a contiguous buffer that includes a
 Manifest Header and a set of Descriptors.  When read, a Module
 Manifest is transferred in its entirety.  This allows the module to be
 described to the host all at once, alleviating the need for multiple
@@ -484,13 +484,6 @@ Protocol
 .. =========
 
 .. rubric:: Footnotes
-
-.. [#d] In what way can the host get the module manifest information?
-
-.. [#e] The SVC will provide the module manifest via messages to the
-        AP. We have stated that a hotplug event will supply the
-        manifest. Some of the details of this have not yet been fully
-        specified.
 
 .. [#f] I suggest the total size of the header is word aligned(4bytes
         aligned). Also , the other message's part better to be word aligned.
