@@ -99,43 +99,10 @@ overall Greybus Application protocol document.
 To agree on a protocol, an operation request supplies the (greatest)
 major and minor version of the protocol supported by the source of a
 request. The request destination compares that version with the
-(greatest) version of the protocol it supports.  If the destination
-supports a protocol version with major number equal to that supplied
-by the source, and a minor number greater than or equal to that
-supplied by the source, it shall communicate using the protocol
-version equal to that supplied by the source. Otherwise, it decides
-that its own version of the protocol will be the one to be used [#bf]_
-[#bg]_. In either case, the chosen version is sent back in the
-response, and the source interface will honor that decision and use
-the selected version of the protocol. As a consequence of this,
-protocol handlers must be capable of handling all prior versions of
-the protocol.
-
-
-.. Footnotes
-.. =========
-
-.. rubric:: Footnotes
-
-.. [#bf] This is kind of vague.
-
-         Since the backwards compatibility requirement implies that
-         protocol versions form a total order (X.Y is less than X.(Y+n)
-         and X.Y is less than (X+n).Z for nonnegative integers X,Y,Z,
-         and positive integers n), perhaps we can introduce formal
-         language that more clearly defines the "greater" and "greater
-         than or equal to" relations between protocol versions, and
-         rely on that with more precision here?
-
-.. [#bg] That would be great.
-
-         I found it very cumbersome to try to explain this, and in the
-         end it is fairly simple logic.  I would love to have it
-         improved but at the moment won't try myself.
-
-
-         Similarly we should probably explain that "X.Y" is a notation
-         we use for major version X, minor version Y (if, in fact,
-         that's what we're doing...).
-
+(greatest) version of the protocol it supports.  The version that is the
+largest common version number of the protocol sent by both sides shall
+be the version that is to be used in communicating between the devices.
+This chosen version version will be returned back as a response of the
+request.  As a consequence of this, protocol handlers must be capable of
+handling all prior versions of the protocol.
 
