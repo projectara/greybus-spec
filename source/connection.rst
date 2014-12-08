@@ -18,9 +18,10 @@ If the operation completed successfully the status value is 0.
 Otherwise the reason it was not successful will be conveyed by one of
 the positive values defined in the following table.
 
-A protocol can define its own status values if needed [#ay]_ [#bc]_;
-every status byte with a MSB set to one beside 0xff will be considered
-as a protocol status value.
+A protocol can define its own status values if needed. These status
+values shall lie within the range defined by the "(Reserved for
+protocol use)" table entry below. Every status byte with a MSB set to
+one other than 0xff is a valid protocol status value.
 
 .. list-table::
    :header-rows: 1
@@ -28,31 +29,44 @@ as a protocol status value.
    * - Status
      - Value
      - Meaning
-   * - Success
+   * - GB_OP_SUCCESS
      - 0x00
      - Operation completed successfully
-   * - Invalid
+   * - GB_OP_INTERRUPTED
      - 0x01
-     - Invalid argument supplied
-   * - No memory
+     - Operation processing was interrupted
+   * - GB_OP_TIMEOUT
      - 0x02
-     - Memory exhaustion prevented completion
-   * - Busy
+     - Operation processing timed out
+   * - GB_OP_NO_MEMORY
      - 0x03
-     - Device or needed resource was in use
-   * - Retry
+     - Memory exhaustion prevent operation completion
+   * - GB_OP_PROTOCOL_BAD
      - 0x04
+     - Protocol is not supported by this Greybus implementation
+   * - GB_OP_OVERFLOW
+     - 0x05
+     - Request message was too large
+   * - GB_OP_INVALID
+     - 0x06
+     - Invalid argument supplied
+   * - GB_OP_RETRY
+     - 0x07
      - Request should be retried
+   * - GB_OP_UNKNOWN_ERROR
+     - 0xfe
+     - Unknown error occurred
    * - Reserved
-     - 0x05 to 0x7f
+     - 0x08 to 0x7f
      - Reserved for future use
-   * -
-     - 0x80 to 0xfe
-     - Status defined by the protocol (see protocol definitions in
-       following sections)
-   * - Bad
+   * - (Reserved for protocol use)
+     - 0x80 to 0xfd
+     - Status defined by the protocol in use (see protocol definitions
+       in following sections)
+   * - (Invalid value)
      - 0xff
-     - Initial value; never set by response
+     - Invalid initial value. A response Message shall not contain
+       this value in a status field.
 
 All protocols defined herein are subject to the
 :ref:`general-requirements` listed above.
@@ -100,20 +114,6 @@ the protocol.
 .. =========
 
 .. rubric:: Footnotes
-
-.. [#ay] Is it worth adding symbolic constants for these (e.g. reuse
-         the equivalent errno defines)? So Invalid=EINVAL, etc.
-
-         CC: +elder_alex@projectara.com
-
-.. [#bc] There are some symbolic constants we've been using in the
-         code, and I think it would be a good idea to duplicate them here.
-
-         As far as matching existing symbols like EINVAL, etc., I don't
-         like that idea.  If our meaning exactly matches the POSIX
-         EINVAL meaning, then that would be fine, but I wouldn't want
-         to assume that.  I think we need to define our own name space
-         with our own precise meaning attached to each symbol.
 
 .. [#bd] I believe this is no longer correct, since we allow protocols
          to change versions independently from one another.
