@@ -113,23 +113,4 @@ connection at once.
 A connection protocol is defined by describing the format of the
 payload portions of the request and response messages used for the
 protocol, along with all actions or state changes that take place as a
-result of successfully completing the operation [#av]_ [#aw]_ [#ax]_.
-
-
-.. Footnotes
-.. =========
-
-.. rubric:: Footnotes
-
-.. [#av] +elder_alex@projectara.com Presumably, protocols are defined
-         also in terms of state changes due to e.g. error handling for
-         failed operations as well, no?
-
-.. [#aw] I'm not completely sure what you mean.  Are you just
-         questioning the word "successfully" in this sentence?  If so,
-         you're right--error behavior should be well-defined for every
-         operation too.
-
-.. [#ax] Yes, just questioning the word "successfully"
-
-
+result of the operation.
