@@ -92,7 +92,9 @@ when a connection between CPorts is established (for all other
 protocols).  The version of a particular protocol advertised by a
 module is the same as the version of the document that defines the
 protocol (so for protocols defined herein, the version is |gb-major|.\
-|gb-minor|). [#bd]_ [#be]_
+|gb-minor|).  In the future, if the protocol specifications are split
+out of this document, the versions will become independent of the
+overall Greybus Application protocol document.
 
 To agree on a protocol, an operation request supplies the (greatest)
 major and minor version of the protocol supported by the source of a
@@ -114,20 +116,6 @@ the protocol.
 .. =========
 
 .. rubric:: Footnotes
-
-.. [#bd] I believe this is no longer correct, since we allow protocols
-         to change versions independently from one another.
-
-         Is that correct? If so, I will update the text.
-
-         CC +elder_alex@projectara.com
-
-.. [#be] It is technically correct at the moment.  If these sections
-         split into separate (and separately-versioned) documents, then
-         it would be correct for those as well.
-
-         It doesn't matter to me.  We could state what version is
-         documented for each protocol.
 
 .. [#bf] This is kind of vague.
 
