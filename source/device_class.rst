@@ -236,13 +236,20 @@ Conceptually, the operations in the Greybus battery protocol are:
     Returns a value indicating the current current supplied or drawn
     of the battery.
 
+.. c:function:: int get_total_capacity(u32 *capacity);
+
+    Returns a value indicating the total capacity in mAh of the battery.
+
+.. c:function:: int get_shutdown_temperature(u32 *temperature);
+
+    Returns a value indicating the total capacity in mAh of the battery.
+
 Greybus Battery Message Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This table describes the Greybus battery operation types [#bl]_ [#bm]_
-[#bn]_ and their values. A message type consists of an operation type
-combined with a flag (0x80) indicating whether the operation is a
-request or a response.
+This table describes the Greybus battery operation types and their
+values. A message type consists of an operation type combined with a
+flag (0x80) indicating whether the operation is a request or a response.
 
 ===========================  =============  ==============
 Descriptor Type              Request Value  Response Value
@@ -255,8 +262,10 @@ Max Voltage                  0x04           0x84
 Percent Capacity             0x05           0x85
 Temperature                  0x06           0x86
 Voltage                      0x07           0x87
-Capacity mWh                 0x08           0x88
-(all other values reserved)  0x09..0x7f     0x89..0xff
+Current                      0x08           0x88
+Capacity mAh                 0x09           0x89
+Shutdown Temperature         0x0a           0x8a
+(all other values reserved)  0x0b..0x7f     0x8b..0xff
 ===========================  =============  ==============
 
 Greybus Battery Protocol Version Operation
@@ -602,24 +611,58 @@ The Greybus battery current response contains the status byte and a
 4-byte value that represents the current of the battery being
 controlled, in µA.
 
-.. list-table::
-   :header-rows: 1
+======  ========  ====  ===============================
+Offset  Field     Size  Description
+======  ========  ====  ===============================
+0       status    1     Success, or reason for failure
+1       capacity  4     Greybus battery current in µA
+======  ========  ====  ===============================
 
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     -
-     - Success, or reason for failure
-   * - 1
-     - current
-     - 4
-     -
-     - Greybus battery current in µA
+Greybus Battery Total Capacity Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Greybus battery total capacity operation allows the AP to determine
+the total capacity of the battery.
+
+Greybus Battery Total Capacity Request
+""""""""""""""""""""""""""""""""""""""
+The Greybus battery total capacity request contains no data beyond the
+battery message header.
+
+Greybus Battery Total Capacity Response
+"""""""""""""""""""""""""""""""""""""""
+The Greybus battery total capacity response contains the status byte and a
+4-byte value that represents the total capacity of the battery being
+controlled, in mAh.
+
+======  ========  ====  ===============================
+Offset  Field     Size  Description
+======  ========  ====  ===============================
+0       status    1     Success, or reason for failure
+1       capacity  4     Greybus battery current in mAh
+======  ========  ====  ===============================
+
+Greybus Battery Shutdown Temperature Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Greybus battery shutdown temperature operation allows the AP to
+determine the total capacity of the battery.
+
+Greybus Battery Shutdown Temperature Request
+""""""""""""""""""""""""""""""""""""""""""""
+The Greybus battery shutdown temperature request contains no data beyond
+the battery message header.
+
+Greybus Battery Shutdown Temperature Response
+"""""""""""""""""""""""""""""""""""""""""""""
+The Greybus battery shutdown temperature response contains the status
+byte and a 4-byte value that represents the temperature at which the
+attery will shutdown.
+
+======  ===========  ====  =====================================
+Offset  Field        Size  Description
+======  ===========  ====  =====================================
+0       status       1     Success, or reason for failure
+1       temperature  4     Greybus battery shutdown temperature
+======  ===========  ====  =====================================
 
 Audio Protocol
 --------------
@@ -691,40 +734,6 @@ TBD
 .. =========
 
 .. rubric:: Footnotes
-
-.. [#bl] Can we add -
-
-         "get_shutdowntemperature" - shutdown temperature at which
-         device should get turned off..(60 or 80 or 70 Celsius etc..)
-
-         "get_totalcapacity" - Total (design) battery capacity in mAh.
-
-         "get_lowwarning" - when system should raise low warning level
-
-         This is to update few parameters in android framework. I see
-         these parameters vary from battery to battery.
-
-.. [#bm] for shutdown temp, would that be the
-         POWER_SUPPLY_PROP_TEMP_ALERT_MAX value in the kernel?
-
-         For total capacity, is that POWER_SUPPLY_PROP_CURRENT_MAX ?
-
-         As for "low warning", I don't understand how that works from
-         the kernel side, is there a value you read from the kernel for
-         this?  Or does Android take the existing capacity % and just
-         use it (less than 10% is an issue)?
-
-.. [#bn] yes, we use "POWER_SUPPLY_PROP_TEMP_ALERT_MAX" - get the alert
-         value for shutdown temp
-
-         At present, no idea if we can calculate total capacity in mAh
-         from "POWER_SUPPLY_PROP_CURRENT_MAX" ? Do you have any ?  Need
-         to look further for this.
-
-         "low warning" level is statically defined in user space config
-         file for each vendor. But you are right We can use static
-         value for all - 10/15% to indicate low warning level.. - I am
-         ok with that
 
 .. [#bo] in the case of a weak USB charger (like a regular USB port),
          there is actually a possibility that the battery is "charging
