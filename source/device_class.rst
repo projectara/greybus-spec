@@ -244,52 +244,20 @@ This table describes the Greybus battery operation types [#bl]_ [#bm]_
 combined with a flag (0x80) indicating whether the operation is a
 request or a response.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Descriptor Type
-     - Request Value
-     - Response Value
-
-   * - Invalid
-     - 0x00
-     - 0x80
-
-   * - Protocol version
-     - 0x01
-     - 0x81
-
-   * - Technology
-     - 0x02
-     - 0x82
-
-   * - Status
-     - 0x03
-     - 0x83
-
-   * - Max Voltage
-     - 0x04
-     - 0x84
-
-   * - Percent Capacity
-     - 0x05
-     - 0x85
-
-   * - Temperature
-     - 0x06
-     - 0x86
-
-   * - Voltage
-     - 0x07
-     - 0x87
-
-   * - Capacity mWh
-     - 0x08
-     - 0x88
-
-   * - (All other values reserved)
-     - 0x09..0x7f
-     - 0x89..0xff
+===========================  =============  ==============
+Descriptor Type              Request Value  Response Value
+===========================  =============  ==============
+Invalid                      0x00           0x80
+Protocol Version             0x01           0x81
+Technology                   0x02           0x82
+Status                       0x03           0x83
+Max Voltage                  0x04           0x84
+Percent Capacity             0x05           0x85
+Temperature                  0x06           0x86
+Voltage                      0x07           0x87
+Capacity mWh                 0x08           0x88
+(all other values reserved)  0x09..0x7f     0x89..0xff
+===========================  =============  ==============
 
 Greybus Battery Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
