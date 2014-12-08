@@ -44,10 +44,10 @@
    hardware_model
    module_info
    operations
+   control
    connection
    device_class
    bridged_phy
-   control
 
 
 .. Footnotes
