@@ -18,9 +18,9 @@ If the operation completed successfully the status value is 0.
 Otherwise the reason it was not successful will be conveyed by one of
 the positive values defined in the following table.
 
-A protocol can define its own status values if needed [#ay]_ [#az]_
-[#ba]_ [#bb]_ [#bc]_; every status byte with a MSB set to one beside
-0xff will be considered as a protocol status value.
+A protocol can define its own status values if needed [#ay]_ [#bc]_;
+every status byte with a MSB set to one beside 0xff will be considered
+as a protocol status value.
 
 .. list-table::
    :header-rows: 1
@@ -105,12 +105,6 @@ the protocol.
          the equivalent errno defines)? So Invalid=EINVAL, etc.
 
          CC: +elder_alex@projectara.com
-
-.. [#az] Marked as resolved
-
-.. [#ba] Re-opened
-
-.. [#bb] Whoops.
 
 .. [#bc] There are some symbolic constants we've been using in the
          code, and I think it would be a good idea to duplicate them here.
