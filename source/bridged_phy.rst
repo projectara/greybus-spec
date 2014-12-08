@@ -533,8 +533,10 @@ value.
 Greybus GPIO Set Request
 """"""""""""""""""""""""
 
-The Greybus GPIO set request [#bt]_ [#bu]_ supplies the number of the
-line and the value to be set.
+The Greybus GPIO set request supplies the number of the line and the
+value to be set.
+
+**TODO make this a mask to allow multiple values to be set at once?**
 
 .. list-table::
    :header-rows: 1
@@ -2154,18 +2156,4 @@ SDIO Protocol
 -------------
 
 TBD
-
-
-.. Footnotes
-.. =========
-
-.. rubric:: Footnotes
-
-
-.. [#bt] Each request can only set one line? Why cannt it set multiple
-         lines with each request?
-
-.. [#bu] Good question.  I suppose we could encode a mask of the GPIOs
-         to be affected rather than just indicating a single one.
-
 
