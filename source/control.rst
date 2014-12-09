@@ -30,12 +30,29 @@ Conceptually, the operations in the Greybus control protocol are:
     the module resides on that endo, which interface it is on that
     module, as well as the |unipro| device id assigned to the
     interface. The destination supplies in its response the
-    number [#bv]_ of additional device ids it requires [#bw]_ to
+    number of additional device ids it requires to
     represent the range of CPort ids it supports. The destination
     also provides additional identifying information in its
     response. All versions of the control protocol support the
     identify operation, so this operation can be sent prior to
     performing a handshake between interfaces.
+
+.. There are 2^12 unique CPort ids (defined by 7-bit encoded
+   device id and 5-bit CPort id). The absolute maximum number
+   required by an interface would be half that.  That means no
+   more than 64 device ids can be assigned to an interface.
+   - Alex
+
+.. What happens if the response contains an invalid number of
+   additional device ids?
+   What happens if we are unable to allocate the number that are
+   required?  This protocol assumes the response is acceptable.
+   (This is why a revoke operation might be needed.)
+   We could resolve this with a weird nested request--where the
+   destination requests more before responding to the
+   assign_device_id request.
+   - Alex
+
 
 .. c:function:: int handshake(u8 src_device_id, u8 src_major, u8 src_minor, u8 *major, u8 *minor);
 
@@ -321,8 +338,12 @@ value indicating how many additional device ids the interface requires
 to account for its range of CPort ids (normally this is 0). Finally,
 the response contains additional data to identify the interface,
 beginning with a two-byte size field.  The identity data is padded if
-necessary [#cg]_to ensure the response payload size is a multiple of 4
+necessary to ensure the response payload size is a multiple of 4
 bytes.
+
+.. Padding, is this actually important? I don't really think so.  Already
+   the header is making the alignment unpredictable.
+   - Alex
 
 .. list-table::
    :header-rows: 1
@@ -344,14 +365,34 @@ bytes.
      - Number of additional device ids required
    * - 2
      - Identity data size
-     - 2 [#ch]_
+     - 2
      - N
      - Number of bytes of identity data
    * - 4
-     - Identity data [#ci]_ [#cj]_ [#ck]_
+     - Identity data
      - N
      -
      - Identity data from the interface (padded)
+
+.. Identity data size: I would like to make the identity data be fairly
+   limited--like the vendor id, product id, version, and maybe unique
+   id.  In that case I would want to switch the size field to be one
+   byte, to emphasize it's intended to be a small amount of data.
+   - Alex
+
+.. Identity data: This would be the module manifest as currently specified.
+   - Alex
+   What is the expected size of the manifest data? Should it be sent in
+   multiple messages?
+   - Jean
+   We've talked about this. Most of the data is small-on the order of a
+   few bytes.  But strings can be 255 bytes each, and there could be
+   dozens of CPorts.  So I'd say on the order of 1KB would be
+   reasonable.
+   Everything we send will be done using a single |unipro|
+   message.  This will be broken up by |unipro| into segments as
+   needed.
+   - Alex
 
 Greybus Control Handshake Operation
 -----------------------------------
@@ -513,7 +554,16 @@ includes a block of data intended to ensure only an authenticated
 battery can successfully complete this operation.
 
 .. todo::
-    Details about the content of this data are not yet specified [#cn]_ [#co]_.
+    Details about the content of this data are not yet specified.
+
+.. The folowing info is needed: battery capacity, charge (%) so that the
+   SVC knows if there is sufficient power for the boot sequence.
+   - Jean
+   Yes, this is the subject of an ongoing e-mail thread.  The power
+   information might be exchanged during an earlier pre-boot phase of
+   operation.  Or, we may include this in the "identify" operation
+   described earlier.
+   - Alex
 
 Greybus Control Register Battery Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -568,7 +618,7 @@ Greybus Control Connect Operation
 
 The Greybus control connect operation is used to establish a
 connection between a CPort associated with one interface with a CPort
-associated with another interface [#cp]_ [#cq]_. The protocol used
+associated with another interface.  The protocol used
 over the connection is the one advertised in the module manifest as
 being associated with the destination CPort. The connect operation
 allows the version of that protocol to be used over the connection to
@@ -576,6 +626,12 @@ be determined.  Operations defined for the protocol can only be
 performed on the connection when a connection has been established.  A
 connection is defined by a CPort and device id for one interface and a
 CPort and device id for another interface.
+
+.. This doesn't apply to ES1
+   - Jean
+   Do you say this because ES1 can't support it, or because our schedule
+   dictates that we won't be doing this for the upcoming demo?
+   - Alex
 
 Greybus Control Connect Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -719,7 +775,7 @@ Greybus Control Connect Peer Operation
 
 The Greybus control connect peer operation is used to request a
 connection be established between CPorts on two other interfaces
-[#ct]_--separate from the interface over which the request is
+--separate from the interface over which the request is
 sent. This is used by the AP only, to set up a direct communication
 channel between CPorts on two other modules. Before responding, the
 destination will initiate a connection with the peer interface, using
@@ -728,6 +784,9 @@ CPort id at the other end.  If necessary, the destination will first
 perform a handshake with the peer interface. Once the connection has
 been established between the destination and its peer, the destination
 will reply to the source with the status of the request.
+
+.. This doesn't apply to ES1
+   - Jean
 
 Greybus Control Connect Peer Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1257,65 +1316,3 @@ The disable route response contains only the status byte.
      - 1
      -
      - Success, or reason for failure
-
-.. Footnotes
-.. =========
-
-.. rubric:: Footnotes
-
-
-.. [#bv] There are 2^12 unique CPort ids (defined by 7-bit encoded
-         device id and 5-bit CPort id). The absolute maximum number
-         required by an interface would be half that.  That means no
-         more than 64 device ids can be assigned to an interface.
-
-.. [#bw] What happens if the response contains an invalid number of
-         additional device ids?
-
-         What happens if we are unable to allocate the number that are
-         required?  This protocol assumes the response is acceptable.
-         (This is why a revoke operation might be needed.)
-
-         We could resolve this with a weird nested request--where the
-         destination requests more before responding to the
-         assign_device_id request.
-
-.. [#cg] Is this actually important? I don't really think so.  Already
-         the header is making the alignment unpredictable.
-
-.. [#ch] I would like to make the identity data be fairly
-         limited--like the vendor id, product id, version, and maybe
-         unique id.  In that case I would want to switch this size
-         field to be one byte, to emphasize it's intended to be a
-         small amount of data.
-
-.. [#ci] This would be the module manifest as currently specified.
-
-.. [#cj] What is the expected size of the manifest data? Should it be
-         sent in multiple messages?
-
-.. [#ck] We've talked about this. Most of the data is small-on the
-         order of a few bytes.  But strings can be 255 bytes each, and
-         there could be dozens of CPorts.  So I'd say on the order of
-         1KB would be reasonable.
-
-         Everything we send will be done using a single |unipro|
-         message.  This will be broken up by |unipro| into segments as
-         needed.
-
-.. [#cn] The folowing info is needed: battery capacity, charge (%) so
-         that the SVC knows if there is sufficient power for the boot
-         sequence
-
-.. [#co] Yes, this is the subject of an ongoing e-mail thread.  The
-         power information might be exchanged during an earlier
-         pre-boot phase of operation.  Or, we may include this in the
-         "identify" operation described earlier.
-
-.. [#cp] This doesn't apply to ES1
-
-.. [#cq] Do you say this because ES1 can't support it, or because our
-        schedule dictates that we won't be doing this for the upcoming demo?
-
-.. [#ct] This doesn't apply to ES1
-
