@@ -421,7 +421,7 @@ Protocol
    * - Control
      - 0x00
 
-   * - AP [#r]_ [#s]_
+   * - AP
      - 0x01
 
    * - GPIO
@@ -474,20 +474,3 @@ Protocol
 
    * - Vendor Specific
      - 0xff
-
-.. Footnotes
-.. =========
-
-.. rubric:: Footnotes
-
-.. [#r] I think there will be no "AP" protocol. This table is currently
-        tentative.  To date, only GPIO, I2C, and PWM protocols are
-        well-defined.
-
-.. [#s] On the other hand, I believe there will be an "SVC" protocol
-        that will implement certain requests between the AP and the SVC
-        (such as setting routes, or the SVC notifying the AP about
-        battery status and module events).
-
-
-
