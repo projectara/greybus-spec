@@ -69,7 +69,7 @@ with which the Manifest complies.
    * - 0
      - size
      - 2
-     -
+     - Number
      - Size of the entire manifest
 
    * - 2
@@ -193,31 +193,31 @@ module descriptor.
    * - 3
      - vendor
      - 2
-     -
+     - ID
      - Module vendor id
 
    * - 5
      - product
      - 2
-     -
+     - ID
      - Module product Id
 
    * - 7
      - vendor_string_id
      - 1
-     -
+     - ID
      - String id for descriptor containing the vendor name
 
    * - 8
      - product_string_id
      - 1
-     -
+     - ID
      - String id for descriptor containing the product name
 
    * - 9
      - unique_id
      - 8
-     -
+     - ID
      - Unique ID of the module
 
 The *vendor* field is a value assigned by Google.  All vendors should
@@ -291,14 +291,16 @@ vendor) string field may refer to string id 2.
    * - 4
      - id
      - 1
-     - cannot be 0x00
+     - ID
      - String id for this descriptor
 
    * - 5
      - string
      - X
-     -
-     - UTF-8 characters for the string (padded if necessary)
+     - UTF-8
+     - characters for the string (padded if necessary)
+
+The *id* field can not be 0x00, as that is an invalid String ID value.
 
 Interface Descriptor
 ^^^^^^^^^^^^^^^^^^^^
@@ -336,7 +338,7 @@ associated with.
    * - 3
      - id
      - 1
-     -
+     - ID
      - Module-unique Id for this interface
 
 CPort Descriptor
@@ -380,19 +382,19 @@ Class Protocols below.
    * - 3
      - interface
      - 1
-     -
+     - ID
      - Interface Id this CPort is associated with
 
    * - 4
      - id
      - 2
-     -
+     - ID
      - Id (destination address) of the CPort
 
    * - 6
      - protocol
      - 1
-     -
+     - Number
      - Protocol used for this CPort
 
 The *id* field is the CPort identifier used by other modules to direct
