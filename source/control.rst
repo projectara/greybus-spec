@@ -98,7 +98,7 @@ Conceptually, the operations in the Greybus control protocol are:
     interface establish a connection with an interface in another peer
     module. The destination interface responds to this request by
     initiating a connection request between the indicated destination
-    CPort [#bx]_ [#by]_ and the one on the indicated peer interface.
+    CPort and the one on the indicated peer interface.
 
 .. c:function:: int disconnect_peer(u8 src_device_id, u16 dst_cport_id);
 
@@ -1275,28 +1275,6 @@ The disable route response contains only the status byte.
          We could resolve this with a weird nested request--where the
          destination requests more before responding to the
          assign_device_id request.
-
-.. [#bx] Should this be src_cport_id?
-
-.. [#by] No.
-
-         There are three interfaces involved here.  The "source" (the
-         AP); the "destination" (to which the request is sent); and
-         the "peer" (the one with which the destination will establish
-         a connection).
-
-         The source device id defines where the destination should
-         send its response.
-
-         The destination device id is implied, because the destination
-         receives the request and knows its own device id.
-
-         The destination CPort id names the "local" (with respect to
-         the destination interface) end of the connection.
-
-         The peer device id and peer CPort id define the "remote"
-         (again with respect to the destination interface) end of the
-         connection to be established.
 
 .. [#bz] Is this really any different from disconnect()? You seem to be
            providing the same amount of data
