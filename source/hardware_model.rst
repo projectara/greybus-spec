@@ -27,7 +27,7 @@ components:
    the endoskeleton. Modules shall implement communication protocols
    in accordance with this document's specifications.
 
-2. Exactly one Application Processor module, hereafter referred to as
+3. Exactly one Application Processor module, hereafter referred to as
    the “AP.”
 
 For a full description of the Project Ara platform, please see the
