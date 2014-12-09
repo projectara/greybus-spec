@@ -19,12 +19,22 @@
 
 .. footer::
 
-   Google Confidential/Restricted. ###Page###/###Total###
+   Copyright © 2014 Google Inc. All rights reserved. Your use of this
+   Greybus Specification is expressly subject to the terms of the MDK
+   License Agreement found at http://projectara.com/mdk-license.txt.
+
+
+   Greybus Specification Version: |release|
+   |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_|
+   |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_|
+   |today|
+   |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_|
+   |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_|
+   Page ###Page### of ###Total###
 
 .. header::
 
-   Greybus Specification Version: |gb-major|.\ |gb-minor|
-
+   |_|
 
 .. warning::
 
