@@ -6,14 +6,15 @@ Module Information
                     | Imitation is the sincerest form of flattery.
                     | — Charles Caleb Colton
 
-A Greybus module must contain self-descriptive information in order to
-identify itself to the |unipro| network. This information is found in
-the Module Manifest, which describes components present within the
-module that are accessible via |unipro|. The Module Manifest includes a
-set of Descriptors which present a functional description of the
-module.  Together, these define what the module is from an application
-protocol layer, including its capabilities, and how it should be
-communicated with.
+A Greybus module shall provide self-descriptive information in order to
+establish communications with other modules on the |unipro| network.
+This information is provided via a Module Manifest, which describes
+components present within the module that are accessible via |unipro|.
+The Module Manifest is a data structure, which includes a set of
+Descriptors which present a functional description of the module.
+Together, these Descriptors define the module's capabilities and means of
+communication via |unipro| from the perspective of the application layer
+and above.
 
 .. _general-requirements:
 
