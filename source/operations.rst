@@ -71,32 +71,13 @@ Operation Message Header
 
 The following table summarizes the format of an operation message header.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-
-   * - 0
-     - size
-     - 2
-     - Number
-     - Size of the entire operation message
-
-   * - 2
-     - id
-     - 2
-     - ID
-     - Requestor-supplied unique request identifier
-
-   * - 4
-     - type
-     - 1
-     - Number
-     - Type of Greybus operation (protocol-specific)
+========  ==============  ======  ==========      ===========================
+Offset    Field           Size    Value           Description
+========  ==============  ======  ==========      ===========================
+0         size            2       Number          Size of this operation message
+2         id              2       ID              Requestor-supplied unique request identifier
+4         type            1       Number          Type of Greybus operation (protocol-specific)
+========  ==============  ======  ==========      ===========================
 
 The *size* includes the operation message header as well as any
 payload that follows it. As mentioned earlier, the meaning of a type
