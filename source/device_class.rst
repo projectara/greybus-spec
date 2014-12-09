@@ -457,12 +457,12 @@ The Greybus battery current response contains the status byte and a
 4-byte value that represents the current of the battery being
 controlled, in µA.
 
-======  ========  ====  ===============================
-Offset  Field     Size  Description
-======  ========  ====  ===============================
-0       status    1     Success, or reason for failure
-1       capacity  4     Greybus battery current in µA
-======  ========  ====  ===============================
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+1        current         4       Number          Battery current in µA
+=======  ==============  ======  ==========      ===========================
 
 Greybus Battery Total Capacity Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -480,12 +480,12 @@ The Greybus battery total capacity response contains the status byte and a
 4-byte value that represents the total capacity of the battery being
 controlled, in mAh.
 
-======  ========  ====  ===============================
-Offset  Field     Size  Description
-======  ========  ====  ===============================
-0       status    1     Success, or reason for failure
-1       capacity  4     Greybus battery current in mAh
-======  ========  ====  ===============================
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+1        capacity        4       Number          Battery capacity in mAh
+=======  ==============  ======  ==========      ===========================
 
 Greybus Battery Shutdown Temperature Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -503,12 +503,12 @@ The Greybus battery shutdown temperature response contains the status
 byte and a 4-byte value that represents the temperature at which the
 attery will shutdown.
 
-======  ===========  ====  =====================================
-Offset  Field        Size  Description
-======  ===========  ====  =====================================
-0       status       1     Success, or reason for failure
-1       temperature  4     Greybus battery shutdown temperature
-======  ===========  ====  =====================================
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+1        temperature     4       Number          Battery shutdown temperature in ⅒℃
+=======  ==============  ======  ==========      ===========================
 
 Audio Protocol
 --------------
