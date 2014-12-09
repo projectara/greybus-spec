@@ -442,8 +442,10 @@ event notifications (such as hotplug events). More generally, this can
 be used to control whether certain requests (such as switch
 configuration) are allowed.  This request includes a block of data
 intended to ensure only an authenticated AP can successfully complete
-this operation. Details about the content of this data is not yet
-specified [#cl]_.
+this operation.
+
+.. todo::
+    Details about the content of this data are not yet specified.
 
 Greybus Control Register AP Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -508,8 +510,10 @@ This operation is used by a battery module to register itself with the
 SVC as a battery. More than one battery can be registered. The SVC
 uses this to know which modules can supply power.  This request
 includes a block of data intended to ensure only an authenticated
-battery can successfully complete this operation. Details about the
-content of this data is not yet specified [#cm]_ [#cn]_ [#co]_.
+battery can successfully complete this operation.
+
+.. todo::
+    Details about the content of this data are not yet specified [#cn]_ [#co]_.
 
 Greybus Control Register Battery Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1298,10 +1302,6 @@ The disable route response contains only the status byte.
          Everything we send will be done using a single |unipro|
          message.  This will be broken up by |unipro| into segments as
          needed.
-
-.. [#cl] These details need to be nailed down.
-
-.. [#cm] These details need to be nailed down.
 
 .. [#cn] The folowing info is needed: battery capacity, charge (%) so
          that the SVC knows if there is sufficient power for the boot
