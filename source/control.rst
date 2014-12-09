@@ -752,7 +752,7 @@ negotiate the version of that protocol to use.
      -
      - Device id of source for response
    * - 1
-     - Destination CPort id [#cu]_ [#cv]_
+     - Destination CPort id
      - 2
      -
      - CPort at destination to use for connection
@@ -1319,9 +1319,3 @@ The disable route response contains only the status byte.
 
 .. [#ct] This doesn't apply to ES1
 
-.. [#cu] Is the source device id is also needed (aka 'Destination
-         device id' in the table)? Ditto for the disconnect message
-
-.. [#cv] The request will be sent to the destination device.  Each
-         interface knows its own device id, so the destination device
-         is implied.
