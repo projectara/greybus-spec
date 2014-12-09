@@ -220,14 +220,12 @@ CPort is associated with one of the module’s interfaces, and has an id
 unique for that interface.  Every CPort defines the protocol used by
 the AP to interact with the CPort. A special control CPort shall be
 defined for every interface, and shall be defined to use the “control”
-protocol. The details of these protocols are defined in the section Function
-Class Protocols below.
+protocol. The details of these protocols are defined in the sections
+:ref:`device-class-protocols` and :ref:`bridged-phy-protocols` below.
 
 .. todo::
     The details of how the CPort identifier is determined will be
     specified in a later version of this document.
-
-**FIXME** "Function class protocols" is an invalid link
 
 ========  ==============  ======  ==========  ===========================
 Offset    Field           Size    Value       Description
