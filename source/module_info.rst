@@ -238,15 +238,16 @@ number shall be changed if the module firmware functionality changes
 in such a way that the operating system needs to know about it. [#h]_
 [#i]_ [#j]_ [#k]_
 
-*vendor_string_id* is a reference to a specific string descriptor
- value that provides a human-readable [#l]_ [#m]_ [#n]_ description of
- the vendor who created the module.  If there is no string present for
- this value in the Module Manifest, this value shall be 0x00.
+*vendor_string_id* is a reference to a specific string descriptor id
+that provides a description of the vendor who created the module.  If
+there is no string present for this value in the Module Manifest, this
+value shall be 0x00.  See the :ref:`string-descriptor` section below for
+more details.
 
-*product_string_id* is a reference to a specific string descriptor
- value that provides a human-readable [#o]_ description of the
- product.  If there is no string present for this value in the Module
- Manifest, this value shall be 0x00.
+*product_string_id* is a reference to a specific string descriptor id
+that provides a description of the product.  If there is no string
+present for this value in the Module Manifest, this value shall be 0x00.
+See the :ref:`string-descriptor` section below for more details.
 
 The *unique_id* field is an 8 byte Unique ID that is written into each
 Greybus compliant chip during manufacturing. Google manages the Unique
@@ -256,6 +257,8 @@ interfaces, there will be more than one hardware Unique ID
 available. It is the responsibility of the module designer to
 designate one primary interface and expose that primary Unique ID in
 this field.
+
+.. _string-descriptor:
 
 String Descriptor
 ^^^^^^^^^^^^^^^^^
@@ -505,16 +508,6 @@ Protocol
 
 .. [#k] So shouldn't we just remove this one, if we don't have a use
         for it yet?
-
-.. [#l] suggest adding "but not internationalized"
-
-.. [#m] You mean it should be in English?  I'm not sure what
-        "internationalized" means.
-
-.. [#n] Right, it's human readable, but it's only in one language
-        (presumably English)
-
-.. [#o] ditto here
 
 .. [#p] This will be CPort 0 if possible.  If we can't reserve it for
         our exclusive use it will be CPort 1.
