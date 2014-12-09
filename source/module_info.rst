@@ -203,24 +203,18 @@ module descriptor.
      - Module product Id
 
    * - 7
-     - version
-     - 2
-     -
-     - Module version
-
-   * - 9
      - vendor_string_id
      - 1
      -
      - String id for descriptor containing the vendor name
 
-   * - 10
+   * - 8
      - product_string_id
      - 1
      -
      - String id for descriptor containing the product name
 
-   * - 11
+   * - 9
      - unique_id
      - 8
      -
@@ -233,11 +227,6 @@ vendor ID application process.
 
 The *product* field is controlled by the vendor, and should be unique
 per type of module that is created.
-
-The *version* field is the version of the module that is present. This
-number shall be changed if the module firmware functionality changes
-in such a way that the operating system needs to know about it. [#h]_
-[#i]_ [#j]_ [#k]_
 
 *vendor_string_id* is a reference to a specific string descriptor id
 that provides a description of the vendor who created the module.  If
@@ -486,29 +475,6 @@ Protocol
 .. =========
 
 .. rubric:: Footnotes
-
-.. [#h] This is a pretty vague statement. Any idea how to make it
-        sharper? Why not have major/minor versions for this as well, so
-        m odule vendors can handle compatibility breaks vs. bugfixes
-        the same way we do?
-
-.. [#i] Given later Greybus changes (we version protocols
-        independently), does the operating system even need to
-        interpret this value at all? Does it make sense to instead
-        specify that it's for the vendor's use, and is not given
-        special interpretation by the operating system?
-        +elder_alex@projectara.com
-
-.. [#j] The purpose for this version field is to version the module *as
-        a whole*.  In my mind, yes, it's an attribute fully under
-        control of the vendor.  I could envision a class driver of some
-        kind making use of this information, but to date we don't use
-        it. Your questions highlight that we should clarify how we
-        expect each of these fields are to be used.  If they don't
-        serve a particular purpose we should just remove them.
-
-.. [#k] So shouldn't we just remove this one, if we don't have a use
-        for it yet?
 
 .. [#p] This will be CPort 0 if possible.  If we can't reserve it for
         our exclusive use it will be CPort 1.
