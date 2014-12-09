@@ -919,35 +919,23 @@ line coding values to be set.
 
 **Stop bit format setting**
 
-.. list-table::
-   :header-rows: 1
-
-   * - 1 Stop Bit
-     - 0x00
-   * - 1.5 Stop Bits
-     - 0x01
-   * - 2 Stop Bits
-     - 0x02
-   * - (All other values reserved)
-     - 0x03..0xff
+==============================  ====
+1 Stop Bit                      0x00
+1.5 Stop Bits                   0x01
+2 Stop Bits                     0x02
+(All other values reserved)     0x03..0xff
+==============================  ====
 
 **Parity setting**
 
-.. list-table::
-   :header-rows: 1
-
-   * - No Parity
-     - 0x00
-   * - Odd Parity
-     - 0x01
-   * - Even Parity
-     - 0x02
-   * - Mark Parity
-     - 0x03
-   * - Space Parity
-     - 0x04
-   * - (All other values reserved)
-     - 0x05..0xff
+==============================  ====
+No Parity                       0x00
+Odd Parity                      0x01
+Even Parity                     0x02
+Mark Parity                     0x03
+Space Parity                    0x04
+(All other values reserved)     0x05..0xff
+==============================  ====
 
 Greybus UART Set Line Coding State Response
 """""""""""""""""""""""""""""""""""""""""""
