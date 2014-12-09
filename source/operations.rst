@@ -83,19 +83,19 @@ The following table summarizes the format of an operation message header.
    * - 0
      - size
      - 2
-     -
+     - Number
      - Size of the entire operation message
 
    * - 2
      - id
      - 2
-     -
+     - ID
      - Requestor-supplied unique request identifier
 
    * - 4
      - type
      - 1
-     -
+     - Number
      - Type of Greybus operation (protocol-specific)
 
 The *size* includes the operation message header as well as any
