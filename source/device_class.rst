@@ -95,7 +95,7 @@ report major version |gb-major|, minor version |gb-minor|.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
 
    * - 1
@@ -134,7 +134,7 @@ vibrator should now be enabled for.
    * - 0
      - timeout_ms
      - 2
-     -
+     - Number
      - timeout in milliseconds
 
 Greybus Vibrator On Control Response
@@ -154,7 +154,7 @@ The Greybus Vibrator on control response contains only the status byte.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
 
 Greybus Vibrator Off Operation
@@ -186,7 +186,7 @@ The Greybus Vibrator off control response contains only the status byte.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
 
 Battery Protocol
@@ -301,7 +301,7 @@ major version |gb-major|, minor version |gb-minor|.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
    * - 1
      - version_major
@@ -345,12 +345,12 @@ controlled.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
    * - 1
      - technology
      - 2
-     -
+     - Number
      - Greybus battery technology
 
 Greybus Battery Technology Types
@@ -409,12 +409,12 @@ The Greybus battery status response contains the status byte and a
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
    * - 1
      - battery status
      - 2
-     -
+     - Number
      - Greybus battery status
 
 Greybus Battery Status Types
@@ -470,12 +470,12 @@ being controlled, in µV.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
    * - 1
      - max voltage
      - 4
-     -
+     - Number
      - Greybus battery maximum voltage in µV
 
 Greybus Battery Capacity Operation
@@ -508,12 +508,12 @@ controlled, in percentage.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
    * - 1
      - capacity
      - 4
-     -
+     - Number
      - Greybus battery capacity in %
 
 Greybus Battery Temperature Operation
@@ -546,12 +546,12 @@ controlled, in ⅒℃.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
    * - 1
      - temperature
      - 4
-     -
+     - Number
      - Greybus battery temperature in ⅒℃
 
 Greybus Battery Voltage Operation
@@ -584,12 +584,12 @@ controlled, in µV.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
    * - 1
      - voltage
      - 4
-     -
+     - Number
      - Greybus battery voltage in µV
 
 Greybus Battery Current Operation
