@@ -42,24 +42,14 @@ This table describes the Greybus vibrator operation types and their
 values. A message type consists of an operation type combined with a
 flag (0x80) indicating whether the operation is a request or a response.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Descriptor Type
-     - Request Value
-     - Response Value
-   * - Invalid
-     - 0x00
-     - 0x80
-   * - Protocol version
-     - 0x01
-     - 0x81
-   * - Vibrator On
-     - 0x02
-     - 0x82
-   * - Vibrator Off
-     - 0x03
-     - 0x83
+==================      =============   ==============
+Descriptor Type         Request Value   Response Value
+==================      =============   ==============
+Invalid                 0x00            0x80
+Protocol Version        0x01            0x81
+Vibrator On             0x02            0x82
+Vibrator Off            0x03            0x83
+==================      =============   ==============
 
 Greybus Vibrator Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -83,32 +73,13 @@ non-zero, any other bytes in the response shall be ignored. A Greybus
 vibrator adapter adhering to the protocol specified herein shall
 report major version |gb-major|, minor version |gb-minor|.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
-
-   * - 1
-     - version_major
-     - 1
-     - |gb-major|
-     - Greybus vibrator protocol major version
-
-   * - 2
-     - version_minor
-     - 1
-     - |gb-minor|
-     - Greybus vibrator protocol minor version
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+1        version_major   1       |gb-major|      Vibrator protocol major version
+2        version_minor   1       |gb-minor|      Vibrator protocol minor version
+=======  ==============  ======  ==========      ===========================
 
 Greybus Vibrator On Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -122,40 +93,22 @@ Greybus Vibrator On Control Request
 The Greybus Vibrator on request supplies the amount of time that the
 vibrator should now be enabled for.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-
-   * - 0
-     - timeout_ms
-     - 2
-     - Number
-     - timeout in milliseconds
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        timeout_ms      2       Number          timeout in milliseconds
+=======  ==============  ======  ==========      ===========================
 
 Greybus Vibrator On Control Response
 """"""""""""""""""""""""""""""""""""
 
 The Greybus Vibrator on control response contains only the status byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
 
 Greybus Vibrator Off Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -174,20 +127,11 @@ Greybus Vibrator Off Control Response
 
 The Greybus Vibrator off control response contains only the status byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
 
 Battery Protocol
 ----------------
@@ -290,29 +234,13 @@ non-zero, any other bytes in the response shall be ignored. A Greybus
 battery adapter adhering to the protocol specified herein shall report
 major version |gb-major|, minor version |gb-minor|.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
-   * - 1
-     - version_major
-     - 1
-     - |gb-major|
-     - Greybus battery protocol major version
-   * - 2
-     - version_minor
-     - 1
-     - |gb-minor|
-     - Greybus battery protocol minor version
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+1        version_major   1       |gb-major|      Battery protocol major version
+2        version_minor   1       |gb-minor|      Battery protocol minor version
+=======  ==============  ======  ==========      ===========================
 
 Greybus Battery Technology Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -334,51 +262,33 @@ The Greybus battery functionality response contains the status byte
 and a 2-byte value that represents the type of battery being
 controlled.
 
-.. list-table::
-   :header-rows: 1
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+1        technology      2       Number          :ref:`battery-technology-type`
+=======  ==============  ======  ==========      ===========================
 
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
-   * - 1
-     - technology
-     - 2
-     - Number
-     - Greybus battery technology
+.. _battery-technology-type:
 
-Greybus Battery Technology Types
-""""""""""""""""""""""""""""""""
+Greybus Battery Technology Type
+"""""""""""""""""""""""""""""""
 
 This table describes the defined battery technologies defined for
 Greybus battery adapters.  These values are taken directly from the
 <linux/power_supply.h> header file.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Battery Type
-     - Value
-   * - Unknown
-     - 0x0000
-   * - NiMH
-     - 0x0001
-   * - LION
-     - 0x0002
-   * - LIPO
-     - 0x0003
-   * - LiFe
-     - 0x0004
-   * - NiCd
-     - 0x0005
-   * - LiMn
-     - 0x0006
+=============   ======
+Battery Type    Value
+=============   ======
+Unknown         0x0000
+NiMH            0x0001
+LION            0x0002
+LIPO            0x0003
+LiFe            0x0004
+NiCd            0x0005
+LiMn            0x0006
+=============   ======
 
 Greybus Battery Status Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -398,47 +308,31 @@ Greybus Battery Status Response
 The Greybus battery status response contains the status byte and a
 2-byte value that represents the status of battery being controlled.
 
-.. list-table::
-   :header-rows: 1
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+1        battery_status  2       Number          :ref:`battery-status`
+=======  ==============  ======  ==========      ===========================
 
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
-   * - 1
-     - battery status
-     - 2
-     - Number
-     - Greybus battery status
+.. _battery-status:
 
-Greybus Battery Status Types
-""""""""""""""""""""""""""""
+Greybus Battery Status Type
+"""""""""""""""""""""""""""
 
 This table describes the defined battery status values defined for
 Greybus battery adapters.  These values are taken directly from the
 <linux/power_supply.h> header file.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Battery Status
-     - Value
-   * - Unknown
-     - 0x0000
-   * - Charging
-     - 0x0001
-   * - Discharging
-     - 0x0002
-   * - Not Charging
-     - 0x0003
-   * - Full
-     - 0x0004
+==============  ======
+Battery Status  Value
+==============  ======
+Unknown         0x0000
+Charging        0x0001
+Discharging     0x0002
+Not Charging    0x0003
+Full            0x0004
+==============  ======
 
 Greybus Battery Max Voltage Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -459,24 +353,12 @@ The Greybus battery max voltage response contains the status byte and
 a 4-byte value that represents the maximum voltage of the battery
 being controlled, in µV.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
-   * - 1
-     - max voltage
-     - 4
-     - Number
-     - Greybus battery maximum voltage in µV
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+1        max_voltage     4       Number          Battery maximum voltage in µV
+=======  ==============  ======  ==========      ===========================
 
 Greybus Battery Capacity Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -497,24 +379,12 @@ The Greybus battery capacity response contains the status byte and a
 4-byte value that represents the capacity of the battery being
 controlled, in percentage.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
-   * - 1
-     - capacity
-     - 4
-     - Number
-     - Greybus battery capacity in %
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+1        capacity        4       Number          Battery capacity in %
+=======  ==============  ======  ==========      ===========================
 
 Greybus Battery Temperature Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -535,24 +405,12 @@ The Greybus battery temperature response contains the status byte and
 a 4-byte value that represents the temperature of the battery being
 controlled, in ⅒℃.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
-   * - 1
-     - temperature
-     - 4
-     - Number
-     - Greybus battery temperature in ⅒℃
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+1        temperature     4       Number          Battery temperature in ⅒℃
+=======  ==============  ======  ==========      ===========================
 
 Greybus Battery Voltage Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -573,24 +431,12 @@ The Greybus battery voltage response contains the status byte and a
 4-byte value that represents the voltage of the battery being
 controlled, in µV.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
-   * - 1
-     - voltage
-     - 4
-     - Number
-     - Greybus battery voltage in µV
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+1        voltage         4       Number          Battery voltage in µV
+=======  ==============  ======  ==========      ===========================
 
 Greybus Battery Current Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
