@@ -96,8 +96,8 @@ The following table describes the Greybus GPIO protocol operation
 types and their values. Both the request type and response type values
 are shown.
 
-**TODO - Add GPIO "interrupt" type requests from the device that are
-unsolicited.**
+.. todo::
+        Add GPIO "interrupt" type requests from the device that are unsolicited.
 
 .. list-table::
    :header-rows: 1
@@ -536,7 +536,8 @@ Greybus GPIO Set Request
 The Greybus GPIO set request supplies the number of the line and the
 value to be set.
 
-**TODO make this a mask to allow multiple values to be set at once?**
+.. todo::
+    Possibly make this a mask to allow multiple values to be set at once.
 
 .. list-table::
    :header-rows: 1

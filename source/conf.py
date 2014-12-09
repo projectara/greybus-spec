@@ -31,8 +31,12 @@ config_ara_internal = True
 # ones.
 extensions = [
     'sphinx.ext.ifconfig',
+    'sphinx.ext.todo',
     'rst2pdf.pdfbuilder'
 ]
+
+# If true, print out the TODO items in the document.
+todo_include_todos = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

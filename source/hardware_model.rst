@@ -33,7 +33,8 @@ components:
 An example Greybus [#a]_ [#b]_ system using Bridge ASICs and native
 |unipro| interfaces is shown in the following figure.
 
-.. TODO: rework this diagram, which was done in a hurry for a MIPI SW
+.. todo::
+   Rework this diagram, which was done in a hurry for a MIPI SW
    working group meeting.
 
 .. figure:: _static/example-system.png
