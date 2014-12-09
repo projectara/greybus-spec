@@ -593,7 +593,7 @@ supports.
      - Value
      - Description
    * - 0
-     - Source device id [#cr]_ [#cs]_
+     - Source device id
      - 1
      -
      - Device id of source
@@ -1316,13 +1316,6 @@ The disable route response contains only the status byte.
 
 .. [#cq] Do you say this because ES1 can't support it, or because our
         schedule dictates that we won't be doing this for the upcoming demo?
-
-.. [#cr] Is the destination device id also needed? Ditto for the
-         disconnect message
-
-.. [#cs] The message is sent to the destination device (by specifying
-         its device id in the |unipro| header).  So it's sort of
-         implied, and not part of the message itself.
 
 .. [#ct] This doesn't apply to ES1
 
