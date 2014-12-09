@@ -345,10 +345,14 @@ CPort Descriptor
 This descriptor describes a CPort implemented within the module. Each
 CPort is associated with one of the module’s interfaces, and has an id
 unique for that interface.  Every CPort defines the protocol used by
-the AP to interact with the CPort. A special control CPort [#p]_
-[#q]_shall be defined for every interface, and shall be defined to use
-the “control” protocol. The details of these protocols are defined in
-the section Function Class Protocols below.
+the AP to interact with the CPort. A special control CPort shall be
+defined for every interface, and shall be defined to use the “control”
+protocol. The details of these protocols are defined in the section Function
+Class Protocols below.
+
+.. todo::
+    The details of how the CPort identifier is determined will be
+    specified in a later version of this document.
 
 **FIXME** "Function class protocols" is an invalid link
 
@@ -475,11 +479,6 @@ Protocol
 .. =========
 
 .. rubric:: Footnotes
-
-.. [#p] This will be CPort 0 if possible.  If we can't reserve it for
-        our exclusive use it will be CPort 1.
-
-.. [#q] ...or whatever we can get.
 
 .. [#r] I think there will be no "AP" protocol. This table is currently
         tentative.  To date, only GPIO, I2C, and PWM protocols are
