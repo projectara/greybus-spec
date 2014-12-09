@@ -30,24 +30,5 @@ components:
 2. Exactly one Application Processor module, hereafter referred to as
    the “AP.”
 
-An example Greybus [#a]_ [#b]_ system using Bridge ASICs and native
-|unipro| interfaces is shown in the following figure.
-
-.. todo::
-   Rework this diagram, which was done in a hurry for a MIPI SW
-   working group meeting.
-
-.. figure:: _static/example-system.png
-   :alt: Example Greybus system
-   :figwidth: 6in
-   :align: center
-
-
-.. rubric:: Footnotes
-
-.. [#a] Also, is "Endpoint" in the diagram well-defined?  Does it
-        represent what you're later referring to as a "function?"  If
-        so I suggest you update the diagram that way also.
-
-.. [#b] Answer:  "Endpoint" in this diagram is *not* well-defined.
-
+For a full description of the Project Ara platform, please see the
+*Project Ara Module Developers Kit* specification.
