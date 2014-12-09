@@ -103,9 +103,9 @@ Conceptually, the operations in the Greybus control protocol are:
 .. c:function:: int disconnect_peer(u8 src_device_id, u16 dst_cport_id);
 
     This operation is used to tear down a previously-established
-    connection [#bz]_ [#ca]_ between a CPort on the destination interface and a
+    connection between a CPort on the destination interface and a
     CPort on one of its peer interfaces. The CPort id on the
-    destination [#cb]_ [#cc]_ [#cd]_ is sufficient to identify the connection
+    destination is sufficient to identify the connection
     to be torn down. The destination will complete a disconnect of its
     peer connection before responding to the disconnect_peer request.
 
@@ -1275,44 +1275,6 @@ The disable route response contains only the status byte.
          We could resolve this with a weird nested request--where the
          destination requests more before responding to the
          assign_device_id request.
-
-.. [#bz] Is this really any different from disconnect()? You seem to be
-           providing the same amount of data
-
-.. [#ca] Yes.
-
-         A normal disconnect is a structured tear-down (as opposed to
-         one end simply becoming unresponsive) of a connection,
-         initiated by one of the interfaces involved in the connection.
-
-         A peer disconnect is requesting another interface begin the
-         tear-down of a connection it has with a (third) peer
-         interface.
-
-         They have the same parameters but they have different
-         semantics.
-
-.. [#cb] The term destination here makes this seem somewhat
-         directional. Do you really have to disconnect the destination
-         side of the connection as set up? Or does disconnecting the
-         connected cport on either device side of the connection
-         suffice?
-
-.. [#cc] Your observation is correct, it's really generally intended
-         to be a symmetric relationship.
-
-         I was using "sender" and "receiver" initially, but Matt
-         requested I use "source" and "destination" because it was a
-         pair of terms he thought were very familiar and frequently
-         used.
-
-         I never did like the implication of direction that "source"
-         and "destination" have, so if people feel some other terms
-         are better I'm very open to switching.
-
-.. [#cd] Oh, and to answer your question, unless it turns out to not
-         be possible in implementation, my intention is to allow
-         either end of a connection to send a disconnect to the other.
 
 .. [#ce] TBC: the destination device can be disabled in the attributes;
          it is possible to re-route the traffic to the SVC's port.
