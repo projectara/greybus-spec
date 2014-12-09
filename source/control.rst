@@ -156,7 +156,7 @@ Conceptually, the operations in the Greybus control protocol are:
     ids. Initially routes are in a disabled state; traffic flow will
     only be allowed when the route has been enabled. **Note: in ES1,
     routing is based only on destination address, and it is not
-    possible to disable a route [#ce]_ [#cf]_.**
+    possible to disable a route.**
 
 .. c:function:: int enable_route(u8 ap_device_id, u8 from_device_id, u8 to_device_id);
 
@@ -1275,17 +1275,6 @@ The disable route response contains only the status byte.
          We could resolve this with a weird nested request--where the
          destination requests more before responding to the
          assign_device_id request.
-
-.. [#ce] TBC: the destination device can be disabled in the attributes;
-         it is possible to re-route the traffic to the SVC's port.
-
-.. [#cf] The reason why I said it can't be disabled is that disabling
-         a particular (from, to) route is not possible in ES1.  If you
-         want to disable one path through the switch to a destination,
-         you have to disable them all.
-
-         I'm not sure what you mean by re-routing the traffic to the
-         SVC (nor why you'd want to do that).
 
 .. [#cg] Is this actually important? I don't really think so.  Already
          the header is making the alignment unpredictable.
