@@ -197,7 +197,7 @@ values. A message type consists of an operation type combined with a
 flag (0x80) indicating whether the operation is a request or a response.
 
 ===========================  =============  ==============
-Descriptor Type              Request Value  Response Value
+Battery Operation Type       Request Value  Response Value
 ===========================  =============  ==============
 Invalid                      0x00           0x80
 Protocol Version             0x01           0x81
