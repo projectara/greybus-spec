@@ -174,7 +174,7 @@ major version 0, minor version 1.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
    * - 1
      - version_major
@@ -220,12 +220,12 @@ gaps in the numbering).
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
    * - 1
      - count
      - 1
-     -
+     - Number
      - Number of GPIO lines minus 1
 
 Greybus GPIO Activate Operation
@@ -253,7 +253,7 @@ to be activated.
    * - 0
      - which
      - 1
-     -
+     - Number
      - Controller-relative GPIO line number
 
 Greybus GPIO Activate Response
@@ -272,7 +272,7 @@ The Greybus GPIO activate response contains only the status byte.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
 
 Greybus GPIO Deactivate Operation
@@ -299,7 +299,7 @@ line to be deactivated.
    * - 0
      - which
      - 1
-     -
+     - Number
      - Controller-relative GPIO line number
 
 Greybus Deactivate Response
@@ -318,7 +318,7 @@ The Greybus GPIO deactivate response contains only the status byte.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
 
 Greybus GPIO Get Direction Operation
@@ -344,7 +344,7 @@ The Greybus GPIO get direction request supplies only the target line number.
    * - 0
      - which
      - 1
-     -
+     - Number
      - Controller-relative GPIO line number
 
 Greybus Get Direction Response
@@ -366,7 +366,7 @@ direction byte shall be ignored.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
    * - 1
      - direction
@@ -397,7 +397,7 @@ the line.
    * - 0
      - which
      - 1
-     -
+     - Number
      - Controller-relative GPIO line number
 
 Greybus Direction Input Response
@@ -417,7 +417,7 @@ byte.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
 
 Greybus GPIO Direction Output Operation
@@ -444,7 +444,7 @@ line and its initial value.
    * - 0
      - which
      - 1
-     -
+     - Number
      - Controller-relative GPIO line number
    * - 1
      - value
@@ -469,7 +469,7 @@ byte.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
 
 Greybus GPIO Get Operation
@@ -494,7 +494,7 @@ The Greybus GPIO get request supplies only the target line number.
    * - 0
      - which
      - 1
-     -
+     - Number
      - Controller-relative GPIO line number
 
 Greybus Get Response
@@ -515,7 +515,7 @@ status byte is non-zero, the value byte shall be ignored.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
    * - 1
      - value
@@ -550,7 +550,7 @@ value to be set.
    * - 0
      - which
      - 1
-     -
+     - Number
      - Controller-relative GPIO line number
    * - 1
      - value
@@ -574,7 +574,7 @@ The Greybus GPIO set response contains only the status byte.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
 
 Greybus GPIO Set Debounce Operation
@@ -601,12 +601,12 @@ period specified is 0, debounce is disabled.
    * - 0
      - which
      - 1
-     -
+     - Number
      - Controller-relative GPIO line number
    * - 1
      - usec
      - 2
-     -
+     - Number
      - Debounce period (microseconds)
 
 Greybus Set Debounce Response
@@ -625,7 +625,7 @@ The Greybus GPIO set debounce response contains only the status byte.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
 
 SPI Protocol
@@ -757,7 +757,7 @@ major version |gb-major|, minor version |gb-minor|.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
    * - 1
      - version_major
@@ -796,12 +796,12 @@ more characters to to be transmitted.
    * - 0
      - size
      - 2
-     -
+     - Number
      - Size (bytes) of data to be transmitted
    * - 2
      - data
-     -
-     -
+     - size
+     - Characters
      - 0 or more bytes of data to be transmitted
 
 Greybus UART Send Data Response
@@ -821,7 +821,7 @@ byte.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
 
 Greybus UART Receive Data Operation
@@ -848,7 +848,7 @@ be received, and the data bytes to be received.
    * - 0
      - size
      - 2
-     -
+     - Number
      - Size (bytes) of received data
    * - 2
      - data
@@ -873,7 +873,7 @@ and contains only the status byte.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
 
 Greybus UART Set Line Coding Operation
@@ -899,22 +899,22 @@ line coding values to be set.
    * - 0
      - rate
      - 4
-     -
+     - Number
      - Baud Rate setting
    * - 4
      - format
      - 1
-     -
+     - Number
      - Stop bit format setting
    * - 5
      - parity
      - 1
-     -
+     - Number
      - Parity setting
    * - 6
      - data
      - 1
-     -
+     - Number
      - Data bits setting
 
 **Stop bit format setting**
@@ -954,7 +954,7 @@ byte.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
 
 Greybus UART Set Control Line State Operation
@@ -980,7 +980,7 @@ Greybus UART message header.
    * - 0
      - control
      - 2
-     -
+     - Number
      - Modem status flag values (see below)
 
 This table describes the values supplied as flag values for the
@@ -1020,7 +1020,7 @@ status byte.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
 
 Greybus UART Send Break Operation
@@ -1067,7 +1067,7 @@ The Greybus UART break control response contains only the status byte.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
 
 Greybus UART Serial State Operation
@@ -1095,12 +1095,12 @@ the UART is currently in.
    * - 0
      - control
      - 2
-     -
+     - Number
      - Control data state
    * - 2
      - data
-     -
-     -
+     - 2
+     - Number
      - 1 or more bytes of received data
 
 **Greybus UART Control Flags**
@@ -1156,7 +1156,7 @@ device, and contains only the status byte.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
 
 PWM Protocol
@@ -1295,7 +1295,7 @@ major version 0, minor version 1.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
    * - 1
      - version_major
@@ -1341,12 +1341,12 @@ no gaps in the numbering).
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
    * - 1
      - count
      - 1
-     -
+     - Number
      - Number of PWM instances minus 1
 
 Greybus PWM Activate Operation
@@ -1374,7 +1374,7 @@ instance to be activated.
    * - 0
      - which
      - 1
-     -
+     - Number
      - Controller-relative PWM instance number
 
 Greybus PWM Activate Response
@@ -1393,7 +1393,7 @@ The Greybus PWM activate response contains only the status byte.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
 
 Greybuf PWM Deactivate Operation
@@ -1420,7 +1420,7 @@ instance to be deactivated.
    * - 0
      - which
      - 1
-     -
+     - Number
      - Controller-relative PWM instance number
 
 Greybus PWM Deactivate Response
@@ -1439,7 +1439,7 @@ The Greybus PWM deactivate response contains only the status byte.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
 
 Greybus PWM Config Operation
@@ -1465,17 +1465,17 @@ duty cycle, and period of the cycle.
    * - 0
      - which
      - 1
-     -
+     - Number
      - Controller-relative PWM instance number
    * - 1
      - duty
      - 4
-     -
+     - Number
      - Duty cycle (in nanoseconds)
    * - 5
      - period
      - 4
-     -
+     - Number
      - Period (in nanoseconds)
 
 Greybus PWM Config Response
@@ -1494,7 +1494,7 @@ The Greybus PWM Config response contains only the status byte.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
 
 Greybus PWM Polarity Operation
@@ -1521,12 +1521,12 @@ when a PWM instance is enabled and will respond with a busy failure.
    * - 0
      - which
      - 1
-     -
+     - Number
      - Controller-relative PWM instance number
    * - 1
      - polarity
      - 1
-     -
+     - Number
      - 0 for normal, 1 for inversed
 
 Greybus PWM Polarity Response
@@ -1545,7 +1545,7 @@ The Greybus PWM Config response contains only the status byte.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
 
 Greybus PWM Enable Operation
@@ -1571,7 +1571,7 @@ instance to be enabled.
    * - 0
      - which
      - 1
-     -
+     - Number
      - Controller-relative PWM instance number
 
 Greybus PWM Enable Response
@@ -1590,7 +1590,7 @@ The Greybus PWM enable response contains only the status byte.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
 
 Greybus PWM Disable Operation
@@ -1616,7 +1616,7 @@ instance to be disabled.
    * - 0
      - which
      - 1
-     -
+     - Number
      - Controller-relative PWM instance number
 
 Greybus PWM Disable Response
@@ -1635,7 +1635,7 @@ The Greybus PWM disable response contains only the status byte.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
 
 I2S Protocol
@@ -1753,7 +1753,7 @@ major version 0, minor version 1.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
    * - 1
      - version_major
@@ -1796,12 +1796,12 @@ functionality in the I2C adapter.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
    * - 1
      - functionality
      - 4
-     -
+     - Number
      - Greybus I2C functionality mask (see below)
 
 **Greybus I2C Functionality Bits**
@@ -1903,7 +1903,7 @@ be used.
    * - 0
      - msec
      - 2
-     -
+     - Number
      - Timeout period (milliseconds)
 
 Greybus I2C Set Timeout Response
@@ -1922,7 +1922,7 @@ The Greybus I2C set timeout response contains only the status byte.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
 
 Greybus I2C Set Retries Operation
@@ -1948,7 +1948,7 @@ representing the number of retries to be used by an I2C adapter.
    * - 0
      - count
      - 1
-     -
+     - Number
      - Retry count
 
 Greybus I2C Set Retries Response
@@ -1967,7 +1967,7 @@ The Greybus I2C set retries response contains only the status byte.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
 
 Greybus I2C Transfer Operation
@@ -2005,17 +2005,17 @@ A Greybus I2C op describes a segment of an I2C transaction.
    * - 0
      - addr
      - 2
-     -
+     - Number
      - Slave address
    * - 2
      - flags
      - 2
-     -
+     - Number
      - I2C op flags
    * - 2
      - size
      - 2
-     -
+     - Number
      - Size of data to transfer
 
 **Greybus I2C Op Flag Bits**
@@ -2067,12 +2067,12 @@ Here is the structure of a Greybus I2C transfer request.
    * - 0
      - op_count
      - 2
-     - N
+     - Number
      - Number of I2C ops in transfer
    * - 2
      - op[1]
      - 6
-     -
+     - struct i2c_op
      - Descriptor for first I2C op in the transfer
    * -
      - ...
@@ -2082,12 +2082,12 @@ Here is the structure of a Greybus I2C transfer request.
    * - 2+6*(N-1)
      - op[N]
      - 6
-     -
+     - struct i2c_op
      - Descriptor for Nth I2C op (and so on)
    * - 2+6*N
      - (data)
      -
-     -
+     - Data
      - Data for first write op in the transfer
    * -
      - ...
@@ -2097,7 +2097,7 @@ Here is the structure of a Greybus I2C transfer request.
    * -
      - ...
      -
-     -
+     - Data
      - Data for last write op in the transfer
 
 Any data to be written will follow the last op descriptor.  Data for
@@ -2123,12 +2123,12 @@ byte is non-zero, the data that follows (if any) shall be ignored.
    * - 0
      - status
      - 1
-     -
+     - Number
      - Success, or reason for failure
    * - 1
      - (data)
      -
-     -
+     - Data
      - Data for first read op in the transfer
    * -
      - ...
@@ -2138,7 +2138,7 @@ byte is non-zero, the data that follows (if any) shall be ignored.
    * -
      - ...
      -
-     -
+     - Data
      - Data for last read op in the transfer
 
 SDIO Protocol
