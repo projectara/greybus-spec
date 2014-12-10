@@ -99,48 +99,22 @@ are shown.
 .. todo::
         Add GPIO "interrupt" type requests from the device that are unsolicited.
 
-.. list-table::
-   :header-rows: 1
-
-   * - GPIO Operation
-     - Request Value
-     - Response Value
-   * - Invalid
-     - 0x00
-     - 0x80
-   * - Protocol version
-     - 0x01
-     - 0x81
-   * - Line count
-     - 0x02
-     - 0x82
-   * - Activate
-     - 0x03
-     - 0x83
-   * - Deactivate
-     - 0x04
-     - 0x84
-   * - Get direction
-     - 0x05
-     - 0x85
-   * - Direction input
-     - 0x06
-     - 0x86
-   * - Direction output
-     - 0x07
-     - 0x87
-   * - Get
-     - 0x08
-     - 0x88
-   * - Set
-     - 0x09
-     - 0x89
-   * - Set debounce
-     - 0x0a
-     - 0x8a
-   * - (All other values reserved)
-     - 0x0b..0x7f
-     - 0x8b..0xff
+===========================  =============  ==============
+GPIO Operation Type          Request Value  Response Value
+===========================  =============  ==============
+Invalid                      0x00           0x80
+Protocol Version             0x01           0x81
+Line Count                   0x02           0x82
+Activate                     0x03           0x83
+Deactivate                   0x04           0x84
+Get Direction                0x05           0x85
+Direction Input              0x06           0x86
+Direction Output             0x07           0x87
+Get                          0x08           0x88
+Set                          0x09           0x89
+Set debounce                 0x0a           0x8a
+(all other values reserved)  0x0b..0x7f     0x8b..0xff
+===========================  =============  ==============
 
 Greybus GPIO Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -163,29 +137,13 @@ non-zero, any other bytes in the response shall be ignored. A Greybus
 GPIO controller adhering to the protocol specified herein shall report
 major version 0, minor version 1.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
-   * - 1
-     - version_major
-     - 1
-     - |gb-major|
-     - Greybus GPIO protocol major version
-   * - 2
-     - version_minor
-     - 1
-     - |gb-minor|
-     - Greybus GPIO protocol minor version
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+1        version_major   1       |gb-major|      GPIO protocol major version
+2        version_minor   1       |gb-minor|      GPIO protocol minor version
+=======  ==============  ======  ==========      ===========================
 
 Greybus GPIO Line Count Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -209,24 +167,12 @@ GPIO line, while a (maximal) count value of 255 represents 256
 lines. The lines are numbered sequentially starting with 0 (i.e., no
 gaps in the numbering).
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
-   * - 1
-     - count
-     - 1
-     - Number
-     - Number of GPIO lines minus 1
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+1        count           1       Number          Number of GPIO lines minus 1
+=======  ==============  ======  ==========      ===========================
 
 Greybus GPIO Activate Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -242,38 +188,22 @@ Greybus GPIO Activate Request
 The Greybus GPIO activate request supplies only the number of the line
 to be activated.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - which
-     - 1
-     - Number
-     - Controller-relative GPIO line number
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        which           1       Number          Controller-relative GPIO line number
+=======  ==============  ======  ==========      ===========================
 
 Greybus GPIO Activate Response
 """"""""""""""""""""""""""""""
 
 The Greybus GPIO activate response contains only the status byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
 
 Greybus GPIO Deactivate Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -288,38 +218,22 @@ Greybus GPIO Deactivate Request
 The Greybus GPIO deactivate request supplies only the number of the
 line to be deactivated.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - which
-     - 1
-     - Number
-     - Controller-relative GPIO line number
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        which           1       Number          Controller-relative GPIO line number
+=======  ==============  ======  ==========      ===========================
 
 Greybus Deactivate Response
 """""""""""""""""""""""""""
 
 The Greybus GPIO deactivate response contains only the status byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
 
 Greybus GPIO Get Direction Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -333,19 +247,11 @@ Greybus GPIO Get Direction Request
 
 The Greybus GPIO get direction request supplies only the target line number.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - which
-     - 1
-     - Number
-     - Controller-relative GPIO line number
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        which           1       Number          Controller-relative GPIO line number
+=======  ==============  ======  ==========      ===========================
 
 Greybus Get Direction Response
 """"""""""""""""""""""""""""""
@@ -355,24 +261,14 @@ one byte indicating whether the line in question is configured for
 input or output. If the value of the status byte is non-zero, the
 direction byte shall be ignored.
 
-.. list-table::
-   :header-rows: 1
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+1        direction       1       0 or 1          Direction
+=======  ==============  ======  ==========      ===========================
 
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
-   * - 1
-     - direction
-     - 1
-     - 0 or 1
-     - Direction (0 = output, 1 = input)
+*direction* is 0 for output, and 1 for input.
 
 Greybus GPIO Direction Input Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -386,19 +282,11 @@ Greybus GPIO Direction Input Request
 The Greybus GPIO direction input request supplies only the number of
 the line.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - which
-     - 1
-     - Number
-     - Controller-relative GPIO line number
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        which           1       Number          Controller-relative GPIO line number
+=======  ==============  ======  ==========      ===========================
 
 Greybus Direction Input Response
 """"""""""""""""""""""""""""""""
@@ -406,19 +294,11 @@ Greybus Direction Input Response
 The Greybus GPIO direction input response contains only the status
 byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
 
 Greybus GPIO Direction Output Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -433,24 +313,14 @@ Greybus GPIO Direction Output Request
 The Greybus GPIO direction output request supplies the number of the
 line and its initial value.
 
-.. list-table::
-   :header-rows: 1
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        which           1       Number          Controller-relative GPIO line number
+1        value           1       0 or 1          Initial value
+=======  ==============  ======  ==========      ===========================
 
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - which
-     - 1
-     - Number
-     - Controller-relative GPIO line number
-   * - 1
-     - value
-     - 1
-     - 0 or 1
-     - Initial value (0 = low, 1 = high)
+For the *value* field, 0 is low, and 1 is high.
 
 Greybus Direction Output Response
 """""""""""""""""""""""""""""""""
@@ -458,19 +328,11 @@ Greybus Direction Output Response
 The Greybus GPIO direction output response contains only the status
 byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
 
 Greybus GPIO Get Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -483,19 +345,11 @@ Greybus GPIO Get Request
 
 The Greybus GPIO get request supplies only the target line number.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - which
-     - 1
-     - Number
-     - Controller-relative GPIO line number
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        which           1       Number          Controller-relative GPIO line number
+=======  ==============  ======  ==========      ===========================
 
 Greybus Get Response
 """"""""""""""""""""
@@ -504,24 +358,14 @@ The Greybus GPIO get response contains the status byte, plus one byte
 indicating the value on the line in question.  If the value of the
 status byte is non-zero, the value byte shall be ignored.
 
-.. list-table::
-   :header-rows: 1
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+1        value           1       0 or 1          Value
+=======  ==============  ======  ==========      ===========================
 
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
-   * - 1
-     - value
-     - 1
-     - 0 or 1
-     - Value (0 = low, 1 = high)
+*value* is 0 for low, and 1 for high.
 
 Greybus GPIO Set Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -539,43 +383,25 @@ value to be set.
 .. todo::
     Possibly make this a mask to allow multiple values to be set at once.
 
-.. list-table::
-   :header-rows: 1
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        which           1       Number          Controller-relative GPIO line number
+1        value           1       0 or 1          Initial value
+=======  ==============  ======  ==========      ===========================
 
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - which
-     - 1
-     - Number
-     - Controller-relative GPIO line number
-   * - 1
-     - value
-     - 1
-     - 0 or 1
-     - Value (0 = low, 1 = high)
+For the *value* field, 0 is low, and 1 is high.
 
 Greybus Set Response
 """"""""""""""""""""
 
 The Greybus GPIO set response contains only the status byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
 
 Greybus GPIO Set Debounce Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -590,43 +416,23 @@ The Greybus GPIO set debounce request supplies the number of the line
 and the time period (in microseconds) to be used for the line.  If the
 period specified is 0, debounce is disabled.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - which
-     - 1
-     - Number
-     - Controller-relative GPIO line number
-   * - 1
-     - usec
-     - 2
-     - Number
-     - Debounce period (microseconds)
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        which           1       Number          Controller-relative GPIO line number
+1        usec            2       Number          Debounce period (microseconds)
+=======  ==============  ======  ==========      ===========================
 
 Greybus Set Debounce Response
 """""""""""""""""""""""""""""
 
 The Greybus GPIO set debounce response contains only the status byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
 
 SPI Protocol
 ------------
@@ -683,47 +489,27 @@ This section defines the operations for a connection using the UART
 protocol.  UART protocol allows an AP to control a UART device
 contained within a Greybus module.
 
-Greybus UART Message Types
-""""""""""""""""""""""""""
+Greybus UART Protocol Operations
+""""""""""""""""""""""""""""""""
 
 This table describes the known Greybus UART operation types and their
 values. A message type consists of an operation type combined with a
 flag (0x80) indicating whether the operation is a request or a
 response.  There are 127 valid operation type values.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Descriptor Type
-     - Request Value
-     - Response Value
-   * - Invalid
-     - 0x00
-     - 0x80
-   * - Protocol version
-     - 0x01
-     - 0x81
-   * - Send Data
-     - 0x02
-     - 0x82
-   * - Receive Data
-     - 0x03
-     - 0x83
-   * - Set Line Coding
-     - 0x04
-     - 0x84
-   * - Set Control Line State
-     - 0x05
-     - 0x85
-   * - Send Break
-     - 0x06
-     - 0x86
-   * - Serial State
-     - 0x07
-     - 0x87
-   * - (All other values reserved)
-     - 0x08..0x7f
-     - 0x08..0xff
+===========================  =============  ==============
+UART Operation Type          Request Value  Response Value
+===========================  =============  ==============
+Invalid                      0x00           0x80
+Protocol Version             0x01           0x81
+Send Data                    0x02           0x82
+Receive Data                 0x03           0x83
+Set Line Coding              0x04           0x84
+Set Control Line State       0x05           0x85
+Send Break                   0x06           0x86
+Serial State                 0x07           0x87
+(all other values reserved)  0x08..0x7f     0x88..0xff
+===========================  =============  ==============
 
 Greybus UART Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -746,29 +532,13 @@ non-zero, any other bytes in the response shall be ignored. A Greybus
 UART device adhering to the protocol specified herein shall report
 major version |gb-major|, minor version |gb-minor|.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
-   * - 1
-     - version_major
-     - 1
-     - |gb-major|
-     - Greybus UART protocol major version
-   * - 2
-     - version_minor
-     - 1
-     - |gb-minor|
-     - Greybus UART protocol minor version
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+1        version_major   1       |gb-major|      UART protocol major version
+2        version_minor   1       |gb-minor|      UART protocol minor version
+=======  ==============  ======  ==========      ===========================
 
 Greybus UART Send Data Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -785,24 +555,12 @@ The Greybus UART start transmission request shall request the UART
 device begin transmitting.  The request optionally contains one or
 more characters to to be transmitted.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - size
-     - 2
-     - Number
-     - Size (bytes) of data to be transmitted
-   * - 2
-     - data
-     - size
-     - Characters
-     - 0 or more bytes of data to be transmitted
+=======  ==============  ======  ===========     ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ===========     ===========================
+0        size            2       Number          Size in bytes of data to be transmitted
+2        data            size    Characters      0 or more bytes of data to be transmitted
+=======  ==============  ======  ===========     ===========================
 
 Greybus UART Send Data Response
 """""""""""""""""""""""""""""""
@@ -810,19 +568,11 @@ Greybus UART Send Data Response
 The Greybus UART start transmission response contains only the status
 byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
 
 Greybus UART Receive Data Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -837,24 +587,12 @@ Greybus UART Receive Data Request
 The Greybus UART receive data request contains the size of the data to
 be received, and the data bytes to be received.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - size
-     - 2
-     - Number
-     - Size (bytes) of received data
-   * - 2
-     - data
-     -
-     -
-     - 1 or more bytes of received data
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        size            2       Number          Size in bytes of received data
+2        data            size    Characters      1 or more bytes of received data
+=======  ==============  ======  ==========      ===========================
 
 Greybus UART Received Data Response
 """""""""""""""""""""""""""""""""""
@@ -862,19 +600,11 @@ Greybus UART Received Data Response
 The Greybus UART event response is sent by the AP to the UART device,
 and contains only the status byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
 
 Greybus UART Set Line Coding Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -888,36 +618,19 @@ Greybus UART Set Line Coding State Request
 The Greybus UART set line coding state request contains the specific
 line coding values to be set.
 
-.. list-table::
-   :header-rows: 1
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        rate            4       Number          Baud Rate setting
+4        format          1       Number          :ref:`uart-stop-bit-format`
+5        parity          1       Number          :ref:`uart-parity-format`
+6        data_bits       1       Number          Number of data bits
+=======  ==============  ======  ==========      ===========================
 
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - rate
-     - 4
-     - Number
-     - Baud Rate setting
-   * - 4
-     - format
-     - 1
-     - Number
-     - Stop bit format setting
-   * - 5
-     - parity
-     - 1
-     - Number
-     - Parity setting
-   * - 6
-     - data
-     - 1
-     - Number
-     - Data bits setting
+.. _uart-stop-bit-format:
 
-**Stop bit format setting**
+Greybus UART Stop bit format
+""""""""""""""""""""""""""""
 
 ==============================  ====
 1 Stop Bit                      0x00
@@ -926,7 +639,10 @@ line coding values to be set.
 (All other values reserved)     0x03..0xff
 ==============================  ====
 
-**Parity setting**
+.. _uart-parity-format:
+
+Greybus UART Parity format
+""""""""""""""""""""""""""
 
 ==============================  ====
 No Parity                       0x00
@@ -943,19 +659,11 @@ Greybus UART Set Line Coding State Response
 The Greybus UART set line coding state response contains only a status
 byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
 
 Greybus UART Set Control Line State Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -969,39 +677,28 @@ Greybus UART Set Control Line State Request
 The Greybus UART set modem status request contains no data beyond the
 Greybus UART message header.
 
-.. list-table::
-   :header-rows: 1
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        control         2       Number          :ref:`uart-modem-status-flags`
+=======  ==============  ======  ==========      ===========================
 
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - control
-     - 2
-     - Number
-     - Modem status flag values (see below)
+.. _uart-modem-status-flags:
+
+Greybus UART Modem Status Flags
+"""""""""""""""""""""""""""""""
 
 This table describes the values supplied as flag values for the
 Greybus UART set modem request. Any combination of these values may be
 supplied in a single request.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Flag
-     - Value
-     - Meaning
-   * - DTR
-     - 0x0001
-     - Data terminal ready
-   * - RTS
-     - 0x0002
-     - Request to send
-   * - (All other values reserved)
-     - 0x0004..0x8000
-     -
+============================    ==============  ===================
+Flag                            Value           Description
+============================    ==============  ===================
+DTR                             0x0001          Data Terminal Ready
+RTS                             0x0002          Request To Send
+(all other values reserved)     0x0004..0x8000
+============================    ==============  ===================
 
 Greybus UART Set Control Line State Response
 """"""""""""""""""""""""""""""""""""""""""""
@@ -1009,19 +706,11 @@ Greybus UART Set Control Line State Response
 The Greybus UART set control line state response contains only a
 status byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
 
 Greybus UART Send Break Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1037,38 +726,22 @@ The Greybus UART break control request supplies the duration of the
 break condition that should be generated by the UART device transmit
 line.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - state
-     - 1
-     - 0 or 1
-     - 0 is off, 1 is on
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        state           1       0 or 1          0 is off, 1 is on
+=======  ==============  ======  ==========      ===========================
 
 Greybus UART Break Control Response
 """""""""""""""""""""""""""""""""""
 
 The Greybus UART break control response contains only the status byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
 
 Greybus UART Serial State Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1084,60 +757,33 @@ Greybus UART Serial State Request
 The Greybus UART serial state request contains the control value that
 the UART is currently in.
 
-.. list-table::
-   :header-rows: 1
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        control         2       Number          Control data state
+2        data            2       Number          :ref:`uart-control-flags`
+=======  ==============  ======  ==========      ===========================
 
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - control
-     - 2
-     - Number
-     - Control data state
-   * - 2
-     - data
-     - 2
-     - Number
-     - 1 or more bytes of received data
+.. _uart-control-flags:
 
-**Greybus UART Control Flags**
+Greybus UART Control Flags
+""""""""""""""""""""""""""
 
 The following table defines the flag values used for a Greybus UART
 Serial State request.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Flag
-     - Value
-     - Meaning
-   * - DCD
-     - 0x0001
-     - Carrier Detect line enabled
-   * - DSR
-     - 0x0002
-     - DSR signal
-   * - Break
-     - 0x0004
-     - Break condition detected on input
-   * - RI
-     - 0x0008
-     - Ring Signal detection
-   * - Framing error
-     - 0x0010
-     - Framing error detected on input
-   * - Parity error
-     - 0x0020
-     - Parity error detected on input
-   * - Overrun
-     - 0x0040
-     - Received data lost due to overrun
-   * - (All other values reserved)
-     - 0x0080..0x8000
-     -
+============================    ==============  ===================
+Flag                            Value           Description
+============================    ==============  ===================
+DCD                             0x0001          Carrier Detect line enabled
+DSR                             0x0002          DSR signal
+Break                           0x0004          Break condition detected
+RI                              0x0008          Ring Signal detected
+Framing Error                   0x0010          Framing error detected
+Parity Error                    0x0020          Parity error detected
+Overrun                         0x0040          Received data lost due to overrun
+(all other values reserved)     0x0080..0x8000
+============================    ==============  ===================
 
 Greybus UART Serial State Response
 """"""""""""""""""""""""""""""""""
@@ -1145,19 +791,11 @@ Greybus UART Serial State Response
 The Greybus UART serial state response is sent by the AP to the UART
 device, and contains only the status byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
 
 PWM Protocol
 ------------
@@ -1226,42 +864,20 @@ The following table describes the Greybus PWM protocol operation types
 and their values. Both the request type and response type values are
 shown.
 
-.. list-table::
-   :header-rows: 1
-
-   * - PWM Operation
-     - Request Value
-     - Response Value
-   * - Invalid
-     - 0x00
-     - 0x80
-   * - Protocol version
-     - 0x01
-     - 0x81
-   * - PWM count
-     - 0x02
-     - 0x82
-   * - Activate
-     - 0x03
-     - 0x83
-   * - Deactivate
-     - 0x04
-     - 0x84
-   * - Config
-     - 0x05
-     - 0x85
-   * - Set Polarity
-     - 0x06
-     - 0x86
-   * - Enable
-     - 0x07
-     - 0x87
-   * - Disable
-     - 0x08
-     - 0x88
-   * - (All other values reserved)
-     - 0x09..0x7f
-     - 0x89..0xff
+===========================  =============  ==============
+PWM Operation Type           Request Value  Response Value
+===========================  =============  ==============
+Invalid                      0x00           0x80
+Protocol Version             0x01           0x81
+PWM count                    0x02           0x82
+Activate                     0x03           0x83
+Deactivate                   0x04           0x84
+Config                       0x05           0x85
+Set Polarity                 0x06           0x86
+Enable                       0x07           0x87
+Disable                      0x08           0x88
+(all other values reserved)  0x09..0x7f     0x89..0xff
+===========================  =============  ==============
 
 Greybus PWM Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1284,29 +900,13 @@ non-zero, any other bytes in the response shall be ignored. A Greybus
 PWM controller adhering to the protocol specified herein shall report
 major version 0, minor version 1.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
-   * - 1
-     - version_major
-     - 1
-     - |gb-major|
-     - Greybus PWM protocol major version
-   * - 2
-     - version_minor
-     - 1
-     - |gb-minor|
-     - Greybus PWM protocol minor version
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+1        version_major   1       |gb-major|      PWM protocol major version
+2        version_minor   1       |gb-minor|      PWM protocol minor version
+=======  ==============  ======  ==========      ===========================
 
 Greybus PWM Count Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1330,24 +930,12 @@ PWM instance, while a (maximal) count value of 255 represents 256
 instances. The lines are numbered sequentially starting with 0 (i.e.,
 no gaps in the numbering).
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
-   * - 1
-     - count
-     - 1
-     - Number
-     - Number of PWM instances minus 1
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+1        count           1       Number          Number of PWM instances minus 1
+=======  ==============  ======  ==========      ===========================
 
 Greybus PWM Activate Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1363,38 +951,22 @@ Greybus PWM Activate Request
 The Greybus PWM activate request supplies only the number of the
 instance to be activated.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - which
-     - 1
-     - Number
-     - Controller-relative PWM instance number
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        which           1       Number          Controller-relative PWM instance number
+=======  ==============  ======  ==========      ===========================
 
 Greybus PWM Activate Response
 """""""""""""""""""""""""""""
 
 The Greybus PWM activate response contains only the status byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
 
 Greybuf PWM Deactivate Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1409,38 +981,22 @@ Greybus PWM Deactivate Request
 The Greybus PWM deactivate request supplies only the number of the
 instance to be deactivated.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - which
-     - 1
-     - Number
-     - Controller-relative PWM instance number
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        which           1       Number          Controller-relative PWM instance number
+=======  ==============  ======  ==========      ===========================
 
 Greybus PWM Deactivate Response
 """""""""""""""""""""""""""""""
 
 The Greybus PWM deactivate response contains only the status byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
 
 Greybus PWM Config Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1454,48 +1010,24 @@ Greybus PWM Config Request
 The Greybus PWM Config request supplies the target instance number,
 duty cycle, and period of the cycle.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - which
-     - 1
-     - Number
-     - Controller-relative PWM instance number
-   * - 1
-     - duty
-     - 4
-     - Number
-     - Duty cycle (in nanoseconds)
-   * - 5
-     - period
-     - 4
-     - Number
-     - Period (in nanoseconds)
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        which           1       Number          Controller-relative PWM instance number
+1        duty            4       Number          Duty cycle (in nanoseconds)
+5        period          4       Number          Period (in nanoseconds)
+=======  ==============  ======  ==========      ===========================
 
 Greybus PWM Config Response
 """""""""""""""""""""""""""
 
 The Greybus PWM Config response contains only the status byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
 
 Greybus PWM Polarity Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1510,43 +1042,23 @@ The Greybus PWM Polarity request supplies the target instance number
 and polarity (normal or inversed). The polarity may not be configured
 when a PWM instance is enabled and will respond with a busy failure.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - which
-     - 1
-     - Number
-     - Controller-relative PWM instance number
-   * - 1
-     - polarity
-     - 1
-     - Number
-     - 0 for normal, 1 for inversed
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        which           1       Number          Controller-relative PWM instance number
+1        polatiry        1       Number          0 for normal, 1 for inverted
+=======  ==============  ======  ==========      ===========================
 
 Greybus PWM Polarity Response
 """""""""""""""""""""""""""""
 
 The Greybus PWM Config response contains only the status byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
 
 Greybus PWM Enable Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1560,38 +1072,22 @@ Greybus PWM Enable Request
 The Greybus PWM enable request supplies only the number of the
 instance to be enabled.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - which
-     - 1
-     - Number
-     - Controller-relative PWM instance number
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        which           1       Number          Controller-relative PWM instance number
+=======  ==============  ======  ==========      ===========================
 
 Greybus PWM Enable Response
 """""""""""""""""""""""""""
 
 The Greybus PWM enable response contains only the status byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
 
 Greybus PWM Disable Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1605,38 +1101,22 @@ Greybus PWM Disable Request
 The Greybus PWM disable request supplies only the number of the
 instance to be disabled.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - which
-     - 1
-     - Number
-     - Controller-relative PWM instance number
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        which           1       Number          Controller-relative PWM instance number
+=======  ==============  ======  ==========      ===========================
 
 Greybus PWM Disable Response
 """"""""""""""""""""""""""""
 
 The Greybus PWM disable response contains only the status byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
 
 I2S Protocol
 ____________
@@ -1693,33 +1173,17 @@ values. A message type consists of an operation type combined with a
 flag (0x80) indicating whether the operation is a request or a
 response.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Descriptor Type
-     - Request Value
-     - Response Value
-   * - Invalid
-     - 0x00
-     - 0x80
-   * - Protocol version
-     - 0x01
-     - 0x81
-   * - Functionality
-     - 0x02
-     - 0x82
-   * - Timeout
-     - 0x03
-     - 0x83
-   * - Retries
-     - 0x04
-     - 0x84
-   * - Transfer
-     - 0x05
-     - 0x85
-   * - (All other values reserved)
-     - 0x06..0x7f
-     - 0x86..0xff
+===========================  =============  ==============
+I2C Operation Type           Request Value  Response Value
+===========================  =============  ==============
+Invalid                      0x00           0x80
+Protocol Version             0x01           0x81
+Functionality                0x02           0x82
+Timeout                      0x03           0x83
+Retries                      0x04           0x84
+Transfer                     0x05           0x85
+(all other values reserved)  0x06..0x7f     0x86..0xff
+===========================  =============  ==============
 
 Greybus I2C Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1742,29 +1206,13 @@ non-zero, any other bytes in the response shall be ignored. A Greybus
 I2C adapter adhering to the protocol specified herein shall report
 major version 0, minor version 1.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
-   * - 1
-     - version_major
-     - 1
-     - |gb-major|
-     - Greybus I2C protocol major version
-   * - 2
-     - version_minor
-     - 1
-     - |gb-minor|
-     - Greybus I2C protocol minor version
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+1        version_major   1       |gb-major|      I2C protocol major version
+2        version_minor   1       |gb-minor|      I2C protocol minor version
+=======  ==============  ======  ==========      ===========================
 
 Greybus I2C Functionality Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1785,98 +1233,47 @@ The Greybus I2C functionality response contains the status byte and a
 4-byte value whose bits represent support or presence of certain
 functionality in the I2C adapter.
 
-.. list-table::
-   :header-rows: 1
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+1        functionality   4       Number          :ref:`i2c-functionality-bits`
+=======  ==============  ======  ==========      ===========================
 
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
-   * - 1
-     - functionality
-     - 4
-     - Number
-     - Greybus I2C functionality mask (see below)
+.. _i2c-functionality-bits:
 
-**Greybus I2C Functionality Bits**
+Greybus I2C Functionality Bits
+""""""""""""""""""""""""""""""
 
 This table describes the defined functionality bit values defined for
 Greybus I2C adapters. These include a set of bits describing SMBus
 capabilities.  These values are taken directly from the <linux/i2c.h>
 header file.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Linux Symbol
-     - Brief Description
-     - Mask Value
-   * - I2C_FUNC_I2C
-     - Basic I2C protocol (not SMBus) support
-     - 0x00000001
-   * - I2C_FUNC_10BIT_ADDR
-     - 10-bit addressing is supported
-     - 0x00000002
-   * -
-     - (Reserved)
-     - 0x00000004
-   * - I2C_FUNC_SMBUS_PEC
-     - SMBus CRC-8 byte added to transfers (PEC)
-     - 0x00000008
-   * - I2C_FUNC_NOSTART
-     - Repeated start sequence can be skipped
-     - 0x00000010
-   * -
-     - (Reserved range)
-     - 0x00000020..0x00004000
-   * - I2C_FUNC_SMBUS_BLOCK_PROC_CALL
-     - SMBus block write-block read process call supported
-     - 0x00008000
-   * - I2C_FUNC_SMBUS_QUICK
-     - SMBus write_quick command supported
-     - 0x00010000
-   * - I2C_FUNC_SMBUS_READ_BYTE
-     - SMBus read_byte command supported
-     - 0x00020000
-   * - I2C_FUNC_SMBUS_WRITE_BYTE
-     - SMBus write_byte command supported
-     - 0x00040000
-   * - I2C_FUNC_SMBUS_READ_BYTE_DATA
-     - SMBus read_byte_data command supported
-     - 0x00080000
-   * - I2C_FUNC_SMBUS_WRITE_BYTE_DATA
-     - SMBus write_byte_data command supported
-     - 0x00100000
-   * - I2C_FUNC_SMBUS_READ_WORD_DATA
-     - SMBus read_word_data command supported
-     - 0x00200000
-   * - I2C_FUNC_SMBUS_WRITE_WORD_DATA
-     - SMBus write_word_data command supported
-     - 0x00400000
-   * - I2C_FUNC_SMBUS_PROC_CALL
-     - SMBus process_call command supported
-     - 0x00800000
-   * - I2C_FUNC_SMBUS_READ_BLOCK_DATA
-     - SMBus read_block_data command supported
-     - 0x01000000
-   * - I2C_FUNC_SMBUS_WRITE_BLOCK_DATA
-     - SMBus write_block_data command supported
-     - 0x02000000
-   * - I2C_FUNC_SMBUS_READ_I2C_BLOCK
-     - SMBus read_i2c_block_data command supported
-     - 0x04000000
-   * - I2C_FUNC_SMBUS_WRITE_I2C_BLOCK
-     - SMBus write_i2c_block_data command supported
-     - 0x08000000
-   * -
-     - (All other values reserved)
-     - 0x10000000..0x80000000
+===============================  ===================================================  ========================
+Linux Symbol                     Brief Description                                    Mask Value
+===============================  ===================================================  ========================
+I2C_FUNC_I2C                     Basic I2C protocol (not SMBus) support               0x00000001
+I2C_FUNC_10BIT_ADDR              10-bit addressing is supported                       0x00000002
+|_|                              (Reserved)                                           0x00000004
+I2C_FUNC_SMBUS_PEC               SMBus CRC-8 byte added to transfers (PEC)            0x00000008
+I2C_FUNC_NOSTART                 Repeated start sequence can be skipped               0x00000010
+|_|                              (Reserved range)                                     0x00000020..0x00004000
+I2C_FUNC_SMBUS_BLOCK_PROC_CALL   SMBus block write-block read process call supported  0x00008000
+I2C_FUNC_SMBUS_QUICK             SMBus write_quick command supported                  0x00010000
+I2C_FUNC_SMBUS_READ_BYTE         SMBus read_byte command supported                    0x00020000
+I2C_FUNC_SMBUS_WRITE_BYTE        SMBus write_byte command supported                   0x00040000
+I2C_FUNC_SMBUS_READ_BYTE_DATA    SMBus read_byte_data command supported               0x00080000
+I2C_FUNC_SMBUS_WRITE_BYTE_DATA   SMBus write_byte_data command supported              0x00100000
+I2C_FUNC_SMBUS_READ_WORD_DATA    SMBus read_word_data command supported               0x00200000
+I2C_FUNC_SMBUS_WRITE_WORD_DATA   SMBus write_word_data command supported              0x00400000
+I2C_FUNC_SMBUS_PROC_CALL         SMBus process_call command supported                 0x00800000
+I2C_FUNC_SMBUS_READ_BLOCK_DATA   SMBus read_block_data command supported              0x01000000
+I2C_FUNC_SMBUS_WRITE_BLOCK_DATA  SMBus write_block_data command supported             0x02000000
+I2C_FUNC_SMBUS_READ_I2C_BLOCK    SMBus read_i2c_block_data command supported          0x04000000
+I2C_FUNC_SMBUS_WRITE_I2C_BLOCK   SMBus write_i2c_block_data command supported         0x08000000
+|_|                              (All other values reserved)                          0x10000000..0x80000000
+===============================  ===================================================  ========================
 
 Greybus I2C Set Timeout Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1892,38 +1289,22 @@ representing the timeout to be used by an I2C adapter, expressed in
 milliseconds. If the value supplied is 0, an I2C adapter-defined shall
 be used.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - msec
-     - 2
-     - Number
-     - Timeout period (milliseconds)
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        msec            2       Number          Timeout period in milliseconds
+=======  ==============  ======  ==========      ===========================
 
 Greybus I2C Set Timeout Response
 """"""""""""""""""""""""""""""""
 
 The Greybus I2C set timeout response contains only the status byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
 
 Greybus I2C Set Retries Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1937,38 +1318,22 @@ Greybus I2C Set Retries Request
 The Greybus I2C set timeout request contains an 8-bit value
 representing the number of retries to be used by an I2C adapter.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - count
-     - 1
-     - Number
-     - Retry count
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        count           1       Number          Retry count
+=======  ==============  ======  ==========      ===========================
 
 Greybus I2C Set Retries Response
 """"""""""""""""""""""""""""""""
 
 The Greybus I2C set retries response contains only the status byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
 
 Greybus I2C Transfer Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1994,111 +1359,47 @@ written.
 
 A Greybus I2C op describes a segment of an I2C transaction.
 
-.. list-table::
-   :header-rows: 1
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        addr            2       Number          Slave address
+2        flags           2       Number          :ref:`i2c-op-flag-bits`
+4        size            2       Number          Size of data to transfer
+=======  ==============  ======  ==========      ===========================
 
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - addr
-     - 2
-     - Number
-     - Slave address
-   * - 2
-     - flags
-     - 2
-     - Number
-     - I2C op flags
-   * - 2
-     - size
-     - 2
-     - Number
-     - Size of data to transfer
+.. _i2c-op-flag-bits:
 
-**Greybus I2C Op Flag Bits**
+Greybus I2C Op Flag Bits
+""""""""""""""""""""""""
 
 This table describes the defined flag bit values defined for Greybus
 I2C ops. They are taken directly from the <linux/i2c.h> header file.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Linux Symbol
-     - Brief Description
-     - Mask Value
-   * - I2C_M_RD
-     - Data is to be read (from slave to master)
-     - 0x0001
-   * -
-     - (Reserved range)
-     - 0x0002..0x0008
-   * - I2C_M_TEN
-     - 10-bit addressing is supported
-     - 0x0010
-   * -
-     - (Reserved range)
-     - 0x0020..0x0200
-   * - I2C_M_RECV_LEN
-     - First byte received contains length
-     - 0x0400
-   * -
-     - (Reserved range)
-     - 0x0800..0x2000
-   * - I2C_M_NOSTART
-     - Skip repeated start sequence
-     - 0x4000
-   * -
-     - (Reserved)
-     - 0x8000
+==============  =========================================       ===============
+Linux Symbol    Brief Description                               Mask Value
+==============  =========================================       ===============
+I2C_M_RD        Data is to be read (from slave to master)       0x0001
+|_|             (Reserved range)                                0x0002..0x0008
+I2C_M_TEN       10-bit addressing is supported                  0x0010
+|_|             (Reserved range)                                0x0020..0x0200
+I2C_M_RECV_LEN  First byte received contains length             0x0400
+|_|             (Reserved range)                                0x0800..0x2000
+I2C_M_NOSTART   Skip repeated start sequence                    0x4000
+|_|             (Reserved)                                      0x8000
+==============  =========================================       ===============
 
 Here is the structure of a Greybus I2C transfer request.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - op_count
-     - 2
-     - Number
-     - Number of I2C ops in transfer
-   * - 2
-     - op[1]
-     - 6
-     - struct i2c_op
-     - Descriptor for first I2C op in the transfer
-   * -
-     - ...
-     -
-     -
-     - ...
-   * - 2+6*(N-1)
-     - op[N]
-     - 6
-     - struct i2c_op
-     - Descriptor for Nth I2C op (and so on)
-   * - 2+6*N
-     - (data)
-     -
-     - Data
-     - Data for first write op in the transfer
-   * -
-     - ...
-     -
-     -
-     - ...
-   * -
-     - ...
-     -
-     - Data
-     - Data for last write op in the transfer
+===========  ==============  =======  ==============   ===================================
+Offset       Field           Size     Value            Description
+===========  ==============  =======  ==============   ===================================
+0            op_count        2        Number           Number of I2C ops in transfer
+2            op[1]           6        struct i2c_op    Descriptor for first I2C op in the transfer
+...          ...             6        struct i2c_op    ...
+2+6*(N-1)    op[N]           6        struct i2c_op    Descriptor for Nth I2C op
+2+6*N        data            6        Data             Data for first write op in the transfer
+...          ...             ...      Data             Data for last write op on the transfer
+===========  ==============  =======  ==============   ===================================
 
 Any data to be written will follow the last op descriptor.  Data for
 the first write op in the array will immediately follow the last op in
@@ -2112,34 +1413,14 @@ The Greybus I2C transfer response contains a status byte followed by
 the data read as a result of messages.  If the value of the status
 byte is non-zero, the data that follows (if any) shall be ignored.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - status
-     - 1
-     - Number
-     - Success, or reason for failure
-   * - 1
-     - (data)
-     -
-     - Data
-     - Data for first read op in the transfer
-   * -
-     - ...
-     -
-     -
-     - ...
-   * -
-     - ...
-     -
-     - Data
-     - Data for last read op in the transfer
+=======  ==============  ======  ==========      ======================================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ======================================
+0        status          1       Number          Success, or reason for failure
+1        data                    Data            Data for first read op on the transfer
+...      ...             ...     Data            ...
+...      ...             ...     Data            Data for last read op on the transfer
+=======  ==============  ======  ==========      ======================================
 
 SDIO Protocol
 -------------
