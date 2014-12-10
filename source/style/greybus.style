@@ -72,8 +72,8 @@ styles:
     directive: parent: bodytext
     exception: parent: bodytext
     heading:
-        backColor: #F2F2F2
-        borderColor: #CCCCCC
+        backColor: white
+        borderColor: white
         borderPadding: [6, 0, 0, 10]
         borderWidth: 0.3
         fontName: stdSansBold
