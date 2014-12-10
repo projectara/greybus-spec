@@ -206,7 +206,12 @@ pdf_documents = [
 ]
 
 # A comma-separated list of custom stylesheets. Example:
-pdf_stylesheets = ['sphinx','kerning','a4']
+pdf_stylesheets = [
+    'sphinx',
+    'kerning',
+    'a4',
+    os.path.join(os.path.dirname(__file__), 'style', 'greybus.style')
+    ]
 
 # A list of folders to search for stylesheets. Example:
 pdf_style_path = ['.', '_styles']
