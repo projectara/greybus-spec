@@ -23,50 +23,29 @@ values shall lie within the range defined by the "(Reserved for
 protocol use)" table entry below. Every status byte with a MSB set to
 one other than 0xff is a valid protocol status value.
 
-.. list-table::
-   :header-rows: 1
+============================  ===============  =======================
+Status                        Value            Meaning
+============================  ===============  =======================
+GB_OP_SUCCESS                 0x00             Operation completed successfully
+GB_OP_INTERRUPTED             0x01             Operation processing was interrupted
+GB_OP_TIMEOUT                 0x02             Operation processing timed out
+GB_OP_NO_MEMORY               0x03             Memory exhaustion prevented operation completion
+GB_OP_PROTOCOL_BAD            0x04             Protocol is not supported by this Greybus implementation
+GB_OP_OVERFLOW                0x05             Request message was too large
+GB_OP_INVALID                 0x06             Invalid argument supplied
+GB_OP_RETRY                   0x07             Request should be retried
+GB_OP_UNKNOWN_ERROR           0xfe             Unknown error occured
+Reserved                      0x08 to 0x7f     Reserved for future use
+Reserved for protocol use     0x80 to 0xfd     Status defined by the protocol in use
+GB_OP_INTERNAL                0xff             Invalid initial value.
+============================  ===============  =======================
 
-   * - Status
-     - Value
-     - Meaning
-   * - GB_OP_SUCCESS
-     - 0x00
-     - Operation completed successfully
-   * - GB_OP_INTERRUPTED
-     - 0x01
-     - Operation processing was interrupted
-   * - GB_OP_TIMEOUT
-     - 0x02
-     - Operation processing timed out
-   * - GB_OP_NO_MEMORY
-     - 0x03
-     - Memory exhaustion prevent operation completion
-   * - GB_OP_PROTOCOL_BAD
-     - 0x04
-     - Protocol is not supported by this Greybus implementation
-   * - GB_OP_OVERFLOW
-     - 0x05
-     - Request message was too large
-   * - GB_OP_INVALID
-     - 0x06
-     - Invalid argument supplied
-   * - GB_OP_RETRY
-     - 0x07
-     - Request should be retried
-   * - GB_OP_UNKNOWN_ERROR
-     - 0xfe
-     - Unknown error occurred
-   * - Reserved
-     - 0x08 to 0x7f
-     - Reserved for future use
-   * - (Reserved for protocol use)
-     - 0x80 to 0xfd
-     - Status defined by the protocol in use (see protocol definitions
-       in following sections)
-   * - (Invalid value)
-     - 0xff
-     - Invalid initial value. A response Message shall not contain
-       this value in a status field.
+Values marked *(Reserved for protocol use)* are to be used by the
+individual protocols as defined in the :ref:`device-class-protocols` and
+:ref:`bridged-phy-protocols` sections below.
+
+The *GB_OP_INTERNAL* should never be used in a response message. It
+is reserved for internal use by the Greybus application stack only.
 
 All protocols defined herein are subject to the
 :ref:`general-requirements` listed above.
