@@ -6,6 +6,12 @@ pageSetup:
     margin-top: 8mm
 
 styles:
+    footer:
+      parent: normal
+      alignment: TA_LEFT
+      textColor: grey
+      fontSize: 9
+
     admonition:
         backColor: #EEFFCC
         borderColor: #AACC99
