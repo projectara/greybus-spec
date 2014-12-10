@@ -42,14 +42,15 @@ This table describes the Greybus vibrator operation types and their
 values. A message type consists of an operation type combined with a
 flag (0x80) indicating whether the operation is a request or a response.
 
-==================      =============   ==============
-Descriptor Type         Request Value   Response Value
-==================      =============   ==============
-Invalid                 0x00            0x80
-Protocol Version        0x01            0x81
-Vibrator On             0x02            0x82
-Vibrator Off            0x03            0x83
-==================      =============   ==============
+===========================  =============  ==============
+Vibrator Operation Type      Request Value  Response Value
+===========================  =============  ==============
+Invalid                      0x00           0x80
+Protocol Version             0x01           0x81
+Vibrator On                  0x02           0x82
+Vibrator Off                 0x03           0x83
+(all other values reserved)  0x04..0x7f     0x84..0xff
+===========================  =============  ==============
 
 Greybus Vibrator Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
