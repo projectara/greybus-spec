@@ -34,9 +34,10 @@ GB_OP_PROTOCOL_BAD            0x04             Protocol is not supported by this
 GB_OP_OVERFLOW                0x05             Request message was too large
 GB_OP_INVALID                 0x06             Invalid argument supplied
 GB_OP_RETRY                   0x07             Request should be retried
-GB_OP_UNKNOWN_ERROR           0xfe             Unknown error occured
-Reserved                      0x08 to 0x7f     Reserved for future use
+GB_OP_NONEXISTENT             0x08             The device does not exist
+Reserved                      0x09 to 0x7f     Reserved for future use
 Reserved for protocol use     0x80 to 0xfd     Status defined by the protocol in use
+GB_OP_UNKNOWN_ERROR           0xfe             Unknown error occured
 GB_OP_INTERNAL                0xff             Invalid initial value.
 ============================  ===============  =======================
 
