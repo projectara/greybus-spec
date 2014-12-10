@@ -47,6 +47,7 @@
 
 .. toctree::
    :maxdepth: 2
+   :numbered:
 
    terminology
    glossary
