@@ -287,3 +287,100 @@ pdf_use_numbered_links = True
 
 # Background images fitting mode
 pdf_fit_background_mode = 'scale'
+
+
+# -- Options for LaTeX output ---------------------------------------------
+
+#latex_elements = {
+# The paper size ('letterpaper' or 'a4paper').
+#'papersize': 'letterpaper',
+
+# The font size ('10pt', '11pt' or '12pt').
+#'pointsize': '10pt',
+
+# Additional stuff for the LaTeX preamble.
+#'preamble': '',
+#}
+
+# Load our .tex file in the preamble so we can set things up
+# to override the "default" style
+f = open(os.path.join(os.path.dirname(__file__), 'style', 'greybus.tex'), 'r+')
+PREAMBLE = f.read();
+
+latex_elements = {
+    'papersize': '',
+    'fontpkg': '',
+    'fncychap': '',
+#    'maketitle': '\\cover',
+    'pointsize': '',
+    'preamble': PREAMBLE,
+    'releasename': "",
+    'babel': '\\usepackage[english]{babel}',
+    'printindex': '',
+    'fontenc': '',
+    'inputenc': '',
+    'classoptions': '',
+    'utf8extra': '',
+    'fontspec': '',
+}
+
+#latex_additional_files = ["greybus.sty", "_static/cover.png"]]
+
+# Grouping the document tree into LaTeX files. List of tuples
+# (source start file, target name, title,
+#  author, documentclass [howto, manual, or own class]).
+latex_documents = [
+  ('index', 'GreybusApplicationProtocol.tex', u'Greybus Protocol Specification',
+   u'Google, Inc.', 'manual'),
+]
+
+#latex_show_pagerefs = False
+#latex_domain_indices = False
+#latex_use_modindex = False
+##latex_logo = None
+##latex_show_urls = False
+
+# The name of an image file (relative to this directory) to place at the top of
+# the title page.
+#latex_logo = None
+
+# For "manual" documents, if this is true, then toplevel headings are parts,
+# not chapters.
+#latex_use_parts = False
+
+# If true, show page references after internal links.
+#latex_show_pagerefs = False
+
+# If true, show URL addresses after external links.
+#latex_show_urls = False
+
+# Documents to append as an appendix to all manuals.
+#latex_appendices = []
+
+# If false, no module index is generated.
+#latex_domain_indices = True
+
+
+# -- Options for Texinfo output -------------------------------------------
+
+# Grouping the document tree into Texinfo files. List of tuples
+# (source start file, target name, title, author,
+#  dir menu entry, description, category)
+texinfo_documents = [
+  ('index', 'GreybusApplicationProtocol', u'Greybus Application Protocol Documentation',
+   u'Google, Inc.', 'GreybusApplicationProtocol', 'One line description of project.',
+   'Miscellaneous'),
+]
+
+# Documents to append as an appendix to all manuals.
+#texinfo_appendices = []
+
+# If false, no module index is generated.
+#texinfo_domain_indices = True
+
+# How to display URL addresses: 'footnote', 'no', or 'inline'.
+#texinfo_show_urls = 'footnote'
+
+# If true, do not generate a @detailmenu in the "Top" node's menu.
+#texinfo_no_detailmenu = False
+

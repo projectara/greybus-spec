@@ -1,0 +1,42 @@
+\makeatletter
+
+% header and footers, we do this twice, one for the "normal" pages, and one for
+% the "plain" pages (i.e. the chapter start pages.
+\fancypagestyle{normal}{
+	\fancyhf{}	% clear the header and footers
+
+	% Footer
+	\lfoot{\small Copyright \copyright 2014 Google Inc. All rights reserved. Your use of this Ara Module Developers Kit (MDK) is expressly subject to the terms of the MDK License Agreement found at \url{http://projectara.com/mdk-license.txt}.}
+
+	% header
+	\lhead{Greybus Specification \py@release}
+	\rhead{\thepage}
+
+	\renewcommand{\headrulewidth}{0.4pt}
+	\renewcommand{\footrulewidth}{0.4pt}
+}
+
+\fancypagestyle{plain}{
+	\fancyhf{}	% clear the header and footers
+
+	% Footer
+	\lfoot{\small Copyright \copyright 2014 Google Inc. All rights reserved. Your use of this Ara Module Developers Kit (MDK) is expressly subject to the terms of the MDK License Agreement found at \url{http://projectara.com/mdk-license.txt}.}
+
+	% header
+	\lhead{Greybus Specification \py@release}
+	\rhead{\thepage}
+
+	\renewcommand{\headrulewidth}{0.4pt}
+	\renewcommand{\footrulewidth}{0.4pt}
+}
+
+% If people want the page numbers to start at 1, instead of
+% a, b, .. i, ii, and then 1, 2 .. for the title, toc, and body, then
+% uncomment out the following line:
+%\pagenumbering{arabic}
+
+\makeatother
+
+% color the title and links black
+\definecolor{TitleColor}{rgb}{0,0,0}
+\definecolor{InnerLinkColor}{rgb}{0,0,0}
