@@ -3,8 +3,20 @@
 Introduction (Informative)
 ==========================
 
-                    | Good artists copy, great artists steal.
-                    | — Pablo Picasso
+
+.. raw:: latex
+
+  \epigraph{Good artists copy, great artists steal.}
+  {--- Pablo Picasso}
+
+.. raw:: html
+
+  <blockquote>
+  <div><div class="line-block">
+  <div class="line">Good artists copy, great artists steal.</div>
+  <div class="line">— Pablo Picasso</div>
+  </div></div>
+  </blockquote>
 
 The Greybus Specification describes a suite of communications
 protocols required to support the Project Ara modular cell phone

@@ -3,8 +3,19 @@
 Module Information
 ==================
 
-                    | Imitation is the sincerest form of flattery.
-                    | — Charles Caleb Colton
+.. raw:: latex
+
+  \epigraph{Imitation is the sincerest form of flattery.}
+  {--- Charles Caleb Colton}
+
+.. raw:: html
+
+  <blockquote>
+  <div><div class="line-block">
+  <div class="line">Imitation is the sincerest form of flattery.</div>
+  <div class="line">— Charles Caleb Colton</div>
+  </div></div>
+  </blockquote>
 
 A Greybus module shall provide self-descriptive information in order to
 establish communications with other modules on the |unipro| network.
