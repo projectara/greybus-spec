@@ -52,6 +52,7 @@
 
    terminology
    glossary
+   contributors
    introduction
    hardware_model
    module_info
