@@ -57,7 +57,7 @@
    hardware_model
    module_info
    operations
-   control
    connection
+   control
    device_class
    bridged_phy
