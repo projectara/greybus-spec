@@ -559,7 +559,115 @@ TBD
 NFC Protocol
 ------------
 
-TBD
+This section defines the operations used on a connection implementing
+the Greybus Near Field Communication (NFC) Protocol.  This protocol
+allows an AP (Device Host (DH) in NFC's NFC Controller Interface (NCI)
+terminology) to communicate with a Greybus NFC Module (NFC Controller
+(NFCC) in NFC NCI terminology) using the NFC Forum's NCI Specification
+version 1.1.  This specification is available from the
+`NFC Forum's website <http://nfc-forum.org>`_.
+
+Section 11 of the NFC NCI Specification (version 1.1) describes NCI
+Transport Mapping requirements.  Those requirements are summarized here:
+
+*   Transport shall support bidirectional transfers for both data
+    and control packets.
+*   Transport shall provide reliable data transfer.
+*   Transport may provide flow control but should rely on the flow
+    control built into the NCI protocol.
+*   Transport shall not forward packets with size smaller than 3 bytes.
+
+To support these requirements, the underlying |unipro| connection shall
+have E2EFC disabled and CSD and CSV enabled.
+
+The operations in the Greybus NFC Protocol are:
+
+.. c:function:: int get_version(u8 *major, u8 *minor);
+
+    Returns the major and minor Greybus NFC Protocol version
+    number supported by the NFC Module.
+
+.. c:function:: int send_packet(u32 size, u8 *packet);
+
+    Sends an NFC NCI Packet of the specified size from an AP
+    (or NFC Module) to the associated NFC Module (or AP).
+
+Greybus NFC Message Types
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This table describes the Greybus NFC Operation Types and their
+values. A message type consists of an Operation Type combined with a
+flag (0x80) indicating whether the operation is a request or a response.
+
+===========================  =============  ==============
+NFC Operation Type           Request Value  Response Value
+===========================  =============  ==============
+Invalid                      0x00           0x80
+Protocol Version             0x01           0x81
+Send Packet                  0x02           0x82
+(all other values reserved)  0x03..0x7f     0x83..0xff
+===========================  =============  ==============
+
+Greybus NFC Protocol Version Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus NFC Protocol Version Operation allows the AP to
+determine the version of this protocol to which the NFC
+module complies.
+
+Greybus NFC Protocol Version Request
+""""""""""""""""""""""""""""""""""""
+
+The Greybus NFC Protocol Version Request contains no data beyond
+the Greybus NFC message header.
+
+Greybus NFC Protocol Version Response
+"""""""""""""""""""""""""""""""""""""
+
+The Greybus NFC Protocol Version Response contains a status byte,
+followed by two 1-byte values. If the value of the status byte is
+non-zero, any other bytes in the response shall be ignored. A Greybus
+NFC Module adhering to the Protocol specified herein shall
+report major version |gb-major|, minor version |gb-minor|.
+
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+1        version_major   1       |gb-major|      NFC protocol major version
+2        version_minor   1       |gb-minor|      NFC protocol minor version
+=======  ==============  ======  ==========      ===========================
+
+Greybus NFC Send Packet Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus NFC Send Packet Operation allows an AP or NFC Module
+to send an NFC NCI Packet to the associated NFC Module or AP,
+respectively.
+
+Greybus NFC Send Packet Request
+"""""""""""""""""""""""""""""""
+
+The Greybus NFC Send Packet Request contains a 4-byte size and
+a valid NFC NCI Packet of 'size' bytes.
+
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        size            4       Number          Size of the NFC NCI packet
+4        packet          'size'  Data            NFC NCI Packet
+=======  ==============  ======  ==========      ===========================
+
+Greybus NFC Send Packet Response
+""""""""""""""""""""""""""""""""
+
+The Greybus NFC Send Packet Response contains only the status byte.
+
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
 
 Power Profile Protocol
 ----------------------
