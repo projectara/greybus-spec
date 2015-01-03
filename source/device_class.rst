@@ -502,7 +502,7 @@ Greybus Battery Shutdown Temperature Response
 """""""""""""""""""""""""""""""""""""""""""""
 The Greybus battery shutdown temperature response contains the status
 byte and a 4-byte value that represents the temperature at which the
-attery will shutdown.
+battery will shutdown.
 
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
