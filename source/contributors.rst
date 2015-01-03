@@ -6,7 +6,7 @@ Contributors
 The following individuals made significant contributions to the development of
 this specification:
 
-==================  =================
+==================  =========================
 Elwin Ong           Google
 Paul Eremenko       Google
 David Fishman       Google
@@ -31,6 +31,7 @@ Benoit Cousson      BayLibre
 Patrick Titiano     BayLibre
 Jean Pihet          NewOldBits
 Olin Sibert         Oxford Systems
-==================  =================
+Mark Greer          Animal Creek Technologies
+==================  =========================
 
 
