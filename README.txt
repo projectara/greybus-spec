@@ -11,7 +11,7 @@ On Ubuntu:
 
 Then:
 
-$ make pdf
+$ make latexpdf
 
-Output goes in build/pdf. Build backends other than PDF are not
+Output goes in build/latex. Build backends other than PDF are not
 currently tested.
