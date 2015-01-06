@@ -330,7 +330,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'GreybusApplicationProtocol.tex', u'Greybus Protocol Specification',
+  ('index', 'GreybusSpecification.tex', u'Greybus Specification',
    u'Google, Inc.', 'manual'),
 ]
 
@@ -367,8 +367,8 @@ latex_documents = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'GreybusApplicationProtocol', u'Greybus Application Protocol Documentation',
-   u'Google, Inc.', 'GreybusApplicationProtocol', 'One line description of project.',
+  ('index', 'GreybusSpecification', u'Greybus Specification',
+   u'Google, Inc.', 'GreybusSpecification', 'Project Ara UniPro Application Protocols.',
    'Miscellaneous'),
 ]
 
