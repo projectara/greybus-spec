@@ -61,7 +61,7 @@ old) protocol handling code which complies with this specification can
 function properly with the new feature in place, only the minor
 version of the protocol will change. Any time a protocol changes in a
 way that requires the handling code be updated to function properly,
-the protocol’s major version will change.
+the protocol's major version will change.
 
 Two modules may implement different versions of a protocol, and as a
 result they shall negotiate a common version of the protocol to
@@ -72,9 +72,9 @@ when a connection between CPorts is established (for all other
 protocols).  The version of a particular protocol advertised by a
 module is the same as the version of the document that defines the
 protocol (so for protocols defined herein, the version is |gb-major|.\
-|gb-minor|).  In the future, if the protocol specifications are split
-out of this document, the versions will become independent of the
-overall Greybus Application protocol document.
+|gb-minor|).  In the future, if the protocol specifications are removed from
+this document, the versions will become independent of the
+overall Greybus Specification document.
 
 To agree on a protocol, an operation request supplies the (greatest)
 major and minor version of the protocol supported by the source of a
@@ -82,7 +82,7 @@ request. The request destination compares that version with the
 (greatest) version of the protocol it supports.  The version that is the
 largest common version number of the protocol sent by both sides shall
 be the version that is to be used in communicating between the devices.
-This chosen version version will be returned back as a response of the
+This chosen version will be returned back as a response of the
 request.  As a consequence of this, protocol handlers must be capable of
 handling all prior versions of the protocol.
 
