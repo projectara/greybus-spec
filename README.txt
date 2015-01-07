@@ -3,11 +3,11 @@ This is the Greybus Specification.
 Requirements:
 
 - Sphinx: http://sphinx-doc.org/contents.html
-- rst2pdf: https://code.google.com/p/rst2pdf/
+- LaTeX (and pdflatex)
 
 On Ubuntu:
 
-# apt-get install python-sphinx rst2pdf
+# apt-get install python-sphinx texlive
 
 Then:
 
