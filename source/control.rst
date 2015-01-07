@@ -26,8 +26,8 @@ Conceptually, the operations in the Greybus control protocol are:
 
     The SVC initiates this operation after it has first determined
     a |unipro| link is up. The request informs the interface of its
-    whereabouts, including the type of endo it resides in, where
-    the module resides on that endo, which interface it is on that
+    whereabouts, including the type of Endo it resides in, where
+    the module resides on that Endo, which interface it is on that
     module, as well as the |unipro| device id assigned to the
     interface. The destination supplies in its response the
     number of additional device ids it requires to
@@ -137,7 +137,7 @@ Conceptually, the operations in the Greybus control protocol are:
 .. c:function:: int hotplug(u8 svc_device_id, u8 module_id, u16 id_data_size, u8 id_data[]);
 
     This operation is sent by the SVC to the AP to inform it that a
-    module has been inserted and is now present in the endo. The module
+    module has been inserted and is now present in the Endo. The module
     id indicates the subject of the request. The hotplug notification
     provides identifying data that the SVC acquired from the module in
     its response to the SVC identify request.
@@ -146,7 +146,7 @@ Conceptually, the operations in the Greybus control protocol are:
 
     This operation is sent by the SVC to the AP to inform it that a
     module that had previously been subject of a hotplug operation has
-    been removed from the endo.
+    been removed from the Endo.
 
 .. c:function:: int link_up(u8 svc_device_id, u8 module_id, u8 interface_id, u8 device_id);
 
@@ -289,7 +289,7 @@ Greybus Control Identify Request
 Like all control protocol requests, the Greybus control identify
 request begins with a one-byte source device id field. In this case,
 only the SVC sends this request, and the field name reflects
-that. This request also contains the endo, module, and interface ids
+that. This request also contains the Endo, module, and interface ids
 that represent the physical location of the destination interface.  It
 finally contains the device id that has been assigned to the
 destination interface.
@@ -973,7 +973,7 @@ Greybus Control Hot Unplug Operation
 ------------------------------------
 
 The Greybus control hot unplug operation is sent by the SVC to the AP
-to notify it that a module has been removed from the endo.
+to notify it that a module has been removed from the Endo.
 
 Greybus Control Hot Unplug Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
