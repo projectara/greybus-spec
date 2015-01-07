@@ -202,7 +202,7 @@ htmlhelp_basename = 'GreybusSpecificationdoc'
 # regardless of the global pdf_compressed setting.
 
 pdf_documents = [
- ('index', project, project, u'Google, Inc.'),
+ ('index', project, project, u'Google Project Ara'),
 ]
 
 # A comma-separated list of custom stylesheets. Example:
@@ -331,7 +331,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
   ('index', 'GreybusSpecification.tex', u'Greybus Specification',
-   u'Google, Inc.', 'manual'),
+   u'Google Project Ara', 'manual'),
 ]
 
 #latex_show_pagerefs = False
