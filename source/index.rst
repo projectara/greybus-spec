@@ -19,7 +19,7 @@
 
 .. footer::
 
-   Copyright © 2014-2015 Google Inc. All rights reserved. Your use of this
+   Copyright © 2015 Google Inc. All rights reserved. Your use of this
    Greybus Specification is expressly subject to the terms of the MDK
    License Agreement found at http://projectara.com/mdk-license.txt.
 
