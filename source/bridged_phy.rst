@@ -1118,10 +1118,1280 @@ Offset   Field           Size    Value           Description
 0        status          1       Number          Success, or reason for failure
 =======  ==============  ======  ==========      ===========================
 
-I2S Protocol
-____________
+I2S Protocols
+-------------
 
-TBD.
+..  'I2S' should be replaced by 'Audio Streaming' or similar
+    because more than i2s is supported by what's defined here.
+
+Audio data may be streamed using the I2S Protocols Specification
+described herein.  The I2S Protocols Specification is designed to
+support arbitrarily complex audio topologies with any number of
+intermediate Modules.  A Module that supports the I2S Protocols
+Specification shall be referred to as an *I2S Module* even when
+the Module supports other Greybus Protocols.
+
+.. note::
+
+    Where possible, the I2S Protocols Specification tries to be consistent
+    with the
+    `USB Audio Specification Version 2.0
+    <http://www.usb.org/developers/docs/devclass_docs/Audio2.0_final.zip>`_.
+    The I2S Protocols Specification is designed to handle
+    *Type I Simple Audio Data Format*
+    data as defined in Section 2.3.1 of the
+    *USB Device Class Definition for Audio Data Formats*
+    document.  This does not preclude the use of other
+    data formats.
+
+An I2S Module shall contain one or more *I2S Bundles*.  Each I2S Bundle
+shall contain one *I2S Management CPort*, and may contain zero or
+more *I2S Transmitter CPorts* and zero or more *I2S Receiver CPorts*.
+There shall be at least one I2S Transmitter or Receiver CPort in each
+I2S Bundle.  An I2S Bundle may have no physical low-level I2S or
+similar hardware associated with it.
+
+I2S Management CPorts, I2S Transmitter CPorts, and I2S Receiver CPorts
+have unique CPort Protocol values in the `protocol` field of the CPort
+Descriptor in the Manifest Data.
+
+An *I2S Transmitter Bundle* is an I2S Bundle containing at least one
+I2S Transmitter CPort.  Similarly for an *I2S Receiver Bundle*.
+The terms *Transmitter* and *Receiver* are from the perspective of the
+|unipro| network.  So an I2S Transmitter Bundle is an I2S Bundle capable
+of sending audio data over the |unipro| network even when that I2S
+Bundle is a *receiver* on a local low-level I2S interface.  An I2S
+Bundle may be both an I2S Transmitter Bundle and an I2S Receiver Bundle.
+
+I2S Management CPorts in the AP Module that are used to manage
+I2S Bundles are considered a special case and not part of an I2S Bundle.
+This shall not prevent the AP Module from having I2S Bundles.
+For example, the AP Module may have an I2S Bundle for sending
+ringtones to the Speaker Module when an incoming voice call arrives.
+The I2S Management CPort in the AP Module's I2S Bundle is separate
+from the I2S Management CPort used by the AP Module to manage that
+I2S Bundle.  The AP Module shall treat the I2S Bundle in the AP
+Module no differently than an I2S Bundle in any other I2S Module.
+
+Separate Management and Data Protocols
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+There are two separate protocols contained within the I2S Protocols
+Specification.  The first one is the :ref:`i2s-management-protocol`
+and is used by the AP Module to manage audio streams.  The second
+one is the :ref:`i2s-data-protocol` and is used by I2S Modules to
+stream audio data to one another.
+
+The I2S Management Protocol is used over an *I2S Management Connection*
+which connects two I2S Management CPorts.  At least one of the I2S
+Management CPorts shall be in the AP Module.  The I2S Data Protocol
+is used over an *I2S Data Connection* which connects an I2S Transmitter
+CPort to an I2S Receiver CPort.
+
+.. _i2s-audio-data-attributes:
+
+Audio Data Attributes and Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For audio data to be streamed and delivered correctly, the I2S Bundles
+at either end of an I2S Data Connection shall be configured similarly.
+Note that it is possible for I2S Data Connections in an overall audio
+stream to have their associated I2S Bundles configured differently.
+For example, an intermediate I2S Module that is a sampling rate
+converter may have different sampling rates for its receiving and
+transmitting I2S Data Connections.  Even so, the I2S Bundles at
+either end of each I2S Data Connection shall be configured similarly.
+
+It is the responsibility of the AP Module to ensure that both the
+individual I2S Data Connections, and the overall set of I2S Data
+Connections combined with the functions of internal I2S Modules
+and non-|unipro| devices are configured correctly.
+
+The I2S Protocols Specification defines the *transfer* of audio data,
+not the production or consumption of audio data.
+Therefore, the encoding method, compression technique, and audio data
+representation are irrelevant with respect to the I2S Protocols
+Specification.  However, there are attributes of the audio data
+that are relevant and are described herein.
+
+The *Configuration* of an I2S Bundle or Data Connection is the set
+of values used by the I2S Bundle or Data Connection for these audio
+data attributes.  The I2S Protocols Specification places constraints
+on the Configuration.  These constraints are:
+
+*   the Configuration (i.e., sample frequency, number of channels
+    per sample, etc.) of an I2S Bundle may not change while there is
+    an active I2S Transmitter or Receiver CPorts in the I2S Bundle;
+*   the number of audio data bits for an individual channel shall be
+    an integer multiple of eight;
+*   the number of audio data bits for each channel shall be equal;
+*   as per the USB Audio Specification, the number of bytes of audio
+    data shall be one, two, three, or four;
+*   every :ref:`i2s-send-data-op` shall send an integer number of
+    audio data samples.
+
+Some audio data attributes commonly differ for reasons including
+underlying hardware constraints and the audio application.
+These attributes shall be configurable.  The configurable audio
+data attributes are:
+
+*   the sample frequency which is the number of audio sample taken
+    per second;
+*   the number of audio channels per sample;
+*   the number of bytes of audio channel data;
+*   the bytes order of multi-byte audio channel data;
+*   the spatial location of the audio channels.
+
+The spatial location of the audio channels is defined by the
+USB Audio Specification.  The number of channels per sample
+in the Configuration shall equal the number of spatial locations
+selected by the Configuration.
+
+There are other configurable attributes that don't affect the audio
+data within the |unipro| audio stream but do affect the low-level
+interface between the I2S Bundle and a non-|unipro| audio device.
+These are :ref:`i2s-low-level-attributes`.
+
+It is necessary to include these attributes in the I2S Configuration
+data because the AP Module requires this information in order to
+configure the low-level interface of the non-|unipro| device.
+Examples of non-|unipro| audio devices are analog-to-digital
+converters (ADCs), digital-to-analog converters (DACs), combined
+ADC/DACs called coders-decoders (codecs), and audio mixers.
+
+In order to configure the I2S Bundles at each end of an I2S Data
+Connection similarly, the AP Module requires the ability to query
+the I2S Bundles to see which options for each attribute the
+I2S Bundle supports.  To enable this, the I2S Management Protocol contains
+the :ref:`i2s-get-supported-configurations-op` which returns an array
+of structures that describe the configurations supported by the I2S
+Bundle.  Each entry of the array is a :ref:`i2s-configuration-struct`.
+The AP Module also requires the ability to set the attribute values
+of the I2S Bundle.  The :ref:`i2s-set-configuration-op` is provided for
+this purpose.
+
+Some attributes in the :ref:`i2s-configuration-struct` returned by
+the :ref:`i2s-get-supported-configurations-op` may have multiple options
+set.  This indicates that more than one option for that attribute is
+supported by the I2S Bundle; however, only one option shall be selected
+in the :ref:`i2s-configuration-struct` passed in the
+:ref:`i2s-set-configuration-op`.
+
+Configuration of the I2S Bundle shall be performed while no CPorts
+in the I2S Bundle are active.
+
+.. _i2s-low-level-attributes:
+
+I2S Low-level Attributes
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+There are several I2S Low-level Attributes supported by the
+I2S Protocols Specification.  Some of the I2S Low-level Attributes
+vary depending on the *low-level Interface Protocol* so more
+I2S Low-level Attributes may be added as support for additional
+Low-level Interface Protocols is added.  The current I2S Low-level
+Attributes are:
+
+*   the Low-level Interface Protocol;
+*   the I2S Bundle's role with respect to the Bit Clock (BCLK);
+*   the I2S Bundle's role with respect to the Word Clock (WCLK);
+*   the polarity of the WCLK;
+*   the BCLK edge that the WCLK changes on;
+*   the BCLK edge when transmit bits are presented;
+*   the BCLK edge when receive bits are latched;
+*   the number of BCLK cycles between when WCLK changes and when
+    data for the next channel is presented.
+
+The Low-level Interface Protocol specifies the protocol used by the
+3- (or more) wire interface between the I2S Bundle and the non-|unipro|
+device.  The currently supported Low-level Interface Protocols are:
+Pulse Code Modulation (PCM), Inter-IC Sound (I2S), and Left-Right Stereo
+(LR Stereo).  They are described in more detail below.
+
+Sometimes Low-level Interface Protocols also specify the format of the
+audio data (e.g., I2S).  For this discussion, the audio data format is
+irrelevant and only the Low-level Interface Protocol is relevant.
+
+The I2S Bundle's *role* with respect to the Bit and Word Clocks specifies
+whether the I2S Bundle generates the respective clock signal or not.
+When the I2S Bundle generates the clock signal, its role is *clock master*;
+when it does not generate the clock signal, its role is *clock slave*.
+
+The polarity of the WCLK may be reversed for some Low-level Interface
+Protocols.  The effects of reversing the WCLK polarity varies by
+Low-level Interface Protocol.  The WCLK is also referred to as the
+Left-Right Clock (LRCLK) and Word Select (WS).
+
+The remaining I2S Low-level Attributes specify which BCLK edge
+various events are synchronized to.
+
+Pulse Code Modulation (PCM) Low-level Interface Protocol
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+There are many variations of the `Pulse Code Modulation (PCM)
+<http://en.wikipedia.org/wiki/Pulse-code_modulation>`_
+Low-level Interface Protocol.  Most variations are supported
+by setting I2S Low-level Attributes appropriately.
+
+..  The link above is useless.  The only other links I've found
+    that have decent descriptions are in datasheets for parts
+    and the description is buried in the middle.
+    Best example I have is:
+    http://kcwirefree.com/docs/guides/kcTechnicalAudio.pdf.
+    Jump to Sections 10.3.2 and 10.3.3 (p. 12).  Other parts
+    have variation of this.  There doesn't seem to be one
+    standard.
+
+The PCM Low-level Interface Protocol uses the WCLK signal for
+transmitting *Frame SYNC* pulses.  A Frame SYNC pulse is transmitted
+when the WCLK master reverses the WCLK polarity for one or more BCLK cycles.
+The beginning of a Frame SYNC pulse signals the beginning of a new sample.
+The audio data for all channels in the sample is transferred between
+Frame SYNC pulses.  If there is no more audio data to transfer,
+zero bits are transferred until the next Frame SYNC pulse (which
+signals the start of the next sample).
+
+Important points are:
+
+*   one or more audio channels may be transferred;
+*   the BCLK role may be master or slave;
+*   the WCLK role may be master or slave;
+*   the WCLK polarity may be normal or reversed (normal is when
+    the WCLK is low except when a Frame SYNC pulse is being transmitted);
+*   the WCLK may change on the rising or falling edge of the BCLK;
+*   data bits being transmitted may be presented on the rising or
+    falling edge of BCLK;
+*   data bits being received may be latched on the rising or falling
+    edge of BCLK;
+*   the first bit of the new sample may start on the same BCLK
+    edge as the WCLK signal (i.e., no offset) or one BCLK cycle
+    later (i.e., offset by one).
+
+Inter-IC Sound (I2S) Low-level Interface Protocol
+"""""""""""""""""""""""""""""""""""""""""""""""""
+
+The `Inter-IC Sound (I2S)
+<https://web.archive.org/web/20060702004954/http://www.semiconductors.philips.com/acrobat_download/various/I2SBUS.pdf>`_
+Low-level Interface Protocol specifies some I2S Low-level Attribute
+values but leaves others open.  The WCLK signal specifies
+whether the left or right channel's audio data is being
+transferred.
+
+Important points are:
+
+*   there are two channels per sample;
+*   the BCLK role may be master or slave;
+*   the WCLK role may be master or slave;
+*   the WCLK polarity may be normal or reversed (normal is when
+    the left channel data is transferred when WCLK is low and the
+    right channel data is transferred when WCLK is high);
+*   the WCLK may change on the rising or falling edge of the BCLK;
+*   data bits being transmitted may be presented on the rising or
+    falling edge of BCLK;
+*   data bits being received are latched on the rising edge of BCLK;
+*   the first bit of the new sample starts one BCLK cycle after WCLK
+    changes (i.e., offset by one).
+
+LR Stereo Low-level Interface Protocol
+""""""""""""""""""""""""""""""""""""""
+
+The *LR Stereo* Low-level Interface Protocol refers to the
+protocol used by
+`Left-justified and Right-justified Stereo Formats
+<http://www.cirrus.com/en/pubs/appNote/AN282REV1.pdf>`_.
+The only difference between the two formats is whether
+the audio data is left- or right-justified.  The justification
+of the audio data is not relevant to the Low-level Interface Protocol
+so the protocols for the two formats are combined into the
+LR Stereo Low-level Interface Protocol.
+
+..  I don't like having a hardware vendor's link here but
+    I can't find a better one.
+
+The LR Stereo Low-level Interface Protocol is similar to I2S except
+the WCLK polarity is reversed and there is no offset between
+when WCLK changes and when data for the next channel is presented.
+
+Important points are:
+
+*   there are two channels per sample;
+*   the BCLK role may be master or slave;
+*   the WCLK role may be master or slave;
+*   the WCLK polarity may be normal or reversed (normal is when
+    the left channel data is transferred when WCLK is high and the
+    right channel data is transferred when WCLK is low);
+*   the WCLK may change on the rising or falling edge of the BCLK;
+*   data bits being transmitted may be presented on the rising or
+    falling edge of BCLK;
+*   data bits being received may be latched on the rising or falling
+    edge of BCLK;
+*   the first bit of the new sample starts on the same BCLK
+    edge as the WCLK signal (i.e., no offset).
+
+.. _i2s-audio-samples-per-message:
+
+Audio Samples per Greybus Message
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Since audio samples tend to small but sent many times per second,
+and small delays are not perceptible by the human ear, the I2S Protocols
+Specification supports combining multiple audio samples into one Greybus
+Message.  This is configured using the :ref:`i2s-set-samples-per-message-op`.
+The I2S Transmitter and Receiver Bundles at each end of an
+I2S Data Connection shall be set to the same samples per message value.
+Once set, the I2S Transmitter Bundle shall send the specified number
+of audio samples in each :ref:`i2s-send-data-op`.
+
+Setting the samples per message is considered part of the audio stream
+configuration and shall be performed while no CPorts are active
+in the I2S Bundle.  Once set, the samples per message value shall
+remain in effect indefinitely or until modified by another
+:ref:`i2s-set-samples-per-message-op`.
+
+When the samples per message is not set, a default value of one shall
+be used.
+
+.. _i2s-audio-video-synchronization:
+
+Audio and Video Synchronization
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+One of the I2S Management Protocol's goals is to support synchronizing
+audio output with video output.  To that end, the
+:ref:`i2s-get-processing-delay-op` provides the AP Module with the amount
+of time the I2S Bundle takes to *process* the audio data.  The *processing*
+required depends on the I2S Bundle.  For example, an audio mixer's
+processing may involve mixing the data from two separate audio streams
+while a Speaker Module's processing may involve streaming audio data to
+a DAC.  The delay value returned by the Operation should be accurate
+to within 500 microseconds.
+
+..  I expect this value to be zero in most cases.  Hopefully, there
+    is something similar for video streams so the AP Module can
+    determine if it needs to delay the audio stream so the video
+    stream can "fill its pipeline".
+
+The I2S Management Protocol contains the :ref:`i2s-set-start-delay-op`
+which causes the I2S Transmitter Bundle to buffer its audio data for the
+specified amount of time before streaming it.  This only delays when
+audio streaming *starts*.  The delay time begins when the first
+I2S Transmitter CPort in the I2S Transmitter Bundle is activated.
+When the delay time elapses, the I2S Transmitter Bundle shall
+begin streaming audio data to its active I2S Transmitter CPorts.
+If no I2S Transmitter CPorts are active when the delay time elapses,
+no audio data is streamed and any buffered audio data shall be discarded.
+The I2S Transmitter Bundle shall delay with an accuracy of 500 microseconds.
+
+It is possible for an I2S Transmitter Bundle to send the buffered data
+faster than the audio samples can be output at the final destination.
+When this happens, it effectively transfers the audio data buffering
+downstream but does not change the audio output at the final destination.
+
+..  Should E2EFC be enabled so audio data isn't discarded when a
+    downstream Bundle doesn't have enough space to hold it all?
+
+Setting the start delay is considered part of the audio stream configuration
+and shall be performed while no CPorts are active in the I2S Bundle.
+Once set, the start delay shall remain in effect indefinitely or until
+modified by another :ref:`i2s-set-start-delay-op`.
+When the start delay is not set, a default value of zero shall be used.
+
+.. _i2s-audio-stream-activation-deactivation:
+
+Audio Stream Activation and Deactivation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Once the I2S Bundles in a planned audio stream are configured
+(i.e., configuration set, samples per message set,
+start delay set), audio streaming is ready to begin.
+The AP Module starts audio streaming by activating the
+I2S Data Connections making up the planned audio stream.
+To activate an I2S Data Connection, the AP Module uses
+:ref:`i2s-activate-cport-op` to activate the I2S Transmitter
+and Receiver CPorts at each end of the I2S Data Connection.
+
+When the first I2S Transmitter CPort in an I2S Bundle is
+activated, the start delay time begins and the I2S Bundle
+starts buffering audio data.  When the start delay time
+elapses, the I2S Bundle begins streaming the audio data
+to all active I2S Transmitter CPorts in the I2S Bundle.
+
+I2S Transmitters CPorts may be added or removed while the
+I2S Bundle is actively streaming.  When an I2S Transmitter
+CPort is activated, its active downstream I2S Data Connections
+shall begin receiving audio data and become part of the overall
+audio stream.  When an I2S Transmitter CPort is deactivated, its
+active downstream I2S Data Connections shall stop receiving audio
+data and shall no longer be part of the overall audio stream.
+When the last I2S Transmitter CPort in an I2S Bundle is deactivated,
+the I2S Bundle may free the resources allocated for the stream
+and discard any buffered audio data.
+
+When an I2S Receiver CPort in an I2S Bundle is activated,
+it shall wait for audio data to arrive.  When audio data
+arrives, it shall pass the data onto the device or function
+on whose behalf it is receiving data.
+
+I2S Receiver Bundles may be overrun by incoming audio data.
+When an overrun occurs, the I2S Receiver Bundle shall discard
+the incoming data.  The I2S Receiver Bundle may buffer
+audio data so audio data is not discarded as often.  Whether
+audio data is buffered and how much audio data to buffer
+is left to the I2S Receiver Bundle designer.  When the I2S
+Receiver Bundle is overrun while buffering audio data, it
+may discard buffered audio data, the incoming audio data,
+or a combination of both.  Regardless of how overruns are
+handled, audio data shall remain in order.
+
+.. _i2s-streaming-audio-data:
+
+Streaming Audio Data
+^^^^^^^^^^^^^^^^^^^^
+
+An I2S Transmitter Bundle streams audio data to an
+I2S Receiver Bundle over an I2S Data Connection using
+:ref:`i2s-send-data-op`\s.  Each I2S Send Data Request
+contains at least one complete audio sample.
+A complete audio sample contains one sample of
+audio data for every audio channel being streamed.
+
+Every audio sample sent over an I2S Data Connection
+is numbered beginning at zero.  Since different I2S Transmitter
+CPorts within the I2S Transmitter Bundle may be
+activated at different times, the same audio sample
+may be numbered differently in each I2S Data Connection.
+However, within an I2S Data Connection the audio sample
+number shall begin at zero and increment by one for each
+audio sample.
+
+To enable an I2S Receiver Bundle to recognize that one
+or more I2S Send Data Requests are missing, each
+I2S Send Data Request contains a `sample_number` field.
+The `sample_number` field contains the sample number of
+the first audio sample contained in the I2S Send Data Request.
+The I2S Transmitter Bundle shall increase the value placed
+in the `sample_number` field of consecutive I2S Send Data
+Requests by the number of audio samples contained in each request.
+See :ref:`i2s-send-data-op` for further details on the
+I2S Send Data Requests.
+
+When an I2S Receiver Bundle receives an I2S Send Data
+Request whose `sample_number` field value does not match
+the expected sample number, it can determine the action
+to take by comparing the sample number it expected to
+the sample number it received.
+
+If the sample number the I2S Receiver Bundle expected is
+less than the sample number in the received request,
+then at least one I2S Send Data Request is missing.
+In this situation, the I2S Receiver Bundle shall fabricate
+audio data and substitute the fabricated data for the missing
+data.  The number of audio samples to fabricate is calculated
+by subtracting the audio sample number in the received
+request by the one expected.
+How the missing audio data is fabricated is left to
+the I2S Module designer.
+
+For example, if the samples per message has been set to four
+and the I2S Receiver Bundle has received I2S Send Data Requests
+whose `sample_number` values are zero, four, and twelve,
+then the I2S Receiver Bundle shall fabricate audio data
+for audio samples eight, nine, ten, and eleven.
+
+If the sample number the I2S Receiver Bundle expected is
+greater than or equal to the sample number in the received
+request, then either the I2S Send Request is a duplicate or
+the I2S Send Request arrived late and the I2S Receiver
+Bundle has fabricated audio data in its place.  In either
+case, the I2S Receiver Bundle shall discard the contents
+of the I2S Send Data Request.
+
+It is possible for the I2S Receiver Bundle to be overrun
+with incoming I2S Send Data Requests or to underrun by
+not having audio data available when required.
+The handling of these conditions is left to the I2S Module
+designer.
+
+.. _i2s-errors-and-event-reporting:
+
+Errors and Event Reporting
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Audio data streaming events detected by the I2S Bundle
+are reported to the AP Module using :ref:`i2s-report-event-op`\s.
+Events include Greybus I2S Protocol errors, audio data underrun,
+and audio data overrun.  The I2S Bundle shall report events when
+one or more I2S Transmitter or Receiver CPorts are active;
+otherwise, it shall not report events.
+
+The *halted* event indicates that the I2S Bundle is unable to
+continue streaming.  This event shall be preceded by another
+event indicating why the I2S Bundle halted.  Once an I2S Bundle
+reports the halted event it shall deactivate all active I2S
+Transmitter and Receiver CPorts.
+
+In order to prevent flooding the AP Module with events,
+an I2S Bundle shall only report an event once per occurrence
+and shall report no event within 10 milliseconds of a previous
+event (except for the halted event which may follow immediately
+after another event).
+
+..  This needs more thought.
+
+Example Audio Scenario (Informative)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Audio configurations may be complex and require several I2S
+Data Connections to perform the desired task.
+Figure 10.1 illustrates one example.  In the figure, the AP Module
+generates a ringtone indicating that their is an incoming call.
+The local party answers the call and begins recording.
+When necessary, the AP Module generates alert tones indicating to
+the local party that an event has occurred (e.g., an SMS text message
+arrived).  Several I2S Modules and I2S Audio Connections are
+required to carry out these tasks.
+
+.. figure:: _static/i2s_example.png
+    :alt: Example Audio Scenario
+    :name: example audio scenario
+    :figwidth: 6in
+    :align: center
+
+    Example Audio Scenario (I2S Data Connections shown)
+
+To set up an audio stream between two I2S Bundles, the AP Module
+performs the following steps using the :ref:`control-protocol` and
+the :ref:`i2s-management-protocol`.
+
+*   Create a |unipro| Connection between the AP Module
+    and each I2S Bundle.  These Connections are the
+    I2S Management Connections.
+*   Create a |unipro| Connection between the I2S Transmitter CPort
+    in the I2S Transmitter Bundle and the I2S Receiver CPort in the
+    I2S Receiver Bundle.  This Connection is the I2S Data Connection.
+*   Query the I2S Bundles and retrieve the supported configurations
+    for each.
+*   Determine a configuration suitable to both I2S Bundles
+    and any intermediate functions or non-|unipro| devices
+    involved in the streaming.
+*   Set the I2S Bundles, intermediate functions, and non-|unipro| devices
+    to the chosen configuration.
+*   If desired, set the number of audio samples per Greybus Message
+    in the I2S Transmitter Bundle.  Otherwise one sample per Greybus
+    Message shall be sent.
+*   If required, determine the start up delay required to synchronize the
+    audio data with the video data.
+*   If required, set the start delay for the I2S Transmitter Bundle.
+    Otherwise a start delay of zero shall be used.
+*   If present, configure and start the intermediate functions and
+    non-|unipro| devices.
+*   Activate the I2S Receiver CPort in the I2S Receiver Bundle.
+*   Activate the I2S Transmitter CPort in the I2S Transmitter Bundle.
+
+The I2S Transmitter Bundle may now stream audio data to the
+I2S Receiver Bundle using :ref:`i2s-send-data-op`\s.
+
+To tear down an audio stream between two I2S Bundles, the AP Module
+performs the following steps using the :ref:`control-protocol` and
+the :ref:`i2s-management-protocol`:
+
+*   Deactivate the I2S Transmitter CPort in the I2S Transmitter Bundle.
+    This stops the I2S Transmitter Bundle from streaming audio data
+    over the associated I2S Data Connection.
+*   Deactivate the I2S Receiver CPort in the I2S Receiver Bundle.
+*   Destroy the |unipro| Connection between the two I2S Bundles
+    used for the I2S Data Connection.
+*   Destroy the two |unipro| Connections between the AP Module
+    and I2S Bundles used for the I2S Management Connections.
+
+When multiple I2S Data Connections are used in an audio stream,
+the AP Module must ensure that the selected configuration satisfies
+the constraints of all the I2S Bundles, intermediate modules,
+and non-|unipro| devices involved.
+
+.. _i2s-management-protocol:
+
+I2S Management Protocol
+^^^^^^^^^^^^^^^^^^^^^^^
+
+I2S Management Protocol Operations are communicated over I2S Management
+Connections.  I2S Management Connections connect the AP Module to
+I2S Bundles.  There shall be an I2S Management Connection between
+the AP Module and each I2S Bundle participating in the audio stream.
+
+In the following descriptions, Operations apply to the I2S Bundle
+associated with the I2S Management Connection that the Operation is
+sent on.  Similarly, arguments to parameters such as `cport` shall
+be CPorts contained within the I2S Bundle associated with the
+I2S Management Connection that the Operation is sent on.
+
+Conceptually, the I2S Management Protocol Operations are:
+
+.. c:function:: int get_supported_configurations(u8 *configurations, struct gb_i2s_configuration *configurations);
+
+    Requests the I2S Bundle return an array of :ref:`i2s-configuration-struct`
+    describing the configurations it supports.
+
+.. c:function:: int set_configuration(struct gb_i2s_configuration *configuration);
+
+    Requests the I2S Bundle set its configuration values to
+    those specified by the supplied configuration.
+
+.. c:function:: int set_samples_per_message(u16 samples_per_message);
+
+    Requests the I2S Bundle send the specified number of audio
+    samples in each :ref:`i2s-send-data-op`.
+
+    The default samples per message value shall be 0.
+
+.. c:function:: int get_processing_delay(u32 *microseconds);
+
+    Returns the number of microseconds the I2S Bundle requires
+    to process an audio sample before it is forwarded.
+
+..  The USB Audio spec expresses this delay in audio microframes
+    instead of microseconds (Section 3.12 of USB Dev Class Def.
+    for Audio Devices v2.0).  The issue I have with this is the
+    number of microframes varies depending on the sampling rate
+    (if I understand what they're doing correctly).  It seems
+    simpler to just use microseconds but maybe it should change
+    to match USB.
+
+.. c:function:: int set_start_delay(u32 microseconds);
+
+    Requests the I2S Transmitter Bundle buffer audio data
+    for the specified amount of time before beginning to
+    stream it.
+
+    The default start delay value shall be 0.
+
+.. c:function:: int activate_cport(u16 cport);
+
+    Requests the I2S Bundle activate the specified CPort.
+
+    When `cport` refers to an I2S Transmitter CPort,
+    the I2S Bundle shall stream audio data through that CPort.
+    When `cport` refers to an I2S Receiver CPort,
+    the I2S Bundle shall forward the audio data from the CPort
+    to the device or function on whose behalf it is receiving
+    the audio data.
+
+.. c:function:: int deactivate_cport(u16 cport);
+
+    Requests the I2S Bundle deactivate the specified CPort.
+    When this operation completes, the I2S Bundle shall no
+    longer send or receive audio data on the specified CPort.
+
+..  I keep debating whether to have start & stop ops but they
+    wouldn't be any different than the activate/deactivate ops
+    already defined.  Adding them would just create more work
+    for AP.
+
+.. c:function:: int report_event(u32 event);
+
+    Reports an I2S Audio Event to the AP Module.
+    The events are described in :ref:`i2s-audio-events`.
+
+.. _i2s-configuration-struct:
+
+Greybus I2S Configuration Structure
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus I2S Configuration Structure describes configurations
+supported by I2S Bundles.  It is used by
+:ref:`i2s-get-supported-configurations-op`\s and
+:ref:`i2s-set-configuration-op`\s.
+See :ref:`i2s-audio-data-attributes` for further details.
+
+=======  ====================  =====  =========  ==============================
+Offset   Field                 Size   Value      Description
+=======  ====================  =====  =========  ==============================
+0        sample_frequency      4      Number     Number of samples per second
+4        num_channels          1      Number     Number of channels per sample
+5        bytes_per_channel     1      Number     Number of audio bytes per channel
+6        bytes_order           1      Bit Mask   Byte order of audio data; see
+                                                 :ref:`i2s-byte-order-bits`
+                                                 for mask values
+7        pad                   1                 Padding
+8        spatial_locations     4      Bit Mask   Spatial locations for each
+                                                 channel;
+                                                 see
+                                                 :ref:`i2s-spatial-location-bits`
+                                                 for mask values
+12       ll_protocol           4      Bit Mask   Low-level protocol; see
+                                                 :ref:`i2s-protocol-bits`
+                                                 for mask values
+16       ll_bclk_role          1      Bit Mask   Low-level BCLK role;
+                                                 see :ref:`i2s-role-bits`
+                                                 for mask values
+17       ll_wclk_role          1      Bit Mask   Low-level WCLK role;
+                                                 see :ref:`i2s-role-bits`
+                                                 for mask values
+18       ll_wclk_polarity      1      Bit Mask   WCLK polarity;
+                                                 see :ref:`i2s-polarity-bits`
+                                                 for mask values
+19       ll_wclk_change_edge   1      Bit Mask   The BCLK edge that WCLK
+                                                 changes on;
+                                                 see :ref:`i2s-clock-edge-bits`
+                                                 for mask values
+20       ll_data_tx_edge       1      Bit Mask   The BCLK edge that transmit
+                                                 data bits are presented on;
+                                                 see :ref:`i2s-clock-edge-bits`
+                                                 for mask values
+21       ll_data_rx_edge       1      Bit Mask   The BCLK edge that receive
+                                                 data bits are latched on;
+                                                 see :ref:`i2s-clock-edge-bits`
+                                                 for mask values
+22       ll_data_offset        1      Number     Number of BCLK cycles
+                                                 between WCLK changing
+                                                 and the first data bit
+                                                 of the next channel
+                                                 being presented or latched
+23       ll_pad                1                 Padding
+=======  ====================  =====  =========  ==============================
+
+..  I can't make this table look right even when using a grid table.
+
+.. _i2s-byte-order-bits:
+
+Greybus I2S Byte-Order Bits
+"""""""""""""""""""""""""""
+
+This table defines the bit fields which specify the set of supported
+I2S byte orders.
+These includes a *Not Applicable (NA)* value used
+for single-byte audio data.
+
+===============================  =============================  ===============
+Symbol                           Brief Description              Mask Value
+===============================  =============================  ===============
+GB_I2S_BYTE_ORDER_NA             Not applicable                 0x01
+GB_I2S_BYTE_ORDER_BE             Big endian                     0x02
+GB_I2S_BYTE_ORDER_LE             Little endian                  0x04
+===============================  =============================  ===============
+
+.. _i2s-spatial-location-bits:
+
+Greybus I2S Spatial Location Bits
+"""""""""""""""""""""""""""""""""
+
+This table defines the bit fields which specify the set of supported
+I2S Spatial Locations.
+These values are defined in Section 4.1 of the
+*USB Device Class Definition for Audio Devices* document which is part
+of the `USB Audio Specification Version 2.0
+<http://www.usb.org/developers/docs/devclass_docs/Audio2.0_final.zip>`_.
+
+===============================  ===========================    ===============
+Symbol                           Brief Description              Mask Value
+===============================  ===========================    ===============
+GB_I2S_SPATIAL_LOCATION_FL       Front Left                     0x00000001
+GB_I2S_SPATIAL_LOCATION_FR       Front Right                    0x00000002
+GB_I2S_SPATIAL_LOCATION_FC       Front Center                   0x00000004
+GB_I2S_SPATIAL_LOCATION_LFE      Low Frequency Effects          0x00000008
+GB_I2S_SPATIAL_LOCATION_BL       Back Left                      0x00000010
+GB_I2S_SPATIAL_LOCATION_BR       Back Right                     0x00000020
+GB_I2S_SPATIAL_LOCATION_FLC      Front Left of Center           0x00000040
+GB_I2S_SPATIAL_LOCATION_FRC      Front Right of Center          0x00000080
+GB_I2S_SPATIAL_LOCATION_BC       Back Center                    0x00000100
+GB_I2S_SPATIAL_LOCATION_SL       Side Left                      0x00000200
+GB_I2S_SPATIAL_LOCATION_SR       Side Right                     0x00000400
+GB_I2S_SPATIAL_LOCATION_TC       Top Center                     0x00000800
+GB_I2S_SPATIAL_LOCATION_TFL      Top Front Left                 0x00001000
+GB_I2S_SPATIAL_LOCATION_TFC      Top Front Center               0x00002000
+GB_I2S_SPATIAL_LOCATION_TFR      Top Front Right                0x00004000
+GB_I2S_SPATIAL_LOCATION_TBL      Top Back Left                  0x00008000
+GB_I2S_SPATIAL_LOCATION_TBC      Top Back Center                0x00010000
+GB_I2S_SPATIAL_LOCATION_TBR      Top Back Right                 0x00020000
+GB_I2S_SPATIAL_LOCATION_TFLC     Top Front Left of Center       0x00040000
+GB_I2S_SPATIAL_LOCATION_TFRC     Top Front Right of Center      0x00080000
+GB_I2S_SPATIAL_LOCATION_LLFE     Left Low Frequency Effects     0x00100000
+GB_I2S_SPATIAL_LOCATION_RLFE     Right Low Frequency Effects    0x00200000
+GB_I2S_SPATIAL_LOCATION_TSL      Top Side Left                  0x00400000
+GB_I2S_SPATIAL_LOCATION_TSR      Top Side Right                 0x00800000
+GB_I2S_SPATIAL_LOCATION_BC       Bottom Center                  0x01000000
+GB_I2S_SPATIAL_LOCATION_BLC      Back Left of Center            0x02000000
+GB_I2S_SPATIAL_LOCATION_BRC      Back Right of Center           0x04000000
+GB_I2S_SPATIAL_LOCATION_RD       Raw Data                       0x80000000
+===============================  ===========================    ===============
+
+.. _i2s-protocol-bits:
+
+Greybus I2S Protocol Bits
+"""""""""""""""""""""""""
+
+This table defines the bit fields which specify the set of supported
+I2S Low-level Protocols.
+See :ref:`i2s-low-level-attributes` for further details.
+
+===============================  ===========================    ===============
+Symbol                           Brief Description              Mask Value
+===============================  ===========================    ===============
+GB_I2S_PROTOCOL_PCM              Pulse Code Modulation (PCM)    0x00000001
+GB_I2S_PROTOCOL_I2S              Inter-IC Sound (I2S)           0x00000002
+GB_I2S_PROTOCOL_LR_STEREO        LR Stereo                      0x00000004
+===============================  ===========================    ===============
+
+.. _i2s-role-bits:
+
+Greybus I2S Role Bits
+"""""""""""""""""""""
+
+This table defines the bit fields which specify the set of supported
+I2S clock roles.
+See :ref:`i2s-low-level-attributes` for further details.
+
+===============================  =============================  ===============
+Symbol                           Brief Description              Mask Value
+===============================  =============================  ===============
+GB_I2S_ROLE_MASTER               Low-level clock generator      0x01
+GB_I2S_ROLE_SLAVE                Not low-level clock generator  0x02
+===============================  =============================  ===============
+
+.. _i2s-polarity-bits:
+
+Greybus I2S Polarity Bits
+"""""""""""""""""""""""""
+
+This table defines the bit fields which specify the set of supported
+I2S clock polarities.
+See :ref:`i2s-low-level-attributes` for further details.
+
+===============================  ========================       ===============
+Symbol                           Brief Description              Mask Value
+===============================  ========================       ===============
+GB_I2S_POLARITY_NORMAL           Clock polarity normal          0x01
+GB_I2S_POLARITY_REVERSED         Clock polarity reversed        0x02
+===============================  ========================       ===============
+
+.. _i2s-clock-edge-bits:
+
+Greybus I2S Clock Edge Bits
+"""""""""""""""""""""""""""
+
+This table defines the bit fields which specify the set of supported
+I2S clock edges.
+See :ref:`i2s-low-level-attributes` for further details.
+
+===============================  ========================       ===============
+Symbol                           Brief Description              Mask Value
+===============================  ========================       ===============
+GB_I2S_EDGE_RISING               Synchronized to rising         0x01
+                                 or leading clock edge
+GB_I2S_EDGE_FALLING              Synchronized to falling        0x02
+                                 or trailing clock edge
+===============================  ========================       ===============
+
+Greybus I2S Management Protocol Message Types
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This table defines the Greybus I2S Management Protocol Operation
+types and their values.  A message type consists of an Operation
+Type combined with a flag (0x80) indicating whether the operation
+is a request or a response.
+
+===========================================  =============  ==============
+I2S Management Operation Type                Request Value  Response Value
+===========================================  =============  ==============
+Invalid                                      0x00           0x80
+:ref:`i2s-get-supported-configurations-op`   0x01           0x81
+:ref:`i2s-set-configuration-op`              0x02           0x82
+:ref:`i2s-set-samples-per-message-op`        0x03           0x83
+:ref:`i2s-get-processing-delay-op`           0x04           0x84
+:ref:`i2s-set-start-delay-op`                0x05           0x85
+:ref:`i2s-activate-cport-op`                 0x06           0x86
+:ref:`i2s-deactivate-cport-op`               0x07           0x87
+:ref:`i2s-report-event-op`                   0x08           0x88
+(all other values reserved)                  0x09..0x7f     0x89..0xff
+===========================================  =============  ==============
+
+.. _i2s-get-supported-configurations-op:
+
+Greybus I2S Get Supported Configurations Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus I2S Get Supported Configurations Operation requests
+the I2S Bundle return an array of :ref:`i2s-configuration-struct`\s
+which describe the configurations supported by the I2S Bundle.
+See :ref:`i2s-audio-data-attributes` for further details.
+
+Greybus I2S Get Supported Configurations Request
+""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus I2S Get Supported Configurations Request contains no data
+beyond the Greybus I2S message header.
+
+Greybus I2S Get Supported Configurations Response
+"""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus I2S Get Supported Configurations Response contains
+the status byte, a configurations count, and an array of
+:ref:`i2s-configuration-struct`\s.
+
+The following table defines the structure of the
+I2S Get Supported Configurations Response.
+
+===========  ==============  ======  ===============================  =======================================
+Offset       Field           Size    Value                            Description
+===========  ==============  ======  ===============================  =======================================
+0            status          1       Number                           Success, or reason for failure
+1            config_count    1       Number, N                        Number of entries in `config` array
+2            pad             2                                        Padding
+4            config[1]       24      :ref:`i2s-configuration-struct`  Descriptor for first I2S Configuration;
+                                                                      see :ref:`i2s-configuration-struct`
+                                                                      for further details
+...          ...             24      :ref:`i2s-configuration-struct`  ...
+4+24*(N-1)   config[N]       24      :ref:`i2s-configuration-struct`  Descriptor for Nth I2S Configuration;
+                                                                      see :ref:`i2s-configuration-struct`
+                                                                      for further details
+===========  ==============  ======  ===============================  =======================================
+
+..  I can't make this table look right.
+
+.. _i2s-set-configuration-op:
+
+Greybus I2S Set Configuration Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus I2S Set Configuration Operation requests the I2S Bundle
+set its configuration to the specified values.
+
+Greybus I2S Set Configuration Request
+"""""""""""""""""""""""""""""""""""""
+
+The Greybus I2S Set Configuration Request supplies the configuration
+values that the I2S Bundle shall use.  There shall be only one option
+selected in the bit mask fields.
+
+=======  ==============  ======  ===============================  ================================
+Offset   Field           Size    Value              Description
+=======  ==============  ======  ===============================  ================================
+0        config          24      :ref:`i2s-configuration-struct`  The configuration values for the
+                                                                  I2S Bundle; see
+                                                                  :ref:`i2s-configuration-struct`
+                                                                  for further details
+=======  ==============  ======  ===============================  ================================
+
+Greybus I2S Set Configuration Response
+""""""""""""""""""""""""""""""""""""""
+
+The Greybus I2S Set Configuration Response contains only the status byte.
+
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+
+.. _i2s-set-samples-per-message-op:
+
+Greybus I2S Set Samples per Message Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus I2S Set Samples per Message Operation requests the
+I2S Transmitter Bundle include the specified number of audio samples
+in each :ref:`i2s-send-data-op`.  See :ref:`i2s-audio-samples-per-message`
+for further details.
+
+The default number of samples per message is one.
+
+Greybus I2S Set Samples per Message Request
+"""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus I2S Set Samples per Message Request supplies the number
+of audio samples that the transmitter shall include in each
+:ref:`i2s-send-data-op`.
+
+=======  ===================  ======  ==========      =========================
+Offset   Field                Size    Value           Description
+=======  ===================  ======  ==========      =========================
+0        samples_per_message  2       Number          Samples per message
+=======  ===================  ======  ==========      =========================
+
+Greybus I2S Set Samples per Message Response
+""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus I2S Set Samples per Message Response contains only
+the status byte.
+
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+
+.. _i2s-get-processing-delay-op:
+
+Greybus I2S Get Processing Delay Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus I2S Get Processing Delay Operation requests the
+I2S Bundle indicate how much time it requires to process
+each audio data sample.
+See :ref:`i2s-audio-video-synchronization` for further details.
+
+The delay value returned should be accurate to within 500 microseconds.
+
+Greybus I2S Get Processing Delay Request
+""""""""""""""""""""""""""""""""""""""""
+
+The Greybus I2S Get Processing Delay Request contains no data
+beyond the Greybus I2S message header.
+
+Greybus I2S Get Processing Delay Response
+"""""""""""""""""""""""""""""""""""""""""
+
+The Greybus I2S Get Processing Delay Response contains the
+status byte, followed by a 4-byte value indicating the controller’s
+processing delay in microseconds.
+
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+1        microseconds    4       Number          Processing delay
+=======  ==============  ======  ==========      ===========================
+
+.. _i2s-set-start-delay-op:
+
+Greybus I2S Set Start Delay Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus I2S Set Start Delay Operation requests the I2S
+Transmitter Bundle delay the specified amount of time before
+it starts streaming audio data.  Delay values are in microseconds.
+See :ref:`i2s-audio-video-synchronization` for further details.
+
+The I2S Transmitter Bundle shall delay with an accuracy of 500 microseconds.
+
+The default start delay value is zero.
+
+Greybus I2S Set Start Delay Request
+"""""""""""""""""""""""""""""""""""
+
+The Greybus I2S Set Start Delay Request supplies the amount of
+time that the I2S Transmitter Bundle shall delay before it starts
+streaming audio data.
+
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        microseconds    4       Number          Delay before starting
+=======  ==============  ======  ==========      ===========================
+
+Greybus I2S Set Start Delay Response
+""""""""""""""""""""""""""""""""""""
+
+The Greybus I2S Set Start Delay Response contains only the status byte.
+
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+
+.. _i2s-activate-cport-op:
+
+Greybus I2S Activate CPort Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus I2S Activate CPort Operation requests the
+I2S Bundle activate the specified CPort.
+See :ref:`i2s-audio-stream-activation-deactivation` for further details.
+
+Greybus I2S Activate CPort Request
+""""""""""""""""""""""""""""""""""
+
+The Greybus I2S Activate CPort Request supplies the CPort
+that shall be activated.
+
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        cport           2       Number          I2S Transmitter or Receiver
+                                                 CPort
+=======  ==============  ======  ==========      ===========================
+
+Greybus I2S Activate CPort Response
+"""""""""""""""""""""""""""""""""""
+
+The Greybus I2S Activate CPort response contains only the status byte.
+
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+
+.. _i2s-deactivate-cport-op:
+
+Greybus I2S Deactivate CPort Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus I2S Deactivate CPort Operation requests the
+I2S Bundle deactivate the specified CPort.
+See :ref:`i2s-audio-stream-activation-deactivation` for further details.
+
+Greybus I2S Deactivate CPort Request
+""""""""""""""""""""""""""""""""""""
+
+The Greybus I2S Deactivate CPort Request supplies the CPort
+that shall be deactivated.
+
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        cport           2       Number          I2S Transmitter or Receiver
+                                                 CPort
+=======  ==============  ======  ==========      ===========================
+
+Greybus I2S Deactivate CPort Response
+"""""""""""""""""""""""""""""""""""""
+
+The Greybus I2S Deactivate CPort Response contains only the status byte.
+
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+
+.. _i2s-report-event-op:
+
+Greybus I2S Report Event Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus I2S Report Event Operation notifies the
+AP Module of audio streaming events.
+See :ref:`i2s-errors-and-event-reporting` for further details.
+
+Greybus I2S Report Event Request
+""""""""""""""""""""""""""""""""
+
+The Greybus I2S Report Event Request supplies the one-byte event
+that has occurred on the sending controller.
+
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        event           1       Number          The audio streaming event
+                                                 that occurred; see
+                                                 :ref:`i2s-audio-events` for
+                                                 event values
+=======  ==============  ======  ==========      ===========================
+
+.. _i2s-audio-events:
+
+Greybus I2S Events
+""""""""""""""""""
+
+This table defines the Greybus I2S audio streaming events and
+their values.
+
+===============================  ========================       ===============
+Symbol                           Brief Description              Value
+===============================  ========================       ===============
+GB_I2S_EVENT_UNSPECIFIED         Catch-all for events           0x01
+                                 not covered by other
+                                 entries in this table
+GB_I2S_EVENT_HALT                Streaming has halted           0x02
+GB_I2S_EVENT_INTERNAL_ERROR      Internal error that            0x03
+                                 should never happen
+GB_I2S_EVENT_PROTOCOL_ERROR      Incorrect Operation            0x04
+                                 order, etc.
+GB_I2S_EVENT_FAILURE             Operation failed               0x05
+GB_I2S_EVENT_OUT_OF_SEQUENCE     Sample sequence number         0x06
+                                 lower than one already
+                                 received
+GB_I2S_EVENT_UNDERRUN            No data to send                0x07
+GB_I2S_EVENT_OVERRUN             Being flooded by data          0x08
+GB_I2S_EVENT_CLOCKING            Low-level clocking issue       0x09
+GB_I2S_EVENT_DATA_LEN            Invalid message data           0x0a
+                                 length
+===============================  ========================       ===============
+
+Greybus I2S Report Event Response
+"""""""""""""""""""""""""""""""""
+
+The Greybus I2S Report Event Response contains only the status byte.
+
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          Success, or reason for failure
+=======  ==============  ======  ==========      ===========================
+
+.. _i2s-data-protocol:
+
+I2S Data Protocol
+^^^^^^^^^^^^^^^^^
+
+I2S Data Protocol Operations are communicated over I2S Data Connections.
+I2S Data Connections connect I2S Transmitter CPorts to I2S Receiver CPorts.
+An I2S Bundle shall have at least one I2S Transmitter or I2S Receiver CPort.
+Some I2S Transmitter and I2S Receiver CPorts may be unused depending on
+the current audio stream configuration.
+
+In the following descriptions, Operations apply to the I2S Bundle
+associated with the I2S Management Connection that the Operation is
+sent on.
+
+Conceptually, the I2S Data Protocol Operations are:
+
+.. c:function:: int send_data(u32 sample_number, u32 size, u8 *data);
+
+    Sends an integer number of audio samples from an
+    I2S Transmitter CPort to an I2S Receiver CPort over
+    an I2S Data Connection.  The I2S Bundles involved
+    shall be configured before using this Operation.
+
+Greybus I2S Data Protocol Message Types
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This table defines the Greybus I2S Data Protocol Operation types
+and their values.  A message type consists of an Operation Type
+combined with a flag (0x80) indicating whether the operation is a
+request or a response.  All operations have responses except for
+Send Data Request.
+
+=============================  =============  ==============
+I2S Data Operation Type        Request Value  Response Value
+=============================  =============  ==============
+Invalid                        0x00           0x80
+:ref:`i2s-send-data-op`        0x01           0x81
+(all other values reserved)    0x02..0x7f     0x82..0xff
+=============================  =============  ==============
+
+.. _i2s-send-data-op:
+
+Greybus I2S Send Data Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus I2S Send Data Operation sends data from an I2S
+Transmitter to an I2S Receiver over an I2S Data Connection.
+No response message shall be sent.
+See :ref:`i2s-streaming-audio-data` for further details.
+
+Greybus I2S Send Data Request
+"""""""""""""""""""""""""""""
+
+The Greybus I2S Send Data Request sends one or more complete
+audio samples.
+
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        sample_number   4       Number          Sample number for the first
+                                                 sample in this message
+4        size            4       Number          Number of bytes in data
+                                                 field
+8        data            ...     Data            Audio data
+=======  ==============  ======  ==========      ===========================
+
+Greybus I2S Send Data Response
+""""""""""""""""""""""""""""""
+
+There shall be no response message for the Greybus I2S send data request.
 
 I2C Protocol
 ------------

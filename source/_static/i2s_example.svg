@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="765"
+   height="990"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="i2s_example.svg"
+   inkscape:export-filename="/home/mgreer/work/acti/clients/leaflabs/greybus-spec/source/_static/i2s_example.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4">
+    <marker
+       inkscape:stockid="Arrow1Lstart"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lstart"
+       style="overflow:visible">
+      <path
+         id="path3811"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt"
+         transform="scale(0.8) translate(12.5,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Mstart"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Mstart"
+       style="overflow:visible">
+      <path
+         id="path3817"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt"
+         transform="scale(0.4) translate(10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lend"
+       style="overflow:visible;">
+      <path
+         id="path3814"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;"
+         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="446.732"
+     inkscape:cy="570.4699"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1075"
+     inkscape:window-height="940"
+     inkscape:window-x="2179"
+     inkscape:window-y="33"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-62.362183)">
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#0000c8;stroke-width:0.80712396;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect2985"
+       width="95.928154"
+       height="107.35674"
+       x="39.893063"
+       y="417.96954" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend);marker-start:none"
+       d="m 137.14286,388.57143 c 45.71428,0 47.14285,0 47.14285,0 l 0,-97.14286 c 118.57143,0 118.57143,0 118.57143,0"
+       id="path3805"
+       inkscape:connector-curvature="0"
+       transform="translate(0,62.362183)" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.01341867000000008px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:none;marker-start:url(#Arrow1Lstart)"
+       d="m 135.721,482.36889 c 49.89195,0 49.89195,0 49.89195,0 l 0,77.13011 1.46742,0 110.05577,0"
+       id="path5347"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.99724358px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Arrow1Lstart);marker-end:none"
+       d="m 578.99157,275.21822 c -59.66696,0 -59.66696,0 -59.66696,0 l 0,54.2882 -120.75456,0"
+       id="path5531"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.99246323px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 584.28948,449.50881 -56.27933,0 0,-74.29287 -129.44249,0"
+       id="path5533"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.98719037px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 584.29211,488.07007 -54.28413,0 0,54.29764 -135.01438,0"
+       id="path5535"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.98722667px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Arrow1Lstart);marker-end:none"
+       d="m 392.18724,583.78507 61.25082,0 0,68.5835 130.85404,0"
+       id="path5537"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="80"
+       y="469.50504"
+       id="text6823"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan6825"
+         x="80"
+         y="469.50504">AP</tspan></text>
+    <g
+       id="g3076">
+      <rect
+         y="297.25525"
+         x="302.03595"
+         height="107.35674"
+         width="95.928154"
+         id="rect2985-8"
+         style="fill:#ffffff;fill-opacity:1;stroke:#0000c8;stroke-width:0.80712396;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text6827"
+         y="350.93362"
+         x="324.28571"
+         style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           y="350.93362"
+           x="324.28571"
+           id="tspan6829"
+           sodipodi:role="line">Mixer A</tspan></text>
+    </g>
+    <g
+       id="g3071"
+       transform="translate(3.5714286,0)">
+      <rect
+         y="508.68381"
+         x="293.46451"
+         height="107.35674"
+         width="95.928154"
+         id="rect2985-3"
+         style="fill:#ffffff;fill-opacity:1;stroke:#0000c8;stroke-width:0.80712396;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text6827-1"
+         y="563.23309"
+         x="315.1817"
+         style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           y="563.23309"
+           x="315.1817"
+           id="tspan6829-7"
+           sodipodi:role="line">Mixer B</tspan></text>
+    </g>
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#0000c8;stroke-width:0.80712396;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect2985-37"
+       width="95.928154"
+       height="107.35674"
+       x="580.60736"
+       y="218.68381" />
+    <g
+       id="g3086">
+      <rect
+         y="417.25525"
+         x="584.89307"
+         height="107.35674"
+         width="95.928154"
+         id="rect2985-9"
+         style="fill:#ffffff;fill-opacity:1;stroke:#0000c8;stroke-width:0.80712396;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text6856"
+         y="473.79077"
+         x="612.85712"
+         style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           y="473.79077"
+           x="612.85712"
+           id="tspan6858"
+           sodipodi:role="line">Modem</tspan></text>
+    </g>
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#0000c8;stroke-width:0.80712396;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect2985-97"
+       width="95.928154"
+       height="107.35674"
+       x="586.32166"
+       y="598.68378" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="599.28571"
+       y="276.64789"
+       id="text6860"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan6862"
+         x="599.28571"
+         y="276.64789">Earpiece</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:10px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="201.77519"
+       y="548.50513"
+       id="text6864"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan6866"
+         x="201.77519"
+         y="548.50513">Recorded Audio</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:10px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="202.07977"
+       y="341.94586"
+       id="text6868"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan6870"
+         x="202.07977"
+         y="341.94586">Ringtone, Alerts</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.91;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;marker-start:url(#Arrow1Lstart)"
+       d="m 632.85715,524.45993 c 0,73.66165 0,73.66165 0,73.66165"
+       id="path6872"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-size:10px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="413.75854"
+       y="365.09827"
+       id="text3119"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3121"
+         x="413.75854"
+         y="365.09827">Remote Party's Voice</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:10px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="471.03778"
+       y="643.60089"
+       id="text3123"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3125"
+         x="471.03778"
+         y="643.60089">Local Party's Voice</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:10px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="415.03336"
+       y="317.84158"
+       id="text3127"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3129"
+         x="415.03336"
+         y="317.84158">Local Party's Audio</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:10px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="640.15649"
+       y="559.01318"
+       id="text3123-4"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/mgreer/work/acti/clients/leaflabs/greybus-spec/source/_static/i2s_example.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan3125-8"
+         x="640.15649"
+         y="559.01318">Local Party's Voice,</tspan><tspan
+         sodipodi:role="line"
+         x="640.15649"
+         y="571.51318"
+         id="tspan3177">Remote Party's Audio</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:10px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="409.19714"
+       y="533.84131"
+       id="text3119-1"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3121-1"
+         x="409.19714"
+         y="533.84131">Remote Party's Voice</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="619.34265"
+       y="654.01001"
+       id="text6852-6"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan6854-1"
+         x="619.34265"
+         y="654.01001">Mic</tspan></text>
+  </g>
+</svg>
