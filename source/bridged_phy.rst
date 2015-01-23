@@ -140,7 +140,7 @@ major version 0, minor version 1.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 1        version_major   1       |gb-major|      GPIO protocol major version
 2        version_minor   1       |gb-minor|      GPIO protocol minor version
 =======  ==============  ======  ==========      ===========================
@@ -170,7 +170,7 @@ gaps in the numbering).
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 1        count           1       Number          Number of GPIO lines minus 1
 =======  ==============  ======  ==========      ===========================
 
@@ -202,7 +202,7 @@ The Greybus GPIO activate response contains only the status byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 Greybus GPIO Deactivate Operation
@@ -232,7 +232,7 @@ The Greybus GPIO deactivate response contains only the status byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 Greybus GPIO Get Direction Operation
@@ -264,7 +264,7 @@ direction byte shall be ignored.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 1        direction       1       0 or 1          Direction
 =======  ==============  ======  ==========      ===========================
 
@@ -297,7 +297,7 @@ byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 Greybus GPIO Direction Output Operation
@@ -331,7 +331,7 @@ byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 Greybus GPIO Get Operation
@@ -361,7 +361,7 @@ status byte is non-zero, the value byte shall be ignored.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 1        value           1       0 or 1          Value
 =======  ==============  ======  ==========      ===========================
 
@@ -400,7 +400,7 @@ The Greybus GPIO set response contains only the status byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 Greybus GPIO Set Debounce Operation
@@ -431,7 +431,7 @@ The Greybus GPIO set debounce response contains only the status byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 SPI Protocol
@@ -535,7 +535,7 @@ major version |gb-major|, minor version |gb-minor|.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 1        version_major   1       |gb-major|      UART protocol major version
 2        version_minor   1       |gb-minor|      UART protocol minor version
 =======  ==============  ======  ==========      ===========================
@@ -571,7 +571,7 @@ byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 Greybus UART Receive Data Operation
@@ -603,7 +603,7 @@ and contains only the status byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 Greybus UART Set Line Coding Operation
@@ -662,7 +662,7 @@ byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 Greybus UART Set Control Line State Operation
@@ -709,7 +709,7 @@ status byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 Greybus UART Send Break Operation
@@ -740,7 +740,7 @@ The Greybus UART break control response contains only the status byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 Greybus UART Serial State Operation
@@ -794,7 +794,7 @@ device, and contains only the status byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 PWM Protocol
@@ -903,7 +903,7 @@ major version 0, minor version 1.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 1        version_major   1       |gb-major|      PWM protocol major version
 2        version_minor   1       |gb-minor|      PWM protocol minor version
 =======  ==============  ======  ==========      ===========================
@@ -933,7 +933,7 @@ no gaps in the numbering).
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 1        count           1       Number          Number of PWM instances minus 1
 =======  ==============  ======  ==========      ===========================
 
@@ -965,7 +965,7 @@ The Greybus PWM activate response contains only the status byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 Greybuf PWM Deactivate Operation
@@ -995,7 +995,7 @@ The Greybus PWM deactivate response contains only the status byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 Greybus PWM Config Operation
@@ -1026,7 +1026,7 @@ The Greybus PWM Config response contains only the status byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 Greybus PWM Polarity Operation
@@ -1057,7 +1057,7 @@ The Greybus PWM Config response contains only the status byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 Greybus PWM Enable Operation
@@ -1086,7 +1086,7 @@ The Greybus PWM enable response contains only the status byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 Greybus PWM Disable Operation
@@ -1115,7 +1115,7 @@ The Greybus PWM disable response contains only the status byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 I2S Protocols
@@ -2034,7 +2034,7 @@ I2S Get Supported Configurations Response.
 ===========  ==============  ======  ===============================  =======================================
 Offset       Field           Size    Value                            Description
 ===========  ==============  ======  ===============================  =======================================
-0            status          1       Number                           Success, or reason for failure
+0            status          1       Number                           :ref:`greybus-protocol-error-codes`
 1            config_count    1       Number, N                        Number of entries in `config` array
 2            pad             2                                        Padding
 4            config[1]       24      :ref:`i2s-configuration-struct`  Descriptor for first I2S Configuration;
@@ -2080,7 +2080,7 @@ The Greybus I2S Set Configuration Response contains only the status byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 .. _i2s-set-samples-per-message-op:
@@ -2117,7 +2117,7 @@ the status byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 .. _i2s-get-processing-delay-op:
@@ -2148,7 +2148,7 @@ processing delay in microseconds.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 1        microseconds    4       Number          Processing delay
 =======  ==============  ======  ==========      ===========================
 
@@ -2187,7 +2187,7 @@ The Greybus I2S Set Start Delay Response contains only the status byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 .. _i2s-activate-cport-op:
@@ -2220,7 +2220,7 @@ The Greybus I2S Activate CPort response contains only the status byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 .. _i2s-deactivate-cport-op:
@@ -2253,7 +2253,7 @@ The Greybus I2S Deactivate CPort Response contains only the status byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 .. _i2s-report-event-op:
@@ -2318,7 +2318,7 @@ The Greybus I2S Report Event Response contains only the status byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 .. _i2s-data-protocol:
@@ -2479,7 +2479,7 @@ major version 0, minor version 1.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 1        version_major   1       |gb-major|      I2C protocol major version
 2        version_minor   1       |gb-minor|      I2C protocol minor version
 =======  ==============  ======  ==========      ===========================
@@ -2506,7 +2506,7 @@ functionality in the I2C adapter.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 1        functionality   4       Number          :ref:`i2c-functionality-bits`
 =======  ==============  ======  ==========      ===========================
 
@@ -2573,7 +2573,7 @@ The Greybus I2C set timeout response contains only the status byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 Greybus I2C Set Retries Operation
@@ -2602,7 +2602,7 @@ The Greybus I2C set retries response contains only the status byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 Greybus I2C Transfer Operation
@@ -2686,7 +2686,7 @@ byte is non-zero, the data that follows (if any) shall be ignored.
 =======  ==============  ======  ==========      ======================================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ======================================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 1        data                    Data            Data for first read op on the transfer
 ...      ...             ...     Data            ...
 ...      ...             ...     Data            Data for last read op on the transfer

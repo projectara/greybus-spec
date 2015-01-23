@@ -19,9 +19,14 @@ Otherwise the reason it was not successful will be conveyed by one of
 the positive values defined in the following table.
 
 A protocol can define its own status values if needed. These status
-values shall lie within the range defined by the "(Reserved for
-protocol use)" table entry below. Every status byte with a MSB set to
-one other than 0xff is a valid protocol status value.
+values shall lie within the range defined by "(Reserved for protocol use)"
+:ref:`greybus-protocol-error-codes`. Every status byte with a MSB set to one
+other than 0xff is a valid protocol status value.
+
+.. _greybus-protocol-error-codes:
+
+Greybus Operations error codes
+------------------------------
 
 ============================  ===============  =======================
 Status                        Value            Meaning

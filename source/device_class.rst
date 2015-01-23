@@ -77,7 +77,7 @@ report major version |gb-major|, minor version |gb-minor|.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 1        version_major   1       |gb-major|      Vibrator protocol major version
 2        version_minor   1       |gb-minor|      Vibrator protocol minor version
 =======  ==============  ======  ==========      ===========================
@@ -108,7 +108,7 @@ The Greybus Vibrator on control response contains only the status byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 Greybus Vibrator Off Operation
@@ -131,7 +131,7 @@ The Greybus Vibrator off control response contains only the status byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 Battery Protocol
@@ -238,7 +238,7 @@ major version |gb-major|, minor version |gb-minor|.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 1        version_major   1       |gb-major|      Battery protocol major version
 2        version_minor   1       |gb-minor|      Battery protocol minor version
 =======  ==============  ======  ==========      ===========================
@@ -266,7 +266,7 @@ controlled.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 1        technology      2       Number          :ref:`battery-technology-type`
 =======  ==============  ======  ==========      ===========================
 
@@ -312,7 +312,7 @@ The Greybus battery status response contains the status byte and a
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 1        battery_status  2       Number          :ref:`battery-status`
 =======  ==============  ======  ==========      ===========================
 
@@ -357,7 +357,7 @@ being controlled, in µV.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 1        max_voltage     4       Number          Battery maximum voltage in µV
 =======  ==============  ======  ==========      ===========================
 
@@ -383,7 +383,7 @@ controlled, in percentage.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 1        capacity        4       Number          Battery capacity in %
 =======  ==============  ======  ==========      ===========================
 
@@ -409,7 +409,7 @@ controlled, in ⅒℃.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 1        temperature     4       Number          Battery temperature in ⅒℃
 =======  ==============  ======  ==========      ===========================
 
@@ -435,7 +435,7 @@ controlled, in µV.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 1        voltage         4       Number          Battery voltage in µV
 =======  ==============  ======  ==========      ===========================
 
@@ -461,7 +461,7 @@ controlled, in µA.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 1        current         4       Number          Battery current in µA
 =======  ==============  ======  ==========      ===========================
 
@@ -484,7 +484,7 @@ controlled, in mAh.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 1        capacity        4       Number          Battery capacity in mAh
 =======  ==============  ======  ==========      ===========================
 
@@ -507,7 +507,7 @@ battery will shutdown.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 1        temperature     4       Number          Battery shutdown temperature in ⅒℃
 =======  ==============  ======  ==========      ===========================
 
@@ -633,7 +633,7 @@ report major version |gb-major|, minor version |gb-minor|.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 1        version_major   1       |gb-major|      NFC protocol major version
 2        version_minor   1       |gb-minor|      NFC protocol minor version
 =======  ==============  ======  ==========      ===========================
@@ -666,7 +666,7 @@ The Greybus NFC Send Packet Response contains only the status byte.
 =======  ==============  ======  ==========      ===========================
 Offset   Field           Size    Value           Description
 =======  ==============  ======  ==========      ===========================
-0        status          1       Number          Success, or reason for failure
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
 =======  ==============  ======  ==========      ===========================
 
 Power Profile Protocol
