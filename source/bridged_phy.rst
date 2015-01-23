@@ -2609,7 +2609,7 @@ Greybus I2C Transfer Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus I2C transfer operation allows the AP to request the I2C
-adapter perform an I2C transaction. The operation consists of a set of
+adapter to perform an I2C transaction. The operation consists of a set of
 one or more “I2C ops” to be performed by the I2C adapter. The transfer
 operation request will include data for each I2C op involving a write
 operation.  The data will be concatenated (without padding) and will
