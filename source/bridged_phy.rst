@@ -2470,7 +2470,7 @@ Greybus I2C message header.
 Greybus I2C Protocol Version Response
 """""""""""""""""""""""""""""""""""""
 
-The Greybus I2C protcol version response contains a status byte,
+The Greybus I2C protocol version response contains a status byte,
 followed by two 1-byte values. If the value of the status byte is
 non-zero, any other bytes in the response shall be ignored. A Greybus
 I2C adapter adhering to the protocol specified herein shall report
