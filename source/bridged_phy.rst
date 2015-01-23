@@ -437,7 +437,310 @@ Offset   Field           Size    Value           Description
 SPI Protocol
 ------------
 
-TBD.
+This section defines the operations used on a connection implementing the
+Greybus SPI protocol. This protocol allows an AP to manage an SPI device present
+on a module. This protocol consists of the operations defined in this section.
+
+Conceptually, the operations in the Greybus SPI protocol are:
+
+.. c:function:: int get_version(u8 *major, u8 *minor);
+
+    Returns the major and minor Greybus SPI protocol version number
+    supported by the SPI master.
+
+.. c:function:: int get_mode(u16 *mode);
+
+    Returns a bitmask indicating the modes supported by the SPI master.
+
+.. c:function:: int get_flags(u16 *flags);
+
+    Returns a bitmask indicating the constraints of the SPI master.
+
+.. c:function:: int get_bits_per_word(u32 *bpw);
+
+    Returns the number of bits per word supported by the SPI master.
+
+.. c:function:: int get_chipselect_num(u16 *num);
+
+    Returns the number of chip select pins supported by the SPI master.
+
+.. c:function:: int transfer(u8 chip_select, u8 mode, u8 count, struct gb_spi_transfer *transfers);
+
+    Performs a SPI transaction as one or more SPI transfers, defined in the
+    supplied array.
+
+A transfer is made up of an array of gb_spi_transfer descriptors, each of which
+specifies SPI master configurations during transfers. For write requests, the
+data is sent following the array of messages; for read requests, the data is
+returned in a response message from the SPI master.
+
+Greybus SPI Message Types
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This table describes the Greybus SPI operation types and their
+values. A message type consists of an operation type combined with a
+flag (0x80) indicating whether the operation is a request or a
+response.
+
+===========================  =============  ==============
+SPI Operation Type           Request Value  Response Value
+===========================  =============  ==============
+Invalid                      0x00           0x80
+Protocol Version             0x01           0x81
+Mode                         0x02           0x82
+Flags                        0x03           0x83
+Bits per word mask           0x04           0x84
+Number of Chip select pins   0x05           0x85
+Transfer                     0x06           0x86
+(all other values reserved)  0x07..0x7f     0x87..0xff
+===========================  =============  ==============
+
+Greybus SPI Protocol Version Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SPI protocol version operation allows the AP to determine
+the version of this protocol to which the SPI master complies.
+
+Greybus SPI Protocol Version Request
+""""""""""""""""""""""""""""""""""""
+
+The Greybus SPI protocol version request contains no data beyond the
+Greybus SPI message header.
+
+Greybus SPI Protocol Version Response
+"""""""""""""""""""""""""""""""""""""
+
+The Greybus SPI protocol version response contains a status byte,
+followed by two one-byte values. If the value of the status byte is
+non-zero, any other bytes in the response shall be ignored. A Greybus
+SPI master adhering to the protocol specified herein shall report
+major version zero, minor version zero.
+
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
+1        version_major   1       |gb-major|      SPI protocol major version
+2        version_minor   1       |gb-minor|      SPI protocol minor version
+=======  ==============  ======  ==========      ===========================
+
+Greybus SPI Protocol Mode Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SPI mode operation allows the AP to determine the details of the
+modes supported by the SPI master.
+
+Greybus SPI Protocol Mode Request
+"""""""""""""""""""""""""""""""""
+
+The Greybus SPI mode request contains no data beyond the SPI message header.
+
+Greybus SPI Protocol Mode Response
+""""""""""""""""""""""""""""""""""
+
+The Greybus SPI mode response contains the status byte and a two-byte value whose
+bits represent support or presence of certain modes in the SPI master.
+
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
+1        mode            2       Number          :ref:`spi-mode-bits`
+=======  ==============  ======  ==========      ===========================
+
+.. _spi-mode-bits:
+
+Greybus SPI Protocol Mode Bits
+""""""""""""""""""""""""""""""
+
+This table describes the defined mode bit values defined for Greybus SPI
+masters.
+
+===============================  ===================================================  ========================
+Symbol                           Brief Description                                    Mask Value
+===============================  ===================================================  ========================
+GB_SPI_MODE_CPHA                 Clock phase                                          0x00000001
+GB_SPI_MODE_CPOL                 Clock polarity                                       0x00000002
+GB_SPI_MODE_CS_HIGH              Chip select active high                              0x00000004
+GB_SPI_MODE_LSB_FIRST            Per-word bits-on-wire                                0x00000008
+GB_SPI_MODE_3WIRE                SI/SO signals shared                                 0x00000010
+GB_SPI_MODE_LOOP                 Loopback mode                                        0x00000020
+GB_SPI_MODE_NO_CS                One dev/bus, no chip select                          0x00000040
+GB_SPI_MODE_READY                Slave pulls low to pause                             0x00000080
+|_|                              (All other values reserved)                          0x00000100..0x80000000
+===============================  ===================================================  ========================
+
+Greybus SPI Protocol Flags Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SPI flags operation allows the AP to determine the constraints, if
+any, of the SPI master.
+
+Greybus SPI Protocol Flags Request
+""""""""""""""""""""""""""""""""""
+
+The Greybus SPI flags request contains no data beyond the SPI message header.
+
+Greybus SPI Protocol Flags Response
+"""""""""""""""""""""""""""""""""""
+
+The Greybus SPI flags response contains the status byte and a two-byte value
+whose bits represent constraints of the SPI master, if any.
+
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
+1        flags           2       Number          :ref:`spi-flags-bits`
+=======  ==============  ======  ==========      ===========================
+
+.. _spi-flags-bits:
+
+Greybus SPI Protocol Flags Bits
+"""""""""""""""""""""""""""""""
+
+This table describes the defined flags bit values defined for Greybus SPI
+masters.
+
+===============================  ===================================================  ========================
+Symbol                           Brief Description                                    Mask Value
+===============================  ===================================================  ========================
+GB_SPI_FLAG_HALF_DUPLEX          Can't do full duplex                                 0x00000001
+GB_SPI_FLAG_NO_RX                Can't do buffer read                                 0x00000002
+GB_SPI_FLAG_NO_TX                Can't do buffer write                                0x00000004
+|_|                              (All other values reserved)                          0x00000008..0x80000000
+===============================  ===================================================  ========================
+
+Greybus SPI Protocol Bits per word mask Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SPI bits per word mask operation allows the AP to determine the mask
+indicating which values of bits_per_word are supported by the SPI master.
+If set, the SPI core will reject any transfer with an unsupported bits_per_word.
+If not set, this value is simply ignored, and it's up to the individual driver
+to perform any validation.
+
+If following expression evaluates to zero, SPI core will reject the transfer
+descriptor:
+
+        master->bits_per_word_mask & (1 << (tx_desc->bits_per_word - 1))
+
+Greybus SPI Protocol Bits per word mask Request
+"""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus SPI bits per word mask request contains no data beyond the SPI
+message header.
+
+Greybus SPI Protocol Bits per word mask Response
+""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus SPI bits per word mask response contains the status byte and a
+four-byte value whose bits represent bits per word mask of the SPI master.
+
+=======  ==================   ======  ==========      ===========================
+Offset   Field                Size    Value           Description
+=======  ==================   ======  ==========      ===========================
+0        status               1       Number          :ref:`greybus-protocol-error-codes`
+1        bits per word mask   4       Number          Bits per word mask of the SPI master
+=======  ==================   ======  ==========      ===========================
+
+Greybus SPI Protocol Number of Chip selects Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SPI Number of Chip selects allows the AP to determine the maximum
+number of chip select pins supported by SPI master.
+
+Greybus SPI Protocol Number of Chip selects Request
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus SPI number of chip selects request contains no data beyond the SPI
+message header.
+
+Greybus SPI Protocol Number of Chip selects Response
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus SPI number of chip selects response contains the status byte and a
+two-byte value whose bits represent maximum number of chip select pins supported
+by SPI master.
+
+=======  ======================   ======  ==========      ===========================
+Offset   Field                    Size    Value           Description
+=======  ======================   ======  ==========      ===========================
+0        status                   1       Number          :ref:`greybus-protocol-error-codes`
+1        number of chip selects   2       Number          Maximum number of chip select pins
+=======  ======================   ======  ==========      ===========================
+
+Greybus SPI Transfer Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SPI transfer operation allows the AP to request the SPI master to
+perform an SPI transaction. The operation consists of a set of one or more
+gb_spi_transfer descriptor to be performed by the SPI master. The transfer
+operation request will include data for each gb_spi_transfer descriptor
+involving a write operation.  The data will be concatenated (without padding)
+and will be be sent immediately after the set of gb_spi_transfer descriptors.
+The transfer operation response will include data for each gb_spi_transfer
+descriptor involving a read operation, with all read data transferred
+contiguously.
+
+Greybus SPI Transfer Request
+""""""""""""""""""""""""""""
+
+The Greybus SPI transfer request contains slave's chip select pin, slave's mode,
+message descriptors count, an array of message descriptors, and a block of zero
+or more bytes of data to be written.
+
+**Greybus SPI gb_spi_transfer descriptor**
+
+A Greybus SPI gb_spi_transfer descriptor describes the configurations of a
+segment of an SPI transaction.
+
+=======  ==============  ======  ==========      ===========================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ===========================
+0        speed_hz        4       Number          Transfer speed in Hz
+4        len             4       Number          Size of data to transfer
+8        delay_usecs     2       Number          Wait period after completion of transfer
+10       cs_change       1       Number          Toggle chip select pin after this transfer completes
+11       bits_per_word   1       Number          Select bits per word for this trnasfer
+=======  ==============  ======  ==========      ===========================
+
+
+Here is the structure of a Greybus SPI transfer request.
+
+==========     ==============  ======    ======================    ===========================
+Offset         Field           Size      Value                     Description
+==========     ==============  ======    ======================    ===========================
+0              chip-select     1         Number                    chip-select pin for the slave device
+1              mode            1         Number                    :ref:`spi-mode-bits`
+2              count           2         Number                    Number of gb_spi_transfer descriptors
+4              transfers[0]    12        struct gb_spi_transfer    First SPI gb_spi_transfer descriptor in the transfer
+...            ...             12        struct gb_spi_transfer    ...
+4+12*(N)       op[N]           12        struct gb_spi_transfer    Nth SPI gb_spi_transfer descriptor
+4+12*(N+1)     data            ...       Data                      Data for all the write transfers
+==========     ==============  ======    ======================    ===========================
+
+Any data to be written will follow the last gb_spi_transfer descriptor. Data for
+the first write gb_spi_transfer descriptor in the array will immediately follow
+the last gb_spi_transfer descriptor in the array, and no padding shall be
+inserted between data sent for distinct SPI gb_spi_transfer descriptors.
+
+Greybus SPI Transfer Response
+"""""""""""""""""""""""""""""
+
+The Greybus SPI transfer response contains a status byte followed by the data
+read as a result of messages.  If the value of the status byte is non-zero, the
+data that follows (if any) shall be ignored.
+
+=======  ==============  ======  ==========      ======================================
+Offset   Field           Size    Value           Description
+=======  ==============  ======  ==========      ======================================
+0        status          1       Number          :ref:`greybus-protocol-error-codes`
+1        data                    Data            Data for first read gb_spi_transfer descriptor on the transfer
+...      ...             ...     Data            ...
+...      ...             ...     Data            Data for Nth read gb_spi_transfer descriptor on the transfer
+=======  ==============  ======  ==========      ======================================
+
 
 UART Protocol
 -------------
