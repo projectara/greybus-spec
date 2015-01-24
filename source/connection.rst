@@ -46,7 +46,7 @@ GB_OP_UNKNOWN_ERROR           0xfe             Unknown error occured
 GB_OP_INTERNAL                0xff             Invalid initial value.
 ============================  ===============  =======================
 
-Values marked *(Reserved for protocol use)* are to be used by the
+Values marked *Reserved for protocol use* are to be used by the
 individual protocols as defined in the :ref:`device-class-protocols` and
 :ref:`bridged-phy-protocols` sections below.
 
