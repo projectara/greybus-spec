@@ -2112,7 +2112,7 @@ See :ref:`i2s-audio-data-attributes` for further details.
     0        sample_frequency      4      Number     Number of samples per second
     4        num_channels          1      Number     Number of channels per sample
     5        bytes_per_channel     1      Number     Number of audio bytes per channel
-    6        bytes_order           1      Bit Mask   Byte order of audio data; see
+    6        byte_order            1      Bit Mask   Byte order of audio data; see
                                                      :ref:`i2s-byte-order-bits`
                                                      for mask values
     7        pad                   1                 Padding
