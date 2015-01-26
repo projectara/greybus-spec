@@ -2109,51 +2109,31 @@ See :ref:`i2s-audio-data-attributes` for further details.
     =======  ====================  =====  =========  ==============================
     Offset   Field                 Size   Value      Description
     =======  ====================  =====  =========  ==============================
-    0        sample_frequency      4      Number     Number of samples per second
-    4        num_channels          1      Number     Number of channels per sample
-    5        bytes_per_channel     1      Number     Number of audio bytes per channel
-    6        byte_order            1      Bit Mask   Byte order of audio data; see
-                                                     :ref:`i2s-byte-order-bits`
-                                                     for mask values
+    0        sample_frequency      4      Number     Number of samples per
+                                                     second
+    4        num_channels          1      Number     Number of channels per
+                                                     sample
+    5        bytes_per_channel     1      Number     Number of audio bytes per
+                                                     channel
+    6        byte_order            1      Bit Mask   :ref:`i2s-byte-order-bits`
     7        pad                   1                 Padding
-    8        spatial_locations     4      Bit Mask   Spatial locations for each
-                                                     channel;
-                                                     see
-                                                     :ref:`i2s-spatial-location-bits`
-                                                     for mask values
-    12       ll_protocol           4      Bit Mask   Low-level protocol; see
-                                                     :ref:`i2s-protocol-bits`
-                                                     for mask values
-    16       ll_bclk_role          1      Bit Mask   Low-level BCLK role;
-                                                     see :ref:`i2s-role-bits`
-                                                     for mask values
-    17       ll_wclk_role          1      Bit Mask   Low-level WCLK role;
-                                                     see :ref:`i2s-role-bits`
-                                                     for mask values
-    18       ll_wclk_polarity      1      Bit Mask   WCLK polarity;
-                                                     see :ref:`i2s-polarity-bits`
-                                                     for mask values
-    19       ll_wclk_change_edge   1      Bit Mask   The BCLK edge that WCLK
-                                                     changes on;
-                                                     see :ref:`i2s-clock-edge-bits`
-                                                     for mask values
-    20       ll_data_tx_edge       1      Bit Mask   The BCLK edge that transmit
-                                                     data bits are presented on;
-                                                     see :ref:`i2s-clock-edge-bits`
-                                                     for mask values
-    21       ll_data_rx_edge       1      Bit Mask   The BCLK edge that receive
-                                                     data bits are latched on;
-                                                     see :ref:`i2s-clock-edge-bits`
-                                                     for mask values
-    22       ll_data_offset        1      Number     Number of BCLK cycles
-                                                     between WCLK changing
-                                                     and the first data bit
-                                                     of the next channel
-                                                     being presented or latched
+    8        spatial_locations     4      Bit Mask   :ref:`i2s-spatial-location-bits`
+    12       ll_protocol           4      Bit Mask   :ref:`i2s-protocol-bits`
+    16       ll_bclk_role          1      Bit Mask   :ref:`i2s-role-bits`
+    17       ll_wclk_role          1      Bit Mask   :ref:`i2s-role-bits`
+    18       ll_wclk_polarity      1      Bit Mask   :ref:`i2s-polarity-bits`
+    19       ll_wclk_change_edge   1      Bit Mask   :ref:`i2s-clock-edge-bits`
+    20       ll_data_tx_edge       1      Bit Mask   :ref:`i2s-clock-edge-bits`
+    21       ll_data_rx_edge       1      Bit Mask   :ref:`i2s-clock-edge-bits`
+    22       ll_data_offset        1      Number     BCLK-WCLK offset
     23       ll_pad                1                 Padding
     =======  ====================  =====  =========  ==============================
 
-..  I can't make this table look right even when using a grid table.
+The `ll_wclk_change_edge`, `ll_data_tx_edge`, and `ll_data_rx_edge` fields
+specifies which BCLK edge the respective signal may change on.
+The `ll_data_offset` field specifies how may BCLK cycles there are between
+WCLK changing and the first data bit of the next channel being presented
+or latched.  This is referred to as the `offset`.
 
 .. _i2s-byte-order-bits:
 
@@ -2338,15 +2318,11 @@ I2S Get Supported Configurations Response.
     Offset       Field           Size    Value                            Description
     ===========  ==============  ======  ===============================  =======================================
     0            status          1       Number                           :ref:`greybus-protocol-error-codes`
-    1            config_count    1       Number, N                        Number of entries in `config` array
+    1            config_count    1       Number, N                        Entries in `config` array
     2            pad             2                                        Padding
-    4            config[1]       24      :ref:`i2s-configuration-struct`  Descriptor for first I2S Configuration;
-                                                                          see :ref:`i2s-configuration-struct`
-                                                                          for further details
+    4            config[1]       24      :ref:`i2s-configuration-struct`  First entry in `config` array
     ...          ...             24      :ref:`i2s-configuration-struct`  ...
-    4+24*(N-1)   config[N]       24      :ref:`i2s-configuration-struct`  Descriptor for Nth I2S Configuration;
-                                                                          see :ref:`i2s-configuration-struct`
-                                                                          for further details
+    4+24*(N-1)   config[N]       24      :ref:`i2s-configuration-struct`  Last entry in `config` array
     ===========  ==============  ======  ===============================  =======================================
 
 ..  I can't make this table look right.
@@ -2369,10 +2345,7 @@ selected in the bit mask fields.
     =======  ==============  ======  ===============================  ================================
     Offset   Field           Size    Value              Description
     =======  ==============  ======  ===============================  ================================
-    0        config          24      :ref:`i2s-configuration-struct`  The configuration values for the
-                                                                      I2S Bundle; see
-                                                                      :ref:`i2s-configuration-struct`
-                                                                      for further details
+    0        config          24      :ref:`i2s-configuration-struct`  Bundle's configuration values
     =======  ==============  ======  ===============================  ================================
 
 Greybus I2S Set Configuration Response
@@ -2577,10 +2550,7 @@ that has occurred on the sending controller.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        event           1       Number          The audio streaming event
-                                                     that occurred; see
-                                                     :ref:`i2s-audio-events` for
-                                                     event values
+    0        event           1       Number          :ref:`i2s-audio-events`
     =======  ==============  ======  ==========      ===========================
 
 .. _i2s-audio-events:
@@ -2595,8 +2565,7 @@ their values.
     Symbol                           Brief Description              Value
     ===============================  ========================       ===============
     GB_I2S_EVENT_UNSPECIFIED         Catch-all for events           0x01
-                                     not covered by other
-                                     entries in this table
+                                     not in this table
     GB_I2S_EVENT_HALT                Streaming has halted           0x02
     GB_I2S_EVENT_INTERNAL_ERROR      Internal error that            0x03
                                      should never happen
@@ -2604,8 +2573,7 @@ their values.
                                      order, etc.
     GB_I2S_EVENT_FAILURE             Operation failed               0x05
     GB_I2S_EVENT_OUT_OF_SEQUENCE     Sample sequence number         0x06
-                                     lower than one already
-                                     received
+                                     incorrect
     GB_I2S_EVENT_UNDERRUN            No data to send                0x07
     GB_I2S_EVENT_OVERRUN             Being flooded by data          0x08
     GB_I2S_EVENT_CLOCKING            Low-level clocking issue       0x09
@@ -2684,10 +2652,9 @@ audio samples.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        sample_number   4       Number          Sample number for the first
-                                                     sample in this message
-    4        size            4       Number          Number of bytes in data
-                                                     field
+    0        sample_number   4       Number          Sample number of first
+                                                     sample in message
+    4        size            4       Number          Bytes in data field
     8        data            ...     Data            Audio data
     =======  ==============  ======  ==========      ===========================
 
