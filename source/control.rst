@@ -7,7 +7,7 @@ Control Protocol
 
 This section defines the operations used on an interface using the
 Greybus Control protocol. This protocol is different from all other
-protocols, because it operates over a pseudo connection rather than a
+protocols because it operates over a pseudo connection rather than a
 “real” connection. Every interface must have a control CPort running
 the control protocol, and any module interface can send control
 protocol operation requests from its own control CPort to the control
