@@ -193,7 +193,7 @@ vendor) string field may refer to string id 2.
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
     0        size            2       Number          Size of this descriptor record.
-    2        type            1       0x02            Type of the descritpor (String)
+    2        type            1       0x02            Type of the descriptor (String)
     3        length          1       Number          Length of the string in bytes
     4        id              1       ID              String id for this descriptor
     5        string          X       UTF-8           Characters for the string
@@ -219,7 +219,7 @@ associated with.
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
     0        size            2       0x0004          Size of this descriptor record.
-    2        type            1       0x03            Type of the descritpor (Interface)
+    2        type            1       0x03            Type of the descriptor (Interface)
     3        id              1       ID              Module-unique ID for this interface
     =======  ==============  ======  ==========      ===========================
 
