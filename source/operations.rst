@@ -22,7 +22,7 @@ executed) by another. The particular activity performed is defined by
 the operation's type. An operation is implemented by a pair of
 messages--one containing a request, and the other containing a
 response. Both messages contain a simple header that includes the type
-of the module and size of the message. In addition, each operation has
+of the operation and size of the message. In addition, each operation has
 a unique id, and both messages in an operation contain this value so
 the response can be associated with the request. Finally, all
 responses contain at least one byte; the first byte of a response
