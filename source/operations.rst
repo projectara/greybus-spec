@@ -30,7 +30,7 @@ communicates status of the operation, either success or a reason for a
 failure.
 
 Operations are performed over Greybus Connections.  A connection is a
-communication path between two modules.  Each end of a connection is
+communication path between two modules.  Each end of a connection is a
 |unipro| CPort, associated with a particular interface in a Greybus
 module.  A connection can be established once the AP learns of the
 existence of a CPort in another module.  The AP will allocate a CPort
