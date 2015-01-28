@@ -86,7 +86,7 @@ major and minor version of the protocol supported by the source of a
 request. The request destination compares that version with the
 (greatest) version of the protocol it supports.  The version that is the
 largest common version number of the protocol sent by both sides shall
-be the version that is to be used in communicating between the devices.
+be the version that is to be used in communication between the devices.
 This chosen version will be returned back as a response of the
 request.  As a consequence of this, protocol handlers must be capable of
 handling all prior versions of the protocol.
