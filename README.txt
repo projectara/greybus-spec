@@ -7,7 +7,7 @@ Requirements:
 
 On Ubuntu:
 
-# apt-get install python-sphinx texlive
+# apt-get install python-sphinx texlive texlive-latex-extra
 
 Then:
 
