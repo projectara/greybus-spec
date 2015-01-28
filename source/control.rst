@@ -651,8 +651,8 @@ Greybus Control Hotplug Request
 The first byte of the hotplug request is the SVC device id, for the
 response. The second byte indicates which module's presence is being
 reported. The identifying data is the data that the SVC originally
-collected in the "identify" operation it performed when it first
-detected the module was present. The SVC will not send any "link up"
+collected in the identify operation it performed when it first
+detected the module was present. The SVC will not send any link up
 messages for interfaces on a module until after the module's hotplug
 request has completed.
 
@@ -688,7 +688,7 @@ Greybus Control Hot Unplug Request
 
 The first byte of the disconnect request is the SVC device id, for the
 response. The second byte indicates which module has become unplugged.
-The hot unplug request will not occur until "link down" operations for
+The hot unplug request will not occur until link down operations for
 all interfaces on the module have completed.
 
     =======  ====================  ======  ==============  ===========================
