@@ -19,7 +19,7 @@ For this reason, Greybus performs communication between modules using
 Greybus Operations.  A Greybus Operation defines an activity (such as
 a data transfer) initiated in one module that is implemented (or
 executed) by another. The particular activity performed is defined by
-the operation’s type. An operation is implemented by a pair of
+the operation's type. An operation is implemented by a pair of
 messages--one containing a request, and the other containing a
 response. Both messages contain a simple header that includes the type
 of the module and size of the message. In addition, each operation has
@@ -45,7 +45,7 @@ in a request message will depend on the protocol connection uses.
 Operation type 5 might mean “receive data” in one protocol, while
 operation 5 might mean “go to sleep” in another. When the AP
 establishes a connection with a CPort in another module, that
-connection will use the CPort’s advertised protocol.
+connection will use the CPort's advertised protocol.
 
 The Greybus Operations mechanism forms a base layer on which other
 protocols are built. Protocols define the format of request messages,
@@ -87,7 +87,7 @@ message. Only 127 operations are available for a given protocol,
 bit (0x80) of an operation type is used as a flag that distinguishes a
 request operation from its response.  For requests, this bit is 0, for
 responses, it is 1.  For example operation 0x0a will contain 0x0a in
-the request message’s type field and 0x8a in the response message’s
+the request message's type field and 0x8a in the response message's
 type field. The id allows many operations to be “in flight” on a
 connection at once.
 

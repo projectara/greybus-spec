@@ -63,7 +63,7 @@ Conceptually, the operations in the Greybus control protocol are:
     they will use. The source sends the highest version of the control
     protocol it supports. The destination responds with its own
     version, or if that is higher than what was sent it responds with
-    (and thereafter uses) the source interface’s version. The SVC uses
+    (and thereafter uses) the source interface's version. The SVC uses
     the version found in the response. If each of two interfaces
     simultaneously initiates a handshake with the other, the one with
     the lower device id will proceed; the interface with the higher
@@ -82,7 +82,7 @@ Conceptually, the operations in the Greybus control protocol are:
 
     This operation is sent by a module to the SVC to tell the SVC this
     interface is associated with a battery. The SVC can then use battery
-    protocol operations in order to further inquire about the battery’s
+    protocol operations in order to further inquire about the battery's
     status. The device id indicates where the response should go and and
     tells the SVC the interface through which a battery connection can
     be established.
@@ -99,7 +99,7 @@ Conceptually, the operations in the Greybus control protocol are:
     operation, the sender supplies the highest version of the protocol it
     supports.  The receiver supplies in its response the highest version
     it supports, or if that exceeds what the sender supports it supplies
-    the sender’s version. The version in the response is the version that
+    the sender's version. The version in the response is the version that
     will be used by both sides thereafter.
 
 .. c:function:: int disconnect(u8 src_device_id, u16 dst_cport_id);
@@ -228,7 +228,7 @@ supply an interface with information about its physical location, as
 well the |unipro| device id it has been assigned. The physical location
 is partially defined by the unique Endo type that contains the
 system. The request indicates where within the Endo the module
-resides, and which of a module’s interfaces is the destination of the
+resides, and which of a module's interfaces is the destination of the
 request. Finally, the request tells the interface the |unipro| device id
 that it has been assigned.
 
@@ -503,7 +503,7 @@ The connect response contains the status byte, and if it is non-zero
 the remainder of the response shall be ignored. The major and minor
 version contained in the response is the same as those supplied in the
 request, or the highest version supported by the destination if it is
-not able to support the source’s version.  Both ends of the connection
+not able to support the source's version.  Both ends of the connection
 shall use the version of the protocol in the response once it has been
 received.
 
@@ -520,7 +520,7 @@ Greybus Control Disconnect Operation
 
 The Greybus control disconnect operation abolishes a connection that
 was previously established by a connect operation.  Either end of a
-connection can issue the disconnect operation. All that’s required to
+connection can issue the disconnect operation. All that's required to
 identify the connection to be abolished is the CPort id on the
 destination interface used by the connection. Disconnect requests can
 only be issued by an interface involved in the connection.
@@ -562,7 +562,7 @@ connection be established between CPorts on two other interfaces
 sent. This is used by the AP only, to set up a direct communication
 channel between CPorts on two other modules. Before responding, the
 destination will initiate a connection with the peer interface, using
-the destination CPort id at its end of the connection and the peer’s
+the destination CPort id at its end of the connection and the peer's
 CPort id at the other end.  If necessary, the destination will first
 perform a handshake with the peer interface. Once the connection has
 been established between the destination and its peer, the destination
@@ -580,7 +580,7 @@ request message.  The connection to be established will use the
 destination interface, and the CPort id on that interface.  The
 destination will initiate a connect request with the peer device and
 device id specified.  Note that the protocol that will be used on the
-connection is defined by the peer CPort’s protocol (listed in its
+connection is defined by the peer CPort's protocol (listed in its
 module manifest), and the destination and its peer will independently
 negotiate the version of that protocol to use.
 
@@ -615,7 +615,7 @@ The Greybus control disconnect peer operation requests that the
 destination interface disconnect a connection that was previously
 established as a result of a peer connect operation.  This operation
 must be sent to the same interface that received its corresponding
-connect peer operation. All that’s required to identify the connection
+connect peer operation. All that's required to identify the connection
 to be abolished is the CPort id on the destination interface used by
 the connection. Disconnect requests can only be issued by an AP
 interface.
@@ -649,11 +649,11 @@ Greybus Control Hotplug Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The first byte of the hotplug request is the SVC device id, for the
-response. The second byte indicates which module’s presence is being
+response. The second byte indicates which module's presence is being
 reported. The identifying data is the data that the SVC originally
 collected in the “identify” operation it performed when it first
 detected the module was present. The SVC will not send any “link up”
-messages for interfaces on a module until after the module’s hotplug
+messages for interfaces on a module until after the module's hotplug
 request has completed.
 
     =======  ====================  ======  ==============  ===========================

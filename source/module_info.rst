@@ -227,7 +227,7 @@ CPort Descriptor
 ^^^^^^^^^^^^^^^^
 
 This descriptor describes a CPort implemented within the module. Each
-CPort is associated with one of the module’s interfaces, and has an id
+CPort is associated with one of the module's interfaces, and has an id
 unique for that interface.  Every CPort defines the protocol used by
 the AP to interact with the CPort. A special control CPort shall be
 defined for every interface, and shall be defined to use the “control”

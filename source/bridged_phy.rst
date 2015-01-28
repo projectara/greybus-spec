@@ -56,7 +56,7 @@ Conceptually, the GPIO protocol operations are:
 
 .. c:function:: int get_direction(u8 which, u8 *direction);
 
-    Requests the GPIO controller return a line’s configured direction
+    Requests the GPIO controller return a line's configured direction
     (0 for output, 1 for input).
 
 .. c:function:: int direction_input(u8 which);
@@ -782,7 +782,7 @@ The operations that can be performed on a Greybus UART controller are:
 
 .. c:function:: int serial_state(u16 *state);
 
-    Receives the state of the UART’s control lines and any line errors
+    Receives the state of the UART's control lines and any line errors
     that might have occurred.
 
 UART Protocol Operations
@@ -2418,7 +2418,7 @@ Greybus I2S Get Processing Delay Response
 """""""""""""""""""""""""""""""""""""""""
 
 The Greybus I2S Get Processing Delay Response contains the
-status byte, followed by a 4-byte value indicating the controller’s
+status byte, followed by a 4-byte value indicating the controller's
 processing delay in microseconds.
 
     =======  ==============  ======  ==========      ===========================
