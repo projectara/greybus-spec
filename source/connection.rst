@@ -9,7 +9,7 @@ most often (but not always) initiated by the AP. Each request has a
 unique identifier, supplied by the requestor, and each response will
 include the identifier of the request with which it is associated.
 This allows operations to complete asynchronously, so multiple
-operations can be “in flight” between the AP and a |unipro|-attached
+operations can be "in flight" between the AP and a |unipro|-attached
 adapter at once.
 
 Each response begins with a status byte, which communicates whether

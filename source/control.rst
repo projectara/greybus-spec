@@ -8,7 +8,7 @@ Control Protocol
 This section defines the operations used on an interface using the
 Greybus Control protocol. This protocol is different from all other
 protocols because it operates over a pseudo connection rather than a
-“real” connection. Every interface must have a control CPort running
+"real" connection. Every interface must have a control CPort running
 the control protocol, and any module interface can send control
 protocol operation requests from its own control CPort to the control
 CPort on another interface.  In order to allow this multiplexing of
@@ -130,7 +130,7 @@ Conceptually, the operations in the Greybus control protocol are:
 
    The following additional operations are also defined to be part of
    the control protocol.  They are only exchanged between the SVC and
-   AP, and may be segregated into a separate “SVC protocol” in the
+   AP, and may be segregated into a separate "SVC protocol" in the
    future. As with all control protocol operations, the first value is
    the |unipro| device id of the source of the request.
 
@@ -480,7 +480,7 @@ Greybus Control Connect Request
 
 The connect request begins with the source device id.  This is
 required for control operations, but it also is used in this case to
-identify to the destination the device id used for the “other end” of
+identify to the destination the device id used for the "other end" of
 the connection. The CPort ids for both ends of the connection are
 supplied in the request as well. The source supplies the major and
 minor version number of the highest version of the protocol it
@@ -575,7 +575,7 @@ Greybus Control Connect Peer Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The connect peer request is only initiated by the AP, and this fact is
-reflected in the name of the “respond-to” device id that begins the
+reflected in the name of the "respond-to" device id that begins the
 request message.  The connection to be established will use the
 destination interface, and the CPort id on that interface.  The
 destination will initiate a connect request with the peer device and
@@ -651,8 +651,8 @@ Greybus Control Hotplug Request
 The first byte of the hotplug request is the SVC device id, for the
 response. The second byte indicates which module's presence is being
 reported. The identifying data is the data that the SVC originally
-collected in the “identify” operation it performed when it first
-detected the module was present. The SVC will not send any “link up”
+collected in the "identify" operation it performed when it first
+detected the module was present. The SVC will not send any "link up"
 messages for interfaces on a module until after the module's hotplug
 request has completed.
 
@@ -688,7 +688,7 @@ Greybus Control Hot Unplug Request
 
 The first byte of the disconnect request is the SVC device id, for the
 response. The second byte indicates which module has become unplugged.
-The hot unplug request will not occur until “link down” operations for
+The hot unplug request will not occur until "link down" operations for
 all interfaces on the module have completed.
 
     =======  ====================  ======  ==============  ===========================
@@ -751,7 +751,7 @@ Greybus Control Link Down Operation
 
 The Greybus control link down operation is sent by the SVC to the AP
 to notify it that an interface on a module that was previously
-reported “up” no longer has a functional |unipro| link.
+reported "up" no longer has a functional |unipro| link.
 
 Greybus Control Link Down Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -56,11 +56,11 @@ functions, and interface pins for modules which emit radio
 signals. The Greybus Specification also defines the behavior of the
 system's software with respect to these interfaces.
 
-A Project Ara “module” is a device that slides into a physical slot on
+A Project Ara "module" is a device that slides into a physical slot on
 a Project Ara endoskeleton.  Each module communicates with other
 modules on the network via one or more |unipro| CPorts. A CPort is a
 bidirectional pipe through which |unipro| traffic is
-exchanged. Modules send “messages” via CPorts; messages are datagrams
+exchanged. Modules send "messages" via CPorts; messages are datagrams
 with ancillary metadata. All CPort traffic is peer-to-peer; multicast
 communication is not supported.
 
@@ -78,7 +78,7 @@ the various modules on the system, regardless of the particulars of
 the chipsets involved.
 
 The main functional chipsets on modules may communicate via a native
-|unipro| interface or via “bridges,” special-purpose ASICs which
+|unipro| interface or via "bridges," special-purpose ASICs which
 intermediate between these chipsets and the |unipro| network. In order
 to provide a transition path for chipsets without native UniPro
 interfaces, the Greybus Specification defines a variety of

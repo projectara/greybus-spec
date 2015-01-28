@@ -40,7 +40,8 @@ following general requirements:
 * All headers and descriptor data within a Module Manifest shall be
   implicitly followed by pad bytes as necessary to bring the
   structure's total size to a multiple of 4 bytes.
-* Accordingly, the low-order two bits of all header “size” field values shall be 00.
+* Accordingly, the low-order two bits of all header "size" field values shall
+  be 00.
 * Any reserved or unused space (including implicit padding) in a
   header or descriptor shall be ignored when read, and zero-filled
   when written.
@@ -230,7 +231,7 @@ This descriptor describes a CPort implemented within the module. Each
 CPort is associated with one of the module's interfaces, and has an id
 unique for that interface.  Every CPort defines the protocol used by
 the AP to interact with the CPort. A special control CPort shall be
-defined for every interface, and shall be defined to use the “control”
+defined for every interface, and shall be defined to use the "control"
 protocol. The details of these protocols are defined in the sections
 :ref:`device-class-protocols` and :ref:`bridged-phy-protocols` below.
 

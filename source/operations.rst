@@ -42,8 +42,8 @@ Each CPort in a Greybus module has associated with it a protocol.  The
 protocol dictates the way the CPort interprets incoming operation
 messages.  Stated another way, the meaning of the operation type found
 in a request message will depend on the protocol connection uses.
-Operation type 5 might mean “receive data” in one protocol, while
-operation 5 might mean “go to sleep” in another. When the AP
+Operation type 5 might mean "receive data" in one protocol, while
+operation 5 might mean "go to sleep" in another. When the AP
 establishes a connection with a CPort in another module, that
 connection will use the CPort's advertised protocol.
 
@@ -88,7 +88,7 @@ bit (0x80) of an operation type is used as a flag that distinguishes a
 request operation from its response.  For requests, this bit is 0, for
 responses, it is 1.  For example operation 0x0a will contain 0x0a in
 the request message's type field and 0x8a in the response message's
-type field. The id allows many operations to be “in flight” on a
+type field. The id allows many operations to be "in flight" on a
 connection at once.
 
 A connection protocol is defined by describing the format of the

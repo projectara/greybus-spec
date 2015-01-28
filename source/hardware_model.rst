@@ -9,7 +9,7 @@ Greybus Specification is a *Greybus system*.
 A Greybus system shall be composed of the following physical
 components:
 
-1. An “endoskeleton,” consisting of the following elements:
+1. An "endoskeleton," consisting of the following elements:
 
    - One or more |unipro| switches, which distribute |unipro| network
      traffic throughout the Greybus network.
@@ -19,7 +19,7 @@ components:
      elements in a Greybus system.
 
    - Exactly one Supervisory Controller, hereafter referred to as the
-     “SVC.” The SVC administers the Greybus system, including the
+     "SVC." The SVC administers the Greybus system, including the
      system's UniPro switches, its power bus, its wake/detect pins,
      and its RF bus.
 
@@ -28,7 +28,7 @@ components:
    in accordance with this document's specifications.
 
 3. Exactly one Application Processor module, hereafter referred to as
-   the “AP.”
+   the "AP."
 
 For a full description of the Project Ara platform, please see the
 *Project Ara Module Developers Kit* specification.

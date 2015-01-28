@@ -4,8 +4,8 @@ Terminology
 ===========
 
 This document abides by Section 13.1 of the IEEE Standards Style
-Manual, which describes the use of the words “shall”, “should”, “may”,
-and “can” in a document as follows.
+Manual, which describes the use of the words "shall", "should", "may",
+and "can" in a document as follows.
 
 - The word *shall* is used to indicate mandatory requirements strictly
   to be followed in order to conform to the Specification and from

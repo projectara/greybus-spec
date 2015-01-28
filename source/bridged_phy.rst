@@ -972,7 +972,7 @@ Greybus UART Set Control Line State Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus UART set control line state allows the AP to request the
-UART device set “outbound” UART status values.
+UART device set "outbound" UART status values.
 
 Greybus UART Set Control Line State Request
 """""""""""""""""""""""""""""""""""""""""""
@@ -2696,10 +2696,10 @@ Conceptually, the five operations in the Greybus I2C protocol are:
 
 .. c:function:: int transfer(u8 op_count, struct i2c_op *ops);
 
-   Performs an I2C transaction made up of one or more “steps” defined
+   Performs an I2C transaction made up of one or more "steps" defined
    in the supplied I2C op array.
 
-A transfer is made up of an array of “I2C ops”, each of which
+A transfer is made up of an array of "I2C ops", each of which
 specifies an I2C slave address, flags controlling message behavior,
 and a length of data to be transferred. For write requests, the data
 is sent following the array of messages; for read requests, the data
@@ -2880,7 +2880,7 @@ Greybus I2C Transfer Operation
 
 The Greybus I2C transfer operation allows the AP to request the I2C
 adapter to perform an I2C transaction. The operation consists of a set of
-one or more “I2C ops” to be performed by the I2C adapter. The transfer
+one or more "I2C ops" to be performed by the I2C adapter. The transfer
 operation request will include data for each I2C op involving a write
 operation.  The data will be concatenated (without padding) and will
 be be sent immediately after the set of I2C op descriptors. The
