@@ -140,7 +140,7 @@ module descriptor.
     Offset   Field              Size    Value       Description
     =======  =================  ======  ==========  ==============================
     0        size               2       0x0013      Size of this descriptor record.
-    2        type               2       0x01        Module vendor id
+    2        type               2       0x01        Type of the descriptor (Module)
     3        vendor             2       ID          Module vendor id
     5        product            2       ID          Module product id
     7        vendor_string_id   1       ID          String id for the vendor name
