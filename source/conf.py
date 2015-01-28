@@ -32,7 +32,6 @@ config_ara_internal = True
 extensions = [
     'sphinx.ext.ifconfig',
     'sphinx.ext.todo',
-    'rst2pdf.pdfbuilder'
 ]
 
 # If true, print out the TODO items in the document.
