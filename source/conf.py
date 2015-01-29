@@ -16,6 +16,16 @@ import os
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
 
+CURDIR = os.path.abspath(os.path.dirname(__file__))
+# add custom extensions directory to python path
+sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'extensions'))
+
+
+# import the custom html and latex builders/translators/writers
+import html_mods
+import latex_mods
+
+
 # -- Project Ara configuration --------------------------------------------
 
 # If true, information for internal use will be published.
@@ -32,6 +42,9 @@ config_ara_internal = True
 extensions = [
     'sphinx.ext.ifconfig',
     'sphinx.ext.todo',
+    'subfig',
+    'numfig',
+    'figtable',
 ]
 
 # If true, print out the TODO items in the document.

@@ -32,6 +32,7 @@ help:
 
 clean:
 	rm -rf $(BUILDDIR)/*
+	rm -f source/extensions/*.pyc
 
 all:	html latexpdf
 
