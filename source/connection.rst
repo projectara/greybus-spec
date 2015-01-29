@@ -19,29 +19,34 @@ Otherwise the reason it was not successful will be conveyed by one of
 the positive values defined in the following table.
 
 A protocol can define its own status values if needed. These status
-values shall lie within the range defined by the "(Reserved for
-protocol use)" table entry below. Every status byte with a MSB set to
-one other than 0xff is a valid protocol status value.
+values shall lie within the range defined by "(Reserved for protocol use)"
+:ref:`greybus-protocol-error-codes`. Every status byte with a MSB set to one
+other than 0xff is a valid protocol status value.
 
-============================  ===============  =======================
-Status                        Value            Meaning
-============================  ===============  =======================
-GB_OP_SUCCESS                 0x00             Operation completed successfully
-GB_OP_INTERRUPTED             0x01             Operation processing was interrupted
-GB_OP_TIMEOUT                 0x02             Operation processing timed out
-GB_OP_NO_MEMORY               0x03             Memory exhaustion prevented operation completion
-GB_OP_PROTOCOL_BAD            0x04             Protocol is not supported by this Greybus implementation
-GB_OP_OVERFLOW                0x05             Request message was too large
-GB_OP_INVALID                 0x06             Invalid argument supplied
-GB_OP_RETRY                   0x07             Request should be retried
-GB_OP_NONEXISTENT             0x08             The device does not exist
-Reserved                      0x09 to 0x7f     Reserved for future use
-Reserved for protocol use     0x80 to 0xfd     Status defined by the protocol in use
-GB_OP_UNKNOWN_ERROR           0xfe             Unknown error occured
-GB_OP_INTERNAL                0xff             Invalid initial value.
-============================  ===============  =======================
+.. _greybus-protocol-error-codes:
 
-Values marked *(Reserved for protocol use)* are to be used by the
+Greybus Operations error codes
+------------------------------
+
+    ============================  ===============  =======================
+    Status                        Value            Meaning
+    ============================  ===============  =======================
+    GB_OP_SUCCESS                 0x00             Operation completed successfully
+    GB_OP_INTERRUPTED             0x01             Operation processing was interrupted
+    GB_OP_TIMEOUT                 0x02             Operation processing timed out
+    GB_OP_NO_MEMORY               0x03             Memory exhaustion prevented operation completion
+    GB_OP_PROTOCOL_BAD            0x04             Protocol is not supported by this Greybus implementation
+    GB_OP_OVERFLOW                0x05             Request message was too large
+    GB_OP_INVALID                 0x06             Invalid argument supplied
+    GB_OP_RETRY                   0x07             Request should be retried
+    GB_OP_NONEXISTENT             0x08             The device does not exist
+    Reserved                      0x09 to 0x7f     Reserved for future use
+    Reserved for protocol use     0x80 to 0xfd     Status defined by the protocol in use
+    GB_OP_UNKNOWN_ERROR           0xfe             Unknown error occured
+    GB_OP_INTERNAL                0xff             Invalid initial value.
+    ============================  ===============  =======================
+
+Values marked *Reserved for protocol use* are to be used by the
 individual protocols as defined in the :ref:`device-class-protocols` and
 :ref:`bridged-phy-protocols` sections below.
 

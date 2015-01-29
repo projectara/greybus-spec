@@ -27,8 +27,9 @@ Ara platform definition; it comprises various documents which
 collectively define the Ara platform, including its industrial,
 mechanical, electrical, and software design and requirements. Refer to
 the main MDK document for an introduction to the platform and its
-components. Familiarity with this document is assumed throughout this
-document; its definitions are incorporated here by reference.
+components. Familiarity with this document is assumed throughout the
+Greybus Specification; its definitions are incorporated here by
+reference.
 
 The Greybus Specification is included within the MDK; its purpose is
 to define software interfaces whose data and control flow crosses

@@ -196,66 +196,29 @@ values. A message type consists of an operation type combined with a
 flag (0x80) indicating whether the operation is a request or a
 response.
 
-.. list-table::
-   :header-rows: 1
+    ===========================  =============  ==============
+    Control Operation Type       Request Value  Response Value
+    ===========================  =============  ==============
+    Invalid                      0x00           0x80
+    Identify                     0x01           0x81
+    Handshake                    0x02           0x82
+    Register AP                  0x03           0x83
+    Register Battery             0x04           0x84
+    Connect                      0x05           0x85
+    Disconnect                   0x06           0x86
+    Connect peer                 0x07           0x87
+    Disconnect peer              0x08           0x88
+    (reserved)                   0x09..0x0f     0x89..0x8f
+    Hotplug                      0x10           0x90
+    Hot unplug                   0x11           0x91
+    Link up                      0x12           0x92
+    Link down                    0x13           0x93
+    Set route                    0x14           0x94
+    Enable route                 0x15           0x95
+    Disable route                0x16           0x96
+    (all other values reserved)  0x17..0x7f     0x97..0xff
+    ===========================  =============  ==============
 
-   * - Descriptor Type
-     - Request Value
-     - Response Value
-   * - Invalid
-     - 0x00
-     - 0x80
-   * - Identify
-     - 0x01
-     - 0x81
-   * - Handshake
-     - 0x02
-     - 0x82
-   * - Register AP
-     - 0x03
-     - 0x83
-   * - Register battery
-     - 0x04
-     - 0x84
-   * - Connect
-     - 0x05
-     - 0x85
-   * - Disconnect
-     - 0x06
-     - 0x87
-   * - Connect peer
-     - 0x07
-     - 0x87
-   * - Disconnect peer
-     - 0x08
-     - 0x88
-   * - (reserved)
-     - 0x09..0x0f
-     - 0x89..0x8f
-   * - Hotplug
-     - 0x10
-     - 0x90
-   * - Hot unplug
-     - 0x11
-     - 0x91
-   * - Link up
-     - 0x12
-     - 0x92
-   * - Link down
-     - 0x13
-     - 0x93
-   * - Set route
-     - 0x14
-     - 0x94
-   * - Enable route
-     - 0x15
-     - 0x95
-   * - Disable route
-     - 0x16
-     - 0x96
-   * - (All other values reserved)
-     - 0x09..0x7f
-     - 0x89..0xff
 
 Greybus Control Identify Operation
 ----------------------------------
@@ -294,39 +257,16 @@ that represent the physical location of the destination interface.  It
 finally contains the device id that has been assigned to the
 destination interface.
 
-.. list-table::
-   :header-rows: 1
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        SVC device id   1       Number          Device id for responce to the SVC
+    1        Endo id         2       Number          Unique id for the Endo configuration
+    3        Module id       1       Number          Location of the module within the Endo
+    4        Interface id    1       Number          Module-relative interface number
+    5        Device id       1       Number          |unipro| device id assigned to destination
+    =======  ==============  ======  ==========      ===========================
 
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - SVC device id
-     - 1
-     -
-     - Device id for response to SVC
-   * - 1
-     - Endo id
-     - 2
-     -
-     - Unique id for the Endo configuration
-   * - 3
-     - Module id
-     - 1
-     -
-     - Location of the module within the Endo
-   * - 4
-     - Interface id
-     - 1
-     -
-     - Module-relative interface number
-   * - 5
-     - Device id
-     - 1
-     -
-     - |unipro| device id assigned to destination
 
 Greybus Control Identify Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -341,38 +281,18 @@ beginning with a two-byte size field.  The identity data is padded if
 necessary to ensure the response payload size is a multiple of 4
 bytes.
 
+    =======  ==================  ======  ==============  ===========================
+    Offset   Field               Size    Value           Description
+    =======  ==================  ======  ==============  ===========================
+    0        status              1       Number          Success, or reason for failure
+    1        extra device ids    1       Number          Number of additional device ids required
+    2        identity data size  2       Number          Number of bytes of identity data
+    4        identity data       N       identity data   Identity data from the interface (padded)
+    =======  ==================  ======  ==============  ===========================
+
 .. Padding, is this actually important? I don't really think so.  Already
    the header is making the alignment unpredictable.
    - Alex
-
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - Status
-     - 1
-     -
-     - Success, or reason for failure
-   * - 1
-     - Extra device ids
-     - 1
-     -
-     - Number of additional device ids required
-   * - 2
-     - Identity data size
-     - 2
-     - N
-     - Number of bytes of identity data
-   * - 4
-     - Identity data
-     - N
-     -
-     - Identity data from the interface (padded)
 
 .. Identity data size: I would like to make the identity data be fairly
    limited--like the vendor id, product id, version, and maybe unique
@@ -413,29 +333,13 @@ The first byte of a handshake request is the device id to which the
 response should be sent. The other two bytes are the highest version
 of the control protocol the source interface supports.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - Source device id
-     - 1
-     -
-     - Device id of source for response
-   * - 1
-     - Source major version
-     - 1
-     -
-     - Source control protocol major version
-   * - 2
-     - Source minor version
-     - 1
-     -
-     - Source control protocol minor version
+    =======  ====================  ======  ==============  ===========================
+    Offset   Field                 Size    Value           Description
+    =======  ====================  ======  ==============  ===========================
+    0        source device id      1       device id       device id of source for response
+    1        source major version  1       Number          Source control protocol major version
+    2        source minor version  1       Number          Source control protocol minor version
+    =======  ====================  ======  ==============  ===========================
 
 Greybus Control Handshake Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -450,29 +354,14 @@ the destination interface cannot support that version. Both ends of
 the connection shall use the version of the control protocol indicated
 in the response.
 
-.. list-table::
-   :header-rows: 1
+    =======  ==================  ======  ==============  ===========================
+    Offset   Field               Size    Value           Description
+    =======  ==================  ======  ==============  ===========================
+    0        status              1       Number          Success, or reason for failure
+    1        major version       1       Number          Agreed-to control protocol major version
+    2        minor version       1       Number          Agreed-to control protocol minor version
+    =======  ==================  ======  ==============  ===========================
 
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - Status
-     - 1
-     -
-     - Success, or reason for failure
-   * - 1
-     - Major version
-     - 1
-     -
-     - Agreed-to control protocol major version
-   * - 2
-     - Minor version
-     - 1
-     -
-     - Agreed-to control protocol minor version
 
 Greybus Control Register AP Operation
 -------------------------------------
@@ -499,29 +388,13 @@ data itself is of arbitrary length, but this field is implicitly
 padded with zero bytes sufficient to make the size of the payload a
 multiple of four bytes.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - Source device id
-     - 1
-     -
-     - Device id of source for response
-   * - 1
-     - Authentication data size
-     - 2
-     - N
-     - Number of bytes of authentication data
-   * - 3
-     - Authentication data
-     - N
-     -
-     - Authentication data (padded)
+    =======  ==========================  ======  ==============  ===================================
+    Offset   Field                       Size    Value           Description
+    =======  ==========================  ======  ==============  ===================================
+    0        source device id            1       Number          device id of source for response
+    1        authentication data size    2       Number          number of bytes of authentication data
+    3        authentication data         N       data            Authentication Data (padded)
+    =======  ==========================  ======  ==============  ===================================
 
 Greybus Control Register AP Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -530,19 +403,11 @@ The register AP response contains only the status byte.  The SVC uses
 the authentication data in the request to determine whether to accept
 the AP as legitimate; it responds with an error if not.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - Status
-     - 1
-     -
-     - Success, or reason for failure
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        status          1       Number          Success, or reason for failure
+    =======  ==============  ======  ==========      ===========================
 
 Greybus Control Register Battery Operation
 ------------------------------------------
@@ -568,29 +433,13 @@ battery can successfully complete this operation.
 Greybus Control Register Battery Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - Source device id
-     - 1
-     -
-     - Device id of source for response
-   * - 1
-     - Authentication data size
-     - 2
-     - N
-     - Number of bytes of authentication data
-   * - 3
-     - Authentication data
-     - N
-     -
-     - Authentication data (padded)
+    =======  ==========================  ======  ==============  ===================================
+    Offset   Field                       Size    Value           Description
+    =======  ==========================  ======  ==============  ===================================
+    0        source device id            1       Number          device id of source for response
+    1        authentication data size    2       Number          number of bytes of authentication data
+    3        authentication data         N       data            Authentication Data (padded)
+    =======  ==========================  ======  ==============  ===================================
 
 Greybus Control Register Battery Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -599,19 +448,12 @@ The register battery response contains only the status byte.  The SVC
 uses the authentication data in the request to determine whether to
 accept the battery as legitimate; it responds with an error if not.
 
-.. list-table::
-   :header-rows: 1
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        status          1       Number          Success, or reason for failure
+    =======  ==============  ======  ==========      ===========================
 
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - Status
-     - 1
-     - .
-     - Success, or reason for failure
 
 Greybus Control Connect Operation
 ---------------------------------
@@ -644,39 +486,15 @@ supplied in the request as well. The source supplies the major and
 minor version number of the highest version of the protocol it
 supports.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - Source device id
-     - 1
-     -
-     - Device id of source
-   * - 1
-     - Source CPort id
-     - 2
-     -
-     - CPort id to connect with
-   * - 3
-     - Destination CPort Id
-     - 2
-     -
-     - CPort id to connect to
-   * - 5
-     - Source major version
-     - 1
-     -
-     - Source protocol major version
-   * - 6
-     - Source minor version
-     - 1
-     -
-     - Source protocol minor version
+    =======  ====================  ======  ==============  ===========================
+    Offset   Field                 Size    Value           Description
+    =======  ====================  ======  ==============  ===========================
+    0        source device id      1       device id       device id of source for response
+    1        source CPort id       2       CPort id        CPort id to connect to
+    3        destination CPort id  2       CPort id        Destination CPort id
+    5        source major version  1       number          Source protocol major version
+    6        source minor version  1       number          Source protocol minor version
+    =======  ====================  ======  ==============  ===========================
 
 Greybus Control Connect Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -689,29 +507,13 @@ not able to support the source’s version.  Both ends of the connection
 shall use the version of the protocol in the response once it has been
 received.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - Status
-     - 1
-     -
-     - Success, or reason for failure
-   * - 1
-     - Major version
-     - 1
-     -
-     - Agreed-to protocol major version
-   * - 2
-     - Minor version
-     - 1
-     -
-     - Agreed-to protocol minor version
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        status          1       Number          Success, or reason for failure
+    1        major version   1       Number          Agreed-to protocol major version
+    2        minor version   1       Number          Agreed-to protocol minor version
+    =======  ==============  ======  ==========      ===========================
 
 Greybus Control Disconnect Operation
 ------------------------------------
@@ -731,24 +533,12 @@ response. This device id is also used to ensure the disconnect request
 is coming from an interface used by the connection. The second byte
 identifies which connection should be torn down.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - Source device id
-     - 1
-     -
-     - Device id of source for response
-   * - 1
-     - Destination CPort Id
-     - 2
-     -
-     - CPort id to disconnect
+    =======  ====================  ======  ==============  ===========================
+    Offset   Field                 Size    Value           Description
+    =======  ====================  ======  ==============  ===========================
+    0        source device id      1       device id       device id of source for response
+    1        destination CPort id  2       CPort id        CPort id to disconnect
+    =======  ====================  ======  ==============  ===========================
 
 Greybus Control Disconnect Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -756,19 +546,12 @@ Greybus Control Disconnect Response
 The disconnect response contains only the status byte, indicating
 whether the connection was successfully torn down.
 
-.. list-table::
-   :header-rows: 1
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        status          1       Number          Success, or reason for failure
+    =======  ==============  ======  ==========      ===========================
 
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - Status
-     - 1
-     -
-     - Success, or reason for failure
 
 Greybus Control Connect Peer Operation
 --------------------------------------
@@ -801,34 +584,14 @@ connection is defined by the peer CPort’s protocol (listed in its
 module manifest), and the destination and its peer will independently
 negotiate the version of that protocol to use.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - AP device id
-     - 1
-     -
-     - Device id of source for response
-   * - 1
-     - Destination CPort id
-     - 2
-     -
-     - CPort at destination to use for connection
-   * - 3
-     - Peer device id
-     - 1
-     -
-     - Device id of peer interface for connection
-   * - 4
-     - Peer CPort id
-     - 2
-     -
-     - CPort at peer to use for connection
+    =======  ====================  ======  ==============  ===========================
+    Offset   Field                 Size    Value           Description
+    =======  ====================  ======  ==============  ===========================
+    0        AP device id          1       device id       device id of source for response
+    1        destination CPort id  2       CPort id        Destination CPort id
+    3        peer device id        1       device id       Device id of peer interface
+    4        peer CPort id         2       CPort id        CPort at peer to use for connection
+    =======  ====================  ======  ==============  ===========================
 
 Greybus Control Connect Peer Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -836,19 +599,11 @@ Greybus Control Connect Peer Response
 The connect peer response contains only the status byte, indicating
 whether the peer connection was successfully established.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - Status
-     - 1
-     -
-     - Success, or reason for failure
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        status          1       Number          Success, or reason for failure
+    =======  ==============  ======  ==========      ===========================
 
 Greybus Control Disconnect Peer Operation
 -----------------------------------------
@@ -865,24 +620,12 @@ to be abolished is the CPort id on the destination interface used by
 the connection. Disconnect requests can only be issued by an AP
 interface.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - AP device id
-     - 1
-     -
-     - Device id of source for response
-   * - 1
-     - Destination CPort Id
-     - 2
-     -
-     - CPort id to disconnect
+    =======  ====================  ======  ==============  ===========================
+    Offset   Field                 Size    Value           Description
+    =======  ====================  ======  ==============  ===========================
+    0        AP device id          1       device id       device id of source for response
+    1        destination CPort id  2       CPort id        Cport id to disconnect
+    =======  ====================  ======  ==============  ===========================
 
 Greybus Control Disconnect Peer Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -890,19 +633,11 @@ Greybus Control Disconnect Peer Response
 The disconnect peer response contains only the status byte, indicating
 whether the connection was successfully torn down.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - Status
-     - 1
-     -
-     - Success, or reason for failure
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        status          1       Number          Success, or reason for failure
+    =======  ==============  ======  ==========      ===========================
 
 Greybus Control Hotplug Operation
 ---------------------------------
@@ -921,53 +656,26 @@ detected the module was present. The SVC will not send any “link up”
 messages for interfaces on a module until after the module’s hotplug
 request has completed.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - SVC device id
-     - 1
-     -
-     - Device id of SVC, for the response
-   * - 1
-     - Module id
-     - 1
-     -
-     - Module id whose presence is detected
-   * - 2
-     - Data size
-     - 2
-     - N
-     - Size of module identifying data (can be 0)
-   * - 4
-     - Data
-     - N
-     -
-     - Module identifying data
+    =======  ====================  ======  ==============  ===========================
+    Offset   Field                 Size    Value           Description
+    =======  ====================  ======  ==============  ===========================
+    0        SVC device id         1       device id       device id of SVC for response
+    1        module id             1       module id       module id whose presence is detected
+    2        data size             2       N               Size of module identifying data (can be 0)
+    4        Data                  N       data            Module identifying data
+    =======  ====================  ======  ==============  ===========================
 
 Greybus Control Hotplug Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The hotplug response contains only the status byte.
 
-.. list-table::
-   :header-rows: 1
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        status          1       Number          Success, or reason for failure
+    =======  ==============  ======  ==========      ===========================
 
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - Status
-     - 1
-     -
-     - Success, or reason for failure
 
 Greybus Control Hot Unplug Operation
 ------------------------------------
@@ -983,43 +691,23 @@ response. The second byte indicates which module has become unplugged.
 The hot unplug request will not occur until “link down” operations for
 all interfaces on the module have completed.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - SVC device id
-     - 1
-     -
-     - Device id of SVC, for the response
-   * - 1
-     - Module id
-     - 1
-     -
-     - Module id whose presence is detected
+    =======  ====================  ======  ==============  ===========================
+    Offset   Field                 Size    Value           Description
+    =======  ====================  ======  ==============  ===========================
+    0        SVC device id         1       device id       device id of SVC for response
+    1        module id             1       module id       module id whose presence is detected
+    =======  ====================  ======  ==============  ===========================
 
 Greybus Control Hot Unplug Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The hotplug response contains only the status byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - Status
-     - 1
-     -
-     - Success, or reason for failure
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        status          1       Number          Success, or reason for failure
+    =======  ==============  ======  ==========      ===========================
 
 Greybus Control Link Up Operation
 ---------------------------------
@@ -1038,53 +726,25 @@ used for modules with more than one interface to indicate which
 interface on the module now has a functioning |unipro| link. The final
 byte indicates the |unipro| device id that was assigned to that link.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - SVC device id
-     - 1
-     - .
-     - Device id of SVC, for the response
-   * - 1
-     - Module id
-     - 1
-     -
-     - Id for module containing the interface
-   * - 2
-     - Interface id
-     - 1
-     -
-     - Which interface within the module
-   * - 4
-     - Device id
-     -
-     -
-     - |unipro| device id for this link
+    =======  ====================  ======  ==============  ===========================
+    Offset   Field                 Size    Value           Description
+    =======  ====================  ======  ==============  ===========================
+    0        SVC device id         1       device id       device id of SVC for response
+    1        module id             1       module id       module id containing the interface
+    2        interface id          1       interface id    interface id within the module
+    3        device id             1       device id       |unipro| device id for this link
+    =======  ====================  ======  ==============  ===========================
 
 Greybus Control Link Up Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The link up response contains only the status byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - Status
-     - 1
-     -
-     - Success, or reason for failure
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        status          1       Number          Success, or reason for failure
+    =======  ==============  ======  ==========      ===========================
 
 Greybus Control Link Down Operation
 -----------------------------------
@@ -1100,43 +760,23 @@ The first byte of the link down request is the SVC device id, for the
 response. The second byte indicates device id of the link that has
 gone down.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - SVC device id
-     - 1
-     - .
-     - Device id of SVC, for the response
-   * - 1
-     - Device id
-     - 1
-     - .
-     - |unipro| device id for this link
+    =======  ====================  ======  ==============  ===========================
+    Offset   Field                 Size    Value           Description
+    =======  ====================  ======  ==============  ===========================
+    0        SVC device id         1       device id       device id of SVC for response
+    1        device id             1       device id       |unipro| device id for this link
+    =======  ====================  ======  ==============  ===========================
 
 Greybus Control Link Down Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The link down response contains only the status byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - Status
-     - 1
-     -
-     - Success, or reason for failure
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        status          1       Number          Success, or reason for failure
+    =======  ==============  ======  ==========      ===========================
 
 Greybus Control Set Route Operation
 -----------------------------------
@@ -1157,48 +797,25 @@ existing, no traffic will be allowed until that route has been
 enabled. Note: ES1 does not support disabled routes; all routes will
 be enabled.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - AP device id
-     - 1
-     -
-     - Device id of AP interface, for the response
-   * - 1
-     - From device id
-     - 1
-     -
-     - First |unipro| device id
-   * - 2
-     - To device id
-     - 1
-     -
-     - Second |unipro| device id
+    =======  ====================  ======  ==============  ===========================
+    Offset   Field                 Size    Value           Description
+    =======  ====================  ======  ==============  ===========================
+    0        AP device id          1       device id       device id of AP interface, for response
+    1        From device id        1       device id       First |unipro| device id
+    2        To device id          1       device id       Second |unipro| device id
+    =======  ====================  ======  ==============  ===========================
 
 Greybus Control Set Route Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The set route response contains only the status byte.
 
-.. list-table::
-   :header-rows: 1
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        status          1       Number          Success, or reason for failure
+    =======  ==============  ======  ==========      ===========================
 
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - Status
-     - 1
-     -
-     - Success, or reason for failure
 
 Greybus Control Enable Route Operation
 --------------------------------------
@@ -1215,48 +832,24 @@ id, for the response. The second and third bytes indicate the device
 ids of the interfaces whose route is to allow traffic flow.  Note: ES1
 does not support disabled routes; all routes will be enabled.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - AP device id
-     - 1
-     -
-     - Device id of AP interface, for the response
-   * - 1
-     - From device id
-     - 1
-     -
-     - First |unipro| device id
-   * - 2
-     - To device id
-     - 1
-     -
-     - Second |unipro| device id
+    =======  ====================  ======  ==============  ===========================
+    Offset   Field                 Size    Value           Description
+    =======  ====================  ======  ==============  ===========================
+    0        AP device id          1       device id       device id of AP interface, for response
+    1        From device id        1       device id       First |unipro| device id
+    2        To device id          1       device id       Second |unipro| device id
+    =======  ====================  ======  ==============  ===========================
 
 Greybus Control Enable Route Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The enable route response contains only the status byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - Status
-     - 1
-     -
-     - Success, or reason for failure
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        status          1       Number          Success, or reason for failure
+    =======  ==============  ======  ==========      ===========================
 
 Greybus Control Disable Route Operation
 ---------------------------------------
@@ -1274,45 +867,21 @@ ids of the interfaces between which traffic flow should be
 stop. Note: ES1 does not support disabled routes; all routes will be
 enabled.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - AP device id
-     - 1
-     -
-     - Device id of AP interface, for the response
-   * - 1
-     - From device id
-     - 1
-     -
-     - First |unipro| device id
-   * - 2
-     - To device id
-     - 1
-     -
-     - Second |unipro| device id
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        ap              1       device id       Device id of the AP interface
+    0        from            1       device id       First |unipro| device id
+    0        to              1       device id       Second |unipro| device id
+    =======  ==============  ======  ==========      ===========================
 
 Greybus Control Disable Route Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The disable route response contains only the status byte.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Offset
-     - Field
-     - Size
-     - Value
-     - Description
-   * - 0
-     - Status
-     - 1
-     -
-     - Success, or reason for failure
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        status          1       Number          Success, or reason for failure
+    =======  ==============  ======  ==========      ===========================

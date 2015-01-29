@@ -68,13 +68,13 @@ The Manifest Header is present at the beginning of the Module Manifest
 and defines its size in bytes and the version of the Greybus protocol
 with which the Manifest complies.
 
-=======  ==============  ======  ==========      ===========================
-Offset   Field           Size    Value           Description
-=======  ==============  ======  ==========      ===========================
-0        size            2       Number          Size of the entire manifest
-2        version_major   1       |gb-major|      Greybus major version
-3        version_minor   1       |gb-minor|      Greybus minor version
-=======  ==============  ======  ==========      ===========================
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        size            2       Number          Size of the entire manifest
+    2        version_major   1       |gb-major|      Greybus major version
+    3        version_minor   1       |gb-minor|      Greybus minor version
+    =======  ==============  ======  ==========      ===========================
 
 The values of version_major and version_minor values shall refer to
 the highest version of this document (currently |gb-major|.\
@@ -103,12 +103,12 @@ are laid out below.
 Descriptor Header
 """""""""""""""""
 
-=======  ==============  ======  ==========      ===========================
-Offset   Field           Size    Value           Description
-=======  ==============  ======  ==========      ===========================
-0        size            2       Number          Size of this descriptor record.
-2        type            1       Number          :ref:`descriptor-type`
-=======  ==============  ======  ==========      ===========================
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        size            2       Number          Size of this descriptor record.
+    2        type            1       Number          :ref:`descriptor-type`
+    =======  ==============  ======  ==========      ===========================
 
 .. _descriptor-type:
 
@@ -117,17 +117,17 @@ Descriptor type
 
 This table describes the known descriptor types and their values:
 
-============================    ==========
-Descriptor Type                 Value
-============================    ==========
-Invalid                         0x00
-Module                          0x01
-String                          0x02
-Interface                       0x03
-CPort                           0x04
-Class                           0x05
-(All other values reserved)     0x06..0xff
-============================    ==========
+    ============================    ==========
+    Descriptor Type                 Value
+    ============================    ==========
+    Invalid                         0x00
+    Module                          0x01
+    String                          0x02
+    Interface                       0x03
+    CPort                           0x04
+    Class                           0x05
+    (All other values reserved)     0x06..0xff
+    ============================    ==========
 
 Module Descriptor
 ^^^^^^^^^^^^^^^^^
@@ -136,17 +136,17 @@ This descriptor describes module-specific values as set by the vendor
 who created the module. Every module manifest shall have exactly one
 module descriptor.
 
-=======  =================  ======  ==========  ==============================
-Offset   Field              Size    Value       Description
-=======  =================  ======  ==========  ==============================
-0        size               2       0x0013      Size of this descriptor record.
-2        type               2       0x01        Module vendor id
-3        vendor             2       ID          Module vendor id
-5        product            2       ID          Module product id
-7        vendor_string_id   1       ID          String id for the vendor name
-8        product_string_id  1       ID          String id for the product name
-9        unique_id          8       ID          Unique ID of the module
-=======  =================  ======  ==========  ==============================
+    =======  =================  ======  ==========  ==============================
+    Offset   Field              Size    Value       Description
+    =======  =================  ======  ==========  ==============================
+    0        size               2       0x0013      Size of this descriptor record.
+    2        type               2       0x01        Module vendor id
+    3        vendor             2       ID          Module vendor id
+    5        product            2       ID          Module product id
+    7        vendor_string_id   1       ID          String id for the vendor name
+    8        product_string_id  1       ID          String id for the product name
+    9        unique_id          8       ID          Unique ID of the module
+    =======  =================  ======  ==========  ==============================
 
 The *vendor* field is a value assigned by Google.  All vendors should
 apply for a Project Ara vendor ID in order to properly mark their
@@ -189,15 +189,15 @@ and are not required to be zero terminated. A string descriptor shall
 be referenced only once within the manifest, e.g. only one product (or
 vendor) string field may refer to string id 2.
 
-=======  ==============  ======  ==========      ===========================
-Offset   Field           Size    Value           Description
-=======  ==============  ======  ==========      ===========================
-0        size            2       Number          Size of this descriptor record.
-2        type            1       0x02            Type of the descritpor (String)
-3        length          1       Number          Length of the string in bytes
-4        id              1       ID              String id for this descriptor
-5        string          X       UTF-8           Characters for the string
-=======  ==============  ======  ==========      ===========================
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        size            2       Number          Size of this descriptor record.
+    2        type            1       0x02            Type of the descritpor (String)
+    3        length          1       Number          Length of the string in bytes
+    4        id              1       ID              String id for this descriptor
+    5        string          X       UTF-8           Characters for the string
+    =======  ==============  ======  ==========      ===========================
 
 The *id* field can not be 0x00, as that is an invalid String ID value.
 
@@ -215,13 +215,13 @@ within the module.  The first interface shall have id 0, the second
 is to allow CPort descriptors to define which interface they are
 associated with.
 
-=======  ==============  ======  ==========      ===========================
-Offset   Field           Size    Value           Description
-=======  ==============  ======  ==========      ===========================
-0        size            2       0x0004          Size of this descriptor record.
-2        type            1       0x03            Type of the descritpor (Interface)
-3        id              1       ID              Module-unique ID for this interface
-=======  ==============  ======  ==========      ===========================
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        size            2       0x0004          Size of this descriptor record.
+    2        type            1       0x03            Type of the descritpor (Interface)
+    3        id              1       ID              Module-unique ID for this interface
+    =======  ==============  ======  ==========      ===========================
 
 CPort Descriptor
 ^^^^^^^^^^^^^^^^
@@ -234,19 +234,19 @@ defined for every interface, and shall be defined to use the “control”
 protocol. The details of these protocols are defined in the sections
 :ref:`device-class-protocols` and :ref:`bridged-phy-protocols` below.
 
+    ========  ==============  ======  ==========  ===========================
+    Offset    Field           Size    Value       Description
+    ========  ==============  ======  ==========  ===========================
+    0         size            2       0x0007      Size of this descriptor record.
+    2         type            1       0x02        Type of the descriptor (CPort)
+    3         interface       1       ID          Interface ID this CPort is associated with
+    4         id              2       ID          Id (destination address) of the CPort
+    6         protocol        1       Number      :ref:`cport-protocol`
+    ========  ==============  ======  ==========  ===========================
+
 .. todo::
     The details of how the CPort identifier is determined will be
     specified in a later version of this document.
-
-========  ==============  ======  ==========  ===========================
-Offset    Field           Size    Value       Description
-========  ==============  ======  ==========  ===========================
-0         size            2       0x0007      Size of this descriptor record.
-2         type            1       0x02        Type of the descriptor (CPort)
-3         interface       1       ID          Interface ID this CPort is associated with
-4         id              2       ID          Id (destination address) of the CPort
-6         protocol        1       Number      :ref:`cport-protocol`
-========  ==============  ======  ==========  ===========================
 
 The *id* field is the CPort identifier used by other modules to direct
 traffic to this CPort. The IDs for CPorts using the same interface
@@ -267,27 +267,27 @@ CPort Protocol
    on implementing once, adding protocol version operations for each
    of them, and numbering them with substitution definitions.)
 
-============================    ==========
-Protocol                        Value
-============================    ==========
-Control                         0x00
-AP                              0x01
-GPIO                            0x02
-I2C                             0x03
-UART                            0x04
-HID                             0x05
-USB                             0x06
-SDIO                            0x07
-Battery                         0x08
-PWM                             0x09
-I2S                             0x0a
-SPI                             0x0b
-Display                         0x0c
-Camera                          0x0d
-Sensor                          0x0e
-LED                             0x0f
-Vibrator                        0x10
-(All other values reserved)     0x11..0xfe
-Vendor Specific                 0xff
-============================    ==========
+    ============================    ==========
+    Protocol                        Value
+    ============================    ==========
+    Control                         0x00
+    AP                              0x01
+    GPIO                            0x02
+    I2C                             0x03
+    UART                            0x04
+    HID                             0x05
+    USB                             0x06
+    SDIO                            0x07
+    Battery                         0x08
+    PWM                             0x09
+    I2S                             0x0a
+    SPI                             0x0b
+    Display                         0x0c
+    Camera                          0x0d
+    Sensor                          0x0e
+    LED                             0x0f
+    Vibrator                        0x10
+    (All other values reserved)     0x11..0xfe
+    Vendor Specific                 0xff
+    ============================    ==========
 
