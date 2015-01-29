@@ -1954,7 +1954,9 @@ the local party that an event has occurred (e.g., an SMS text message
 arrived).  Several I2S Modules and I2S Audio Connections are
 required to carry out these tasks.
 
-.. figure:: _static/i2s_example.png
+.. _fig-i2s_example:
+
+.. figure:: _static/i2s_example.*
     :alt: Example Audio Scenario
     :name: example audio scenario
     :figwidth: 6in
