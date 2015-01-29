@@ -102,6 +102,12 @@ class DocTranslator(BaseTranslator):
         self.table = None
         self.tablebody = None
 
+    def depart_thead(self, node):
+        pass
+
+    def depart_tbody(self, node):
+        pass
+
     def depart_row(self, node):
         if self.previous_spanning_row == 1:
             self.previous_spanning_row = 0
