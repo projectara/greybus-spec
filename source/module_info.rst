@@ -69,6 +69,13 @@ The Manifest Header is present at the beginning of the Module Manifest
 and defines its size in bytes and the version of the Greybus protocol
 with which the Manifest complies.
 
+.. figtable::
+    :nofig:
+    :label: table-manifest-header
+    :caption: Manifest Header
+    :alt: Manifest Header
+    :spec: l l c c l
+
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
@@ -92,17 +99,24 @@ All Module Manifest parsers shall be able to interpret manifests
 formatted using older Greybus versions, such that they will still work
 properly (i.e. backwards compatibility is required).
 
+The layout for the Manifest Header can be seen in Table
+:num:`table-manifest-header`.
+
 Descriptors
 ^^^^^^^^^^^
 
 Following the Manifest Header is one or more Descriptors.  Each
 Descriptor is composed of a Descriptor Header followed by Descriptor
-Data. The format of the Descriptor Data depends on the type of the
-descriptor, which is specified in the header. These Descriptor formats
-are laid out below.
+Data. The format of the Descriptor header can be seen in Table
+:num:`table-descriptor-header` and depends on the type of the
+descriptor.
 
-Descriptor Header
-"""""""""""""""""
+.. figtable::
+    :nofig:
+    :label: table-descriptor-header
+    :caption: Descriptor Header
+    :alt: Descriptor Header
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -116,7 +130,16 @@ Descriptor Header
 Descriptor type
 """""""""""""""
 
-This table describes the known descriptor types and their values:
+The format of the Descriptor Data depends on the type of the descriptor,
+which is specified in the header.  The known descriptor types and their
+values are described in Table :num:`table-descriptor-type`.
+
+.. figtable::
+    :nofig:
+    :label: table-descriptor-type
+    :caption: Descriptor Type
+    :alt: Descriptor Type
+    :spec: l l
 
     ============================    ==========
     Descriptor Type                 Value
@@ -135,7 +158,14 @@ Module Descriptor
 
 This descriptor describes module-specific values as set by the vendor
 who created the module. Every module manifest shall have exactly one
-module descriptor.
+module descriptor as described in Table :num:`table-module-descriptor`.
+
+.. figtable::
+    :nofig:
+    :label: table-module-descriptor
+    :caption: Module Descriptor
+    :alt: Module Descriptor
+    :spec: l l c c l
 
     =======  =================  ======  ==========  ==============================
     Offset   Field              Size    Value       Description
@@ -188,7 +218,15 @@ not an even multiple of 4 bytes in length shall be padded out to a
 4-byte boundary with 0x00 values.  Strings consist of UTF-8 characters
 and are not required to be zero terminated. A string descriptor shall
 be referenced only once within the manifest, e.g. only one product (or
-vendor) string field may refer to string id 2.
+vendor) string field may refer to string id 2.  The format of the string
+descriptor can be found in Table :num:`table-string-descriptor`.
+
+.. figtable::
+    :nofig:
+    :label: table-string-descriptor
+    :caption: String Descriptor
+    :alt: String Descriptor
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -214,7 +252,15 @@ at least one interface. Each interface has an id whose value is unique
 within the module.  The first interface shall have id 0, the second
 (if present) shall have value 1, and so on. The purpose of these Ids
 is to allow CPort descriptors to define which interface they are
-associated with.
+associated with.  The interface descriptor is defined in Table
+:num:`table-interface-descriptor`.
+
+.. figtable::
+    :nofig:
+    :label: table-interface-descriptor
+    :caption: Interface Descriptor
+    :alt: Interface Descriptor
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -232,8 +278,17 @@ CPort is associated with one of the module's interfaces, and has an id
 unique for that interface.  Every CPort defines the protocol used by
 the AP to interact with the CPort. A special control CPort shall be
 defined for every interface, and shall be defined to use the *Control
-Protocol*. The details of these protocols are defined in the sections
-:ref:`device-class-protocols` and :ref:`bridged-phy-protocols` below.
+Protocol*. The Cport Descriptor is defined in Table
+:num:`table-cport-descriptor`. The details of these protocols are
+defined in the sections :ref:`device-class-protocols` and
+:ref:`bridged-phy-protocols` below.
+
+.. figtable::
+    :nofig:
+    :label: table-cport-descriptor
+    :caption: CPort Descriptor
+    :alt: CPort Descriptor
+    :spec: l l c c l
 
     ========  ==============  ======  ==========  ===========================
     Offset    Field           Size    Value       Description
@@ -242,7 +297,7 @@ Protocol*. The details of these protocols are defined in the sections
     2         type            1       0x02        Type of the descriptor (CPort)
     3         interface       1       ID          Interface ID this CPort is associated with
     4         id              2       ID          Id (destination address) of the CPort
-    6         protocol        1       Number      :ref:`cport-protocol`
+    6         protocol        1       Number      protocol is defined in Table :num:`table-cport-protocol`
     ========  ==============  ======  ==========  ===========================
 
 .. todo::
@@ -257,16 +312,18 @@ low-numbered id values, generally no higher than 31. (Higher-numbered
 CPort ids impact on the total usable number of |unipro| devices and
 typically should not be used.)
 
-.. _cport-protocol:
-
-CPort Protocol
-""""""""""""""
-
 .. XXX cross-reference these with the below protocols.
 
    (It's probably worth allocating all of the protocols we ever plan
    on implementing once, adding protocol version operations for each
    of them, and numbering them with substitution definitions.)
+
+.. figtable::
+    :nofig:
+    :label: table-cport-protocol
+    :caption: CPort Protocol Numbers
+    :alt: CPort Protocol Numbers
+    :spec: l c
 
     ============================    ==========
     Protocol                        Value

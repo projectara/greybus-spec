@@ -18,15 +18,22 @@ If the operation completed successfully the status value is 0.
 Otherwise the reason it was not successful will be conveyed by one of
 the positive values defined in the following table.
 
-A protocol can define its own status values if needed. These status
-values shall lie within the range defined by "(Reserved for protocol use)"
-:ref:`greybus-protocol-error-codes`. Every status byte with a MSB set to one
-other than 0xff is a valid protocol status value.
-
 .. _greybus-protocol-error-codes:
 
-Greybus Operations error codes
-------------------------------
+Protocol Status
+---------------
+
+A protocol can define its own status values if needed. These status
+values shall lie within the range defined by the "(Reserved for
+protocol use)" table entry in Table
+:num:`table-connection-status-values`. Every status byte with a MSB set
+to one other than 0xff is a valid protocol status value.
+
+.. figtable::
+    :nofig:
+    :label: table-connection-status-values
+    :caption: Connection Status Values
+    :spec: l c l
 
     ============================  ===============  =======================
     Status                        Value            Meaning

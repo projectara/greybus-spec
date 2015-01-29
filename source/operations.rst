@@ -69,7 +69,14 @@ zero-byte payload.
 Operation Message Header
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following table summarizes the format of an operation message header.
+Table :num:`table-operation-message-header` summarizes the format of an
+operation message header.
+
+.. figtable::
+    :nofig:
+    :label: table-operation-message-header
+    :caption: Operation Message Header
+    :spec: l l c c l
 
     ========  ==============  ======  ==========      ===========================
     Offset    Field           Size    Value           Description

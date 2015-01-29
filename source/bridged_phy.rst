@@ -92,9 +92,15 @@ matching response from the GPIO controller, also taking the form of a
 GPIO controller message.  The request and response messages for each
 GPIO operation are defined below.
 
-The following table describes the Greybus GPIO protocol operation
-types and their values. Both the request type and response type values
-are shown.
+Table :num:`table-gpio-operation-type` describes the Greybus GPIO
+protocol operation types and their values. Both the request type and
+response type values are shown.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-operation-type
+    :caption: GPIO Operation Types
+    :spec: l l l
 
     ===========================  =============  ==============
     GPIO Operation Type          Request Value  Response Value
@@ -132,10 +138,17 @@ Greybus GPIO Protocol Version Response
 """"""""""""""""""""""""""""""""""""""
 
 The Greybus GPIO protocol version response contains a status byte,
-followed by two 1-byte values. If the value of the status byte is
+followed by two 1-byte values as described in table
+:num:`table-gpio-protocol-version`. If the value of the status byte is
 non-zero, any other bytes in the response shall be ignored. A Greybus
 GPIO controller adhering to the protocol specified herein shall report
 major version 0, minor version 1.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-protocol-version
+    :caption: GPIO Protocol Version Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
