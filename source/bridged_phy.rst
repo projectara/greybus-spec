@@ -747,7 +747,7 @@ bits represent support or presence of certain modes in the SPI master.
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
     0        status          1       Number          :ref:`greybus-protocol-error-codes`
-    1        mode            2       Number          :ref:`spi-mode-bits`
+    1        mode            2       Bit Mask        :ref:`spi-mode-bits`
     =======  ==============  ======  ==========      ===========================
 
 .. _spi-mode-bits:
