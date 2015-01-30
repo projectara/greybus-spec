@@ -1189,7 +1189,7 @@ Greybus UART message header.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        control         2       Number          :ref:`uart-modem-status-flags`
+    0        control         2       Bit mask        :ref:`uart-modem-status-flags`
     =======  ==============  ======  ==========      ===========================
 
 .. _uart-modem-status-flags:
