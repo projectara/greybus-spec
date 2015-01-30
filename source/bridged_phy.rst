@@ -23,11 +23,10 @@ Details TBD.
 GPIO Protocol
 -------------
 
-A connection using GPIO protocol on a |unipro| network is used to manage
-a simple GPIO controller. Such a GPIO controller implements one or
-more (up to 256) GPIO lines, and each of the operations below
-specifies the line to which the operation applies. This protocol
-consists of the operations defined in this section.
+A connection using the GPIO protocol on a |unipro| network is used to
+manage a simple GPIO controller. Such a GPIO controller implements
+from one to 256 GPIO lines. Each of the operations defined below
+specifies the line to which the operation applies.
 
 Conceptually, the GPIO protocol operations are:
 
@@ -109,7 +108,7 @@ Greybus GPIO Protocol Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 All operations sent to a GPIO controller are contained within a
-Greybus GPIO request message. Every operation request will result in a
+Greybus GPIO request message. Every operation request results in a
 matching response from the GPIO controller, also taking the form of a
 GPIO controller message.  The request and response messages for each
 GPIO operation are defined below.
@@ -137,7 +136,7 @@ response type values are shown.
     Direction Output             0x07           0x87
     Get                          0x08           0x88
     Set                          0x09           0x89
-    Set debounce                 0x0a           0x8a
+    Set Debounce                 0x0a           0x8a
     IRQ Type                     0x0b           0x8b
     IRQ Mask                     0x0c           0x8c
     IRQ Unmask                   0x0d           0x8d
@@ -149,7 +148,7 @@ response type values are shown.
 Greybus GPIO Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus GPIO version operation allows the AP to determine the
+The Greybus GPIO protocol version operation allows the AP to determine the
 version of this protocol to which the GPIO controller complies.
 
 Greybus GPIO Protocol Version Request
@@ -199,10 +198,9 @@ Greybus GPIO Line Count Response
 
 The Greybus GPIO line count response contains a status byte, followed
 by a 1-byte value defining the number of lines managed by the
-controller, minus 1. That is, a count value of 0 represents a single
+controller, minus one. That is, a count value of zero represents a single
 GPIO line, while a (maximal) count value of 255 represents 256
-lines. The lines are numbered sequentially starting with 0 (i.e., no
-gaps in the numbering).
+lines. The lines are numbered sequentially starting with zero.
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -290,8 +288,8 @@ The Greybus GPIO get direction request supplies only the target line number.
     0        which           1       Number          Controller-relative GPIO line number
     =======  ==============  ======  ==========      ===========================
 
-Greybus Get Direction Response
-""""""""""""""""""""""""""""""
+Greybus GPIO Get Direction Response
+"""""""""""""""""""""""""""""""""""
 
 The Greybus GPIO get direction response contains the status byte and
 one byte indicating whether the line in question is configured for
@@ -325,8 +323,8 @@ the line.
     0        which           1       Number          Controller-relative GPIO line number
     =======  ==============  ======  ==========      ===========================
 
-Greybus Direction Input Response
-""""""""""""""""""""""""""""""""
+Greybus GPIO Direction Input Response
+"""""""""""""""""""""""""""""""""""""
 
 The Greybus GPIO direction input response contains only the status
 byte.
@@ -359,8 +357,8 @@ line and its initial value.
 
 For the *value* field, 0 is low, and 1 is high.
 
-Greybus Direction Output Response
-"""""""""""""""""""""""""""""""""
+Greybus GPIO Direction Output Response
+""""""""""""""""""""""""""""""""""""""
 
 The Greybus GPIO direction output response contains only the status
 byte.
@@ -388,8 +386,8 @@ The Greybus GPIO get request supplies only the target line number.
     0        which           1       Number          Controller-relative GPIO line number
     =======  ==============  ======  ==========      ===========================
 
-Greybus Get Response
-""""""""""""""""""""
+Greybus GPIO Get Response
+"""""""""""""""""""""""""
 
 The Greybus GPIO get response contains the status byte, plus one byte
 indicating the value on the line in question.  If the value of the
@@ -429,8 +427,8 @@ value to be set.
 
 For the *value* field, 0 is low, and 1 is high.
 
-Greybus Set Response
-""""""""""""""""""""
+Greybus GPIO Set Response
+"""""""""""""""""""""""""
 
 The Greybus GPIO set response contains only the status byte.
 
@@ -460,8 +458,8 @@ period specified is 0, debounce is disabled.
     1        usec            2       Number          Debounce period (microseconds)
     =======  ==============  ======  ==========      ===========================
 
-Greybus Set Debounce Response
-"""""""""""""""""""""""""""""
+Greybus GPIO Set Debounce Response
+""""""""""""""""""""""""""""""""""
 
 The Greybus GPIO set debounce response contains only the status byte.
 
@@ -651,11 +649,11 @@ Conceptually, the operations in the Greybus SPI protocol are:
 
 .. c:function:: int get_mode(u16 *mode);
 
-    Returns a bitmask indicating the modes supported by the SPI master.
+    Returns a bit mask indicating the modes supported by the SPI master.
 
 .. c:function:: int get_flags(u16 *flags);
 
-    Returns a bitmask indicating the constraints of the SPI master.
+    Returns a bit mask indicating the constraints of the SPI master.
 
 .. c:function:: int get_bits_per_word(u32 *bpw);
 
@@ -715,7 +713,7 @@ The Greybus SPI protocol version response contains a status byte,
 followed by two one-byte values. If the value of the status byte is
 non-zero, any other bytes in the response shall be ignored. A Greybus
 SPI master adhering to the protocol specified herein shall report
-major version zero, minor version zero.
+major version zero, minor version one.
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -751,11 +749,11 @@ bits represent support or presence of certain modes in the SPI master.
 
 .. _spi-mode-bits:
 
-Greybus SPI Protocol Mode Bits
-""""""""""""""""""""""""""""""
+Greybus SPI Protocol Mode Bit Masks
+"""""""""""""""""""""""""""""""""""
 
-This table describes the defined mode bit values defined for Greybus SPI
-masters.
+This table describes the defined mode bit masks defined for Greybus
+SPI masters.
 
     ===============================  ======================================================  ========================
     Symbol                           Brief Description                                       Mask Value
@@ -797,11 +795,12 @@ whose bits represent constraints of the SPI master, if any.
 
 .. _spi-flags-bits:
 
-Greybus SPI Protocol Flags Bits
-"""""""""""""""""""""""""""""""
+Greybus SPI Protocol Flags Bit Masks
+""""""""""""""""""""""""""""""""""""
 
-This table describes the defined flags bit values defined for Greybus SPI
-masters.
+This table describes the defined flags bit masks defined for Greybus
+SPI masters.
+
 
     ===============================  ===================================================  ========================
     Symbol                           Brief Description                                    Mask Value
@@ -812,7 +811,7 @@ masters.
     |_|                              (All other values reserved)                          0x00000008..0x80000000
     ===============================  ===================================================  ========================
 
-Greybus SPI Protocol Bits per word mask Operation
+Greybus SPI Protocol Bits Per Word Mask Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus SPI bits per word mask operation allows the AP to determine the mask
@@ -825,17 +824,17 @@ Transfers should be rejected if following expression evaluates to zero:
 
         master->bits_per_word_mask & (1 << (tx_desc->bits_per_word - 1))
 
-Greybus SPI Protocol Bits per word mask Request
+Greybus SPI Protocol Bits Per Word Mask Request
 """""""""""""""""""""""""""""""""""""""""""""""
 
 The Greybus SPI bits per word mask request contains no data beyond the SPI
 message header.
 
-Greybus SPI Protocol Bits per word mask Response
+Greybus SPI Protocol Bits Per Word Mask Response
 """"""""""""""""""""""""""""""""""""""""""""""""
 
 The Greybus SPI bits per word mask response contains the status byte and a
-four-byte value whose bits represent bits per word mask of the SPI master.
+four-byte value whose bits represent the bits per word mask of the SPI master.
 
     =======  ==================   ======  ==========      ===========================
     Offset   Field                Size    Value           Description
@@ -844,24 +843,25 @@ four-byte value whose bits represent bits per word mask of the SPI master.
     1        bits per word mask   4       Number          Bits per word mask of the SPI master
     =======  ==================   ======  ==========      ===========================
 
-Greybus SPI Protocol Number of Chip selects Operation
+Greybus SPI Protocol Number of Chip Selects Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus SPI Number of Chip selects allows the AP to determine the maximum
-number of chip select pins supported by SPI master.
+The Greybus SPI number of chip selects operation allows the AP to
+determine the maximum number of chip select pins supported by SPI
+master.
 
-Greybus SPI Protocol Number of Chip selects Request
+Greybus SPI Protocol Number of Chip Selects Request
 """""""""""""""""""""""""""""""""""""""""""""""""""
 
 The Greybus SPI number of chip selects request contains no data beyond the SPI
 message header.
 
-Greybus SPI Protocol Number of Chip selects Response
+Greybus SPI Protocol Number of Chip Selects Response
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 
-The Greybus SPI number of chip selects response contains the status byte and a
-two-byte value whose bits represent maximum number of chip select pins supported
-by SPI master.
+The Greybus SPI number of chip selects response contains the status
+byte and the maximum number of chip select pins supported by the SPI
+master.
 
     =======  ======================   ======  ==========      ===========================
     Offset   Field                    Size    Value           Description
@@ -874,21 +874,21 @@ Greybus SPI Transfer Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus SPI transfer operation allows the AP to request the SPI master to
-perform an SPI transaction. The operation consists of a set of one or more
-gb_spi_transfer descriptor to be performed by the SPI master. The transfer
-operation request will include data for each gb_spi_transfer descriptor
-involving a write operation.  The data will be concatenated (without padding)
-and will be be sent immediately after the set of gb_spi_transfer descriptors.
-The transfer operation response will include data for each gb_spi_transfer
+perform a SPI transaction. The operation consists of a set of one or more
+gb_spi_transfer descriptors to be performed by the SPI master. The transfer
+operation request includes data for each gb_spi_transfer descriptor
+involving a write operation.  The data shall be concatenated without padding,
+and shall be sent immediately following the gb_spi_transfer descriptors.
+The transfer operation response includes data for each gb_spi_transfer
 descriptor involving a read operation, with all read data transferred
 contiguously.
 
 Greybus SPI Transfer Request
 """"""""""""""""""""""""""""
 
-The Greybus SPI transfer request contains slave's chip select pin, slave's mode,
-message descriptors count, an array of message descriptors, and a block of zero
-or more bytes of data to be written.
+The Greybus SPI transfer request contains the slave's chip select pin,
+its mode, a count of message descriptors, an array of message descriptors,
+and a block of zero or more bytes of data to be written.
 
 **Greybus SPI gb_spi_transfer descriptor**
 
@@ -950,7 +950,8 @@ manage a simple UART controller.  This protocol is very close to the
 CDC protocol for serial modems from the USB-IF specification, and
 consists of the operations defined in this section.
 
-The operations that can be performed on a Greybus UART controller are:
+The operations that can be performed on a Greybus UART controller are
+conceptually:
 
 .. c:function:: int get_version(u8 *major, u8 *minor);
 
@@ -998,7 +999,7 @@ Greybus UART Protocol Operations
 This table describes the known Greybus UART operation types and their
 values. A message type consists of an operation type combined with a
 flag (0x80) indicating whether the operation is a request or a
-response.  There are 127 valid operation type values.
+response.
 
     ===========================  =============  ==============
     UART Operation Type          Request Value  Response Value
@@ -1132,7 +1133,7 @@ line coding values to be set.
 
 .. _uart-stop-bit-format:
 
-Greybus UART Stop bit format
+Greybus UART Stop Bit Format
 """"""""""""""""""""""""""""
 
     ==============================  ====
@@ -1342,7 +1343,7 @@ Conceptually, the PWM protocol operations are:
 .. c:function:: int set_polarity(u8 which, u8 polarity);
 
     Requests the PWM controller configure an instance as normally
-    active or inversed.
+    active or inverted.
 
 .. c:function:: int enable(u8 which);
 
@@ -1427,11 +1428,10 @@ Greybus PWM Count Response
 """"""""""""""""""""""""""
 
 The Greybus PWM count response contains a status byte, followed by a
-1-byte value defining the number of PWM instances managed by the
-controller, minus 1. That is, a count value of 0 represents a single
+one-byte value defining the number of PWM instances managed by the
+controller, minus one. That is, a count value of zero represents a single
 PWM instance, while a (maximal) count value of 255 represents 256
-instances. The lines are numbered sequentially starting with 0 (i.e.,
-no gaps in the numbering).
+instances. The lines are numbered sequentially starting at zero.
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1501,16 +1501,16 @@ The Greybus PWM deactivate response contains only the status byte.
     0        status          1       Number          :ref:`greybus-protocol-error-codes`
     =======  ==============  ======  ==========      ===========================
 
-Greybus PWM Config Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus PWM Configure Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus PWM config operation requests the PWM controller configure
-a PWM instance with the given duty cycle and period.
+The Greybus PWM configure operation requests the PWM controller
+configure a PWM instance with the given duty cycle and period.
 
-Greybus PWM Config Request
-""""""""""""""""""""""""""
+Greybus PWM Configure Request
+"""""""""""""""""""""""""""""
 
-The Greybus PWM Config request supplies the target instance number,
+The Greybus PWM configure request supplies the target instance number,
 duty cycle, and period of the cycle.
 
     =======  ==============  ======  ==========      ===========================
@@ -1521,10 +1521,10 @@ duty cycle, and period of the cycle.
     5        period          4       Number          Period (in nanoseconds)
     =======  ==============  ======  ==========      ===========================
 
-Greybus PWM Config Response
-"""""""""""""""""""""""""""
+Greybus PWM Configure Response
+""""""""""""""""""""""""""""""
 
-The Greybus PWM Config response contains only the status byte.
+The Greybus PWM configure response contains only the status byte.
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1542,7 +1542,7 @@ Greybus PWM Polarity Request
 """"""""""""""""""""""""""""
 
 The Greybus PWM Polarity request supplies the target instance number
-and polarity (normal or inversed). The polarity may not be configured
+and polarity (normal or inverted). The polarity may not be configured
 when a PWM instance is enabled and will respond with a busy failure.
 
     =======  ==============  ======  ==========      ===========================
@@ -1555,7 +1555,7 @@ when a PWM instance is enabled and will respond with a busy failure.
 Greybus PWM Polarity Response
 """""""""""""""""""""""""""""
 
-The Greybus PWM Config response contains only the status byte.
+The Greybus PWM polarity response contains only the status byte.
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -2332,17 +2332,17 @@ See :ref:`i2s-audio-data-attributes` for further details.
     =======  ====================  =====  =========  ==============================
 
 The `ll_wclk_change_edge`, `ll_data_tx_edge`, and `ll_data_rx_edge` fields
-specifies which BCLK edge the respective signal may change on.
+specify which BCLK edge the respective signal may change on.
 The `ll_data_offset` field specifies how may BCLK cycles there are between
 WCLK changing and the first data bit of the next channel being presented
 or latched.  This is referred to as the `offset`.
 
 .. _i2s-byte-order-bits:
 
-Greybus I2S Byte-Order Bits
-"""""""""""""""""""""""""""
+Greybus I2S Byte-Order Bit Masks
+""""""""""""""""""""""""""""""""
 
-This table defines the bit fields which specify the set of supported
+This table defines the bit masks which specify the set of supported
 I2S byte orders.
 These includes a *Not Applicable (NA)* value used
 for single-byte audio data.
@@ -2357,10 +2357,10 @@ for single-byte audio data.
 
 .. _i2s-spatial-location-bits:
 
-Greybus I2S Spatial Location Bits
-"""""""""""""""""""""""""""""""""
+Greybus I2S Spatial Location Bit Masks
+""""""""""""""""""""""""""""""""""""""
 
-This table defines the bit fields which specify the set of supported
+This table defines the bit masks which specify the set of supported
 I2S Spatial Locations.
 These values are defined in Section 4.1 of the
 *USB Device Class Definition for Audio Devices* document which is part
@@ -2402,10 +2402,10 @@ of the `USB Audio Specification Version 2.0
 
 .. _i2s-protocol-bits:
 
-Greybus I2S Protocol Bits
-"""""""""""""""""""""""""
+Greybus I2S Protocol Bit Masks
+""""""""""""""""""""""""""""""
 
-This table defines the bit fields which specify the set of supported
+This table defines the bit masks which specify the set of supported
 I2S Low-level Protocols.
 See :ref:`i2s-low-level-attributes` for further details.
 
@@ -2419,10 +2419,10 @@ See :ref:`i2s-low-level-attributes` for further details.
 
 .. _i2s-role-bits:
 
-Greybus I2S Role Bits
-"""""""""""""""""""""
+Greybus I2S Role Bit Masks
+""""""""""""""""""""""""""
 
-This table defines the bit fields which specify the set of supported
+This table defines the bit masks which specify the set of supported
 I2S clock roles.
 See :ref:`i2s-low-level-attributes` for further details.
 
@@ -2435,10 +2435,10 @@ See :ref:`i2s-low-level-attributes` for further details.
 
 .. _i2s-polarity-bits:
 
-Greybus I2S Polarity Bits
-"""""""""""""""""""""""""
+Greybus I2S Polarity Bit Masks
+""""""""""""""""""""""""""""""
 
-This table defines the bit fields which specify the set of supported
+This table defines the bit masks which specify the set of supported
 I2S clock polarities.
 See :ref:`i2s-low-level-attributes` for further details.
 
@@ -2451,10 +2451,10 @@ See :ref:`i2s-low-level-attributes` for further details.
 
 .. _i2s-clock-edge-bits:
 
-Greybus I2S Clock Edge Bits
-"""""""""""""""""""""""""""
+Greybus I2S Clock Edge Bit Masks
+""""""""""""""""""""""""""""""""
 
-This table defines the bit fields which specify the set of supported
+This table defines the bit masks which specify the set of supported
 I2S clock edges.
 See :ref:`i2s-low-level-attributes` for further details.
 
@@ -2943,7 +2943,7 @@ Greybus I2C Protocol Version Response
 """""""""""""""""""""""""""""""""""""
 
 The Greybus I2C protocol version response contains a status byte,
-followed by two 1-byte values. If the value of the status byte is
+followed by two one-byte values. If the value of the status byte is
 non-zero, any other bytes in the response shall be ignored. A Greybus
 I2C adapter adhering to the protocol specified herein shall report
 major version 0, minor version 1.
@@ -2972,7 +2972,7 @@ Greybus I2C Functionality Response
 """"""""""""""""""""""""""""""""""
 
 The Greybus I2C functionality response contains the status byte and a
-4-byte value whose bits represent support or presence of certain
+four-byte value whose bits represent support or presence of certain
 functionality in the I2C adapter.
 
     =======  ==============  ======  ==========      ===========================
@@ -2984,10 +2984,10 @@ functionality in the I2C adapter.
 
 .. _i2c-functionality-bits:
 
-Greybus I2C Functionality Bits
-""""""""""""""""""""""""""""""
+Greybus I2C Functionality Bit Masks
+"""""""""""""""""""""""""""""""""""
 
-This table describes the defined functionality bit values defined for
+This table describes the defined functionality bit masks defined for
 Greybus I2C adapters. These include a set of bits describing SMBus
 capabilities.  These values are taken directly from the <linux/i2c.h>
 header file.
@@ -3028,8 +3028,8 @@ Greybus I2C Set Timeout Request
 
 The Greybus I2C set timeout request contains a 16-bit value
 representing the timeout to be used by an I2C adapter, expressed in
-milliseconds. If the value supplied is 0, an I2C adapter-defined shall
-be used.
+milliseconds. If the value supplied is zero, an I2C adapter-defined value
+shall be used.
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -3057,7 +3057,7 @@ of times the I2C adapter retries I2C messages.
 Greybus I2C Set Retries Request
 """""""""""""""""""""""""""""""
 
-The Greybus I2C set timeout request contains an 8-bit value
+The Greybus I2C set timeout request contains an eight-bit value
 representing the number of retries to be used by an I2C adapter.
 
     =======  ==============  ======  ==========      ===========================
@@ -3094,7 +3094,7 @@ Greybus I2C Transfer Request
 """"""""""""""""""""""""""""
 
 The Greybus I2C transfer request contains a message count, an array of
-message descriptors, and a block of 0 or more bytes of data to be
+message descriptors, and a block of zero or more bytes of data to be
 written.
 
 **Greybus I2C Op**
@@ -3111,10 +3111,9 @@ A Greybus I2C op describes a segment of an I2C transaction.
 
 .. _i2c-op-flag-bits:
 
-Greybus I2C Op Flag Bits
-""""""""""""""""""""""""
+**Greybus I2C Op Flag Bit Masks**
 
-This table describes the defined flag bit values defined for Greybus
+This table describes the defined flag bit masks defined for Greybus
 I2C ops. They are taken directly from the <linux/i2c.h> header file.
 
     ==============  =========================================       ===============
