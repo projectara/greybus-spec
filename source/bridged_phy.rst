@@ -113,7 +113,7 @@ matching response from the GPIO controller, also taking the form of a
 GPIO controller message.  The request and response messages for each
 GPIO operation are defined below.
 
-Table :num:`table-gpio-operation-type` describes the Greybus GPIO
+Table :num:`table-gpio-operation-type` defines the Greybus GPIO
 protocol operation types and their values. Both the request type and
 response type values are shown.
 
@@ -162,15 +162,15 @@ Greybus GPIO Protocol Version Response
 """"""""""""""""""""""""""""""""""""""
 
 The Greybus GPIO protocol version response contains a status byte,
-followed by two 1-byte values as described in table
-:num:`table-gpio-protocol-version`. If the value of the status byte is
-non-zero, any other bytes in the response shall be ignored. A Greybus
-GPIO controller adhering to the protocol specified herein shall report
-major version 0, minor version 1.
+followed by two one-byte values as defined in table
+:num:`table-gpio-protocol-version-response`. If the value of the
+status byte is non-zero, any other bytes in the response shall be
+ignored. A Greybus GPIO controller adhering to the protocol specified
+herein shall report major version 0, minor version 1.
 
 .. figtable::
     :nofig:
-    :label: table-gpio-protocol-version
+    :label: table-gpio-protocol-version-response
     :caption: GPIO Protocol Version Response
     :spec: l l c c l
 
@@ -197,11 +197,18 @@ Greybus GPIO message header.
 Greybus GPIO Line Count Response
 """"""""""""""""""""""""""""""""
 
-The Greybus GPIO line count response contains a status byte, followed
-by a 1-byte value defining the number of lines managed by the
-controller, minus one. That is, a count value of zero represents a single
-GPIO line, while a (maximal) count value of 255 represents 256
-lines. The lines are numbered sequentially starting with zero.
+Table :num:`table-gpio-line-count-response` describes the Greybus GPIO
+line count response. The response contains a status byte, followed by
+a one-byte value defining the number of lines managed by the
+controller, minus one. That is, a count value of zero represents a
+single GPIO line, while a (maximal) count value of 255 represents 256
+lines. GPIOs shall be numbered sequentially starting at zero.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-line-count-response
+    :caption: GPIO Protocol Line Count Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -221,8 +228,15 @@ clock signals.
 Greybus GPIO Activate Request
 """""""""""""""""""""""""""""
 
-The Greybus GPIO activate request supplies only the number of the line
-to be activated.
+Table :num:`table-gpio-activate-request` defines the Greybus GPIO
+activate request. The request supplies only the number of the line to
+be activated.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-activate-request
+    :caption: GPIO Protocol Activate Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -233,7 +247,14 @@ to be activated.
 Greybus GPIO Activate Response
 """"""""""""""""""""""""""""""
 
-The Greybus GPIO activate response contains only the status byte.
+Table :num:`table-gpio-activate-response` defines the Greybus GPIO
+activate response. The response contains only the status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-activate-response
+    :caption: GPIO Protocol Activate Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -251,8 +272,15 @@ deactivated.
 Greybus GPIO Deactivate Request
 """""""""""""""""""""""""""""""
 
-The Greybus GPIO deactivate request supplies only the number of the
-line to be deactivated.
+Table :num:`table-gpio-deactivate-request` defines the Greybus GPIO
+deactivate request. The request supplies only the number of the line
+to be deactivated.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-deactivate-request
+    :caption: GPIO Protocol Deactivate Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -263,7 +291,14 @@ line to be deactivated.
 Greybus Deactivate Response
 """""""""""""""""""""""""""
 
-The Greybus GPIO deactivate response contains only the status byte.
+Table :num:`table-gpio-deactivate-response` defines the Greybus GPIO
+deactivate response. The response contains only the status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-deactivate-response
+    :caption: GPIO Protocol Deactivate Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -281,7 +316,14 @@ configured.
 Greybus GPIO Get Direction Request
 """"""""""""""""""""""""""""""""""
 
-The Greybus GPIO get direction request supplies only the target line number.
+Table :num:`table-gpio-get-direction-request` defines the Greybus GPIO
+get direction request. The request supplies only the target line number.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-get-direction-request
+    :caption: GPIO Protocol Get Direction Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -292,10 +334,17 @@ The Greybus GPIO get direction request supplies only the target line number.
 Greybus GPIO Get Direction Response
 """""""""""""""""""""""""""""""""""
 
-The Greybus GPIO get direction response contains the status byte and
+Table :num:`table-gpio-get-direction-response` defines the Greybus
+GPIO get direction response. The response contains the status byte and
 one byte indicating whether the line in question is configured for
 input or output. If the value of the status byte is non-zero, the
 direction byte shall be ignored.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-get-direction-response
+    :caption: GPIO Protocol Get Direction Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -315,8 +364,15 @@ controller to configure a line to be used for input.
 Greybus GPIO Direction Input Request
 """"""""""""""""""""""""""""""""""""
 
-The Greybus GPIO direction input request supplies only the number of
+Table :num:`table-gpio-direction-input-request` defines the Greybus
+GPIO direction input request. The request supplies only the number of
 the line.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-direction-input-request
+    :caption: GPIO Protocol Direction Input Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -327,8 +383,14 @@ the line.
 Greybus GPIO Direction Input Response
 """""""""""""""""""""""""""""""""""""
 
-The Greybus GPIO direction input response contains only the status
-byte.
+Table :num:`table-gpio-direction-input-response` defines Greybus GPIO
+direction input response. The response contains only the status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-direction-input-response
+    :caption: GPIO Protocol Direction Input Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -346,8 +408,15 @@ its initial value.
 Greybus GPIO Direction Output Request
 """""""""""""""""""""""""""""""""""""
 
-The Greybus GPIO direction output request supplies the number of the
+Table :num:`table-gpio-direction-output-request` defines the Greybus
+GPIO direction output request. The request supplies the number of the
 line and its initial value.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-direction-output-request
+    :caption: GPIO Protocol Direction Output Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -361,8 +430,15 @@ For the *value* field, 0 is low, and 1 is high.
 Greybus GPIO Direction Output Response
 """"""""""""""""""""""""""""""""""""""
 
-The Greybus GPIO direction output response contains only the status
+Table :num:`table-gpio-direction-output-response` defines the Greybus
+GPIO direction output response. The response contains only the status
 byte.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-direction-output-response
+    :caption: GPIO Protocol Direction Output Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -379,7 +455,14 @@ with the current value (high or low) on a line.
 Greybus GPIO Get Request
 """"""""""""""""""""""""
 
-The Greybus GPIO get request supplies only the target line number.
+Table :num:`table-gpio-get-request` defines the Greybus GPIO get
+request. The request supplies only the target line number.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-get-request
+    :caption: GPIO Protocol Get Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -390,9 +473,16 @@ The Greybus GPIO get request supplies only the target line number.
 Greybus GPIO Get Response
 """""""""""""""""""""""""
 
-The Greybus GPIO get response contains the status byte, plus one byte
+Table :num:`table-gpio-get-response` defines the Greybus GPIO get
+response. The response contains the status byte, plus one byte
 indicating the value on the line in question.  If the value of the
 status byte is non-zero, the value byte shall be ignored.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-get-response
+    :caption: GPIO Protocol Get Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -413,8 +503,15 @@ value.
 Greybus GPIO Set Request
 """"""""""""""""""""""""
 
-The Greybus GPIO set request supplies the number of the line and the
-value to be set.
+Table :num:`table-gpio-set-request` defines the Greybus GPIO set
+request. The request supplies the number of the line and the value to
+be set.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-set-request
+    :caption: GPIO Protocol Set Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -431,7 +528,14 @@ For the *value* field, 0 is low, and 1 is high.
 Greybus GPIO Set Response
 """""""""""""""""""""""""
 
-The Greybus GPIO set response contains only the status byte.
+Table :num:`table-gpio-set-response` defines the Greybus GPIO set
+response. The response contains only the status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-set-response
+    :caption: GPIO Protocol Set Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -448,9 +552,16 @@ to set the debounce delay configured to be used for a line.
 Greybus GPIO Set Debounce Request
 """""""""""""""""""""""""""""""""
 
-The Greybus GPIO set debounce request supplies the number of the line
-and the time period (in microseconds) to be used for the line.  If the
+Table :num:`table-gpio-set-debounce-request` defines the Greybus GPIO
+set debounce request. The request supplies the number of the line and
+the time period (in microseconds) to be used for the line.  If the
 period specified is 0, debounce is disabled.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-set-debounce-request
+    :caption: GPIO Protocol Set Debounce Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -462,7 +573,14 @@ period specified is 0, debounce is disabled.
 Greybus GPIO Set Debounce Response
 """"""""""""""""""""""""""""""""""
 
-The Greybus GPIO set debounce response contains only the status byte.
+Table :num:`table-gpio-set-debounce-response` defines the Greybus GPIO
+set debounce response. The response contains only the status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-set-debounce-response
+    :caption: GPIO Protocol Set Debounce Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -678,10 +796,16 @@ returned in a response message from the SPI master.
 Greybus SPI Message Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This table describes the Greybus SPI operation types and their
-values. A message type consists of an operation type combined with a
-flag (0x80) indicating whether the operation is a request or a
-response.
+Table :num:`table-spi-operation-type` defines the Greybus SPI
+operation types and their values. A message type consists of an
+operation type combined with a flag (0x80) indicating whether the
+operation is a request or a response.
+
+.. figtable::
+    :nofig:
+    :label: table-spi-operation-type
+    :caption: SPI Protocol Operation Types
+    :spec: l l l
 
     ===========================  =============  ==============
     SPI Operation Type           Request Value  Response Value
@@ -712,11 +836,18 @@ Greybus SPI message header.
 Greybus SPI Protocol Version Response
 """""""""""""""""""""""""""""""""""""
 
-The Greybus SPI protocol version response contains a status byte,
+Table :num:`table-spi-protocol-version-response` defines the Greybus
+SPI protocol version response. The response contains a status byte,
 followed by two one-byte values. If the value of the status byte is
 non-zero, any other bytes in the response shall be ignored. A Greybus
 SPI master adhering to the protocol specified herein shall report
 major version zero, minor version one.
+
+.. figtable::
+    :nofig:
+    :label: table-spi-protocol-version-response
+    :caption: SPI Protocol Version Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -740,8 +871,16 @@ The Greybus SPI mode request contains no data beyond the SPI message header.
 Greybus SPI Protocol Mode Response
 """"""""""""""""""""""""""""""""""
 
-The Greybus SPI mode response contains the status byte and a two-byte value whose
-bits represent support or presence of certain modes in the SPI master.
+Table :num:`table-spi-mode-response` defines the Greybus SPI mode
+response. The response contains the status byte and a two-byte value
+whose bits represent support or presence of certain modes in the SPI
+master.
+
+.. figtable::
+    :nofig:
+    :label: table-spi-mode-response
+    :caption: SPI Protocol Mode Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -755,8 +894,14 @@ bits represent support or presence of certain modes in the SPI master.
 Greybus SPI Protocol Mode Bit Masks
 """""""""""""""""""""""""""""""""""
 
-This table describes the defined mode bit masks defined for Greybus
-SPI masters.
+Table :num:`table-spi-mode` defines the mode bit masks for Greybus SPI
+masters.
+
+.. figtable::
+    :nofig:
+    :label: table-spi-mode
+    :caption: SPI Protocol Mode Bit Masks
+    :spec: l l l
 
     ===============================  ======================================================  ========================
     Symbol                           Brief Description                                       Mask Value
@@ -786,8 +931,15 @@ The Greybus SPI flags request contains no data beyond the SPI message header.
 Greybus SPI Protocol Flags Response
 """""""""""""""""""""""""""""""""""
 
-The Greybus SPI flags response contains the status byte and a two-byte value
+Table :num:`table-spi-flags-response` defines the Greybus SPI flags
+response. The response contains the status byte and a two-byte value
 whose bits represent constraints of the SPI master, if any.
+
+.. figtable::
+    :nofig:
+    :label: table-spi-flags-response
+    :caption: SPI Protocol Flags Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -801,9 +953,14 @@ whose bits represent constraints of the SPI master, if any.
 Greybus SPI Protocol Flags Bit Masks
 """"""""""""""""""""""""""""""""""""
 
-This table describes the defined flags bit masks defined for Greybus
-SPI masters.
+Table :num:`table-spi-flag` describes the defined flags bit masks
+defined for Greybus SPI masters.
 
+.. figtable::
+    :nofig:
+    :label: table-spi-flag
+    :caption: SPI Protocol Flags
+    :spec: l l l
 
     ===============================  ===================================================  ========================
     Symbol                           Brief Description                                    Mask Value
@@ -836,8 +993,16 @@ message header.
 Greybus SPI Protocol Bits Per Word Mask Response
 """"""""""""""""""""""""""""""""""""""""""""""""
 
-The Greybus SPI bits per word mask response contains the status byte and a
-four-byte value whose bits represent the bits per word mask of the SPI master.
+Table :num:`table-spi-bits-per-word-response` defines the Greybus SPI
+bits per word mask response. The response contains the status byte and
+a four-byte value whose bits represent the bits per word mask of the
+SPI master.
+
+.. figtable::
+    :nofig:
+    :label: table-spi-bits-per-word-response
+    :caption: SPI Protocol Bits Per Word Mask Response
+    :spec: l l c c l
 
     =======  ==================   ======  ==========      ===========================
     Offset   Field                Size    Value           Description
@@ -862,9 +1027,16 @@ message header.
 Greybus SPI Protocol Number of Chip Selects Response
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 
-The Greybus SPI number of chip selects response contains the status
-byte and the maximum number of chip select pins supported by the SPI
-master.
+Table :num:`table-spi-number-of-chip-selects-response` defines the
+Greybus SPI number of chip selects response. The response contains the
+status byte and the maximum number of chip select pins supported by
+the SPI master.
+
+.. figtable::
+    :nofig:
+    :label: table-spi-number-of-chip-selects-response
+    :caption: SPI Protocol Number of Chip Selects Response
+    :spec: l l c c l
 
     =======  ======================   ======  ==========      ===========================
     Offset   Field                    Size    Value           Description
@@ -898,8 +1070,15 @@ and a block of zero or more bytes of data to be written.
 
 **Greybus SPI gb_spi_transfer descriptor**
 
-A Greybus SPI gb_spi_transfer descriptor describes the configurations of a
-segment of an SPI transaction.
+Table :num:`table-spi-transfer-descriptor` defines the Greybus SPI
+gb_spi_transfer descriptor. This describes the configuration of a segment
+of a SPI transaction.
+
+.. figtable::
+    :nofig:
+    :label: table-spi-transfer-descriptor
+    :caption: SPI Protocol gb_spi_transfer descriptor
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -911,8 +1090,14 @@ segment of an SPI transaction.
     11       bits_per_word   1       Number          Select bits per word for this trnasfer
     =======  ==============  ======  ==========      ===========================
 
+Table :num:`table-spi-transfer-request` defines the Greybus SPI
+transfer request.
 
-Here is the structure of a Greybus SPI transfer request.
+.. figtable::
+    :nofig:
+    :label: table-spi-transfer-request
+    :caption: SPI Protocol Transfer Request
+    :spec: l l c c l
 
     ==========     ==============  ======    ======================    ===========================
     Offset         Field           Size      Value                     Description
@@ -934,9 +1119,16 @@ inserted between data sent for distinct SPI gb_spi_transfer descriptors.
 Greybus SPI Transfer Response
 """""""""""""""""""""""""""""
 
-The Greybus SPI transfer response contains a status byte followed by the data
-read as a result of messages.  If the value of the status byte is non-zero, the
-data that follows (if any) shall be ignored.
+Table :num:`table-spi-transfer-response` defines the Greybus SPI
+transfer response. The response contains a status byte followed by
+the data read as a result of the request.  If the value of the status
+byte is non-zero, the data that follows (if any) shall be ignored.
+
+.. figtable::
+    :nofig:
+    :label: table-spi-transfer-response
+    :caption: SPI Protocol Transfer Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ======================================
     Offset   Field           Size    Value           Description
@@ -1002,10 +1194,16 @@ contained within a Greybus module.
 Greybus UART Protocol Operations
 """"""""""""""""""""""""""""""""
 
-This table describes the known Greybus UART operation types and their
-values. A message type consists of an operation type combined with a
-flag (0x80) indicating whether the operation is a request or a
-response.
+Table :num:`table-uart-operation-type` defines the Greybus
+UART operation types and their values. A message type consists of an
+operation type combined with a flag (0x80) indicating whether the
+operation is a request or a response.
+
+.. figtable::
+    :nofig:
+    :label: table-uart-operation-type
+    :caption: UART Operation Types
+    :spec: l l l
 
     ===========================  =============  ==============
     UART Operation Type          Request Value  Response Value
@@ -1036,11 +1234,18 @@ Greybus UART message header.
 Greybus UART Protocol Version Response
 """"""""""""""""""""""""""""""""""""""
 
-The Greybus UART protocol version response contains a status byte,
-followed by two 1-byte values. If the value of the status byte is
-non-zero, any other bytes in the response shall be ignored. A Greybus
-UART device adhering to the protocol specified herein shall report
-major version |gb-major|, minor version |gb-minor|.
+Table :num:`table-uart-protocol-version-response` defines the
+Greybus UART protocol version response. The response contains a status
+byte, followed by two one-byte values. If the value of the status byte
+is non-zero, any other bytes in the response shall be ignored. A
+Greybus UART device adhering to the protocol specified herein shall
+report major version |gb-major|, minor version |gb-minor|.
+
+.. figtable::
+    :nofig:
+    :label: table-uart-protocol-version-response
+    :caption: UART Protocol Version Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1060,9 +1265,16 @@ transmitted may optionally be provided with this request.
 Greybus UART Send Data Request
 """"""""""""""""""""""""""""""
 
-The Greybus UART start transmission request shall request the UART
-device begin transmitting.  The request optionally contains one or
-more characters to to be transmitted.
+Table :num:`table-uart-send-data-request` defines the Greybus UART
+send data request. This requests that the UART device begin
+transmitting.  The request optionally contains one or more characters
+to to be transmitted.
+
+.. figtable::
+    :nofig:
+    :label: table-uart-send-data-request
+    :caption: UART Protocol Send Data Request
+    :spec: l l c c l
 
     =======  ==============  ======  ===========     ===========================
     Offset   Field           Size    Value           Description
@@ -1074,8 +1286,14 @@ more characters to to be transmitted.
 Greybus UART Send Data Response
 """""""""""""""""""""""""""""""
 
-The Greybus UART start transmission response contains only the status
-byte.
+Table :num:`table-uart-send-data-response` defines the Greybus UART
+send data response. The response contains only the status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-uart-send-data-response
+    :caption: UART Protocol Send Data Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1094,8 +1312,15 @@ UART.
 Greybus UART Receive Data Request
 """""""""""""""""""""""""""""""""
 
-The Greybus UART receive data request contains the size of the data to
-be received, and the data bytes to be received.
+Table :num:`table-uart-receive-data-request` defines the Greybus UART
+receive data request. The request contains the size of the data to be
+received, and the data bytes to be received.
+
+.. figtable::
+    :nofig:
+    :label: table-uart-receive-data-request
+    :caption: UART Protocol Receive Data Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1107,7 +1332,14 @@ be received, and the data bytes to be received.
 Greybus UART Received Data Response
 """""""""""""""""""""""""""""""""""
 
-The Greybus UART event response contains only the status byte.
+Table :num:`table-uart-received-data-response` defines the Greybus
+UART event response. The response contains only the status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-uart-received-data-response
+    :caption: UART Protocol Received Data Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1124,8 +1356,15 @@ the UART to a specific set of line coding values.
 Greybus UART Set Line Coding State Request
 """"""""""""""""""""""""""""""""""""""""""
 
-The Greybus UART set line coding state request contains the specific
+Table :num:`table-uart-set-line-coding-request` defines the Greybus
+UART set line coding state request. The request contains the specific
 line coding values to be set.
+
+.. figtable::
+    :nofig:
+    :label: table-uart-set-line-coding-request
+    :caption: UART Protocol Set Line Coding State Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1141,6 +1380,15 @@ line coding values to be set.
 Greybus UART Stop Bit Format
 """"""""""""""""""""""""""""
 
+Table :num:`table-uart-stop-bit-format` defines the Greybus UART stop
+bit formats.
+
+.. figtable::
+    :nofig:
+    :label: table-uart-stop-bit-format
+    :caption: UART Protocol Stop Bit Format
+    :spec: l l
+
     ==============================  ====
     1 Stop Bit                      0x00
     1.5 Stop Bits                   0x01
@@ -1152,6 +1400,15 @@ Greybus UART Stop Bit Format
 
 Greybus UART Parity format
 """"""""""""""""""""""""""
+
+Table :num:`table-uart-parity-format` defines the Greybus UART parity
+formats.
+
+.. figtable::
+    :nofig:
+    :label: table-uart-parity-format
+    :caption: UART Protocol Parity Format
+    :spec: l l
 
     ==============================  ====
     No Parity                       0x00
@@ -1165,8 +1422,15 @@ Greybus UART Parity format
 Greybus UART Set Line Coding State Response
 """""""""""""""""""""""""""""""""""""""""""
 
-The Greybus UART set line coding state response contains only a status
-byte.
+Table :num:`table-uart-set-line-coding-response` defines the Greybus
+UART set line coding state response. The response contains only a
+status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-uart-set-line-coding-response
+    :caption: UART Protocol Set Line Coding State Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1183,8 +1447,15 @@ UART device set "outbound" UART status values.
 Greybus UART Set Control Line State Request
 """""""""""""""""""""""""""""""""""""""""""
 
-The Greybus UART set control line state request contains a bit mask of
-modem status flags to set.
+Table :num:`table-uart-set-control-line-state-request` defines the
+Greybus UART set control line state request. The request contains a
+bit mask of modem status flags to set.
+
+.. figtable::
+    :nofig:
+    :label: table-uart-set-control-line-state-request
+    :caption: UART Protocol Set Control Line State Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1197,9 +1468,16 @@ modem status flags to set.
 Greybus UART Modem Status Flags
 """""""""""""""""""""""""""""""
 
-This table describes the values supplied as flag values for the
-Greybus UART set control line state request. Any combination of these
-values may be supplied in a single request.
+Table :num:`table-uart-modem-status-flags` defines the values supplied
+as flag values for the Greybus UART set control line state
+request. Any combination of these values may be supplied in a single
+request.
+
+.. figtable::
+    :nofig:
+    :label: table-uart-modem-status-flags
+    :caption: UART Modem Status Flags
+    :spec: l l l
 
     ============================    ==============  ===================
     Flag                            Value           Description
@@ -1212,8 +1490,14 @@ values may be supplied in a single request.
 Greybus UART Set Control Line State Response
 """"""""""""""""""""""""""""""""""""""""""""
 
-The Greybus UART set control line state response contains only a
-status byte.
+Table :num:`table-uart-set-control-line-state-response` Greybus UART
+set control line state response contains only a status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-uart-set-control-line-state-response
+    :caption: UART Protocol Set Control Line State Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1230,9 +1514,15 @@ set the break condition on its transmit line to be either on or off.
 Greybus UART Break Control Request
 """"""""""""""""""""""""""""""""""
 
-The Greybus UART break control request supplies the duration of the
-break condition that should be generated by the UART device transmit
-line.
+Table :num:`table-uart-break-control-request` defines the Greybus UART
+break control request. The requestq supplies the duration of the break
+condition that should be generated by the UART device transmit line.
+
+.. figtable::
+    :nofig:
+    :label: table-uart-break-control-request
+    :caption: UART Protocol Break Control Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1243,7 +1533,15 @@ line.
 Greybus UART Break Control Response
 """""""""""""""""""""""""""""""""""
 
-The Greybus UART break control response contains only the status byte.
+Table :num:`table-uart-break-control-response` defines the Greybus
+UART break control response. The response contains only the status
+byte.
+
+.. figtable::
+    :nofig:
+    :label: table-uart-break-control-response
+    :caption: UART Protocol Break Control Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1262,8 +1560,15 @@ or that there is an error with the UART.
 Greybus UART Serial State Request
 """""""""""""""""""""""""""""""""
 
-The Greybus UART serial state request contains the control value that
-the UART is currently in.
+Table :num:`table-uart-serial-state-request` defines the Greybus UART
+serial state request. The request contains the control value that the
+UART is currently in.
+
+.. figtable::
+    :nofig:
+    :label: table-uart-serial-state-request
+    :caption: UART Protocol Serial State Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1277,8 +1582,14 @@ the UART is currently in.
 Greybus UART Control Flags
 """"""""""""""""""""""""""
 
-The following table defines the flag values used for a Greybus UART
-Serial State request.
+Table :num:`table-uart-control-flags` defines the flag values used for
+a Greybus UART serial state request.
+
+.. figtable::
+    :nofig:
+    :label: table-uart-control-flags
+    :caption: UART Control Flags
+    :spec: l l l
 
     ============================    ==============  ===================
     Flag                            Value           Description
@@ -1296,7 +1607,14 @@ Serial State request.
 Greybus UART Serial State Response
 """"""""""""""""""""""""""""""""""
 
-The Greybus UART serial state response contains only the status byte.
+Table :num:`table-uart-serial-state-response` defines the Greybus UART
+serial state response. The response contains only the status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-uart-serial-state-response
+    :caption: UART Protocol Serial State Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1371,6 +1689,12 @@ The following table describes the Greybus PWM protocol operation types
 and their values. Both the request type and response type values are
 shown.
 
+.. figtable::
+    :nofig:
+    :label: table-gpio-operation-type
+    :caption: GPIO Operation Types
+    :spec: l l l
+
     ===========================  =============  ==============
     PWM Operation Type           Request Value  Response Value
     ===========================  =============  ==============
@@ -1401,11 +1725,18 @@ Greybus PWM message header.
 Greybus PWM Protocol Version Response
 """""""""""""""""""""""""""""""""""""
 
-The Greybus PWM protocol version response contains a status byte,
-followed by two 1-byte values. If the value of the status byte is
+Table :num:`table-pwm-protocol-version-response` defines the Greybus
+PWM protocol version response. The response contains a status byte,
+followed by two one-byte values. If the value of the status byte is
 non-zero, any other bytes in the response shall be ignored. A Greybus
 PWM controller adhering to the protocol specified herein shall report
-major version 0, minor version 1.
+major version |gb-major|, minor version |gb-minor|.
+
+.. figtable::
+    :nofig:
+    :label: table-pwm-protocol-version-response
+    :caption: PWM Protocol Version Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1430,11 +1761,18 @@ message header.
 Greybus PWM Count Response
 """"""""""""""""""""""""""
 
-The Greybus PWM count response contains a status byte, followed by a
-one-byte value defining the number of PWM instances managed by the
-controller, minus one. That is, a count value of zero represents a single
-PWM instance, while a (maximal) count value of 255 represents 256
+Table :num:`table-pwm-count-response` defines the Greybus PWM count
+response. The response contains a status byte, followed by a one-byte
+value defining the number of PWM instances managed by the controller,
+minus one. That is, a count value of zero represents a single PWM
+instance, while a (maximal) count value of 255 represents 256
 instances. The lines are numbered sequentially starting at zero.
+
+.. figtable::
+    :nofig:
+    :label: table-pwm-count-response
+    :caption: PWM Protocol Count Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1454,8 +1792,15 @@ power and clock signals.
 Greybus PWM Activate Request
 """"""""""""""""""""""""""""
 
-The Greybus PWM activate request supplies only the number of the
-instance to be activated.
+Table :num:`table-pwm-activate-request` defines the Greybus PWM
+activate request. The request supplies only the number of the instance
+to be activated.
+
+.. figtable::
+    :nofig:
+    :label: table-pwm-activate-request
+    :caption: PWM Protocol Activate Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1466,7 +1811,14 @@ instance to be activated.
 Greybus PWM Activate Response
 """""""""""""""""""""""""""""
 
-The Greybus PWM activate response contains only the status byte.
+Table :num:`table-pwm-activate-response` defines the Greybus PWM
+activate response. The response contains only the status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-pwm-activate-response
+    :caption: PWM Protocol Activate Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1484,8 +1836,15 @@ and can be deactivated.
 Greybus PWM Deactivate Request
 """"""""""""""""""""""""""""""
 
-The Greybus PWM deactivate request supplies only the number of the
+Table :num:`table-pwm-deactivate-request` defines the Greybus PWM
+deactivate request. The request supplies only the number of the
 instance to be deactivated.
+
+.. figtable::
+    :nofig:
+    :label: table-pwm-deactivate-request
+    :caption: PWM Protocol Deactivate Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1496,7 +1855,14 @@ instance to be deactivated.
 Greybus PWM Deactivate Response
 """""""""""""""""""""""""""""""
 
-The Greybus PWM deactivate response contains only the status byte.
+Table :num:`table-pwm-deactivate-response` defines the Greybus PWM
+deactivate response. The response contains only the status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-pwm-deactivate-response
+    :caption: PWM Protocol Deactivate Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1513,8 +1879,15 @@ configure a PWM instance with the given duty cycle and period.
 Greybus PWM Configure Request
 """""""""""""""""""""""""""""
 
-The Greybus PWM configure request supplies the target instance number,
+Table :num:`table-pwm-configure-request` defines the Greybus PWM
+configure request. The request supplies the target instance number,
 duty cycle, and period of the cycle.
+
+.. figtable::
+    :nofig:
+    :label: table-pwm-configure-request
+    :caption: PWM Protocol Configure Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1527,7 +1900,14 @@ duty cycle, and period of the cycle.
 Greybus PWM Configure Response
 """"""""""""""""""""""""""""""
 
-The Greybus PWM configure response contains only the status byte.
+Table :num:`table-pwm-configure-response` defines the Greybus PWM
+configure response. The response contains only the status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-pwm-configure-response
+    :caption: PWM Protocol Configure Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1544,21 +1924,35 @@ configure a PWM instance with the given polarity.
 Greybus PWM Polarity Request
 """"""""""""""""""""""""""""
 
-The Greybus PWM Polarity request supplies the target instance number
-and polarity (normal or inverted). The polarity may not be configured
-when a PWM instance is enabled.
+Table :num:`table-pwm-polarity-request` defines the Greybus PWM
+polarity request. The request supplies the target instance number and
+polarity (normal or inverted). The polarity may not be configured when
+a PWM instance is enabled.
+
+.. figtable::
+    :nofig:
+    :label: table-pwm-polarity-request
+    :caption: PWM Protocol Polarity Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
     0        which           1       Number          Controller-relative PWM instance number
-    1        polatiry        1       Number          0 for normal, 1 for inverted
+    1        polarity        1       Number          0 for normal, 1 for inverted
     =======  ==============  ======  ==========      ===========================
 
 Greybus PWM Polarity Response
 """""""""""""""""""""""""""""
 
-The Greybus PWM polarity response contains only the status byte.
+Table :num:`table-pwm-polarity-response` defines the Greybus PWM
+polarity response. The response contains only the status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-pwm-polarity-response
+    :caption: PWM Protocol Polarity
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1575,8 +1969,15 @@ toggling.
 Greybus PWM Enable Request
 """"""""""""""""""""""""""
 
-The Greybus PWM enable request supplies only the number of the
-instance to be enabled.
+Table :num:`table-pwm-enable-request` defines the Greybus PWM enable
+request. The request supplies only the number of the instance to be
+enabled.
+
+.. figtable::
+    :nofig:
+    :label: table-pwm-enable-request
+    :caption: PWM Protocol Enable Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1587,7 +1988,14 @@ instance to be enabled.
 Greybus PWM Enable Response
 """""""""""""""""""""""""""
 
-The Greybus PWM enable response contains only the status byte.
+Table :num:`table-pwm-enable-response` defines the Greybus PWM enable
+response. The response contains only the status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-pwm-enable-response
+    :caption: PWM Protocol Enable Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1604,8 +2012,15 @@ previously been enabled.
 Greybus PWM Disable Request
 """""""""""""""""""""""""""
 
-The Greybus PWM disable request supplies only the number of the
-instance to be disabled.
+Table :num:`table-pwm-disable-request` defines the Greybus PWM disable
+request. The request supplies only the number of the instance to be
+disabled.
+
+.. figtable::
+    :nofig:
+    :label: table-pwm-disable-request
+    :caption: PWM Protocol Disable Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1616,7 +2031,14 @@ instance to be disabled.
 Greybus PWM Disable Response
 """"""""""""""""""""""""""""
 
-The Greybus PWM disable response contains only the status byte.
+Table :num:`table-pwm-disable-response` defines the Greybus PWM
+disable response. The response contains only the status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-pwm-disable-response
+    :caption: PWM Protocol Disable Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1669,24 +2091,24 @@ of sending audio data over the |unipro| network even when that I2S
 Bundle is a *receiver* on a local low-level I2S interface.  An I2S
 Bundle may be both an I2S Transmitter Bundle and an I2S Receiver Bundle.
 
-I2S Management CPorts in the AP Module that are used to manage
-I2S Bundles are considered a special case and not part of an I2S Bundle.
-This shall not prevent the AP Module from having I2S Bundles.
-For example, the AP Module may have an I2S Bundle for sending
-ringtones to the Speaker Module when an incoming voice call arrives.
-The I2S Management CPort in the AP Module's I2S Bundle is separate
-from the I2S Management CPort used by the AP Module to manage that
-I2S Bundle.  The AP Module shall treat the I2S Bundle in the AP
-Module no differently than an I2S Bundle in any other I2S Module.
+As a special case, I2S Management CPorts in an AP Module that are used
+to manage I2S Bundles may exist apart from an I2S Bundle.  This shall
+not prevent the AP Module from having I2S Bundles.  For example, the
+AP Module may have an I2S Bundle for sending ringtones to the Speaker
+Module when an incoming voice call arrives.  In this case, the I2S
+Management CPort in the AP Module's I2S Bundle is distinct from the
+I2S Management CPort used by the AP Module to manage that I2S Bundle.
+The AP Module shall treat any I2S Bundle it exposes to the |unipro|
+network no differently than an I2S Bundle in any other I2S Module.
 
 Separate Management and Data Protocols
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 There are two separate protocols contained within the I2S Protocols
-Specification.  The first one is the :ref:`i2s-management-protocol`
-and is used by the AP Module to manage audio streams.  The second
-one is the :ref:`i2s-data-protocol` and is used by I2S Modules to
-stream audio data to one another.
+Specification.  The first protocol is the
+:ref:`i2s-management-protocol`, which is used to manage audio streams.
+The second protocol is the :ref:`i2s-data-protocol` and is used by I2S
+Modules to stream audio data to one another.
 
 The I2S Management Protocol is used over an *I2S Management Connection*
 which connects two I2S Management CPorts.  At least one of the I2S
@@ -2297,19 +2719,26 @@ Conceptually, the I2S Management Protocol Operations are:
 
 .. c:function:: int report_event(u32 event);
 
-    Reports an I2S Audio Event to the AP Module.
-    The events are described in :ref:`i2s-audio-events`.
+    Reports an I2S Audio Event. The events are described in
+    :ref:`i2s-audio-events`.
 
 .. _i2s-configuration-struct:
 
 Greybus I2S Configuration Structure
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus I2S Configuration Structure describes configurations
+Table :num:`table-i2s-configuration` defines the Greybus I2S
+Configuration Structure. The structureq describes configurations
 supported by I2S Bundles.  It is used by
 :ref:`i2s-get-supported-configurations-op`\s and
-:ref:`i2s-set-configuration-op`\s.
-See :ref:`i2s-audio-data-attributes` for further details.
+:ref:`i2s-set-configuration-op`\s.  See
+:ref:`i2s-audio-data-attributes` for further details.
+
+.. figtable::
+    :nofig:
+    :label: table-i2s-configuration
+    :caption: I2S Protocol Configuration Structure
+    :spec: l l c c l
 
     =======  ====================  =====  =========  ==============================
     Offset   Field                 Size   Value      Description
@@ -2345,10 +2774,15 @@ or latched.  This is referred to as the `offset`.
 Greybus I2S Byte-Order Bit Masks
 """"""""""""""""""""""""""""""""
 
-This table defines the bit masks which specify the set of supported
-I2S byte orders.
-These includes a *Not Applicable (NA)* value used
-for single-byte audio data.
+Table :num:`table-i2s-byte-order-bits` defines the bit masks which
+specify the set of supported I2S byte orders.  These includes a *Not
+Applicable (NA)* value used for single-byte audio data.
+
+.. figtable::
+    :nofig:
+    :label: table-i2s-byte-order-bit-mask
+    :caption: I2S Protocol Byte Order Bit Masks
+    :spec: l l l
 
     ===============================  =============================  ===============
     Symbol                           Brief Description              Mask Value
@@ -2363,12 +2797,18 @@ for single-byte audio data.
 Greybus I2S Spatial Location Bit Masks
 """"""""""""""""""""""""""""""""""""""
 
-This table defines the bit masks which specify the set of supported
-I2S Spatial Locations.
-These values are defined in Section 4.1 of the
-*USB Device Class Definition for Audio Devices* document which is part
-of the `USB Audio Specification Version 2.0
+Table :num:`table-i2s-spatial-location-bit-mask` defines the bit masks
+which specify the set of supported I2S Spatial Locations.  These
+values are defined in Section 4.1 of the *USB Device Class Definition
+for Audio Devices* document which is part of the `USB Audio
+Specification Version 2.0
 <http://www.usb.org/developers/docs/devclass_docs/Audio2.0_final.zip>`_.
+
+.. figtable::
+    :nofig:
+    :label: table-i2s-spatial-location-bit-mask
+    :caption: I2S Protocol Spatial Location Bit Masks
+    :spec: l l l
 
     ===============================  ===========================    ===============
     Symbol                           Brief Description              Mask Value
@@ -2412,6 +2852,12 @@ This table defines the bit masks which specify the set of supported
 I2S Low-level Protocols.
 See :ref:`i2s-low-level-attributes` for further details.
 
+.. figtable::
+    :nofig:
+    :label: table-i2s-spatial-location-bit-mask
+    :caption: I2S Protocol Spatial Location Bit Masks
+    :spec: l l l
+
     ===============================  ===========================    ===============
     Symbol                           Brief Description              Mask Value
     ===============================  ===========================    ===============
@@ -2425,9 +2871,15 @@ See :ref:`i2s-low-level-attributes` for further details.
 Greybus I2S Role Bit Masks
 """"""""""""""""""""""""""
 
-This table defines the bit masks which specify the set of supported
-I2S clock roles.
-See :ref:`i2s-low-level-attributes` for further details.
+Table :num:`table-i2s-role-bit-mask` defines the bit masks which
+specify the set of supported I2S clock roles.  See
+:ref:`i2s-low-level-attributes` for further details.
+
+.. figtable::
+    :nofig:
+    :label: table-i2s-role-bit-mask
+    :caption: I2S Protocol Role Bit Masks
+    :spec: l l l
 
     ===============================  =============================  ===============
     Symbol                           Brief Description              Mask Value
@@ -2441,9 +2893,15 @@ See :ref:`i2s-low-level-attributes` for further details.
 Greybus I2S Polarity Bit Masks
 """"""""""""""""""""""""""""""
 
-This table defines the bit masks which specify the set of supported
-I2S clock polarities.
-See :ref:`i2s-low-level-attributes` for further details.
+Table :num:`table-i2s-polarity-bit-mask` defines the bit masks which
+specify the set of supported I2S clock polarities.  See
+:ref:`i2s-low-level-attributes` for further details.
+
+.. figtable::
+    :nofig:
+    :label: table-i2s-polarity-bit-mask
+    :caption: I2S Protocol Polarity Bit Masks
+    :spec: l l l
 
     ===============================  ========================       ===============
     Symbol                           Brief Description              Mask Value
@@ -2457,9 +2915,15 @@ See :ref:`i2s-low-level-attributes` for further details.
 Greybus I2S Clock Edge Bit Masks
 """"""""""""""""""""""""""""""""
 
-This table defines the bit masks which specify the set of supported
-I2S clock edges.
-See :ref:`i2s-low-level-attributes` for further details.
+Table :num:`table-i2s-edge-bit-mask` defines the bit masks which
+specify the set of supported I2S clock edges.  See
+:ref:`i2s-low-level-attributes` for further details.
+
+.. figtable::
+    :nofig:
+    :label: table-i2s-edge-bit-mask
+    :caption: I2S Protocol Edge Bit Masks
+    :spec: l l l
 
     ===============================  ========================       ===============
     Symbol                           Brief Description              Mask Value
@@ -2473,10 +2937,16 @@ See :ref:`i2s-low-level-attributes` for further details.
 Greybus I2S Management Protocol Message Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This table defines the Greybus I2S Management Protocol Operation
-types and their values.  A message type consists of an Operation
-Type combined with a flag (0x80) indicating whether the operation
-is a request or a response.
+Table :num:`table-i2s-operation-type` defines the Greybus I2S
+Management Protocol Operation types and their values.  A message type
+consists of an Operation Type combined with a flag (0x80) indicating
+whether the operation is a request or a response.
+
+.. figtable::
+    :nofig:
+    :label: table-i2s-operation-type
+    :caption: I2S Operation Types
+    :spec: l l l
 
     ===========================================  =============  ==============
     I2S Management Operation Type                Request Value  Response Value
@@ -2512,12 +2982,16 @@ beyond the Greybus I2S message header.
 Greybus I2S Get Supported Configurations Response
 """""""""""""""""""""""""""""""""""""""""""""""""
 
-The Greybus I2S Get Supported Configurations Response contains
+Table :num:`table-i2s-get-supported-configurations-response` defines
+the I2S Get Supported Configurations Response. The response contains
 the status byte, a configurations count, and an array of
 :ref:`i2s-configuration-struct`\s.
 
-The following table defines the structure of the
-I2S Get Supported Configurations Response.
+.. figtable::
+    :nofig:
+    :label: table-i2s-get-supported-configurations-response
+    :caption: I2S Protocol Get Supported Configurations Response
+    :spec: l l c c l
 
     ===========  ==============  ======  ===============================  =======================================
     Offset       Field           Size    Value                            Description
@@ -2543,9 +3017,16 @@ set its configuration to the specified values.
 Greybus I2S Set Configuration Request
 """""""""""""""""""""""""""""""""""""
 
-The Greybus I2S Set Configuration Request supplies the configuration
+Table :num:`table-i2s-set-configuration-request` defines the Greybus
+I2S Set Configuration Request. The Request supplies the configuration
 values that the I2S Bundle shall use.  There shall be only one option
 selected in the bit mask fields.
+
+.. figtable::
+    :nofig:
+    :label: table-i2s-set-configuration-request
+    :caption: I2S Protocol Set Configuration Request
+    :spec: l l c c l
 
     =======  ==============  ======  ===============================  ================================
     Offset   Field           Size    Value                            Description
@@ -2556,7 +3037,15 @@ selected in the bit mask fields.
 Greybus I2S Set Configuration Response
 """"""""""""""""""""""""""""""""""""""
 
-The Greybus I2S Set Configuration Response contains only the status byte.
+Table :num:`table-i2s-set-configuration-response` defines the Greybus
+I2S Set Configuration Response. The Response contains only the status
+byte.
+
+.. figtable::
+    :nofig:
+    :label: table-i2s-set-configuration-response
+    :caption: I2S Protocol Set Configuration Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -2579,9 +3068,16 @@ The default number of samples per message is one.
 Greybus I2S Set Samples per Message Request
 """""""""""""""""""""""""""""""""""""""""""
 
-The Greybus I2S Set Samples per Message Request supplies the number
-of audio samples that the transmitter shall include in each
+Table :num:`table-i2s-set-samples-per-message-request` defines the
+Greybus I2S Set Samples per Message Request. The Request supplies the
+number of audio samples that the transmitter shall include in each
 :ref:`i2s-send-data-op`.
+
+.. figtable::
+    :nofig:
+    :label: table-i2s-set-samples-per-message-request
+    :caption: I2S Protocol Set Samples per Message Request
+    :spec: l l c c l
 
     =======  ===================  ======  ==========      =========================
     Offset   Field                Size    Value           Description
@@ -2592,8 +3088,15 @@ of audio samples that the transmitter shall include in each
 Greybus I2S Set Samples per Message Response
 """"""""""""""""""""""""""""""""""""""""""""
 
-The Greybus I2S Set Samples per Message Response contains only
-the status byte.
+Table :num:`table-i2s-set-samples-per-message-response` defines the
+Greybus I2S Set Samples per Message Response. The Response contains
+only the status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-i2s-set-samples-per-message-response
+    :caption: I2S Protocol Set Samples per Message Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -2622,9 +3125,16 @@ beyond the Greybus I2S message header.
 Greybus I2S Get Processing Delay Response
 """""""""""""""""""""""""""""""""""""""""
 
-The Greybus I2S Get Processing Delay Response contains the
+Table :num:`table-i2s-get-processing-delay-response` defines the
+Greybus I2S Get Processing Delay Response. The Response contains the
 status byte, followed by a 4-byte value indicating the controller's
 processing delay in microseconds.
+
+.. figtable::
+    :nofig:
+    :label: table-i2s-get-processing-delay-response
+    :caption: I2S Protocol Get Processing Delay Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -2650,9 +3160,16 @@ The default start delay value is zero.
 Greybus I2S Set Start Delay Request
 """""""""""""""""""""""""""""""""""
 
-The Greybus I2S Set Start Delay Request supplies the amount of
-time that the I2S Transmitter Bundle shall delay before it starts
-streaming audio data.
+Table :num:`table-i2s-set-start-delay-request` defines the Greybus I2S
+Set Start Delay Request. The Request supplies the amount of time that
+the I2S Transmitter Bundle shall delay before it starts streaming
+audio data.
+
+.. figtable::
+    :nofig:
+    :label: table-i2s-set-start-delay-request
+    :caption: I2S Protocol Set Start Delay Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -2663,7 +3180,15 @@ streaming audio data.
 Greybus I2S Set Start Delay Response
 """"""""""""""""""""""""""""""""""""
 
-The Greybus I2S Set Start Delay Response contains only the status byte.
+Table :num:`table-i2s-set-start-delay-response` defines the Greybus
+I2S Set Start Delay Response. The Response contains only the status
+byte.
+
+.. figtable::
+    :nofig:
+    :label: table-i2s-set-start-delay-response
+    :caption: I2S Protocol Set Start Delay Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -2683,8 +3208,15 @@ See :ref:`i2s-audio-stream-activation-deactivation` for further details.
 Greybus I2S Activate CPort Request
 """"""""""""""""""""""""""""""""""
 
-The Greybus I2S Activate CPort Request supplies the CPort
-that shall be activated.
+Table :num:`table-i2s-activate-cport-request` defines the Greybus I2S
+Activate CPort Request. The Request supplies the CPort that shall be
+activated.
+
+.. figtable::
+    :nofig:
+    :label: table-i2s-activate-cport-request
+    :caption: I2S Protocol Activate CPort Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -2696,7 +3228,14 @@ that shall be activated.
 Greybus I2S Activate CPort Response
 """""""""""""""""""""""""""""""""""
 
-The Greybus I2S Activate CPort response contains only the status byte.
+Table :num:`table-i2s-activate-cport-response` defines the Greybus I2S
+Activate CPort Response. The Response contains only the status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-i2s-activate-cport-response
+    :caption: I2S Protocol Activate CPort Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -2716,8 +3255,15 @@ See :ref:`i2s-audio-stream-activation-deactivation` for further details.
 Greybus I2S Deactivate CPort Request
 """"""""""""""""""""""""""""""""""""
 
-The Greybus I2S Deactivate CPort Request supplies the CPort
-that shall be deactivated.
+Table :num:`table-i2s-deactivate-cport-request` defines the Greybus
+I2S Deactivate CPort Request. The Request supplies the CPort that
+shall be deactivated.
+
+.. figtable::
+    :nofig:
+    :label: table-i2s-deactivate-cport-request
+    :caption: I2S Protocol Deactivate CPort Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -2729,7 +3275,15 @@ that shall be deactivated.
 Greybus I2S Deactivate CPort Response
 """""""""""""""""""""""""""""""""""""
 
-The Greybus I2S Deactivate CPort Response contains only the status byte.
+Table :num:`table-i2s-deactivate-cport-response` defines the Greybus
+I2S Deactivate CPort Response. The Response contains only the status
+byte.
+
+.. figtable::
+    :nofig:
+    :label: table-i2s-deactivate-cport-response
+    :caption: I2S Protocol Deactivate CPort Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -2749,8 +3303,15 @@ See :ref:`i2s-errors-and-event-reporting` for further details.
 Greybus I2S Report Event Request
 """"""""""""""""""""""""""""""""
 
-The Greybus I2S Report Event Request supplies the one-byte event
-that has occurred on the sending controller.
+Table :num:`table-i2s-report-event-request` defines the Greybus I2S
+Report Event Request. The Requestq supplies the one-byte event that
+has occurred on the sending controller.
+
+.. figtable::
+    :nofig:
+    :label: table-i2s-report-event-request
+    :caption: I2S Protocol Report Event Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -2763,8 +3324,14 @@ that has occurred on the sending controller.
 Greybus I2S Events
 """"""""""""""""""
 
-This table defines the Greybus I2S audio streaming events and
-their values.
+Table :num:`table-i2s-event` defines the Greybus I2S audio streaming
+events and their values.
+
+.. figtable::
+    :nofig:
+    :label: table-i2s-event
+    :caption: I2S Protocol Events
+    :spec: l l l
 
     ===============================  ========================       ===============
     Symbol                           Brief Description              Value
@@ -2789,7 +3356,14 @@ their values.
 Greybus I2S Report Event Response
 """""""""""""""""""""""""""""""""
 
-The Greybus I2S Report Event Response contains only the status byte.
+Table :num:`table-i2s-report-event-response` defines the Greybus I2S
+Report Event Response. The Response contains only the status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-i2s-report-event-response
+    :caption: I2S Protocol Report Event Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -2824,11 +3398,17 @@ Conceptually, the I2S Data Protocol Operations are:
 Greybus I2S Data Protocol Message Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This table defines the Greybus I2S Data Protocol Operation types
-and their values.  A message type consists of an Operation Type
-combined with a flag (0x80) indicating whether the operation is a
-request or a response.  All operations have responses except for
-Send Data Request.
+Table :num:`table-i2s-data-operation-type` defines the Greybus I2S
+Data Protocol Operation types and their values.  A message type
+consists of an Operation Type combined with a flag (0x80) indicating
+whether the operation is a request or a response.  All operations have
+responses except for Send Data Request.
+
+.. figtable::
+    :nofig:
+    :label: table-i2s-data-operation-type
+    :caption: I2S Data Operation Types
+    :spec: l l l
 
     =============================  =============  ==============
     I2S Data Operation Type        Request Value  Response Value
@@ -2851,8 +3431,14 @@ See :ref:`i2s-streaming-audio-data` for further details.
 Greybus I2S Send Data Request
 """""""""""""""""""""""""""""
 
-The Greybus I2S Send Data Request sends one or more complete
-audio samples.
+Table :num:`table-i2s-send-data-request` Greybus I2S Send Data Request
+sends one or more complete audio samples.
+
+.. figtable::
+    :nofig:
+    :label: table-i2s-send-data-request
+    :caption: I2S Protocol Send Data Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -2913,10 +3499,16 @@ is returned in a response message from the I2C adapter.
 Greybus I2C Message Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This table describes the Greybus I2C operation types and their
-values. A message type consists of an operation type combined with a
-flag (0x80) indicating whether the operation is a request or a
-response.
+Table :num:`table-i2c-operation-type` defines the Greybus I2C
+operation types and their values. A message type consists of an
+operation type combined with a flag (0x80) indicating whether the
+operation is a request or a response.
+
+.. figtable::
+    :nofig:
+    :label: table-i2c-operation-type
+    :caption: I2C Operation Types
+    :spec: l l l
 
     ===========================  =============  ==============
     I2C Operation Type           Request Value  Response Value
@@ -2946,11 +3538,18 @@ Greybus I2C message header.
 Greybus I2C Protocol Version Response
 """""""""""""""""""""""""""""""""""""
 
-The Greybus I2C protocol version response contains a status byte,
+Table :num:`table-i2c-protocol-version-response` defines theq Greybus
+I2C protocol version response. The response contains a status byte,
 followed by two one-byte values. If the value of the status byte is
 non-zero, any other bytes in the response shall be ignored. A Greybus
 I2C adapter adhering to the protocol specified herein shall report
 major version |gb-major|, minor version |gb-minor|.
+
+.. figtable::
+    :nofig:
+    :label: table-i2c-protocol-version-response
+    :caption: I2C Protocol Version Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -2976,9 +3575,16 @@ message header.
 Greybus I2C Functionality Response
 """"""""""""""""""""""""""""""""""
 
-The Greybus I2C functionality response contains the status byte and a
+Table :num:`table-i2c-functionality-response` defines the Greybus I2C
+functionality response. The response contains the status byte and a
 four-byte value whose bits represent support or presence of certain
 functionality in the I2C adapter.
+
+.. figtable::
+    :nofig:
+    :label: table-i2c-functionality-response
+    :caption: I2C Protocol Functionality Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -2992,10 +3598,16 @@ functionality in the I2C adapter.
 Greybus I2C Functionality Bit Masks
 """""""""""""""""""""""""""""""""""
 
-This table describes the defined functionality bit masks defined for
-Greybus I2C adapters. These include a set of bits describing SMBus
-capabilities.  These values are taken directly from the <linux/i2c.h>
-header file.
+Table :num:`table-i2c-functionality-bit-mask` defines the
+functionality bit masks for Greybus I2C adapters. These include a set
+of bits describing SMBus capabilities.  These values are taken
+directly from the <linux/i2c.h> header file.
+
+.. figtable::
+    :nofig:
+    :label: table-i2c-functionality-bit-mask
+    :caption: I2C Functionality Bit Masks
+    :spec: l l l
 
     ===============================  ===================================================  ========================
     Linux Symbol                     Brief Description                                    Mask Value
@@ -3032,10 +3644,17 @@ devices.
 Greybus I2C Set Timeout Request
 """""""""""""""""""""""""""""""
 
-The Greybus I2C set timeout request contains a 16-bit value
-representing the timeout to be used by an I2C adapter, expressed in
-milliseconds. If the value supplied is zero, an I2C adapter-defined value
-shall be used.
+Table :num:`table-i2c-set-timeout-request` defines the Greybus I2C set
+timeout request. The request contains a 16-bit value representing the
+timeout to be used by an I2C adapter, expressed in milliseconds. If
+the value supplied is zero, an I2C adapter-defined value shall be
+used.
+
+.. figtable::
+    :nofig:
+    :label: table-i2c-set-timeout-request
+    :caption: I2C Protocol Set Timeout Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -3046,7 +3665,14 @@ shall be used.
 Greybus I2C Set Timeout Response
 """"""""""""""""""""""""""""""""
 
-The Greybus I2C set timeout response contains only the status byte.
+Table :num:`table-i2s-set-timeout-response` defines the Greybus I2C
+set timeout response. The response contains only the status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-i2s-set-timeout-response
+    :caption: I2c Protocol Set Timeout Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -3063,8 +3689,15 @@ number of times the I2C adapter retries I2C messages.
 Greybus I2C Set Retries Request
 """""""""""""""""""""""""""""""
 
-The Greybus I2C set timeout request contains an eight-bit value
+Table :num:`table-i2c-set-retries-request` defines theq Greybus I2C
+set timeout request. The request contains an eight-bit value
 representing the number of retries to be used by an I2C adapter.
+
+.. figtable::
+    :nofig:
+    :label: table-i2c-set-retries-request
+    :caption: I2C Protocol Set Retries Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -3075,7 +3708,14 @@ representing the number of retries to be used by an I2C adapter.
 Greybus I2C Set Retries Response
 """"""""""""""""""""""""""""""""
 
-The Greybus I2C set retries response contains only the status byte.
+Table :num:`table-i2c-set-retries-response` defines the Greybus I2C
+set retries response. The response contains only the status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-i2c-set-retries-response
+    :caption: I2C Protocol Set Retries Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -3105,7 +3745,14 @@ written.
 
 **Greybus I2C Op**
 
-A Greybus I2C op describes a segment of an I2C transaction.
+Table :num:`table-i2c-op` defines the Greybus I2C op. An I2C op
+describes a segment of an I2C transaction.
+
+.. figtable::
+    :nofig:
+    :label: table-i2c-op
+    :caption: I2C Op
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -3119,8 +3766,15 @@ A Greybus I2C op describes a segment of an I2C transaction.
 
 **Greybus I2C Op Flag Bit Masks**
 
-This table describes the defined flag bit masks defined for Greybus
-I2C ops. They are taken directly from the <linux/i2c.h> header file.
+Table :num:`table-i2c-op-flag` defines the defined flag bit masks
+defined for Greybus I2C ops. They are taken directly from the
+<linux/i2c.h> header file.
+
+.. figtable::
+    :nofig:
+    :label: table-i2c-op-flag
+    :caption: I2C Protocol Op Flag Bit Masks
+    :spec: l l l
 
     ==============  =========================================       ===============
     Linux Symbol    Brief Description                               Mask Value
@@ -3135,7 +3789,14 @@ I2C ops. They are taken directly from the <linux/i2c.h> header file.
     |_|             (Reserved)                                      0x8000
     ==============  =========================================       ===============
 
-Here is the structure of a Greybus I2C transfer request.
+Table :num:`table-i2c-transfer-request` defines the Greybus I2C
+transfer request.
+
+.. figtable::
+    :nofig:
+    :label: table-i2c-transfer-request
+    :caption: I2C Protocol Transfer Request
+    :spec: l l c c l
 
     ===========  ==============  =======  ==============   ===================================
     Offset       Field           Size     Value            Description
@@ -3156,9 +3817,16 @@ distinct I2C ops.
 Greybus I2C Transfer Response
 """""""""""""""""""""""""""""
 
-The Greybus I2C transfer response contains a status byte followed by
-the data read as a result of messages.  If the value of the status
-byte is non-zero, the data that follows (if any) shall be ignored.
+Table :num:`table-i2c-transfer-response` defines the Greybus I2C
+transfer response. The response contains a status byte followed by the
+data read as a result of messages.  If the value of the status byte is
+non-zero, the data that follows (if any) shall be ignored.
+
+.. figtable::
+    :nofig:
+    :label: table-i2c-transfer-response
+    :caption: I2C Protocol Transfer Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ======================================
     Offset   Field           Size    Value           Description
