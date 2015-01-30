@@ -148,8 +148,9 @@ response type values are shown.
 Greybus GPIO Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus GPIO protocol version operation allows the AP to determine the
-version of this protocol to which the GPIO controller complies.
+The Greybus GPIO protocol version operation allows the requestor to
+determine the version of this protocol to which the GPIO controller
+complies.
 
 Greybus GPIO Protocol Version Request
 """""""""""""""""""""""""""""""""""""
@@ -184,8 +185,8 @@ major version 0, minor version 1.
 Greybus GPIO Line Count Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus GPIO line count operation allows the AP to determine how
-many GPIO lines are implemented by the GPIO controller.
+The Greybus GPIO line count operation allows the requestor to
+determine how many GPIO lines are implemented by the GPIO controller.
 
 Greybus GPIO Line Count Request
 """""""""""""""""""""""""""""""
@@ -636,9 +637,10 @@ The Greybus GPIO IRQ event response contains only the status byte.
 SPI Protocol
 ------------
 
-This section defines the operations used on a connection implementing the
-Greybus SPI protocol. This protocol allows an AP to manage an SPI device present
-on a module. This protocol consists of the operations defined in this section.
+This section defines the operations used on a connection implementing
+the Greybus SPI protocol. This protocol allows for management of a SPI
+device. The protocol consists of the operations defined in this
+section.
 
 Conceptually, the operations in the Greybus SPI protocol are:
 
@@ -697,8 +699,9 @@ response.
 Greybus SPI Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus SPI protocol version operation allows the AP to determine
-the version of this protocol to which the SPI master complies.
+The Greybus SPI protocol version operation allows the requestor to
+determine the version of this protocol to which the SPI master
+complies.
 
 Greybus SPI Protocol Version Request
 """"""""""""""""""""""""""""""""""""
@@ -726,8 +729,8 @@ major version zero, minor version one.
 Greybus SPI Protocol Mode Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus SPI mode operation allows the AP to determine the details of the
-modes supported by the SPI master.
+The Greybus SPI mode operation allows the requestor to determine the
+details of the modes supported by the SPI master.
 
 Greybus SPI Protocol Mode Request
 """""""""""""""""""""""""""""""""
@@ -772,8 +775,8 @@ SPI masters.
 Greybus SPI Protocol Flags Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus SPI flags operation allows the AP to determine the constraints, if
-any, of the SPI master.
+The Greybus SPI flags operation allows the requestor to determine the
+constraints, if any, of the SPI master.
 
 Greybus SPI Protocol Flags Request
 """"""""""""""""""""""""""""""""""
@@ -814,11 +817,11 @@ SPI masters.
 Greybus SPI Protocol Bits Per Word Mask Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus SPI bits per word mask operation allows the AP to determine the mask
-indicating which values of bits_per_word are supported by the SPI master. If
-set, transfer with unsupported bits_per_word should be rejected. If not set,
-this value is simply ignored, and it's up to the individual driver to perform
-any validation.
+The Greybus SPI bits per word mask operation allows the requestor to
+determine the mask indicating which values of bits_per_word are
+supported by the SPI master. If set, transfer with unsupported
+bits_per_word should be rejected. If not set, this value is simply
+ignored, and it's up to the individual driver to perform any validation.
 
 Transfers should be rejected if following expression evaluates to zero:
 
@@ -846,8 +849,8 @@ four-byte value whose bits represent the bits per word mask of the SPI master.
 Greybus SPI Protocol Number of Chip Selects Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus SPI number of chip selects operation allows the AP to
-determine the maximum number of chip select pins supported by SPI
+The Greybus SPI number of chip selects operation allows the requestor
+to determine the maximum number of chip select pins supported by SPI
 master.
 
 Greybus SPI Protocol Number of Chip Selects Request
@@ -873,13 +876,14 @@ master.
 Greybus SPI Transfer Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus SPI transfer operation allows the AP to request the SPI master to
-perform a SPI transaction. The operation consists of a set of one or more
-gb_spi_transfer descriptors to be performed by the SPI master. The transfer
-operation request includes data for each gb_spi_transfer descriptor
-involving a write operation.  The data shall be concatenated without padding,
-and shall be sent immediately following the gb_spi_transfer descriptors.
-The transfer operation response includes data for each gb_spi_transfer
+The Greybus SPI transfer operation requests that the SPI master
+perform a SPI transaction. The operation consists of a set of one or
+more gb_spi_transfer descriptors to be performed by the SPI
+master. The transfer operation request includes data for each
+:ref:`gb_spi_transfer <gb_spi_transfer>` descriptor involving a write
+operation.  The data shall be concatenated without padding, and shall
+be sent immediately following the gb_spi_transfer descriptors.  The
+transfer operation response includes data for each gb_spi_transfer
 descriptor involving a read operation, with all read data transferred
 contiguously.
 
@@ -889,6 +893,8 @@ Greybus SPI Transfer Request
 The Greybus SPI transfer request contains the slave's chip select pin,
 its mode, a count of message descriptors, an array of message descriptors,
 and a block of zero or more bytes of data to be written.
+
+.. _gb_spi_transfer:
 
 **Greybus SPI gb_spi_transfer descriptor**
 
@@ -990,7 +996,7 @@ UART Protocol Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 This section defines the operations for a connection using the UART
-protocol.  UART protocol allows an AP to control a UART device
+protocol. The UART protocol allows a requestor to control a UART device
 contained within a Greybus module.
 
 Greybus UART Protocol Operations
@@ -1018,7 +1024,7 @@ response.
 Greybus UART Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus UART protocol version operation allows the AP to determine
+The Greybus UART protocol version operation allows the requestor to determine
 the version of this protocol to which the UART device complies.
 
 Greybus UART Protocol Version Request
@@ -1047,10 +1053,9 @@ major version |gb-major|, minor version |gb-minor|.
 Greybus UART Send Data Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus UART start transmission operation allows the AP to request
-the UART device begin transmission of characters.  One or more
-characters to be transmitted may optionally be provided with this
-request.
+The Greybus UART start transmission operation requests that the UART
+device begin transmission of characters.  One or more characters to be
+transmitted may optionally be provided with this request.
 
 Greybus UART Send Data Request
 """"""""""""""""""""""""""""""
@@ -1082,8 +1087,9 @@ Greybus UART Receive Data Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Unlike most other Greybus UART operations, the Greybus UART event
-operation is initiated by the UART device and received by the AP. It
-notifies the AP that a data has been received by the UART.
+operation is initiated by the device implementing the UART
+protocol. It notifies its peer that a data has been received by the
+UART.
 
 Greybus UART Receive Data Request
 """""""""""""""""""""""""""""""""
@@ -1101,8 +1107,7 @@ be received, and the data bytes to be received.
 Greybus UART Received Data Response
 """""""""""""""""""""""""""""""""""
 
-The Greybus UART event response is sent by the AP to the UART device,
-and contains only the status byte.
+The Greybus UART event response contains only the status byte.
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1113,8 +1118,8 @@ and contains only the status byte.
 Greybus UART Set Line Coding Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus UART set line coding operation allows the AP to request
-the UART to be set up to a specific set of line coding values.
+The Greybus UART set line coding operation allows for configuration of
+the UART to a specific set of line coding values.
 
 Greybus UART Set Line Coding State Request
 """"""""""""""""""""""""""""""""""""""""""
@@ -1172,7 +1177,7 @@ byte.
 Greybus UART Set Control Line State Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus UART set control line state allows the AP to request the
+The Greybus UART set control line state operation requests that the
 UART device set "outbound" UART status values.
 
 Greybus UART Set Control Line State Request
@@ -1219,9 +1224,8 @@ status byte.
 Greybus UART Send Break Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus UART send break operation allows the AP to request the
-UART device set the break condition on its transmit line to be either
-on or off.
+The Greybus UART send break operation requests that the UART device
+set the break condition on its transmit line to be either on or off.
 
 Greybus UART Break Control Request
 """"""""""""""""""""""""""""""""""
@@ -1251,9 +1255,9 @@ Greybus UART Serial State Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Unlike most other Greybus UART operations, the Greybus UART serial
-state operation is initiated by the UART device and received by the
-AP. It notifies the AP that a control line status has changed, or that
-there is an error with the UART.
+state operation is initiated by the module implementing the UART
+protocol. It notifies the peer that a control line status has changed,
+or that there is an error with the UART.
 
 Greybus UART Serial State Request
 """""""""""""""""""""""""""""""""
@@ -1292,8 +1296,7 @@ Serial State request.
 Greybus UART Serial State Response
 """"""""""""""""""""""""""""""""""
 
-The Greybus UART serial state response is sent by the AP to the UART
-device, and contains only the status byte.
+The Greybus UART serial state response contains only the status byte.
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -1386,8 +1389,8 @@ shown.
 Greybus PWM Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus PWM version operation allows the AP to determine the
-version of this protocol to which the PWM controller complies.
+The Greybus PWM version operation allows the requestor to determine
+the version of this protocol to which the PWM controller complies.
 
 Greybus PWM Protocol Version Request
 """"""""""""""""""""""""""""""""""""
@@ -1415,8 +1418,8 @@ major version 0, minor version 1.
 Greybus PWM Count Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus PWM count operation allows the AP to determine how many
-PWM instances are implemented by the PWM controller.
+The Greybus PWM count operation allows the requestor to determine how
+many PWM instances are implemented by the PWM controller.
 
 Greybus PWM Count Request
 """""""""""""""""""""""""
@@ -2869,7 +2872,7 @@ I2C Protocol
 ------------
 
 This section defines the operations used on a connection implementing
-the Greybus I2C protocol. This protocol allows an AP to manage an I2C
+the Greybus I2C protocol. This protocol allows for management of an I2C
 device present on a module. The protocol consists of five basic
 operations, whose request and response message formats are defined
 here.
@@ -2930,8 +2933,9 @@ response.
 Greybus I2C Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus I2C protocol version operation allows the AP to determine
-the version of this protocol to which the I2C adapter complies.
+The Greybus I2C protocol version operation allows the requestor to
+determine the version of this protocol to which the I2C adapter
+complies.
 
 Greybus I2C Protocol Version Request
 """"""""""""""""""""""""""""""""""""
@@ -2959,8 +2963,9 @@ major version 0, minor version 1.
 Greybus I2C Functionality Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus I2C functionality operation allows the AP to determine the
-details of the functionality provided by the I2C adapter.
+The Greybus I2C functionality operation allows the requestor to
+determine the details of the functionality provided by the I2C
+adapter.
 
 Greybus I2C Functionality Request
 """""""""""""""""""""""""""""""""
@@ -3020,8 +3025,9 @@ header file.
 Greybus I2C Set Timeout Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus I2C set timeout operation allows the AP to set the timeout
-value to be used by the I2C adapter for non-responsive slave devices.
+The Greybus I2C set timeout operation allows the requestor to set the
+timeout value to be used by the I2C adapter for non-responsive slave
+devices.
 
 Greybus I2C Set Timeout Request
 """""""""""""""""""""""""""""""
@@ -3051,8 +3057,8 @@ The Greybus I2C set timeout response contains only the status byte.
 Greybus I2C Set Retries Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus I2C set retries operation allows the AP to set the number
-of times the I2C adapter retries I2C messages.
+The Greybus I2C set retries operation allows the requestor to set the
+number of times the I2C adapter retries I2C messages.
 
 Greybus I2C Set Retries Request
 """""""""""""""""""""""""""""""
@@ -3080,9 +3086,9 @@ The Greybus I2C set retries response contains only the status byte.
 Greybus I2C Transfer Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus I2C transfer operation allows the AP to request the I2C
-adapter to perform an I2C transaction. The operation consists of a set of
-one or more "I2C ops" to be performed by the I2C adapter. The transfer
+The Greybus I2C transfer operation requests that the I2C adapter
+perform an I2C transaction. The operation consists of a set of one or
+more "I2C ops" to be performed by the I2C adapter. The transfer
 operation request will include data for each I2C op involving a write
 operation.  The data will be concatenated (without padding) and will
 be be sent immediately after the set of I2C op descriptors. The
