@@ -1546,7 +1546,7 @@ Greybus PWM Polarity Request
 
 The Greybus PWM Polarity request supplies the target instance number
 and polarity (normal or inverted). The polarity may not be configured
-when a PWM instance is enabled and will respond with a busy failure.
+when a PWM instance is enabled.
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
