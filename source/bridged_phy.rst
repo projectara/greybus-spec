@@ -1183,8 +1183,8 @@ UART device set "outbound" UART status values.
 Greybus UART Set Control Line State Request
 """""""""""""""""""""""""""""""""""""""""""
 
-The Greybus UART set control line state request contains no data beyond the
-Greybus UART message header.
+The Greybus UART set control line state request contains a bit mask of
+modem status flags to set.
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
