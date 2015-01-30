@@ -569,19 +569,19 @@ Greybus SPI Protocol Mode Bits
 This table describes the defined mode bit values defined for Greybus SPI
 masters.
 
-    ===============================  ===================================================  ========================
-    Symbol                           Brief Description                                    Mask Value
-    ===============================  ===================================================  ========================
-    GB_SPI_MODE_CPHA                 Clock phase                                          0x00000001
-    GB_SPI_MODE_CPOL                 Clock polarity                                       0x00000002
-    GB_SPI_MODE_CS_HIGH              Chip select active high                              0x00000004
-    GB_SPI_MODE_LSB_FIRST            Per-word bits-on-wire                                0x00000008
-    GB_SPI_MODE_3WIRE                SI/SO signals shared                                 0x00000010
-    GB_SPI_MODE_LOOP                 Loopback mode                                        0x00000020
-    GB_SPI_MODE_NO_CS                One dev/bus, no chip select                          0x00000040
-    GB_SPI_MODE_READY                Slave pulls low to pause                             0x00000080
-    |_|                              (All other values reserved)                          0x00000100..0x80000000
-    ===============================  ===================================================  ========================
+    ===============================  ======================================================  ========================
+    Symbol                           Brief Description                                       Mask Value
+    ===============================  ======================================================  ========================
+    GB_SPI_MODE_CPHA                 Clock phase (0: sample on first clock, 1: on second)    0x00000001
+    GB_SPI_MODE_CPOL                 Clock polarity (0: clock low on idle, 1: high on idle)  0x00000002
+    GB_SPI_MODE_CS_HIGH              Chip select active high                                 0x00000004
+    GB_SPI_MODE_LSB_FIRST            Per-word bits-on-wire                                   0x00000008
+    GB_SPI_MODE_3WIRE                SI/SO signals shared                                    0x00000010
+    GB_SPI_MODE_LOOP                 Loopback mode                                           0x00000020
+    GB_SPI_MODE_NO_CS                One dev/bus, no chip select                             0x00000040
+    GB_SPI_MODE_READY                Slave pulls low to pause                                0x00000080
+    |_|                              (All other values reserved)                             0x00000100..0x80000000
+    ===============================  ======================================================  ========================
 
 Greybus SPI Protocol Flags Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -628,13 +628,12 @@ Greybus SPI Protocol Bits per word mask Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus SPI bits per word mask operation allows the AP to determine the mask
-indicating which values of bits_per_word are supported by the SPI master.
-If set, the SPI core will reject any transfer with an unsupported bits_per_word.
-If not set, this value is simply ignored, and it's up to the individual driver
-to perform any validation.
+indicating which values of bits_per_word are supported by the SPI master. If
+set, transfer with unsupported bits_per_word should be rejected. If not set,
+this value is simply ignored, and it's up to the individual driver to perform
+any validation.
 
-If following expression evaluates to zero, SPI core will reject the transfer
-descriptor:
+Transfers should be rejected if following expression evaluates to zero:
 
         master->bits_per_word_mask & (1 << (tx_desc->bits_per_word - 1))
 
