@@ -1183,7 +1183,7 @@ UART device set "outbound" UART status values.
 Greybus UART Set Control Line State Request
 """""""""""""""""""""""""""""""""""""""""""
 
-The Greybus UART set modem status request contains no data beyond the
+The Greybus UART set control line state request contains no data beyond the
 Greybus UART message header.
 
     =======  ==============  ======  ==========      ===========================
@@ -1198,8 +1198,8 @@ Greybus UART Modem Status Flags
 """""""""""""""""""""""""""""""
 
 This table describes the values supplied as flag values for the
-Greybus UART set modem request. Any combination of these values may be
-supplied in a single request.
+Greybus UART set control line state request. Any combination of these
+values may be supplied in a single request.
 
     ============================    ==============  ===================
     Flag                            Value           Description
