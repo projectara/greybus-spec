@@ -2548,7 +2548,7 @@ values that the I2S Bundle shall use.  There shall be only one option
 selected in the bit mask fields.
 
     =======  ==============  ======  ===============================  ================================
-    Offset   Field           Size    Value              Description
+    Offset   Field           Size    Value                            Description
     =======  ==============  ======  ===============================  ================================
     0        config          24      :ref:`i2s-configuration-struct`  Bundle's configuration values
     =======  ==============  ======  ===============================  ================================
