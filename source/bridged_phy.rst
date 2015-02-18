@@ -83,6 +83,28 @@ Conceptually, the GPIO protocol operations are:
     Requests the GPIO controller set the debounce period (in
     microseconds).
 
+.. c:function:: int irq_type(u8 which, u8 type);
+
+    Requests the GPIO controller set the IRQ trigger type (none,
+    falling/rising edge, or low/high level).
+
+.. c:function:: int irq_mask(u8 which);
+
+    Requests the GPIO controller mask the specified gpio irq line.
+
+.. c:function:: int irq_unmask(u8 which);
+
+    Requests the GPIO controller unmask the specified gpio irq line.
+
+.. c:function:: int irq_ack(u8 which);
+
+    Requests the GPIO controller ack the specified gpio irq line.
+
+.. c:function:: int irq_event(u8 which);
+
+    GPIO controller request to recipient signaling an event on the specified
+    gpio irq line.
+
 Greybus GPIO Protocol Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -116,11 +138,13 @@ response type values are shown.
     Get                          0x08           0x88
     Set                          0x09           0x89
     Set debounce                 0x0a           0x8a
-    (all other values reserved)  0x0b..0x7f     0x8b..0xff
+    IRQ Type                     0x0b           0x8b
+    IRQ Mask                     0x0c           0x8c
+    IRQ Unmask                   0x0d           0x8d
+    IRQ Ack                      0x0e           0x8e
+    IRQ Event                    0x0f           0x8f
+    (all other values reserved)  0x10..0x7f     0x90..0xff
     ===========================  =============  ==============
-
-.. todo::
-        Add GPIO "interrupt" type requests from the device that are unsolicited.
 
 Greybus GPIO Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -440,6 +464,170 @@ Greybus Set Debounce Response
 """""""""""""""""""""""""""""
 
 The Greybus GPIO set debounce response contains only the status byte.
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        status          1       Number          :ref:`greybus-protocol-error-codes`
+    =======  ==============  ======  ==========      ===========================
+
+Greybus GPIO IRQ Type Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus GPIO IRQ type operation requests the GPIO controller
+to set the interrupt trigger type to be used for a line.
+
+Greybus GPIO IRQ Type Request
+"""""""""""""""""""""""""""""
+
+The Greybus GPIO IRQ type request supplies the number of the line
+and the type to be used for the line.
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        which           1       Number          Controller-relative GPIO line number
+    1        type            4       Number          :ref:`gpio-irq-type-bits`
+    =======  ==============  ======  ==========      ===========================
+
+.. _gpio-irq-type-bits:
+
+Greybus GPIO IRQ Type Bits
+""""""""""""""""""""""""""
+
+This table describes the defined interrupt trigger type bit values defined
+for Greybus GPIO IRQ chips. These values are taken directly from the
+<linux/interrupt.h> header file. Only a single trigger type is valid, a mask
+of two or more values will result in a *GB_OP_INVALID* response.
+
+    ===============================  ===================================================  ========================
+    Linux Symbol                     Brief Description                                    Value
+    ===============================  ===================================================  ========================
+    IRQF_TRIGGER_NONE                No trigger specified, uses default/previous setting  0x00000000
+    IRQF_TRIGGER_RISING              Rising edge triggered                                0x00000001
+    IRQF_TRIGGER_FALLING             Falling edge triggered                               0x00000002
+    IRQF_TRIGGER_HIGH                Level triggered high                                 0x00000004
+    IRQF_TRIGGER_LOW                 Level triggered low                                  0x00000008
+    |_|                              (All other values reserved)                          0x00000010..0x80000000
+    ===============================  ===================================================  ========================
+
+Greybus GPIO IRQ Type Response
+""""""""""""""""""""""""""""""
+
+The Greybus GPIO IRQ type response contains only the status byte.
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        status          1       Number          :ref:`greybus-protocol-error-codes`
+    =======  ==============  ======  ==========      ===========================
+
+Greybus GPIO IRQ Mask Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus GPIO IRQ mask operation requests the GPIO controller to
+mask a GPIO IRQ line.
+
+Greybus GPIO IRQ Mask Request
+""""""""""""""""""""""""""""""
+
+The Greybus GPIO IRQ mask request supplies the number of the line to be masked.
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        which           1       Number          Controller-relative GPIO line number
+    =======  ==============  ======  ==========      ===========================
+
+Greybus GPIO IRQ Mask Response
+""""""""""""""""""""""""""""""
+
+The Greybus GPIO IRQ mask response contains only the status byte.
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        status          1       Number          :ref:`greybus-protocol-error-codes`
+    =======  ==============  ======  ==========      ===========================
+
+Greybus GPIO IRQ Unmask Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus GPIO IRQ unmask operation requests the GPIO controller to
+unmask a GPIO IRQ line.
+
+Greybus GPIO IRQ Unmask Request
+"""""""""""""""""""""""""""""""
+
+The Greybus GPIO IRQ unmask request supplies the number of the line to be unmasked.
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        which           1       Number          Controller-relative GPIO line number
+    =======  ==============  ======  ==========      ===========================
+
+Greybus GPIO IRQ Unmask Response
+""""""""""""""""""""""""""""""""
+
+The Greybus GPIO IRQ unmask response contains only the status byte.
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        status          1       Number          :ref:`greybus-protocol-error-codes`
+    =======  ==============  ======  ==========      ===========================
+
+Greybus GPIO IRQ Ack Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus GPIO IRQ ack operation requests the GPIO controller to ack
+a GPIO IRQ line.
+
+Greybus GPIO IRQ Ack Request
+""""""""""""""""""""""""""""
+
+The Greybus GPIO IRQ ack request supplies the number of the line to be acked.
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        which           1       Number          Controller-relative GPIO line number
+    =======  ==============  ======  ==========      ===========================
+
+Greybus GPIO IRQ Ack Response
+"""""""""""""""""""""""""""""
+
+The Greybus GPIO IRQ ack response contains only the status byte.
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        status          1       Number          :ref:`greybus-protocol-error-codes`
+    =======  ==============  ======  ==========      ===========================
+
+Greybus GPIO IRQ Event Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus GPIO IRQ event operation signals to the recipient that a
+GPIO IRQ event has occurred on the GPIO Controller.
+
+Greybus GPIO IRQ Event Request
+""""""""""""""""""""""""""""""
+
+The Greybus GPIO IRQ event request supplies the number of the line signaling an
+event.
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        which           1       Number          Controller-relative GPIO line number
+    =======  ==============  ======  ==========      ===========================
+
+Greybus GPIO IRQ Event Response
+"""""""""""""""""""""""""""""""
+
+The Greybus GPIO IRQ event response contains only the status byte.
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
