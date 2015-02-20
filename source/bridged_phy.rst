@@ -597,8 +597,15 @@ to set the interrupt trigger type to be used for a line.
 Greybus GPIO IRQ Type Request
 """""""""""""""""""""""""""""
 
-The Greybus GPIO IRQ type request supplies the number of the line
-and the type to be used for the line.
+Table :num:`table-gpio-irq-type-request` defines the Greybus GPIO IRQ
+type request.  This request supplies the number of the line and the type
+to be used for the line.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-irq-type-request
+    :caption: GPIO IRQ Type Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -612,10 +619,17 @@ and the type to be used for the line.
 Greybus GPIO IRQ Type Bits
 """"""""""""""""""""""""""
 
-This table describes the defined interrupt trigger type bit values defined
-for Greybus GPIO IRQ chips. These values are taken directly from the
-<linux/interrupt.h> header file. Only a single trigger type is valid, a mask
-of two or more values will result in a *GB_OP_INVALID* response.
+Table :num:`table-gpio-irq-type-bits` describes the defined interrupt
+trigger type bit values defined for Greybus GPIO IRQ chips. These values
+are taken directly from the <linux/interrupt.h> header file. Only a
+single trigger type is valid, a mask of two or more values will result
+in a *GB_OP_INVALID* response.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-irq-type-bits
+    :caption: GPIO IRQ Type Bits
+    :spec: l l l
 
     ===============================  ===================================================  ========================
     Linux Symbol                     Brief Description                                    Value
@@ -631,7 +645,14 @@ of two or more values will result in a *GB_OP_INVALID* response.
 Greybus GPIO IRQ Type Response
 """"""""""""""""""""""""""""""
 
-The Greybus GPIO IRQ type response contains only the status byte.
+Table :num:`table-gpio-irq-type-response` defines the Greybus GPIO
+IRQ type response. The response contains only the status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-irq-type-response
+    :caption: GPIO IRQ Type Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -648,7 +669,15 @@ mask a GPIO IRQ line.
 Greybus GPIO IRQ Mask Request
 """"""""""""""""""""""""""""""
 
-The Greybus GPIO IRQ mask request supplies the number of the line to be masked.
+Table :num:`table-gpio-irq-mask-request` defines the Greybus GPIO IRQ
+mask request.  This request supplies the number of the line to be
+masked.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-irq-mask-request
+    :caption: GPIO IRQ Mask Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -659,7 +688,14 @@ The Greybus GPIO IRQ mask request supplies the number of the line to be masked.
 Greybus GPIO IRQ Mask Response
 """"""""""""""""""""""""""""""
 
-The Greybus GPIO IRQ mask response contains only the status byte.
+Table :num:`table-gpio-irq-mask-response` defines the Greybus GPIO
+IRQ mask response. The response contains only the status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-irq-mask-response
+    :caption: GPIO IRQ Mask Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -676,7 +712,15 @@ unmask a GPIO IRQ line.
 Greybus GPIO IRQ Unmask Request
 """""""""""""""""""""""""""""""
 
-The Greybus GPIO IRQ unmask request supplies the number of the line to be unmasked.
+Table :num:`table-gpio-irq-unmask-request` defines the Greybus GPIO IRQ
+unmask request.  This request supplies the number of the line to be
+unmasked.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-irq-unmask-request
+    :caption: GPIO IRQ Mask Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -687,7 +731,14 @@ The Greybus GPIO IRQ unmask request supplies the number of the line to be unmask
 Greybus GPIO IRQ Unmask Response
 """"""""""""""""""""""""""""""""
 
-The Greybus GPIO IRQ unmask response contains only the status byte.
+Table :num:`table-gpio-irq-unmask-response` defines the Greybus GPIO
+IRQ unmask response. The response contains only the status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-irq-unmask-response
+    :caption: GPIO IRQ Unmask Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -704,7 +755,14 @@ a GPIO IRQ line.
 Greybus GPIO IRQ Ack Request
 """"""""""""""""""""""""""""
 
-The Greybus GPIO IRQ ack request supplies the number of the line to be acked.
+Table :num:`table-gpio-irq-ack-request` defines the Greybus GPIO IRQ Ack
+request.  This request supplies the number of the line to be acked.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-irq-ack-request
+    :caption: GPIO IRQ Mask Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -715,7 +773,14 @@ The Greybus GPIO IRQ ack request supplies the number of the line to be acked.
 Greybus GPIO IRQ Ack Response
 """""""""""""""""""""""""""""
 
-The Greybus GPIO IRQ ack response contains only the status byte.
+Table :num:`table-gpio-irq-ack-response` defines the Greybus GPIO
+IRQ Ack response. The response contains only the status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-irq-ack-response
+    :caption: GPIO IRQ Ack Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -732,8 +797,15 @@ GPIO IRQ event has occurred on the GPIO Controller.
 Greybus GPIO IRQ Event Request
 """"""""""""""""""""""""""""""
 
-The Greybus GPIO IRQ event request supplies the number of the line signaling an
-event.
+Table :num:`table-gpio-irq-event-request` defines the Greybus GPIO IRQ
+Event request.  This request supplies the number of the line signaling
+an event.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-irq-event-request
+    :caption: GPIO IRQ Event Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -744,7 +816,14 @@ event.
 Greybus GPIO IRQ Event Response
 """""""""""""""""""""""""""""""
 
-The Greybus GPIO IRQ event response contains only the status byte.
+Table :num:`table-gpio-irq-event-response` defines the Greybus GPIO
+IRQ event response. The response contains only the status byte.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-irq-event-response
+    :caption: GPIO IRQ Ack Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
