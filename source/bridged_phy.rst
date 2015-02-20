@@ -3764,7 +3764,8 @@ describes a segment of an I2C transaction.
 
 .. _i2c-op-flag-bits:
 
-**Greybus I2C Op Flag Bit Masks**
+Greybus I2C Op Flag Bit Masks
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Table :num:`table-i2c-op-flag` defines the defined flag bit masks
 defined for Greybus I2C ops. They are taken directly from the
