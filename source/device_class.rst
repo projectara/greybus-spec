@@ -44,9 +44,16 @@ The operations in the Greybus vibrator protocol are:
 Greybus Vibrator Message Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This table describes the Greybus vibrator operation types and their
-values. A message type consists of an operation type combined with a
-flag (0x80) indicating whether the operation is a request or a response.
+Table :num:`table-vibrator-operation-type` describes the Greybus
+vibrator operation types and their values. A message type consists of an
+operation type combined with a flag (0x80) indicating whether the
+operation is a request or a response.
+
+.. figtable::
+    :nofig:
+    :label: table-vibrator-operation-type
+    :caption: Vibrator Operation Types
+    :spec: l l l
 
     ===========================  =============  ==============
     Vibrator Operation Type      Request Value  Response Value
@@ -75,10 +82,17 @@ Greybus Vibrator Protocol Version Response
 """"""""""""""""""""""""""""""""""""""""""
 
 The Greybus vibrator protcol version response contains a status byte,
-followed by two 1-byte values. If the value of the status byte is
-non-zero, any other bytes in the response shall be ignored. A Greybus
-vibrator adapter adhering to the protocol specified herein shall
-report major version |gb-major|, minor version |gb-minor|.
+followed by two one-byte values as defined in table
+:num:`table-vibrator-protocol-version-response`. If the value of the
+status byte is non-zero, any other bytes in the response shall be
+ignored. A Greybus vibrator adapter adhering to the protocol specified
+herein shall report major version |gb-major|, minor version |gb-minor|.
+
+.. figtable::
+    :nofig:
+    :label: table-vibrator-protocol-version-response
+    :caption: Vibrator Protocol Version Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -97,8 +111,15 @@ vibrator be enabled for the specified number of milliseconds.
 Greybus Vibrator On Control Request
 """""""""""""""""""""""""""""""""""
 
-The Greybus Vibrator on request supplies the amount of time that the
+Table :num:`table-vibrator-on-control-request` defines the Greybus
+Vibrator on request.  The request supplies the amount of time that the
 vibrator should now be enabled for.
+
+.. figtable::
+    :nofig:
+    :label: table-vibrator-on-control-request
+    :caption: GPIO Protocol Activate Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -109,7 +130,15 @@ vibrator should now be enabled for.
 Greybus Vibrator On Control Response
 """"""""""""""""""""""""""""""""""""
 
-The Greybus Vibrator on control response contains only the status byte.
+Table :num:`table-vibrator-on-control-response` defines the Greybus
+Vibrator on control response. The response contains only the status
+byte.
+
+.. figtable::
+    :nofig:
+    :label: table-vibrator-on-control-response
+    :caption: Vibrator On Control Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -132,7 +161,15 @@ Vibrator message header.
 Greybus Vibrator Off Control Response
 """""""""""""""""""""""""""""""""""""
 
-The Greybus Vibrator off control response contains only the status byte.
+Table :num:`table-vibrator-off-control-response` defines the Greybus
+Vibrator off control response. The response contains only the status
+byte.
+
+.. figtable::
+    :nofig:
+    :label: table-vibrator-off-control-response
+    :caption: Vibrator Off Control Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -198,9 +235,16 @@ Conceptually, the operations in the Greybus battery protocol are:
 Greybus Battery Message Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This table describes the Greybus battery operation types and their
-values. A message type consists of an operation type combined with a
-flag (0x80) indicating whether the operation is a request or a response.
+Table :num:`table-battery-operation-type` describes the Greybus
+battery operation types and their values. A message type consists of an
+operation type combined with a flag (0x80) indicating whether the
+operation is a request or a response.
+
+.. figtable::
+    :nofig:
+    :label: table-battery-operation-type
+    :caption: Battery Operation Types
+    :spec: l l l
 
     ===========================  =============  ==============
     Battery Operation Type       Request Value  Response Value
@@ -236,10 +280,17 @@ Greybus Battery Protocol Version Response
 """""""""""""""""""""""""""""""""""""""""
 
 The Greybus battery protcol version response contains a status byte,
-followed by two 1-byte values. If the value of the status byte is
-non-zero, any other bytes in the response shall be ignored. A Greybus
-battery adapter adhering to the protocol specified herein shall report
-major version |gb-major|, minor version |gb-minor|.
+followed by two one-byte values as defined in table
+:num:`table-battery-protocol-version-response`. If the value of the
+status byte is non-zero, any other bytes in the response shall be
+ignored. A Greybus vibrator adapter adhering to the protocol specified
+herein shall report major version |gb-major|, minor version |gb-minor|.
+
+.. figtable::
+    :nofig:
+    :label: table-battery-protocol-version-response
+    :caption: Battery Protocol Version Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -267,7 +318,13 @@ Greybus Battery Technology Response
 
 The Greybus battery functionality response contains the status byte
 and a 2-byte value that represents the type of battery being
-controlled.
+controlled as defined in Table :num:`table-battery-technology-response`.
+
+.. figtable::
+    :nofig:
+    :label: table-battery-technology-response
+    :caption: Battery Technology Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -281,9 +338,15 @@ controlled.
 Greybus Battery Technology Type
 """""""""""""""""""""""""""""""
 
-This table describes the defined battery technologies defined for
-Greybus battery adapters.  These values are taken directly from the
-<linux/power_supply.h> header file.
+Table :num:`table-battery-tech-type` describes the defined battery
+technologies defined for Greybus battery adapters.  These values are
+taken directly from the <linux/power_supply.h> header file.
+
+.. figtable::
+    :nofig:
+    :label: table-battery-tech-type
+    :caption: Battery Technology Type
+    :spec: l l
 
     =============   ======
     Battery Type    Value
@@ -313,7 +376,14 @@ Greybus Battery Status Response
 """""""""""""""""""""""""""""""
 
 The Greybus battery status response contains the status byte and a
-2-byte value that represents the status of battery being controlled.
+2-byte value that represents the status of battery being controlled as
+defined in table :num:`table-battery-status-response`.
+
+.. figtable::
+    :nofig:
+    :label: table-battery-status-response
+    :caption: Battery Status Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -327,9 +397,15 @@ The Greybus battery status response contains the status byte and a
 Greybus Battery Status Type
 """""""""""""""""""""""""""
 
-This table describes the defined battery status values defined for
-Greybus battery adapters.  These values are taken directly from the
-<linux/power_supply.h> header file.
+Table :num:`table-battery-status-type` describes the defined battery
+status values defined for Greybus battery adapters.  These values are
+taken directly from the <linux/power_supply.h> header file.
+
+.. figtable::
+    :nofig:
+    :label: table-battery-status-type
+    :caption: Battery Status Type
+    :spec: l l
 
     ==============  ======
     Battery Status  Value
@@ -358,7 +434,14 @@ Greybus Battery Max Voltage Response
 
 The Greybus battery max voltage response contains the status byte and
 a 4-byte value that represents the maximum voltage of the battery
-being controlled, in µV.
+being controlled, in µV as defined in table
+:num:`table-battery-max-voltage-response`.
+
+.. figtable::
+    :nofig:
+    :label: table-battery-max-voltage-response
+    :caption: Battery Max Voltage Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -384,7 +467,14 @@ Greybus Battery Percent Capacity Response
 
 The Greybus battery capacity response contains the status byte and a
 4-byte value that represents the capacity of the battery being
-controlled, in percentage.
+controlled, in percentage as defined in table
+:num:`table-battery-percent-capacity-response`.
+
+.. figtable::
+    :nofig:
+    :label: table-battery-percent-capacity-response
+    :caption: Battery Percent Capacity Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -410,7 +500,14 @@ Greybus Battery Temperature Response
 
 The Greybus battery temperature response contains the status byte and
 a 4-byte value that represents the temperature of the battery being
-controlled, in ⅒℃.
+controlled, in ⅒℃ as defined in table
+:num:`table-battery-temp-response`.
+
+.. figtable::
+    :nofig:
+    :label: table-battery-temp-response
+    :caption: Battery Temperature Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -436,7 +533,14 @@ Greybus Battery Voltage Response
 
 The Greybus battery voltage response contains the status byte and a
 4-byte value that represents the voltage of the battery being
-controlled, in µV.
+controlled, in µV as defined in table
+:num:`table-battery-voltage-response`.
+
+.. figtable::
+    :nofig:
+    :label: table-battery-voltage-response
+    :caption: Battery Voltage Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -462,7 +566,14 @@ Greybus Battery Current Response
 
 The Greybus battery current response contains the status byte and a
 4-byte value that represents the current of the battery being
-controlled, in µA.
+controlled, in µA as defined in table
+:num:`table-battery-current-response`.
+
+.. figtable::
+    :nofig:
+    :label: table-battery-current-response
+    :caption: Battery Current Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -485,7 +596,14 @@ Greybus Battery Total Capacity Response
 """""""""""""""""""""""""""""""""""""""
 The Greybus battery total capacity response contains the status byte and a
 4-byte value that represents the total capacity of the battery being
-controlled, in mAh.
+controlled, in mAh as defined in table
+:num:`table-battery-total-capacity-response`.
+
+.. figtable::
+    :nofig:
+    :label: table-battery-total-capacity-response
+    :caption: Battery Total Capacity Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -508,7 +626,14 @@ Greybus Battery Shutdown Temperature Response
 """""""""""""""""""""""""""""""""""""""""""""
 The Greybus battery shutdown temperature response contains the status
 byte and a 4-byte value that represents the temperature at which the
-battery will shutdown.
+battery will shutdown as defined in table
+:num:`table-battery-shutdown-temp-response`.
+
+.. figtable::
+    :nofig:
+    :label: table-battery-shutdown-temp-response
+    :caption: Battery Shutdown Temperature Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -596,9 +721,16 @@ The operations in the Greybus NFC Protocol are:
 Greybus NFC Message Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This table describes the Greybus NFC Operation Types and their
-values. A message type consists of an Operation Type combined with a
-flag (0x80) indicating whether the operation is a request or a response.
+Table :num:`table-nfc-operation-type` describes the Greybus NFC
+operation types and their values. A message type consists of an
+operation type combined with a flag (0x80) indicating whether the
+operation is a request or a response.
+
+.. figtable::
+    :nofig:
+    :label: table-nfc-operation-type
+    :caption: NFC Operation Types
+    :spec: l l l
 
     ===========================  =============  ==============
     NFC Operation Type           Request Value  Response Value
@@ -626,10 +758,17 @@ Greybus NFC Protocol Version Response
 """""""""""""""""""""""""""""""""""""
 
 The Greybus NFC Protocol Version Response contains a status byte,
-followed by two 1-byte values. If the value of the status byte is
-non-zero, any other bytes in the response shall be ignored. A Greybus
-NFC Module adhering to the Protocol specified herein shall
+followed by two 1-byte values as defined in table
+:num:`table-nfs-protocol-version-response`. If the value of the status
+byte is non-zero, any other bytes in the response shall be ignored. A
+Greybus NFC Module adhering to the Protocol specified herein shall
 report major version |gb-major|, minor version |gb-minor|.
+
+.. figtable::
+    :nofig:
+    :label: table-nfc-protocol-version-response
+    :caption: NFC Protocol Version Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -650,7 +789,14 @@ Greybus NFC Send Packet Request
 """""""""""""""""""""""""""""""
 
 The Greybus NFC Send Packet Request contains a 4-byte size and
-a valid NFC NCI Packet of 'size' bytes.
+a valid NFC NCI Packet of 'size' bytes as defined in table
+:num:`table-nfc-send-packet-request`.
+
+.. figtable::
+    :nofig:
+    :label: table-nfc-send-packet-request
+    :caption: NFC Send Packet Request
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
@@ -662,7 +808,15 @@ a valid NFC NCI Packet of 'size' bytes.
 Greybus NFC Send Packet Response
 """"""""""""""""""""""""""""""""
 
-The Greybus NFC Send Packet Response contains only the status byte.
+Table :num:`table-nfc-send-packet-response` defines the Greybus
+NFC Send Packet response. The response contains only the status
+byte.
+
+.. figtable::
+    :nofig:
+    :label: table-nfc-send-packet-response
+    :caption: NFC Send Packet Response
+    :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
