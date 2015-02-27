@@ -294,7 +294,7 @@ defined in the sections :ref:`device-class-protocols` and
     Offset    Field           Size    Value       Description
     ========  ==============  ======  ==========  ===========================
     0         size            2       0x0007      Size of this descriptor record.
-    2         type            1       0x02        Type of the descriptor (CPort)
+    2         type            1       0x04        Type of the descriptor (CPort)
     3         interface       1       ID          Interface ID this CPort is associated with
     4         id              2       ID          Id (destination address) of the CPort
     6         protocol        1       Number      protocol is defined in Table :num:`table-cport-protocol`
