@@ -12,8 +12,9 @@ This allows operations to complete asynchronously, so multiple
 operations can be "in flight" between the AP and a |unipro|-attached
 adapter at once.
 
-Each response begins with a status byte, which communicates whether
-any error occurred in delivering or processing a requested operation.
+Each response includes a status byte in its message header, which
+communicates whether any error occurred in delivering or processing
+a requested operation.
 If the operation completed successfully the status value is 0.
 Otherwise the reason it was not successful is conveyed by one of
 the positive values defined in the following table.

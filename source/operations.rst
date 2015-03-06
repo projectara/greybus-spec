@@ -25,9 +25,8 @@ response. Both messages contain a simple header that includes the type
 of the operation and size of the message. In addition, each operation has
 a unique id, and both messages in an operation contain this value so
 the response can be associated with the request. Finally, all
-responses contain at least one byte; the first byte of a response
-communicates status of the operation, either success or a reason for a
-failure.
+responses contain a byte in message header to communicate status of
+the operation--either success or a reason for a failure.
 
 Operations are performed over Greybus Connections.  A connection is a
 communication path between two modules.  Each end of a connection is a
@@ -62,9 +61,9 @@ Operation Messages
 
 Operation request messages and operation response messages have the
 same basic format. Each begins with a short header, and is followed by
-payload data.  In the case of a response message, the payload is
-always at least one byte (the status); request messages can have
-zero-byte payload.
+payload data.  A response message records an additional status value
+in the header, and both requests and responses can have a zero-byte
+payload.
 
 Operation Message Header
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -84,6 +83,7 @@ operation message header.
     0         size            2       Number          Size of this operation message
     2         id              2       ID              Requestor-supplied unique request identifier
     4         type            1       Number          Type of Greybus operation (protocol-specific)
+    5         status          1       Number          Operation result (response message only)
     ========  ==============  ======  ==========      ===========================
 
 The *size* includes the operation message header as well as any
