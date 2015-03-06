@@ -24,7 +24,7 @@ Vibrator Protocol
 This section defines the operations used on a connection implementing
 the Greybus vibrator protocol.  This protocol allows an AP to manage
 a vibrator device present on a module.  The protocol is very simple,
-and maps almost directly to the userspace HAL vibrator interface.
+and maps almost directly to the Android HAL vibrator interface.
 
 The operations in the Greybus vibrator protocol are:
 
@@ -76,12 +76,12 @@ Greybus Vibrator Protocol Version Request
 """""""""""""""""""""""""""""""""""""""""
 
 The Greybus vibrator protocol version request contains no data beyond
-the Greybus vibrator message header.
+the message header.
 
 Greybus Vibrator Protocol Version Response
 """"""""""""""""""""""""""""""""""""""""""
 
-The Greybus vibrator protcol version response contains a status byte,
+The Greybus vibrator protocol version response contains a status byte,
 followed by two one-byte values as defined in table
 :num:`table-vibrator-protocol-version-response`. If the value of the
 status byte is non-zero, any other bytes in the response shall be
@@ -155,8 +155,8 @@ vibrator be turned off as soon as possible.
 Greybus Vibrator Off Control Request
 """"""""""""""""""""""""""""""""""""
 
-The Greybus Vibrator off request contains no data beyond the Greybus
-Vibrator message header.
+The Greybus Vibrator off request contains no data beyond the
+message header.
 
 Greybus Vibrator Off Control Response
 """""""""""""""""""""""""""""""""""""
@@ -200,7 +200,7 @@ Conceptually, the operations in the Greybus battery protocol are:
 
 .. c:function:: int get_status(u16 *status);
 
-    Returns a value indicating the current status of the battery.
+    Returns a value indicating the charging status of the battery.
 
 .. c:function:: int get_max_voltage(u32 *voltage);
 
@@ -217,12 +217,12 @@ Conceptually, the operations in the Greybus battery protocol are:
 
 .. c:function:: int get_voltage(u32 *voltage);
 
-    Returns a value indicating the current voltage of the battery.
+    Returns a value indicating the voltage level of the battery.
 
 .. c:function:: int get_current(u32 *current);
 
-    Returns a value indicating the current current supplied or drawn
-    of the battery.
+    Returns a value indicating the current being supplied or drawn
+    from the battery.
 
 .. c:function:: int get_total_capacity(u32 *capacity);
 
@@ -230,7 +230,8 @@ Conceptually, the operations in the Greybus battery protocol are:
 
 .. c:function:: int get_shutdown_temperature(u32 *temperature);
 
-    Returns a value indicating the total capacity in mAh of the battery.
+    Returns a value indicating the temperature at which a battery
+    will automatically shut down.
 
 Greybus Battery Message Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -274,12 +275,12 @@ Greybus Battery Protocol Version Request
 """"""""""""""""""""""""""""""""""""""""
 
 The Greybus battery protocol version request contains no data beyond
-the Greybus battery message header.
+the message header.
 
 Greybus Battery Protocol Version Response
 """""""""""""""""""""""""""""""""""""""""
 
-The Greybus battery protcol version response contains a status byte,
+The Greybus battery protocol version response contains a status byte,
 followed by two one-byte values as defined in table
 :num:`table-battery-protocol-version-response`. If the value of the
 status byte is non-zero, any other bytes in the response shall be
@@ -310,8 +311,8 @@ adapter.
 Greybus Battery Technology Request
 """"""""""""""""""""""""""""""""""
 
-The Greybus battery functionality request contains no data beyond the
-battery message header.
+The Greybus battery technology request contains no data beyond the
+message header.
 
 Greybus Battery Technology Response
 """""""""""""""""""""""""""""""""""
@@ -427,7 +428,7 @@ Greybus Battery Max Voltage Request
 """""""""""""""""""""""""""""""""""
 
 The Greybus battery max voltage request contains no data beyond the
-battery message header.
+message header.
 
 Greybus Battery Max Voltage Response
 """"""""""""""""""""""""""""""""""""
@@ -460,7 +461,7 @@ Greybus Battery Percent Capacity Request
 """"""""""""""""""""""""""""""""""""""""
 
 The Greybus battery capacity request contains no data beyond the
-battery message header.
+message header.
 
 Greybus Battery Percent Capacity Response
 """""""""""""""""""""""""""""""""""""""""
@@ -493,7 +494,7 @@ Greybus Battery Temperature Request
 """""""""""""""""""""""""""""""""""
 
 The Greybus battery temperature request contains no data beyond the
-battery message header.
+message header.
 
 Greybus Battery Temperature Response
 """"""""""""""""""""""""""""""""""""
@@ -520,13 +521,13 @@ Greybus Battery Voltage Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus battery Voltage operation allows the AP to determine the
-current voltage of the battery.
+voltage being supplied by the battery.
 
 Greybus Battery Voltage Request
 """""""""""""""""""""""""""""""
 
 The Greybus battery voltage request contains no data beyond the
-battery message header.
+message header.
 
 Greybus Battery Voltage Response
 """"""""""""""""""""""""""""""""
@@ -559,7 +560,7 @@ Greybus Battery Current Request
 """""""""""""""""""""""""""""""
 
 The Greybus battery current request contains no data beyond the
-battery message header.
+message header.
 
 Greybus Battery Current Response
 """"""""""""""""""""""""""""""""
@@ -590,7 +591,7 @@ the total capacity of the battery.
 Greybus Battery Total Capacity Request
 """"""""""""""""""""""""""""""""""""""
 The Greybus battery total capacity request contains no data beyond the
-battery message header.
+message header.
 
 Greybus Battery Total Capacity Response
 """""""""""""""""""""""""""""""""""""""
@@ -615,12 +616,13 @@ controlled, in mAh as defined in table
 Greybus Battery Shutdown Temperature Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The Greybus battery shutdown temperature operation allows the AP to
-determine the total capacity of the battery.
+determine the battery temperature at which the battery will shut
+itself down.
 
 Greybus Battery Shutdown Temperature Request
 """"""""""""""""""""""""""""""""""""""""""""
 The Greybus battery shutdown temperature request contains no data beyond
-the battery message header.
+the message header.
 
 Greybus Battery Shutdown Temperature Response
 """""""""""""""""""""""""""""""""""""""""""""
@@ -752,7 +754,7 @@ Greybus NFC Protocol Version Request
 """"""""""""""""""""""""""""""""""""
 
 The Greybus NFC Protocol Version Request contains no data beyond
-the Greybus NFC message header.
+the message header.
 
 Greybus NFC Protocol Version Response
 """""""""""""""""""""""""""""""""""""

@@ -58,7 +58,7 @@ Values marked *Reserved for protocol use* are to be used by the
 individual protocols as defined in the :ref:`device-class-protocols` and
 :ref:`bridged-phy-protocols` sections below.
 
-The *GB_OP_INTERNAL* should never be used in a response message. It
+Note that *GB_OP_INTERNAL* should never be used in a response message. It
 is reserved for internal use by the Greybus application stack only.
 
 All protocols defined herein are subject to the
@@ -79,10 +79,9 @@ the protocol's major version shall change.
 Two modules may implement different versions of a protocol, and as a
 result they shall negotiate a common version of the protocol to
 use. This is done by each side exchanging information about the
-version of the protocol it supports at the time an initial handshake
-between module interfaces is performed (for the control protocol), or
-when a connection between CPorts is established (for all other
-protocols).  The version of a particular protocol advertised by a
+version of the protocol it supports at the time a connection
+between module interfaces is set up.
+The version of a particular protocol advertised by a
 module is the same as the version of the document that defines the
 protocol (so for protocols defined herein, the version is |gb-major|.\
 |gb-minor|).  In the future, if the protocol specifications are removed from

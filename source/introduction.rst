@@ -32,7 +32,7 @@ Greybus Specification; its definitions are incorporated here by
 reference.
 
 The Greybus Specification is included within the MDK; its purpose is
-to define software interfaces whose data and control flow crosses
+to define software interfaces whose data and control flow cross
 module boundaries. This is required to ensure software compatibility
 and interoperability between modules and the endoskeleton.
 
@@ -52,7 +52,7 @@ meet these needs.
 In addition to |unipro|, Project Ara also specifies a small number of
 other interfaces between modules and the endoskeleton. These include a
 power bus, signals which enable hotplug and power management
-functions, and interface pins for modules which emit radio
+functions, and interface pins for modules which emit and receive radio
 signals. The Greybus Specification also defines the behavior of the
 system's software with respect to these interfaces.
 
@@ -66,7 +66,7 @@ communication is not supported.
 
 Project Ara presently requires that exactly one application processor
 (AP) is present on the system for storing user data and executing
-applications. The module which contains the AP is the *AP module*; the
+applications. The module that contains the AP is the *AP module*; the
 Greybus specification defines a :ref:`control-protocol` to allow the
 AP module to accomplish its tasks.
 
@@ -82,8 +82,8 @@ The main functional chipsets on modules may communicate via a native
 intermediate between these chipsets and the |unipro| network. In order
 to provide a transition path for chipsets without native UniPro
 interfaces, the Greybus Specification defines a variety of
-:ref`bridged-phy-protocols`, which allow module developers to expose
-these existing protocols to the network. In addition to providing a
+:ref:`bridged-phy-protocols`, which allow module developers to expose
+these existing protocols to the network. In addition to providing an
 "on-ramp" to the platform, this also allows the implementation of
 modules which require communication that does not comply with a device
 class protocol.

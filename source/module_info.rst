@@ -22,7 +22,7 @@ establish communications with other modules on the |unipro| network.
 This information is provided via a Manifest, which describes
 components present within the module that are accessible via |unipro|.
 The Manifest is a data structure, which includes a set of
-Descriptors which present a functional description of the module.
+Descriptors, that presents a functional description of the module.
 Together, these Descriptors define the module's capabilities and means of
 communication via |unipro| from the perspective of the application layer
 and above.
@@ -56,17 +56,17 @@ following general requirements:
 Manifest
 --------
 
-The Manifest is a contiguous buffer that includes a
+The Manifest is a contiguous block of data that includes a
 Manifest Header and a set of Descriptors.  When read, a
 Manifest is transferred in its entirety.  This allows the module to be
-described to the host all at once, alleviating the need for multiple
+described to the AP all at once, alleviating the need for multiple
 communication messages during the enumeration phase of the module.
 
 Manifest Header
 ^^^^^^^^^^^^^^^
 
 The Manifest Header is present at the beginning of the Manifest
-and defines its size in bytes and the version of the Greybus protocol
+and defines the size of the manifest and the version of the Greybus protocol
 with which the Manifest complies.
 
 .. figtable::
@@ -88,16 +88,18 @@ The values of version_major and version_minor values shall refer to
 the highest version of this document (currently |gb-major|.\
 |gb-minor|) with which the format complies.
 
-Minor versions increment with additions to the existing descriptor
-definition, in such a way that reading of the Manifest by any
-protocol handler that understands the version_major should not fail. A
-changed version_major indicates major differences in the
-Manifest format, and it is not expected that parsers of older major
-versions would be able to understand newer ones.
+Minor versions increment with modifications to the Greybus
+definition, in such a way that any protocol handler that supports
+the version_major can correctly interpret a Manifest in the
+modified format.
+A changed version_major indicates major differences in the
+Manifest format. It is not expected that a parser can properly
+interpret a Manifest whose version_major is greater than
+the version_major supported by the parser.
 
-All Manifest parsers shall be able to interpret manifests
-formatted using older Greybus versions, such that they still work
-properly (i.e. backwards compatibility is required).
+All Manifest parsers shall be able to interpret manifests formatted
+using older (lower numbered) Greybus versions, such that they still
+work properly (i.e. backwards compatibility is required).
 
 The layout for the Manifest Header can be seen in Table
 :num:`table-manifest-header`.
@@ -107,9 +109,8 @@ Descriptors
 
 Following the Manifest Header is one or more Descriptors.  Each
 Descriptor is composed of a Descriptor Header followed by Descriptor
-Data. The format of the Descriptor header can be seen in Table
-:num:`table-descriptor-header` and depends on the type of the
-descriptor.
+Data. The format of the Descriptor Header can be seen in Table
+:num:`table-descriptor-header`.
 
 .. figtable::
     :nofig:
@@ -121,7 +122,7 @@ descriptor.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        size            2       Number          Size of this descriptor record.
+    0        size            2       Number          Size of this descriptor
     2        type            1       Number          :ref:`descriptor-type`
     =======  ==============  ======  ==========      ===========================
 
@@ -170,8 +171,8 @@ module descriptor as described in Table :num:`table-module-descriptor`.
     =======  =================  ======  ==========  ==============================
     Offset   Field              Size    Value       Description
     =======  =================  ======  ==========  ==============================
-    0        size               2       0x0013      Size of this descriptor record.
-    2        type               2       0x01        Type of the descriptor (Module)
+    0        size               2       0x0013      Size of this descriptor
+    2        type               1       0x01        Type of the descriptor (Module)
     3        vendor             2       ID          Module vendor id
     5        product            2       ID          Module product id
     7        vendor_string_id   1       ID          String id for the vendor name
@@ -212,8 +213,8 @@ this field.
 String Descriptor
 ^^^^^^^^^^^^^^^^^
 
-A string descriptor provides a human-readable form of a string for a
-specific value, like a vendor or product string.  Any string that is
+A string descriptor provides a human-readable string for a
+specific value, such as a vendor or product string.  Any string that is
 not an even multiple of 4 bytes in length shall be padded out to a
 4-byte boundary with 0x00 values.  Strings consist of UTF-8 characters
 and are not required to be zero terminated. A string descriptor shall
@@ -231,14 +232,14 @@ descriptor can be found in Table :num:`table-string-descriptor`.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        size            2       Number          Size of this descriptor record.
+    0        size            2       Number          Size of this descriptor
     2        type            1       0x02            Type of the descriptor (String)
     3        length          1       Number          Length of the string in bytes
     4        id              1       ID              String id for this descriptor
     5        string          X       UTF-8           Characters for the string
     =======  ==============  ======  ==========      ===========================
 
-The *id* field can not be 0x00, as that is an invalid String ID value.
+The *id* field shall not be 0x00, as that is an invalid String ID value.
 
 The *length* field excludes any trailing padding bytes in the descriptor.
 
@@ -265,7 +266,7 @@ associated with.  The interface descriptor is defined in Table
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        size            2       0x0004          Size of this descriptor record.
+    0        size            2       0x0004          Size of this descriptor
     2        type            1       0x03            Type of the descriptor (Interface)
     3        id              1       ID              Module-unique ID for this interface
     =======  ==============  ======  ==========      ===========================
@@ -293,7 +294,7 @@ defined in the sections :ref:`device-class-protocols` and
     ========  ==============  ======  ==========  ===========================
     Offset    Field           Size    Value       Description
     ========  ==============  ======  ==========  ===========================
-    0         size            2       0x0007      Size of this descriptor record.
+    0         size            2       0x0007      Size of this descriptor
     2         type            1       0x04        Type of the descriptor (CPort)
     3         interface       1       ID          Interface ID this CPort is associated with
     4         id              2       ID          Id (destination address) of the CPort

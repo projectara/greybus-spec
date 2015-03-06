@@ -985,15 +985,15 @@ masters.
     ===============================  ======================================================  ========================
     Symbol                           Brief Description                                       Mask Value
     ===============================  ======================================================  ========================
-    GB_SPI_MODE_CPHA                 Clock phase (0: sample on first clock, 1: on second)    0x00000001
-    GB_SPI_MODE_CPOL                 Clock polarity (0: clock low on idle, 1: high on idle)  0x00000002
-    GB_SPI_MODE_CS_HIGH              Chip select active high                                 0x00000004
-    GB_SPI_MODE_LSB_FIRST            Per-word bits-on-wire                                   0x00000008
-    GB_SPI_MODE_3WIRE                SI/SO signals shared                                    0x00000010
-    GB_SPI_MODE_LOOP                 Loopback mode                                           0x00000020
-    GB_SPI_MODE_NO_CS                One dev/bus, no chip select                             0x00000040
-    GB_SPI_MODE_READY                Slave pulls low to pause                                0x00000080
-    |_|                              (All other values reserved)                             0x00000100..0x80000000
+    GB_SPI_MODE_CPHA                 Clock phase (0: sample on first clock, 1: on second)    0x0001
+    GB_SPI_MODE_CPOL                 Clock polarity (0: clock low on idle, 1: high on idle)  0x0002
+    GB_SPI_MODE_CS_HIGH              Chip select active high                                 0x0004
+    GB_SPI_MODE_LSB_FIRST            Per-word bits-on-wire                                   0x0008
+    GB_SPI_MODE_3WIRE                SI/SO signals shared                                    0x0010
+    GB_SPI_MODE_LOOP                 Loopback mode                                           0x0020
+    GB_SPI_MODE_NO_CS                One dev/bus, no chip select                             0x0040
+    GB_SPI_MODE_READY                Slave pulls low to pause                                0x0080
+    |_|                              (All other mask values reserved)                        0x0100..0x8000
     ===============================  ======================================================  ========================
 
 Greybus SPI Protocol Flags Operation
@@ -1044,10 +1044,10 @@ defined for Greybus SPI masters.
     ===============================  ===================================================  ========================
     Symbol                           Brief Description                                    Mask Value
     ===============================  ===================================================  ========================
-    GB_SPI_FLAG_HALF_DUPLEX          Can't do full duplex                                 0x00000001
-    GB_SPI_FLAG_NO_RX                Can't do buffer read                                 0x00000002
-    GB_SPI_FLAG_NO_TX                Can't do buffer write                                0x00000004
-    |_|                              (All other values reserved)                          0x00000008..0x80000000
+    GB_SPI_FLAG_HALF_DUPLEX          Can't do full duplex                                 0x0001
+    GB_SPI_FLAG_NO_RX                Can't do buffer read                                 0x0002
+    GB_SPI_FLAG_NO_TX                Can't do buffer write                                0x0004
+    |_|                              (All other flag values reserved)                     0x0008..0x8000
     ===============================  ===================================================  ========================
 
 Greybus SPI Protocol Bits Per Word Mask Operation
@@ -1129,14 +1129,14 @@ Greybus SPI Transfer Operation
 
 The Greybus SPI transfer operation requests that the SPI master
 perform a SPI transaction. The operation consists of a set of one or
-more gb_spi_transfer descriptors to be performed by the SPI
-master. The transfer operation request includes data for each
-:ref:`gb_spi_transfer <gb_spi_transfer>` descriptor involving a write
-operation.  The data shall be concatenated without padding, and shall
-be sent immediately following the gb_spi_transfer descriptors.  The
-transfer operation response includes data for each gb_spi_transfer
-descriptor involving a read operation, with all read data transferred
-contiguously.
+more gb_spi_transfer descriptors, which define data transfers to be
+performed by the SPI master. The transfer operation request includes
+data for each :ref:`gb_spi_transfer <gb_spi_transfer>` descriptor
+involving a write operation.  The data shall be sent immediately
+following the gb_spi_transfer descriptors (with no intervening pad
+bytes).  The transfer operation response includes data for each
+gb_spi_transfer descriptor involving a read operation, with all read
+data transferred contiguously.
 
 Greybus SPI Transfer Request
 """"""""""""""""""""""""""""
@@ -1238,11 +1238,12 @@ conceptually:
 .. c:function:: int send_data(u16 size, u8 *data);
 
     Requests that the UART device begin transmitting characters. One
-    or more bytes to be transmitted shall be supplied.
+    or more bytes to be transmitted shall be supplied by the sender.
 
-.. c:function:: int receive_data(u16 size, u8 *data);
+.. c:function:: int receive_data(u16 *size, u8 *data);
 
-    Receive data from the UART.  One or more bytes shall be supplied.
+    Receive data from the UART.  The indicated number of bytes has
+    been received.
 
 .. c:function:: int set_line_coding(u32 rate, u8 format, u8 parity, u8 data);
 
@@ -1337,7 +1338,7 @@ report major version |gb-major|, minor version |gb-minor|.
 Greybus UART Send Data Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus UART start transmission operation requests that the UART
+The Greybus UART Send Data operation requests that the UART
 device begin transmission of characters.  One or more characters to be
 transmitted may optionally be provided with this request.
 
@@ -2160,15 +2161,16 @@ similar hardware associated with it.
 
 I2S Management CPorts, I2S Transmitter CPorts, and I2S Receiver CPorts
 have unique CPort Protocol values in the `protocol` field of the CPort
-Descriptor in the Manifest Data.
+Descriptor in an interface Manifest.
 
 An *I2S Transmitter Bundle* is an I2S Bundle containing at least one
 I2S Transmitter CPort.  Similarly for an *I2S Receiver Bundle*.
 The terms *Transmitter* and *Receiver* are from the perspective of the
 |unipro| network.  So an I2S Transmitter Bundle is an I2S Bundle capable
-of sending audio data over the |unipro| network even when that I2S
-Bundle is a *receiver* on a local low-level I2S interface.  An I2S
-Bundle may be both an I2S Transmitter Bundle and an I2S Receiver Bundle.
+of sending audio data into the |unipro| network, while an I2S
+Receiver Bundle is capable of receiving a data from a local
+low-level I2S interface.  An I2S Bundle may be both an I2S
+Transmitter Bundle and an I2S Receiver Bundle.
 
 As a special case, I2S Management CPorts in an AP Module that are used
 to manage I2S Bundles may exist apart from an I2S Bundle.  This shall
@@ -2187,7 +2189,9 @@ There are two separate protocols contained within the I2S Protocols
 Specification.  The first protocol is the
 :ref:`i2s-management-protocol`, which is used to manage audio streams.
 The second protocol is the :ref:`i2s-data-protocol` and is used by I2S
-Modules to stream audio data to one another.
+Modules to stream audio data to one another.  Because the send and
+receive side of the data protocol play different roles, each has
+a distinct protocol identifier.
 
 The I2S Management Protocol is used over an *I2S Management Connection*
 which connects two I2S Management CPorts.  At least one of the I2S
@@ -2201,7 +2205,7 @@ Audio Data Attributes and Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 For audio data to be streamed and delivered correctly, the I2S Bundles
-at either end of an I2S Data Connection shall be configured similarly.
+at both ends of an I2S Data Connection shall be configured similarly.
 Note that it is possible for I2S Data Connections in an overall audio
 stream to have their associated I2S Bundles configured differently.
 For example, an intermediate I2S Module that is a sampling rate
@@ -2228,9 +2232,9 @@ on the Configuration.  These constraints are:
 
 *   the Configuration (i.e., sample frequency, number of channels
     per sample, etc.) of an I2S Bundle may not change while there is
-    an active I2S Transmitter or Receiver CPorts in the I2S Bundle;
-*   the number of audio data bits for an individual channel shall be
-    an integer multiple of eight;
+    an active I2S Transmitter or Receiver CPort in the I2S Bundle;
+*   the number of audio data bits for a sample on an individual channel
+    shall be an integer multiple of eight;
 *   the number of audio data bits for each channel shall be equal;
 *   as per the USB Audio Specification, the number of bytes of audio
     data shall be one, two, three, or four;
@@ -2245,8 +2249,8 @@ data attributes are:
 *   the sample frequency which is the number of audio sample taken
     per second;
 *   the number of audio channels per sample;
-*   the number of bytes of audio channel data;
-*   the bytes order of multi-byte audio channel data;
+*   the number of bytes in a sample of audio channel data;
+*   the byte order of multi-byte audio channel data;
 *   the spatial location of the audio channels.
 
 The spatial location of the audio channels is defined by the
@@ -2300,7 +2304,7 @@ Low-level Interface Protocols is added.  The current I2S Low-level
 Attributes are:
 
 *   the Low-level Interface Protocol;
-*   the I2S Bundle's role with respect to the Bit Clock (BCLK);
+*   the I2S Bundle's role (master or slave) with respect to the Bit Clock (BCLK);
 *   the I2S Bundle's role with respect to the Word Clock (WCLK);
 *   the polarity of the WCLK;
 *   the BCLK edge that the WCLK changes on;
@@ -2634,7 +2638,7 @@ otherwise, it shall not report events.
 The *halted* event indicates that the I2S Bundle is unable to
 continue streaming.  This event shall be preceded by another
 event indicating why the I2S Bundle halted.  Once an I2S Bundle
-reports the halted event it shall deactivate all active I2S
+reports the halted event, the AP shall deactivate all active I2S
 Transmitter and Receiver CPorts.
 
 In order to prevent flooding the AP Module with events,
@@ -2779,7 +2783,7 @@ Conceptually, the I2S Management Protocol Operations are:
     Requests the I2S Bundle activate the specified CPort.
 
     When `cport` refers to an I2S Transmitter CPort,
-    the I2S Bundle shall stream audio data through that CPort.
+    the I2S Bundle shall send audio data through that CPort.
     When `cport` refers to an I2S Receiver CPort,
     the I2S Bundle shall forward the audio data from the CPort
     to the device or function on whose behalf it is receiving

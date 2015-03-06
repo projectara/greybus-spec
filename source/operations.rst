@@ -10,7 +10,7 @@ the sender to know whether the effects of sending a message were what
 was expected. For example, a request sent to a |unipro| switch
 controller requesting a reconfiguration of the routing table could
 fail, and proceeding as if a failure had not occurred in this case
-leads to undefined (and dangerous) behavior.  Similarly, the AP module
+leads to undefined (and possibly dangerous) behavior.  Similarly, the AP module
 likely needs to retrieve information from other modules; this
 requires that a message requesting information be paired with a
 returned message containing the information requested.
@@ -24,7 +24,7 @@ messages--one containing a request, and the other containing a
 response. Both messages contain a simple header that includes the type
 of the operation and size of the message. In addition, each operation has
 a unique id, and both messages in an operation contain this value so
-the response can be associated with the request. Finally, all
+a response can be associated with its matching request. Finally, all
 responses contain a byte in message header to communicate status of
 the operation--either success or a reason for a failure.
 
@@ -40,7 +40,7 @@ in particular, for operations).
 Each CPort in a Greybus module has associated with it a protocol.  The
 protocol dictates the way the CPort interprets incoming operation
 messages.  Stated another way, the meaning of the operation type found
-in a request message depends on the protocol connection uses.
+in a request message depends on which protocol the connection uses.
 Operation type 5 might mean "receive data" in one protocol, while
 operation 5 might mean "go to sleep" in another. When the AP
 establishes a connection with a CPort in another module, that
@@ -49,8 +49,8 @@ connection uses the CPort's advertised protocol.
 The Greybus Operations mechanism forms a base layer on which other
 protocols are built. Protocols define the format of request messages,
 their expected response data, and the effect of the request on state
-in one or both modules. Users of a protocol can rely on Greybus
-getting the operation request message to its intended target, and
+in one or both modules. Users of a protocol can rely on the Greybus
+core getting the operation request message to its intended target, and
 transferring the operation status and any other data back. In the
 explanations that follow, we refer to the interface through which a
 request operation is sent as the source, and the interface from which
@@ -62,7 +62,7 @@ Operation Messages
 Operation request messages and operation response messages have the
 same basic format. Each begins with a short header, and is followed by
 payload data.  A response message records an additional status value
-in the header, and both requests and responses can have a zero-byte
+in the header, and both requests and responses may have a zero-byte
 payload.
 
 Operation Message Header
@@ -90,7 +90,8 @@ The *size* includes the operation message header as well as any
 payload that follows it. As mentioned earlier, the meaning of a type
 value depends on the protocol in use on the connection carrying the
 message. Only 127 operations are available for a given protocol,
-0x01..0x7f. Operation 0x00 is reserved as an invalid value.  The high
+0x01..0x7f. Operation 0x00 is reserved as an invalid value for all
+protocols.  The high
 bit (0x80) of an operation type is used as a flag that distinguishes a
 request operation from its response.  For requests, this bit is 0, for
 responses, it is 1.  For example the request and response messages
@@ -99,6 +100,7 @@ fields.  The id allows many operations to be "in flight" on a
 connection at once.
 
 A connection protocol is defined by describing the format of the
+operations supported by the protocol.  Each operation specifies the
 payload portions of the request and response messages used for the
 protocol, along with all actions or state changes that take place as a
 result of the operation.
