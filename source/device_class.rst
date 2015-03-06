@@ -759,7 +759,7 @@ Greybus NFC Protocol Version Response
 
 The Greybus NFC Protocol Version Response contains a status byte,
 followed by two 1-byte values as defined in table
-:num:`table-nfs-protocol-version-response`. If the value of the status
+:num:`table-nfc-protocol-version-response`. If the value of the status
 byte is non-zero, any other bytes in the response shall be ignored. A
 Greybus NFC Module adhering to the Protocol specified herein shall
 report major version |gb-major|, minor version |gb-minor|.

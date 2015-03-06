@@ -2853,7 +2853,7 @@ or latched.  This is referred to as the `offset`.
 Greybus I2S Byte-Order Bit Masks
 """"""""""""""""""""""""""""""""
 
-Table :num:`table-i2s-byte-order-bits` defines the bit masks which
+Table :num:`table-i2s-byte-order-bit-mask` defines the bit masks which
 specify the set of supported I2S byte orders.  These includes a *Not
 Applicable (NA)* value used for single-byte audio data.
 
