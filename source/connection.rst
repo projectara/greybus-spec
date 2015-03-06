@@ -6,8 +6,8 @@ Connection Protocols
 The following sections define the request and response message formats
 for all operations for specific connection protocols. Requests are
 most often (but not always) initiated by the AP. Each request has a
-unique identifier, supplied by the requestor, and each response will
-include the identifier of the request with which it is associated.
+unique identifier, supplied by the requestor, and each response
+includes the identifier of the request with which it is associated.
 This allows operations to complete asynchronously, so multiple
 operations can be "in flight" between the AP and a |unipro|-attached
 adapter at once.
@@ -15,7 +15,7 @@ adapter at once.
 Each response begins with a status byte, which communicates whether
 any error occurred in delivering or processing a requested operation.
 If the operation completed successfully the status value is 0.
-Otherwise the reason it was not successful will be conveyed by one of
+Otherwise the reason it was not successful is conveyed by one of
 the positive values defined in the following table.
 
 .. _greybus-protocol-error-codes:
@@ -71,9 +71,9 @@ major and minor. A protocol definition can evolve to add new
 capabilities, and as it does so, its version changes. If existing (or
 old) protocol handling code which complies with this specification can
 function properly with the new feature in place, only the minor
-version of the protocol will change. Any time a protocol changes in a
+version of the protocol shall change. Any time a protocol changes in a
 way that requires the handling code be updated to function properly,
-the protocol's major version will change.
+the protocol's major version shall change.
 
 Two modules may implement different versions of a protocol, and as a
 result they shall negotiate a common version of the protocol to
@@ -94,7 +94,7 @@ request. The request destination compares that version with the
 (greatest) version of the protocol it supports.  The version that is the
 largest common version number of the protocol sent by both sides shall
 be the version that is to be used in communication between the devices.
-This chosen version will be returned back as a response of the
-request.  As a consequence of this, protocol handlers must be capable of
+This chosen version is returned back as a response of the
+request.  As a consequence of this, protocol handlers shall be capable of
 handling all prior versions of the protocol.
 

@@ -15,7 +15,7 @@ to be *non-device class conformant*.
 USB Protocol
 ------------
 
-We will support bulk, control, and interrupt transfers, but not
+We support bulk, control, and interrupt transfers, but not
 isochronous at this point in time.
 
 Details TBD.
@@ -622,7 +622,7 @@ Greybus GPIO IRQ Type Bits
 Table :num:`table-gpio-irq-type-bits` describes the defined interrupt
 trigger type bit values defined for Greybus GPIO IRQ chips. These values
 are taken directly from the <linux/interrupt.h> header file. Only a
-single trigger type is valid, a mask of two or more values will result
+single trigger type is valid, a mask of two or more values results
 in a *GB_OP_INVALID* response.
 
 .. figtable::
@@ -1190,8 +1190,8 @@ transfer request.
     4+12*(N+1)     data            ...       Data                      Data for all the write transfers
     ==========     ==============  ======    ======================    ===========================
 
-Any data to be written will follow the last gb_spi_transfer descriptor. Data for
-the first write gb_spi_transfer descriptor in the array will immediately follow
+Any data to be written follows the last gb_spi_transfer descriptor. Data for
+the first write gb_spi_transfer descriptor in the array immediately follows
 the last gb_spi_transfer descriptor in the array, and no padding shall be
 inserted between data sent for distinct SPI gb_spi_transfer descriptors.
 
@@ -1238,11 +1238,11 @@ conceptually:
 .. c:function:: int send_data(u16 size, u8 *data);
 
     Requests that the UART device begin transmitting characters. One
-    or more bytes to be transmitted will be supplied.
+    or more bytes to be transmitted shall be supplied.
 
 .. c:function:: int receive_data(u16 size, u8 *data);
 
-    Receive data from the UART.  One or more bytes will be supplied.
+    Receive data from the UART.  One or more bytes shall be supplied.
 
 .. c:function:: int set_line_coding(u32 rate, u8 format, u8 parity, u8 data);
 
@@ -1759,7 +1759,7 @@ Greybus PWM Protocol Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 All operations sent to a PWM controller are contained within a Greybus
-PWM request message. Every operation request will result in a response
+PWM request message. Every operation request results in a response
 from the PWM controller, also taking the form of a PWM controller
 message.  The request and response messages for each PWM operation are
 defined below.
@@ -2714,7 +2714,7 @@ the :ref:`i2s-management-protocol`:
     and I2S Bundles used for the I2S Management Connections.
 
 When multiple I2S Data Connections are used in an audio stream,
-the AP Module must ensure that the selected configuration satisfies
+the AP Module shall ensure that the selected configuration satisfies
 the constraints of all the I2S Bundles, intermediate modules,
 and non-|unipro| devices involved.
 
@@ -3808,10 +3808,10 @@ Greybus I2C Transfer Operation
 The Greybus I2C transfer operation requests that the I2C adapter
 perform an I2C transaction. The operation consists of a set of one or
 more "I2C ops" to be performed by the I2C adapter. The transfer
-operation request will include data for each I2C op involving a write
-operation.  The data will be concatenated (without padding) and will
-be be sent immediately after the set of I2C op descriptors. The
-transfer operation response will include data for each I2C op
+operation request includes data for each I2C op involving a write
+operation.  The data is concatenated (without padding) and is
+sent immediately after the set of I2C op descriptors. The
+transfer operation response includes data for each I2C op
 involving a read operation, with all read data transferred
 contiguously.
 
@@ -3889,8 +3889,8 @@ transfer request.
     ...          ...             ...      Data             Data for last write op on the transfer
     ===========  ==============  =======  ==============   ===================================
 
-Any data to be written will follow the last op descriptor.  Data for
-the first write op in the array will immediately follow the last op in
+Any data to be written follows the last op descriptor.  Data for
+the first write op in the array immediately follows the last op in
 the array, and no padding shall be inserted between data sent for
 distinct I2C ops.
 

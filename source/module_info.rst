@@ -96,7 +96,7 @@ Manifest format, and it is not expected that parsers of older major
 versions would be able to understand newer ones.
 
 All Module Manifest parsers shall be able to interpret manifests
-formatted using older Greybus versions, such that they will still work
+formatted using older Greybus versions, such that they still work
 properly (i.e. backwards compatibility is required).
 
 The layout for the Manifest Header can be seen in Table
@@ -202,7 +202,7 @@ The *unique_id* field is an 8 byte Unique ID that is written into each
 Greybus compliant chip during manufacturing. Google manages the Unique
 IDs, providing each manufacturer with the means to generate compliant
 Unique IDs for their products. In a module that contains multiple
-interfaces, there will be more than one hardware Unique ID
+interfaces, there is more than one hardware Unique ID
 available. It is the responsibility of the module designer to
 designate one primary interface and expose that primary Unique ID in
 this field.
@@ -306,7 +306,7 @@ defined in the sections :ref:`device-class-protocols` and
 
 The *id* field is the CPort identifier used by other modules to direct
 traffic to this CPort. The IDs for CPorts using the same interface
-must be unique. Certain low-numbered CPort identifiers (such as the
+shall be unique. Certain low-numbered CPort identifiers (such as the
 control CPort) are reserved. Implementors shall assign CPorts
 low-numbered id values, generally no higher than 31. (Higher-numbered
 CPort ids impact on the total usable number of |unipro| devices and

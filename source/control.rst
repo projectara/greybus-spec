@@ -8,7 +8,7 @@ Control Protocol
 This section defines the operations used on an interface using the
 Greybus Control protocol. This protocol is different from all other
 protocols because it operates over a pseudo connection rather than a
-"real" connection. Every interface must have a control CPort running
+"real" connection. Every interface shall have a control CPort running
 the control protocol, and any module interface can send control
 protocol operation requests from its own control CPort to the control
 CPort on another interface.  In order to allow this multiplexing of
@@ -60,14 +60,14 @@ Conceptually, the operations in the Greybus control protocol are:
     protocol. Once an interface has been identified by the SVC, it can
     initiate a handshake operation with the SVC interface in order to
     have both sides agree on the version of the control connection
-    they will use. The source sends the highest version of the control
+    to use. The source sends the highest version of the control
     protocol it supports. The destination responds with its own
     version, or if that is higher than what was sent it responds with
     (and thereafter uses) the source interface's version. The SVC uses
     the version found in the response. If each of two interfaces
     simultaneously initiates a handshake with the other, the one with
-    the lower device id will proceed; the interface with the higher
-    device id will fail. Once a handshake has succeeded, either
+    the lower device id shall proceed; the interface with the higher
+    device id shall fail. Once a handshake has succeeded, either
     interface can send operations to the other.
 
 .. c:function:: int register_ap(u8 src_device_id);
@@ -100,7 +100,7 @@ Conceptually, the operations in the Greybus control protocol are:
     supports.  The receiver supplies in its response the highest version
     it supports, or if that exceeds what the sender supports it supplies
     the sender's version. The version in the response is the version that
-    will be used by both sides thereafter.
+    is used by both sides thereafter.
 
 .. c:function:: int disconnect(u8 src_device_id, u16 dst_cport_id);
 
@@ -123,7 +123,7 @@ Conceptually, the operations in the Greybus control protocol are:
     connection between a CPort on the destination interface and a
     CPort on one of its peer interfaces. The CPort id on the
     destination is sufficient to identify the connection
-    to be torn down. The destination will complete a disconnect of its
+    to be torn down. The destination shall complete a disconnect of its
     peer connection before responding to the disconnect_peer request.
 
 .. note::
@@ -152,7 +152,7 @@ Conceptually, the operations in the Greybus control protocol are:
 
    This operation is sent by the SVC to the AP to inform it that an
    interface on a module has indicated its link is functioning. The
-   module will have previously been the subject of a hotplug
+   module shall have previously been the subject of a hotplug
    operation. A module can have more than one interface; the interface
    id (whose value is normally 0) is used to distinguish among them if
    there is more than one. The device id tells the AP what |unipro|
@@ -170,8 +170,8 @@ Conceptually, the operations in the Greybus control protocol are:
     This operation is sent by the AP to the SVC to request that a
     bidirectional route be set up in the |unipro| switching network that
     allows traffic to flow between the two indicated device
-    ids. Initially routes are in a disabled state; traffic flow will
-    only be allowed when the route has been enabled. **Note: in ES1,
+    ids. Initially routes are in a disabled state; traffic flow is
+    only allowed when the route has been enabled. **Note: in ES1,
     routing is based only on destination address, and it is not
     possible to disable a route.**
 
@@ -243,7 +243,7 @@ device ids.
 
 The identify response finally allows an interface to supply an
 additional block of identifying information of an arbitrary size (up
-to 64KB). This information will be supplied to the AP with a hotplug
+to 64KB). This information is supplied to the AP with a hotplug
 event the SVC sends associated with the interface.
 
 Greybus Control Identify Request
@@ -324,7 +324,7 @@ version of that protocol to use between interfaces. No connections may
 be established until a handshake between the involved interfaces has
 been completed. If handshake operations between two interfaces are
 initiated by interfaces at the same time, the one initiated by the
-interface with the higher assigned device id will fail.
+interface with the higher assigned device id shall fail.
 
 Greybus Control Handshake Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -348,7 +348,7 @@ The Greybus control handshake response begins with a status byte.  If
 the value of the status byte is non-zero, all other bytes in the
 response shall be ignored.  The major and minor version in the
 response message are the highest control protocol version that are
-mutually usable by the source and destination interfaces.  It will be
+mutually usable by the source and destination interfaces.  It shall be
 the same as what was in the handshake request, or something lower if
 the destination interface cannot support that version. Both ends of
 the connection shall use the version of the control protocol indicated
@@ -561,12 +561,12 @@ connection be established between CPorts on two other interfaces
 --separate from the interface over which the request is
 sent. This is used by the AP only, to set up a direct communication
 channel between CPorts on two other modules. Before responding, the
-destination will initiate a connection with the peer interface, using
+destination shall initiate a connection with the peer interface, using
 the destination CPort id at its end of the connection and the peer's
-CPort id at the other end.  If necessary, the destination will first
+CPort id at the other end.  If necessary, the destination shall first
 perform a handshake with the peer interface. Once the connection has
 been established between the destination and its peer, the destination
-will reply to the source with the status of the request.
+shall reply to the source with the status of the request.
 
 .. This doesn't apply to ES1
    - Jean
@@ -576,12 +576,12 @@ Greybus Control Connect Peer Request
 
 The connect peer request is only initiated by the AP, and this fact is
 reflected in the name of the "respond-to" device id that begins the
-request message.  The connection to be established will use the
+request message.  The connection to be established shall use the
 destination interface, and the CPort id on that interface.  The
-destination will initiate a connect request with the peer device and
-device id specified.  Note that the protocol that will be used on the
+destination shall initiate a connect request with the peer device and
+device id specified.  Note that the protocol used on the
 connection is defined by the peer CPort's protocol (listed in its
-module manifest), and the destination and its peer will independently
+module manifest), and the destination and its peer independently
 negotiate the version of that protocol to use.
 
     =======  ====================  ======  ==============  ===========================
@@ -614,7 +614,7 @@ Greybus Control Disconnect Peer Request
 The Greybus control disconnect peer operation requests that the
 destination interface disconnect a connection that was previously
 established as a result of a peer connect operation.  This operation
-must be sent to the same interface that received its corresponding
+shall be sent to the same interface that received its corresponding
 connect peer operation. All that's required to identify the connection
 to be abolished is the CPort id on the destination interface used by
 the connection. Disconnect requests can only be issued by an AP
@@ -652,7 +652,7 @@ The first byte of the hotplug request is the SVC device id, for the
 response. The second byte indicates which module's presence is being
 reported. The identifying data is the data that the SVC originally
 collected in the identify operation it performed when it first
-detected the module was present. The SVC will not send any link up
+detected the module was present. The SVC shall not send any link up
 messages for interfaces on a module until after the module's hotplug
 request has completed.
 
@@ -688,7 +688,7 @@ Greybus Control Hot Unplug Request
 
 The first byte of the disconnect request is the SVC device id, for the
 response. The second byte indicates which module has become unplugged.
-The hot unplug request will not occur until link down operations for
+The hot unplug request shall not occur until link down operations for
 all interfaces on the module have completed.
 
     =======  ====================  ======  ==============  ===========================
@@ -793,9 +793,9 @@ for the response. The second and third bytes indicate the device ids
 of the interfaces between which traffic should be routed. Switch
 routing is always configured to be bidirectional. A configured route
 is by default in a disabled state; this means that despite the route
-existing, no traffic will be allowed until that route has been
-enabled. Note: ES1 does not support disabled routes; all routes will
-be enabled.
+existing, no traffic shall be allowed until that route has been
+enabled. Note: ES1 does not support disabled routes; all routes are
+enabled.
 
     =======  ====================  ======  ==============  ===========================
     Offset   Field                 Size    Value           Description
@@ -830,7 +830,7 @@ Greybus Control Enable Route Request
 The first byte of the enable route request is the AP interface device
 id, for the response. The second and third bytes indicate the device
 ids of the interfaces whose route is to allow traffic flow.  Note: ES1
-does not support disabled routes; all routes will be enabled.
+does not support disabled routes; all routes are enabled.
 
     =======  ====================  ======  ==============  ===========================
     Offset   Field                 Size    Value           Description
@@ -864,7 +864,7 @@ Greybus Control Disable Route Request
 The first byte of the disable route request is the AP interface device
 id, for the response. The second and third bytes indicate the device
 ids of the interfaces between which traffic flow should be
-stop. Note: ES1 does not support disabled routes; all routes will be
+stop. Note: ES1 does not support disabled routes; all routes are
 enabled.
 
     =======  ==============  ======  ==========      ===========================
