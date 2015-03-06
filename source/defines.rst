@@ -11,3 +11,9 @@
 
 .. |_| unicode:: 0xA0
    :trim:
+
+.. |mu| unicode:: 0x03bc
+   :rtrim:
+
+.. |degree-c| unicode:: 0x2103
+   :ltrim:

@@ -434,7 +434,7 @@ Greybus Battery Max Voltage Response
 
 The Greybus battery max voltage response contains the status byte and
 a 4-byte value that represents the maximum voltage of the battery
-being controlled, in µV as defined in table
+being controlled, in |mu| V as defined in table
 :num:`table-battery-max-voltage-response`.
 
 .. figtable::
@@ -447,7 +447,7 @@ being controlled, in µV as defined in table
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
     0        status          1       Number          :ref:`greybus-protocol-error-codes`
-    1        max_voltage     4       Number          Battery maximum voltage in µV
+    1        max_voltage     4       Number          Battery maximum voltage in |mu| V
     =======  ==============  ======  ==========      ===========================
 
 Greybus Battery Capacity Operation
@@ -500,7 +500,7 @@ Greybus Battery Temperature Response
 
 The Greybus battery temperature response contains the status byte and
 a 4-byte value that represents the temperature of the battery being
-controlled, in ⅒℃ as defined in table
+controlled, in 0.1 |degree-c| increments as defined in table
 :num:`table-battery-temp-response`.
 
 .. figtable::
@@ -513,7 +513,7 @@ controlled, in ⅒℃ as defined in table
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
     0        status          1       Number          :ref:`greybus-protocol-error-codes`
-    1        temperature     4       Number          Battery temperature in ⅒℃
+    1        temperature     4       Number          Battery temperature (0.1 |degree-c| units)
     =======  ==============  ======  ==========      ===========================
 
 Greybus Battery Voltage Operation
@@ -533,7 +533,7 @@ Greybus Battery Voltage Response
 
 The Greybus battery voltage response contains the status byte and a
 4-byte value that represents the voltage of the battery being
-controlled, in µV as defined in table
+controlled, in |mu| V as defined in table
 :num:`table-battery-voltage-response`.
 
 .. figtable::
@@ -546,7 +546,7 @@ controlled, in µV as defined in table
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
     0        status          1       Number          :ref:`greybus-protocol-error-codes`
-    1        voltage         4       Number          Battery voltage in µV
+    1        voltage         4       Number          Battery voltage in |mu| V
     =======  ==============  ======  ==========      ===========================
 
 Greybus Battery Current Operation
@@ -566,7 +566,7 @@ Greybus Battery Current Response
 
 The Greybus battery current response contains the status byte and a
 4-byte value that represents the current of the battery being
-controlled, in µA as defined in table
+controlled, in |mu| A as defined in table
 :num:`table-battery-current-response`.
 
 .. figtable::
@@ -579,7 +579,7 @@ controlled, in µA as defined in table
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
     0        status          1       Number          :ref:`greybus-protocol-error-codes`
-    1        current         4       Number          Battery current in µA
+    1        current         4       Number          Battery current in |mu| A
     =======  ==============  ======  ==========      ===========================
 
 Greybus Battery Total Capacity Operation
@@ -639,7 +639,7 @@ battery shuts down as defined in table
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
     0        status          1       Number          :ref:`greybus-protocol-error-codes`
-    1        temperature     4       Number          Battery shutdown temperature in ⅒℃
+    1        temperature     4       Number          Battery temperature (0.1 |degree-c| units)
     =======  ==============  ======  ==========      ===========================
 
 Audio Protocol
