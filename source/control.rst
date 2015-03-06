@@ -461,7 +461,7 @@ Greybus Control Connect Operation
 The Greybus control connect operation is used to establish a
 connection between a CPort associated with one interface with a CPort
 associated with another interface.  The protocol used
-over the connection is the one advertised in the module manifest as
+over the connection is the one advertised in the Manifest as
 being associated with the destination CPort. The connect operation
 allows the version of that protocol to be used over the connection to
 be determined.  Operations defined for the protocol can only be
@@ -580,8 +580,8 @@ request message.  The connection to be established shall use the
 destination interface, and the CPort id on that interface.  The
 destination shall initiate a connect request with the peer device and
 device id specified.  Note that the protocol used on the
-connection is defined by the peer CPort's protocol (listed in its
-module manifest), and the destination and its peer independently
+connection is defined by the peer CPort's protocol (listed in the
+peer's Manifest), and the destination and its peer independently
 negotiate the version of that protocol to use.
 
     =======  ====================  ======  ==============  ===========================

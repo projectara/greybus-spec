@@ -19,9 +19,9 @@ Module Information
 
 A Greybus module shall provide self-descriptive information in order to
 establish communications with other modules on the |unipro| network.
-This information is provided via a Module Manifest, which describes
+This information is provided via a Manifest, which describes
 components present within the module that are accessible via |unipro|.
-The Module Manifest is a data structure, which includes a set of
+The Manifest is a data structure, which includes a set of
 Descriptors which present a functional description of the module.
 Together, these Descriptors define the module's capabilities and means of
 communication via |unipro| from the perspective of the application layer
@@ -37,7 +37,7 @@ following general requirements:
 
 * All numeric values shall be unsigned unless explicitly stated otherwise.
 * Numeric values prefixed with 0x are hexadecimal; they are decimal otherwise.
-* All headers and descriptor data within a Module Manifest shall be
+* All headers and descriptor data within a Manifest shall be
   implicitly followed by pad bytes as necessary to bring the
   structure's total size to a multiple of 4 bytes.
 * Accordingly, the low-order two bits of all header *size* field values shall
@@ -49,15 +49,15 @@ following general requirements:
 * All offset and size values are expressed in units of bytes unless
   explicitly stated otherwise.
 * All string descriptors shall consist of UTF-8 encoded characters.
-* All major structures (like the module manifest header) and interface
+* All major structures (like the Manifest header) and interface
   protocols (like that between the AP and SVC) shall be versioned, to
   allow future extensions (or fixes) to be added and recognized.
 
-Module Manifest
----------------
+Manifest
+--------
 
-The Module Manifest is a contiguous buffer that includes a
-Manifest Header and a set of Descriptors.  When read, a Module
+The Manifest is a contiguous buffer that includes a
+Manifest Header and a set of Descriptors.  When read, a
 Manifest is transferred in its entirety.  This allows the module to be
 described to the host all at once, alleviating the need for multiple
 communication messages during the enumeration phase of the module.
@@ -65,7 +65,7 @@ communication messages during the enumeration phase of the module.
 Manifest Header
 ^^^^^^^^^^^^^^^
 
-The Manifest Header is present at the beginning of the Module Manifest
+The Manifest Header is present at the beginning of the Manifest
 and defines its size in bytes and the version of the Greybus protocol
 with which the Manifest complies.
 
@@ -89,13 +89,13 @@ the highest version of this document (currently |gb-major|.\
 |gb-minor|) with which the format complies.
 
 Minor versions increment with additions to the existing descriptor
-definition, in such a way that reading of the Module Manifest by any
+definition, in such a way that reading of the Manifest by any
 protocol handler that understands the version_major should not fail. A
-changed version_major indicates major differences in the Module
+changed version_major indicates major differences in the
 Manifest format, and it is not expected that parsers of older major
 versions would be able to understand newer ones.
 
-All Module Manifest parsers shall be able to interpret manifests
+All Manifest parsers shall be able to interpret manifests
 formatted using older Greybus versions, such that they still work
 properly (i.e. backwards compatibility is required).
 
@@ -157,7 +157,7 @@ Module Descriptor
 ^^^^^^^^^^^^^^^^^
 
 This descriptor describes module-specific values as set by the vendor
-who created the module. Every module manifest shall have exactly one
+who created the module. Every Manifest shall have exactly one
 module descriptor as described in Table :num:`table-module-descriptor`.
 
 .. figtable::
@@ -189,13 +189,13 @@ per type of module that is created.
 
 *vendor_string_id* is a reference to a specific string descriptor id
 that provides a description of the vendor who created the module.  If
-there is no string present for this value in the Module Manifest, this
+there is no string present for this value in the Manifest, this
 value shall be 0x00.  See the :ref:`string-descriptor` section below for
 more details.
 
 *product_string_id* is a reference to a specific string descriptor id
 that provides a description of the product.  If there is no string
-present for this value in the Module Manifest, this value shall be 0x00.
+present for this value in the Manifest, this value shall be 0x00.
 See the :ref:`string-descriptor` section below for more details.
 
 The *unique_id* field is an 8 byte Unique ID that is written into each
@@ -217,7 +217,7 @@ specific value, like a vendor or product string.  Any string that is
 not an even multiple of 4 bytes in length shall be padded out to a
 4-byte boundary with 0x00 values.  Strings consist of UTF-8 characters
 and are not required to be zero terminated. A string descriptor shall
-be referenced only once within the manifest, e.g. only one product (or
+be referenced only once within the Manifest, e.g. only one product (or
 vendor) string field may refer to string id 2.  The format of the string
 descriptor can be found in Table :num:`table-string-descriptor`.
 
