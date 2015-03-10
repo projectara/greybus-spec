@@ -30,12 +30,15 @@ specifies the line to which the operation applies.
 
 Conceptually, the GPIO protocol operations are:
 
-.. c:function:: int get_version(u8 *major, u8 *minor);
+.. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Returns the major and minor Greybus GPIO protocol version number
-    supported by the GPIO controller. GPIO controllers adhering to the
-    protocol specified herein shall report major version 0, minor
-    version 1.
+    Negotiates the major and minor version of the protocol used for
+    communication over the connection.  The sender offers the
+    version of the protocol it supports.  The receiver replies with
+    the version that will be used--either the one offered if
+    supported or its own (lower) version otherwise.  Protocol
+    handling code adhering to the protocol specified herein supports
+    major version |gb-major|, minor version |gb-minor|.
 
 .. c:function:: int line_count(u8 *count);
 
@@ -688,10 +691,15 @@ section.
 
 Conceptually, the operations in the Greybus SPI protocol are:
 
-.. c:function:: int get_version(u8 *major, u8 *minor);
+.. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Returns the major and minor Greybus SPI protocol version number
-    supported by the SPI master.
+    Negotiates the major and minor version of the protocol used for
+    communication over the connection.  The sender offers the
+    version of the protocol it supports.  The receiver replies with
+    the version that will be used--either the one offered if
+    supported or its own (lower) version otherwise.  Protocol
+    handling code adhering to the protocol specified herein supports
+    major version |gb-major|, minor version |gb-minor|.
 
 .. c:function:: int get_mode(u16 *mode);
 
@@ -1063,10 +1071,15 @@ consists of the operations defined in this section.
 The operations that can be performed on a Greybus UART controller are
 conceptually:
 
-.. c:function:: int get_version(u8 *major, u8 *minor);
+.. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Returns the major and minor Greybus UART protocol version number
-    supported by the UART device.
+    Negotiates the major and minor version of the protocol used for
+    communication over the connection.  The sender offers the
+    version of the protocol it supports.  The receiver replies with
+    the version that will be used--either the one offered if
+    supported or its own (lower) version otherwise.  Protocol
+    handling code adhering to the protocol specified herein supports
+    major version |gb-major|, minor version |gb-minor|.
 
 .. c:function:: int send_data(u16 size, u8 *data);
 
@@ -1464,12 +1477,15 @@ operations defined in this section.
 
 Conceptually, the PWM protocol operations are:
 
-.. c:function:: int get_version(u8 *major, u8 *minor);
+.. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Returns the major and minor Greybus PWM protocol version number
-    supported by the PWM controller. PWM controllers adhering to the
-    protocol specified herein shall report major version 0, minor
-    version 1.
+    Negotiates the major and minor version of the protocol used for
+    communication over the connection.  The sender offers the
+    version of the protocol it supports.  The receiver replies with
+    the version that will be used--either the one offered if
+    supported or its own (lower) version otherwise.  Protocol
+    handling code adhering to the protocol specified herein supports
+    major version |gb-major|, minor version |gb-minor|.
 
 .. c:function:: int pwm_count(u8 *count);
 
@@ -3129,10 +3145,15 @@ here.
 
 Conceptually, the five operations in the Greybus I2C protocol are:
 
-.. c:function:: int get_version(u8 *major, u8 *minor);
+.. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Returns the major and minor Greybus I2C protocol version number
-    supported by the I2C adapter.
+    Negotiates the major and minor version of the protocol used for
+    communication over the connection.  The sender offers the
+    version of the protocol it supports.  The receiver replies with
+    the version that will be used--either the one offered if
+    supported or its own (lower) version otherwise.  Protocol
+    handling code adhering to the protocol specified herein supports
+    major version |gb-major|, minor version |gb-minor|.
 
 .. c:function:: int get_functionality(u32 *functionality);
 

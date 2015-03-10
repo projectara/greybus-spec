@@ -28,10 +28,15 @@ and maps almost directly to the Android HAL vibrator interface.
 
 The operations in the Greybus vibrator protocol are:
 
-.. c:function:: int get_version(u8 *major, u8 *minor);
+.. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Returns the major and minor Greybus vibrator protocol version
-    number supported by the vibrator adapter.
+    Negotiates the major and minor version of the protocol used for
+    communication over the connection.  The sender offers the
+    version of the protocol it supports.  The receiver replies with
+    the version that will be used--either the one offered if
+    supported or its own (lower) version otherwise.  Protocol
+    handling code adhering to the protocol specified herein supports
+    major version |gb-major|, minor version |gb-minor|.
 
 .. c:function:: int vibrator_on(u16 timeout_ms);
 
@@ -184,10 +189,15 @@ here.
 
 Conceptually, the operations in the Greybus battery protocol are:
 
-.. c:function:: int get_version(u8 *major, u8 *minor);
+.. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Returns the major and minor Greybus battery protocol version
-    number supported by the battery adapter.
+    Negotiates the major and minor version of the protocol used for
+    communication over the connection.  The sender offers the
+    version of the protocol it supports.  The receiver replies with
+    the version that will be used--either the one offered if
+    supported or its own (lower) version otherwise.  Protocol
+    handling code adhering to the protocol specified herein supports
+    major version |gb-major|, minor version |gb-minor|.
 
 .. c:function:: int get_technology(u16 *technology);
 
@@ -697,10 +707,15 @@ have E2EFC disabled and CSD and CSV enabled.
 
 The operations in the Greybus NFC Protocol are:
 
-.. c:function:: int get_version(u8 *major, u8 *minor);
+.. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Returns the major and minor Greybus NFC Protocol version
-    number supported by the NFC Module.
+    Negotiates the major and minor version of the protocol used for
+    communication over the connection.  The sender offers the
+    version of the protocol it supports.  The receiver replies with
+    the version that will be used--either the one offered if
+    supported or its own (lower) version otherwise.  Protocol
+    handling code adhering to the protocol specified herein supports
+    major version |gb-major|, minor version |gb-minor|.
 
 .. c:function:: int send_packet(u32 size, u8 *packet);
 
