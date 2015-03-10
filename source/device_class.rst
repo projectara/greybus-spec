@@ -12,7 +12,7 @@ defined in this section, and which do not implement any of the
 protocols defined below in :ref:`bridged-phy-protocols`,
 are said to be *device class conformant*.
 
-.. note:: Two UniPro-based protocols will take the place of device
+.. note:: Two |unipro|\ -based protocols will take the place of device
           class protocol definitions in this section:
 
           - MIPI CSI-3: for camera modules

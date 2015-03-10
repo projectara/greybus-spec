@@ -5,10 +5,10 @@
    https://docs.google.com/a/projectara.com/document/d/1-g9uymGyxUrVKOfuJrYCMkl2kqoMvu-GGvqIw3extPE/edit
 
 .. Before reading this document, try to get a basic working knowledge
-   of the MIPI UniPro v1.6 specification:
+   of the MIPI |unipro| v1.6 specification:
    https://docs.google.com/a/projectara.com/file/d/0BxTh4XIogG2qbm1PaEo5M1ZES1U/edit>`_.
 
-   At a bare minimum, read chapter 4 for an architecture overview.
+.. At a bare minimum, read chapter 4 for an architecture overview.
 .. ----------------------------------------------------------------------
 
 .. highlight:: none

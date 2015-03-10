@@ -2216,7 +2216,7 @@ either end of each I2S Data Connection shall be configured similarly.
 It is the responsibility of the AP Module to ensure that both the
 individual I2S Data Connections, and the overall set of I2S Data
 Connections combined with the functions of internal I2S Modules
-and non-|unipro| devices are configured correctly.
+and non-\ |unipro| devices are configured correctly.
 
 The I2S Protocols Specification defines the *transfer* of audio data,
 not the production or consumption of audio data.
@@ -2260,13 +2260,13 @@ selected by the Configuration.
 
 There are other configurable attributes that don't affect the audio
 data within the |unipro| audio stream but do affect the low-level
-interface between the I2S Bundle and a non-|unipro| audio device.
+interface between the I2S Bundle and a non-\ |unipro| audio device.
 These are :ref:`i2s-low-level-attributes`.
 
 It is necessary to include these attributes in the I2S Configuration
 data because the AP Module requires this information in order to
-configure the low-level interface of the non-|unipro| device.
-Examples of non-|unipro| audio devices are analog-to-digital
+configure the low-level interface of the non-\ |unipro| device.
+Examples of non-\ |unipro| audio devices are analog-to-digital
 converters (ADCs), digital-to-analog converters (DACs), combined
 ADC/DACs called coders-decoders (codecs), and audio mixers.
 
@@ -2314,7 +2314,7 @@ Attributes are:
     data for the next channel is presented.
 
 The Low-level Interface Protocol specifies the protocol used by the
-3- (or more) wire interface between the I2S Bundle and the non-|unipro|
+3- (or more) wire interface between the I2S Bundle and the non-\ |unipro|
 device.  The currently supported Low-level Interface Protocols are:
 Pulse Code Modulation (PCM), Inter-IC Sound (I2S), and Left-Right Stereo
 (LR Stereo).  They are described in more detail below.
@@ -2685,9 +2685,9 @@ the :ref:`i2s-management-protocol`.
 *   Query the I2S Bundles and retrieve the supported configurations
     for each.
 *   Determine a configuration suitable to both I2S Bundles
-    and any intermediate functions or non-|unipro| devices
+    and any intermediate functions or non-\ |unipro| devices
     involved in the streaming.
-*   Set the I2S Bundles, intermediate functions, and non-|unipro| devices
+*   Set the I2S Bundles, intermediate functions, and non-\ |unipro| devices
     to the chosen configuration.
 *   If desired, set the number of audio samples per Greybus Message
     in the I2S Transmitter Bundle.  Otherwise one sample per Greybus
@@ -2697,7 +2697,7 @@ the :ref:`i2s-management-protocol`.
 *   If required, set the start delay for the I2S Transmitter Bundle.
     Otherwise a start delay of zero shall be used.
 *   If present, configure and start the intermediate functions and
-    non-|unipro| devices.
+    non-\ |unipro| devices.
 *   Activate the I2S Receiver CPort in the I2S Receiver Bundle.
 *   Activate the I2S Transmitter CPort in the I2S Transmitter Bundle.
 
@@ -2720,7 +2720,7 @@ the :ref:`i2s-management-protocol`:
 When multiple I2S Data Connections are used in an audio stream,
 the AP Module shall ensure that the selected configuration satisfies
 the constraints of all the I2S Bundles, intermediate modules,
-and non-|unipro| devices involved.
+and non-\ |unipro| devices involved.
 
 .. _i2s-management-protocol:
 

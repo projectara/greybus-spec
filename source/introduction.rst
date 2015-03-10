@@ -80,7 +80,7 @@ the chipsets involved.
 The main functional chipsets on modules may communicate via a native
 |unipro| interface or via "bridges," special-purpose ASICs which
 intermediate between these chipsets and the |unipro| network. In order
-to provide a transition path for chipsets without native UniPro
+to provide a transition path for chipsets without native |unipro|
 interfaces, the Greybus Specification defines a variety of
 :ref:`bridged-phy-protocols`, which allow module developers to expose
 these existing protocols to the network. In addition to providing an

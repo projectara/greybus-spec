@@ -20,7 +20,7 @@ components:
 
    - Exactly one Supervisory Controller, hereafter referred to as the
      "SVC." The SVC administers the Greybus system, including the
-     system's UniPro switches, its power bus, its wake/detect pins,
+     system's |unipro| switches, its power bus, its wake/detect pins,
      and its RF bus.
 
 2. One or more modules, which are physically inserted into slots on
