@@ -46,6 +46,28 @@ operation 5 might mean "go to sleep" in another. When the AP
 establishes a connection with a CPort in another module, that
 connection uses the CPort's advertised protocol.
 
+Each Greybus protocol has a two-byte version associated with it.
+This allows protocols to evolve, and provides a way for protocol
+handling software to correctly handle messages transferred over a
+connection.  A protocol version, for example 0.1, consists of a
+major and minor part (0 and 1 in this case).  The major version is
+changed (increased) if new features of the protocol are incompatible
+with existing protocol handling code.  Protocol changes (such as the
+addition of optional features) that do not require software changes
+are indicated by a change to the minor version number.
+
+Greybus protocol handling code shall record the maximum protocol
+version it can support.  It shall also support all versions (major
+and minor) of the protocol lower than that maximum.  The protocol
+handlers on the two ends of the connection negotiate the version of
+the protocol to use when a connection is established.  Every
+protocol implements a *version* operation for this purpose.  The
+version request message contains the major and minor protocol
+version supported by the sending side.  The recieving end decides
+whether that version should be used, or if a different (lower)
+version that it supports should be used instead.  Both sides use
+the version of the protocol contained in the response.
+
 The Greybus Operations mechanism forms a base layer on which other
 protocols are built. Protocols define the format of request messages,
 their expected response data, and the effect of the request on state
