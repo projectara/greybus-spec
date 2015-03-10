@@ -80,12 +80,11 @@ The Greybus vibrator protocol version request message has no payload.
 Greybus Vibrator Protocol Version Response
 """"""""""""""""""""""""""""""""""""""""""
 
-The Greybus vibrator protocol version response contains a status byte,
-followed by two one-byte values as defined in table
-:num:`table-vibrator-protocol-version-response`. If the value of the
-status byte is non-zero, any other bytes in the response shall be
-ignored. A Greybus vibrator adapter adhering to the protocol specified
-herein shall report major version |gb-major|, minor version |gb-minor|.
+The Greybus vibrator protocol version response payload contains two
+one-byte values, as defined in table
+:num:`table-vibrator-protocol-version-response`.
+A Greybus vibrator controller adhering to the protocol specified herein
+shall report major version |gb-major|, minor version |gb-minor|.
 
 .. figtable::
     :nofig:
@@ -96,9 +95,8 @@ herein shall report major version |gb-major|, minor version |gb-minor|.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        status          1       Number          :ref:`greybus-protocol-error-codes`
-    1        version_major   1       |gb-major|      Vibrator protocol major version
-    2        version_minor   1       |gb-minor|      Vibrator protocol minor version
+    0        version_major   1       |gb-major|      Vibrator protocol major version
+    1        version_minor   1       |gb-minor|      Vibrator protocol minor version
     =======  ==============  ======  ==========      ===========================
 
 Greybus Vibrator On Operation
@@ -117,7 +115,7 @@ vibrator should now be enabled for.
 .. figtable::
     :nofig:
     :label: table-vibrator-on-control-request
-    :caption: GPIO Protocol Activate Request
+    :caption: Vibrator Protocol Activate Request
     :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
@@ -277,12 +275,11 @@ The Greybus battery protocol version request message has no payload.
 Greybus Battery Protocol Version Response
 """""""""""""""""""""""""""""""""""""""""
 
-The Greybus battery protocol version response contains a status byte,
-followed by two one-byte values as defined in table
-:num:`table-battery-protocol-version-response`. If the value of the
-status byte is non-zero, any other bytes in the response shall be
-ignored. A Greybus vibrator adapter adhering to the protocol specified
-herein shall report major version |gb-major|, minor version |gb-minor|.
+The Greybus battery protocol version response payload contains two
+one-byte values, as defined in table
+:num:`table-battery-protocol-version-response`.
+A Greybus battery controller adhering to the protocol specified herein
+shall report major version |gb-major|, minor version |gb-minor|.
 
 .. figtable::
     :nofig:
@@ -293,9 +290,8 @@ herein shall report major version |gb-major|, minor version |gb-minor|.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        status          1       Number          :ref:`greybus-protocol-error-codes`
-    1        version_major   1       |gb-major|      Battery protocol major version
-    2        version_minor   1       |gb-minor|      Battery protocol minor version
+    0        version_major   1       |gb-major|      Battery protocol major version
+    1        version_minor   1       |gb-minor|      Battery protocol minor version
     =======  ==============  ======  ==========      ===========================
 
 Greybus Battery Technology Operation
@@ -749,12 +745,11 @@ The Greybus NFC protocol version request message has no payload.
 Greybus NFC Protocol Version Response
 """""""""""""""""""""""""""""""""""""
 
-The Greybus NFC Protocol Version Response contains a status byte,
-followed by two 1-byte values as defined in table
-:num:`table-nfc-protocol-version-response`. If the value of the status
-byte is non-zero, any other bytes in the response shall be ignored. A
-Greybus NFC Module adhering to the Protocol specified herein shall
-report major version |gb-major|, minor version |gb-minor|.
+The Greybus NFC protocol version response payload contains two
+one-byte values, as defined in table
+:num:`table-nfc-protocol-version-response`.
+A Greybus NFC controller adhering to the protocol specified herein
+shall report major version |gb-major|, minor version |gb-minor|.
 
 .. figtable::
     :nofig:
@@ -765,9 +760,8 @@ report major version |gb-major|, minor version |gb-minor|.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        status          1       Number          :ref:`greybus-protocol-error-codes`
-    1        version_major   1       |gb-major|      NFC protocol major version
-    2        version_minor   1       |gb-minor|      NFC protocol minor version
+    0        version_major   1       |gb-major|      NFC protocol major version
+    1        version_minor   1       |gb-minor|      NFC protocol minor version
     =======  ==============  ======  ==========      ===========================
 
 Greybus NFC Send Packet Operation
