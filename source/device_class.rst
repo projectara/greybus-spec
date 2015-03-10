@@ -80,7 +80,22 @@ version of the vibrator protocol to use.
 Greybus Vibrator Protocol Version Request
 """""""""""""""""""""""""""""""""""""""""
 
-The Greybus vibrator protocol version request message has no payload.
+Table :num:`table-vibrator-version-request` defines the Greybus vibrator
+version request payload. The request supplies the greatest major and
+minor version of the vibrator protocol supported by the sender.
+
+.. figtable::
+    :nofig:
+    :label: table-vibrator-version-request
+    :caption: Vibrator Protocol Version Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        version_major   1       |gb-major|      Offered vibrator protocol major version
+    1        version_minor   1       |gb-minor|      Offered vibrator protocol minor version
+    =======  ==============  ======  ==========      ===========================
 
 Greybus Vibrator Protocol Version Response
 """"""""""""""""""""""""""""""""""""""""""
@@ -280,7 +295,23 @@ version of the battery protocol to use.
 Greybus Battery Protocol Version Request
 """"""""""""""""""""""""""""""""""""""""
 
-The Greybus battery protocol version request message has no payload.
+Table :num:`table-battery-version-request` defines the Greybus battery
+version request payload. The request supplies the greatest major and
+minor version of the battery protocol supported by the sender.
+
+.. figtable::
+    :nofig:
+    :label: table-battery-version-request
+    :caption: Battery Protocol Version Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        version_major   1       |gb-major|      Offered battery protocol major version
+    1        version_minor   1       |gb-minor|      Offered battery protocol minor version
+    =======  ==============  ======  ==========      ===========================
+
 
 Greybus Battery Protocol Version Response
 """""""""""""""""""""""""""""""""""""""""
@@ -755,7 +786,22 @@ version of the NFC protocol to use.
 Greybus NFC Protocol Version Request
 """"""""""""""""""""""""""""""""""""
 
-The Greybus NFC protocol version request message has no payload.
+Table :num:`table-nfc-version-request` defines the Greybus NFC
+version request payload. The request supplies the greatest major and
+minor version of the NFC protocol supported by the sender.
+
+.. figtable::
+    :nofig:
+    :label: table-nfc-version-request
+    :caption: NFC Protocol Version Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        version_major   1       |gb-major|      Offered NFC protocol major version
+    1        version_minor   1       |gb-minor|      Offered NFC protocol minor version
+    =======  ==============  ======  ==========      ===========================
 
 Greybus NFC Protocol Version Response
 """""""""""""""""""""""""""""""""""""

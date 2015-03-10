@@ -158,7 +158,22 @@ version of the GPIO protocol to use.
 Greybus GPIO Protocol Version Request
 """""""""""""""""""""""""""""""""""""
 
-The Greybus GPIO protocol version request message has no payload.
+Table :num:`table-gpio-version-request` defines the Greybus GPIO
+version request payload. The request supplies the greatest major and
+minor version of the GPIO protocol supported by the sender.
+
+.. figtable::
+    :nofig:
+    :label: table-gpio-version-request
+    :caption: GPIO Protocol Version Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        version_major   1       |gb-major|      Offered GPIO protocol major version
+    1        version_minor   1       |gb-minor|      Offered GPIO protocol minor version
+    =======  ==============  ======  ==========      ===========================
 
 Greybus GPIO Protocol Version Response
 """"""""""""""""""""""""""""""""""""""
@@ -764,7 +779,22 @@ version of the SPI protocol to use.
 Greybus SPI Protocol Version Request
 """"""""""""""""""""""""""""""""""""
 
-The Greybus SPI protocol version request message has no payload.
+Table :num:`table-spi-version-request` defines the Greybus SPI
+version request payload. The request supplies the greatest major and
+minor version of the SPI protocol supported by the sender.
+
+.. figtable::
+    :nofig:
+    :label: table-spi-version-request
+    :caption: SPI Protocol Version Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        version_major   1       |gb-major|      Offered SPI protocol major version
+    1        version_minor   1       |gb-minor|      Offered SPI protocol minor version
+    =======  ==============  ======  ==========      ===========================
 
 Greybus SPI Protocol Version Response
 """""""""""""""""""""""""""""""""""""
@@ -1155,7 +1185,22 @@ version of the UART protocol to use.
 Greybus UART Protocol Version Request
 """""""""""""""""""""""""""""""""""""
 
-The Greybus UART protocol version request message has no payload.
+Table :num:`table-uart-version-request` defines the Greybus UART
+version request payload. The request supplies the greatest major and
+minor version of the UART protocol supported by the sender.
+
+.. figtable::
+    :nofig:
+    :label: table-uart-version-request
+    :caption: UART Protocol Version Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        version_major   1       |gb-major|      Offered UART protocol major version
+    1        version_minor   1       |gb-minor|      Offered UART protocol minor version
+    =======  ==============  ======  ==========      ===========================
 
 Greybus UART Protocol Version Response
 """"""""""""""""""""""""""""""""""""""
@@ -1568,7 +1613,23 @@ version of the PWM protocol to use.
 Greybus PWM Protocol Version Request
 """"""""""""""""""""""""""""""""""""
 
-The Greybus PWM protocol version request message has no payload.
+Table :num:`table-pwm-version-request` defines the Greybus PWM
+version request payload. The request supplies the greatest major and
+minor version of the PWM protocol supported by the sender.
+
+.. figtable::
+    :nofig:
+    :label: table-pwm-version-request
+    :caption: PWM Protocol Version Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        version_major   1       |gb-major|      Offered PWM protocol major version
+    1        version_minor   1       |gb-minor|      Offered PWM protocol minor version
+    =======  ==============  ======  ==========      ===========================
+
 
 Greybus PWM Protocol Version Response
 """""""""""""""""""""""""""""""""""""
@@ -3219,7 +3280,22 @@ version of the I2C protocol to use.
 Greybus I2C Protocol Version Request
 """"""""""""""""""""""""""""""""""""
 
-The Greybus I2C protocol version request message has no payload.
+Table :num:`table-i2c-version-request` defines the Greybus I2C
+version request payload. The request supplies the greatest major and
+minor version of the I2C protocol supported by the sender.
+
+.. figtable::
+    :nofig:
+    :label: table-i2c-version-request
+    :caption: I2C Protocol Version Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        version_major   1       |gb-major|      Offered I2C protocol major version
+    1        version_minor   1       |gb-minor|      Offered I2C protocol minor version
+    =======  ==============  ======  ==========      ===========================
 
 Greybus I2C Protocol Version Response
 """""""""""""""""""""""""""""""""""""
