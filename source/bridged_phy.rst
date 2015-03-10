@@ -155,8 +155,7 @@ complies.
 Greybus GPIO Protocol Version Request
 """""""""""""""""""""""""""""""""""""
 
-The Greybus GPIO protocol version request contains no data beyond the
-Greybus GPIO message header.
+The Greybus GPIO protocol version request message has no payload.
 
 Greybus GPIO Protocol Version Response
 """"""""""""""""""""""""""""""""""""""
@@ -191,8 +190,7 @@ determine how many GPIO lines are implemented by the GPIO controller.
 Greybus GPIO Line Count Request
 """""""""""""""""""""""""""""""
 
-The Greybus GPIO line count request contains no data beyond the
-Greybus GPIO message header.
+The Greybus GPIO line count request message has no payload.
 
 Greybus GPIO Line Count Response
 """"""""""""""""""""""""""""""""
@@ -909,8 +907,7 @@ complies.
 Greybus SPI Protocol Version Request
 """"""""""""""""""""""""""""""""""""
 
-The Greybus SPI protocol version request contains no data beyond the
-Greybus SPI message header.
+The Greybus SPI protocol version request message has no payload.
 
 Greybus SPI Protocol Version Response
 """""""""""""""""""""""""""""""""""""
@@ -945,7 +942,7 @@ details of the modes supported by the SPI master.
 Greybus SPI Protocol Mode Request
 """""""""""""""""""""""""""""""""
 
-The Greybus SPI mode request contains no data beyond the SPI message header.
+The Greybus SPI mode request message has no payload.
 
 Greybus SPI Protocol Mode Response
 """"""""""""""""""""""""""""""""""
@@ -1005,7 +1002,7 @@ constraints, if any, of the SPI master.
 Greybus SPI Protocol Flags Request
 """"""""""""""""""""""""""""""""""
 
-The Greybus SPI flags request contains no data beyond the SPI message header.
+The Greybus SPI flags request message has no payload.
 
 Greybus SPI Protocol Flags Response
 """""""""""""""""""""""""""""""""""
@@ -1066,8 +1063,7 @@ Transfers should be rejected if following expression evaluates to zero:
 Greybus SPI Protocol Bits Per Word Mask Request
 """""""""""""""""""""""""""""""""""""""""""""""
 
-The Greybus SPI bits per word mask request contains no data beyond the SPI
-message header.
+The Greybus SPI bits per word mask request message has no payload.
 
 Greybus SPI Protocol Bits Per Word Mask Response
 """"""""""""""""""""""""""""""""""""""""""""""""
@@ -1100,8 +1096,7 @@ master.
 Greybus SPI Protocol Number of Chip Selects Request
 """""""""""""""""""""""""""""""""""""""""""""""""""
 
-The Greybus SPI number of chip selects request contains no data beyond the SPI
-message header.
+The Greybus SPI number of chip selects request message has no payload.
 
 Greybus SPI Protocol Number of Chip Selects Response
 """"""""""""""""""""""""""""""""""""""""""""""""""""
@@ -1308,8 +1303,7 @@ the version of this protocol to which the UART device complies.
 Greybus UART Protocol Version Request
 """""""""""""""""""""""""""""""""""""
 
-The Greybus UART protocol version request contains no data beyond the
-Greybus UART message header.
+The Greybus UART protocol version request message has no payload.
 
 Greybus UART Protocol Version Response
 """"""""""""""""""""""""""""""""""""""
@@ -1799,8 +1793,7 @@ the version of this protocol to which the PWM controller complies.
 Greybus PWM Protocol Version Request
 """"""""""""""""""""""""""""""""""""
 
-The Greybus PWM protocol version request contains no data beyond the
-Greybus PWM message header.
+The Greybus PWM protocol version request message has no payload.
 
 Greybus PWM Protocol Version Response
 """""""""""""""""""""""""""""""""""""
@@ -1835,8 +1828,7 @@ many PWM instances are implemented by the PWM controller.
 Greybus PWM Count Request
 """""""""""""""""""""""""
 
-The Greybus PWM count request contains no data beyond the Greybus PWM
-message header.
+The Greybus PWM count request message has no payload.
 
 Greybus PWM Count Response
 """"""""""""""""""""""""""
@@ -3059,8 +3051,7 @@ See :ref:`i2s-audio-data-attributes` for further details.
 Greybus I2S Get Supported Configurations Request
 """"""""""""""""""""""""""""""""""""""""""""""""
 
-The Greybus I2S Get Supported Configurations Request contains no data
-beyond the Greybus I2S message header.
+The Greybus I2S get supported configurations request message has no payload.
 
 Greybus I2S Get Supported Configurations Response
 """""""""""""""""""""""""""""""""""""""""""""""""
@@ -3202,8 +3193,7 @@ The delay value returned should be accurate to within 500 microseconds.
 Greybus I2S Get Processing Delay Request
 """"""""""""""""""""""""""""""""""""""""
 
-The Greybus I2S Get Processing Delay Request contains no data
-beyond the Greybus I2S message header.
+The Greybus I2S get processing delay request message has no payload.
 
 Greybus I2S Get Processing Delay Response
 """""""""""""""""""""""""""""""""""""""""
@@ -3615,8 +3605,7 @@ complies.
 Greybus I2C Protocol Version Request
 """"""""""""""""""""""""""""""""""""
 
-The Greybus I2C protocol version request contains no data beyond the
-Greybus I2C message header.
+The Greybus I2C protocol version request message has no payload.
 
 Greybus I2C Protocol Version Response
 """""""""""""""""""""""""""""""""""""
@@ -3652,8 +3641,7 @@ adapter.
 Greybus I2C Functionality Request
 """""""""""""""""""""""""""""""""
 
-The Greybus I2C functionality request contains no data beyond the I2C
-message header.
+The Greybus I2C functionality request message has no payload.
 
 Greybus I2C Functionality Response
 """"""""""""""""""""""""""""""""""

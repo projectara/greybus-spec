@@ -75,8 +75,7 @@ complies.
 Greybus Vibrator Protocol Version Request
 """""""""""""""""""""""""""""""""""""""""
 
-The Greybus vibrator protocol version request contains no data beyond
-the message header.
+The Greybus vibrator protocol version request message has no payload.
 
 Greybus Vibrator Protocol Version Response
 """"""""""""""""""""""""""""""""""""""""""
@@ -155,8 +154,7 @@ vibrator be turned off as soon as possible.
 Greybus Vibrator Off Control Request
 """"""""""""""""""""""""""""""""""""
 
-The Greybus Vibrator off request contains no data beyond the
-message header.
+The Greybus vibrator off request message has no payload.
 
 Greybus Vibrator Off Control Response
 """""""""""""""""""""""""""""""""""""
@@ -274,8 +272,7 @@ complies.
 Greybus Battery Protocol Version Request
 """"""""""""""""""""""""""""""""""""""""
 
-The Greybus battery protocol version request contains no data beyond
-the message header.
+The Greybus battery protocol version request message has no payload.
 
 Greybus Battery Protocol Version Response
 """""""""""""""""""""""""""""""""""""""""
@@ -311,8 +308,7 @@ adapter.
 Greybus Battery Technology Request
 """"""""""""""""""""""""""""""""""
 
-The Greybus battery technology request contains no data beyond the
-message header.
+The Greybus battery technology request message has no payload.
 
 Greybus Battery Technology Response
 """""""""""""""""""""""""""""""""""
@@ -370,8 +366,7 @@ status of the battery by the battery adapter.
 Greybus Battery Status Request
 """"""""""""""""""""""""""""""
 
-The Greybus battery status request contains no data beyond the battery
-message header.
+The Greybus battery status request message has no payload.
 
 Greybus Battery Status Response
 """""""""""""""""""""""""""""""
@@ -427,8 +422,7 @@ the maximum possible voltage of the battery.
 Greybus Battery Max Voltage Request
 """""""""""""""""""""""""""""""""""
 
-The Greybus battery max voltage request contains no data beyond the
-message header.
+The Greybus battery max voltage request message has no payload.
 
 Greybus Battery Max Voltage Response
 """"""""""""""""""""""""""""""""""""
@@ -460,8 +454,7 @@ current capacity percent of the battery.
 Greybus Battery Percent Capacity Request
 """"""""""""""""""""""""""""""""""""""""
 
-The Greybus battery capacity request contains no data beyond the
-message header.
+The Greybus battery capacity request message has no payload.
 
 Greybus Battery Percent Capacity Response
 """""""""""""""""""""""""""""""""""""""""
@@ -493,8 +486,7 @@ the current temperature of the battery.
 Greybus Battery Temperature Request
 """""""""""""""""""""""""""""""""""
 
-The Greybus battery temperature request contains no data beyond the
-message header.
+The Greybus battery temperature request message has no payload.
 
 Greybus Battery Temperature Response
 """"""""""""""""""""""""""""""""""""
@@ -526,8 +518,7 @@ voltage being supplied by the battery.
 Greybus Battery Voltage Request
 """""""""""""""""""""""""""""""
 
-The Greybus battery voltage request contains no data beyond the
-message header.
+The Greybus battery voltage request message has no payload.
 
 Greybus Battery Voltage Response
 """"""""""""""""""""""""""""""""
@@ -559,8 +550,7 @@ current current of the battery.
 Greybus Battery Current Request
 """""""""""""""""""""""""""""""
 
-The Greybus battery current request contains no data beyond the
-message header.
+The Greybus battery current request message has no payload.
 
 Greybus Battery Current Response
 """"""""""""""""""""""""""""""""
@@ -585,13 +575,14 @@ controlled, in |mu| A as defined in table
 
 Greybus Battery Total Capacity Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 The Greybus battery total capacity operation allows the AP to determine
 the total capacity of the battery.
 
 Greybus Battery Total Capacity Request
 """"""""""""""""""""""""""""""""""""""
-The Greybus battery total capacity request contains no data beyond the
-message header.
+
+The Greybus battery total capacity request message has no payload.
 
 Greybus Battery Total Capacity Response
 """""""""""""""""""""""""""""""""""""""
@@ -621,8 +612,8 @@ itself down.
 
 Greybus Battery Shutdown Temperature Request
 """"""""""""""""""""""""""""""""""""""""""""
-The Greybus battery shutdown temperature request contains no data beyond
-the message header.
+
+The Greybus battery shutdown temperature request message has no payload.
 
 Greybus Battery Shutdown Temperature Response
 """""""""""""""""""""""""""""""""""""""""""""
@@ -753,8 +744,7 @@ module complies.
 Greybus NFC Protocol Version Request
 """"""""""""""""""""""""""""""""""""
 
-The Greybus NFC Protocol Version Request contains no data beyond
-the message header.
+The Greybus NFC protocol version request message has no payload.
 
 Greybus NFC Protocol Version Response
 """""""""""""""""""""""""""""""""""""
