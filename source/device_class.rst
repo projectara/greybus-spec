@@ -73,9 +73,9 @@ operation is a request or a response.
 Greybus Vibrator Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus vibrator protocol version operation allows the AP to
-determine the version of this protocol to which the vibrator adapter
-complies.
+The Greybus vibrator protocol version operation allows the protocol
+handling software on both ends of a connection to negotiate the
+version of the vibrator protocol to use.
 
 Greybus Vibrator Protocol Version Request
 """""""""""""""""""""""""""""""""""""""""
@@ -273,9 +273,9 @@ operation is a request or a response.
 Greybus Battery Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus battery protocol version operation allows the AP to
-determine the version of this protocol to which the battery adapter
-complies.
+The Greybus battery protocol version operation allows the protocol
+handling software on both ends of a connection to negotiate the
+version of the battery protocol to use.
 
 Greybus Battery Protocol Version Request
 """"""""""""""""""""""""""""""""""""""""
@@ -748,9 +748,9 @@ operation is a request or a response.
 Greybus NFC Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus NFC Protocol Version Operation allows the AP to
-determine the version of this protocol to which the NFC
-module complies.
+The Greybus NFC protocol version operation allows the protocol
+handling software on both ends of a connection to negotiate the
+version of the NFC protocol to use.
 
 Greybus NFC Protocol Version Request
 """"""""""""""""""""""""""""""""""""

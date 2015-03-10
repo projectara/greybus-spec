@@ -151,9 +151,9 @@ response type values are shown.
 Greybus GPIO Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus GPIO protocol version operation allows the requestor to
-determine the version of this protocol to which the GPIO controller
-complies.
+The Greybus GPIO protocol version operation allows the protocol
+handling software on both ends of a connection to negotiate the
+version of the GPIO protocol to use.
 
 Greybus GPIO Protocol Version Request
 """""""""""""""""""""""""""""""""""""
@@ -757,9 +757,9 @@ operation is a request or a response.
 Greybus SPI Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus SPI protocol version operation allows the requestor to
-determine the version of this protocol to which the SPI master
-complies.
+The Greybus SPI protocol version operation allows the protocol
+handling software on both ends of a connection to negotiate the
+version of the SPI protocol to use.
 
 Greybus SPI Protocol Version Request
 """"""""""""""""""""""""""""""""""""
@@ -1148,8 +1148,9 @@ operation is a request or a response.
 Greybus UART Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus UART protocol version operation allows the requestor to determine
-the version of this protocol to which the UART device complies.
+The Greybus UART protocol version operation allows the protocol
+handling software on both ends of a connection to negotiate the
+version of the UART protocol to use.
 
 Greybus UART Protocol Version Request
 """""""""""""""""""""""""""""""""""""
@@ -1560,8 +1561,9 @@ shown.
 Greybus PWM Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus PWM version operation allows the requestor to determine
-the version of this protocol to which the PWM controller complies.
+The Greybus PWM protocol version operation allows the protocol
+handling software on both ends of a connection to negotiate the
+version of the PWM protocol to use.
 
 Greybus PWM Protocol Version Request
 """"""""""""""""""""""""""""""""""""
@@ -3210,9 +3212,9 @@ operation is a request or a response.
 Greybus I2C Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus I2C protocol version operation allows the requestor to
-determine the version of this protocol to which the I2C adapter
-complies.
+The Greybus I2C protocol version operation allows the protocol
+handling software on both ends of a connection to negotiate the
+version of the I2C protocol to use.
 
 Greybus I2C Protocol Version Request
 """"""""""""""""""""""""""""""""""""
