@@ -124,6 +124,7 @@ Data. The format of the Descriptor Header can be seen in Table
     =======  ==============  ======  ==========      ===========================
     0        size            2       Number          Size of this descriptor
     2        type            1       Number          :ref:`descriptor-type`
+    3        (pad)           1       0               Reserved (pad to 4 bytes)
     =======  ==============  ======  ==========      ===========================
 
 .. _descriptor-type:
@@ -171,13 +172,15 @@ module descriptor as described in Table :num:`table-module-descriptor`.
     =======  =================  ======  ==========  ==============================
     Offset   Field              Size    Value       Description
     =======  =================  ======  ==========  ==============================
-    0        size               2       0x0013      Size of this descriptor
+    0        size               2       0x0014      Size of this descriptor
     2        type               1       0x01        Type of the descriptor (Module)
-    3        vendor             2       ID          Module vendor id
-    5        product            2       ID          Module product id
-    7        vendor_string_id   1       ID          String id for the vendor name
-    8        product_string_id  1       ID          String id for the product name
-    9        unique_id          8       ID          Unique ID of the module
+    3        (pad)              1       0           Reserved (pad to 4 byte boundary)
+    4        vendor             2       ID          Module vendor id
+    6        product            2       ID          Module product id
+    8        vendor_string_id   1       ID          String id for the vendor name
+    9        product_string_id  1       ID          String id for the product name
+    10       unique_id          8       ID          Unique ID of the module
+    18       (pad)              2       0           Reserved (pad to 20 bytes)
     =======  =================  ======  ==========  ==============================
 
 The *vendor* field is a value assigned by Google.  All vendors should
@@ -229,15 +232,17 @@ descriptor can be found in Table :num:`table-string-descriptor`.
     :alt: String Descriptor
     :spec: l l c c l
 
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        size            2       Number          Size of this descriptor
-    2        type            1       0x02            Type of the descriptor (String)
-    3        length          1       Number          Length of the string in bytes
-    4        id              1       ID              String id for this descriptor
-    5        string          X       UTF-8           Characters for the string
-    =======  ==============  ======  ==========      ===========================
+    ========  ==============  ========  ==========  ===========================
+    Offset    Field           Size      Value       Description
+    ========  ==============  ========  ==========  ===========================
+    0         size            2         Number      Size of this descriptor
+    2         type            1         0x02        Type of the descriptor (String)
+    3         (pad)           1         0           Reserved (pad to 4 byte boundary)
+    4         length          1         Number      Length of the string in bytes
+    5         id              1         ID          String id for this descriptor
+    6         string          length    UTF-8       Characters for the string
+    6+length  (pad)           0-3       0           Reserved (pad to 4 byte boundary)
+    ========  ==============  ========  ==========  ===========================
 
 The *id* field shall not be 0x00, as that is an invalid String ID value.
 
@@ -268,7 +273,9 @@ associated with.  The interface descriptor is defined in Table
     =======  ==============  ======  ==========      ===========================
     0        size            2       0x0004          Size of this descriptor
     2        type            1       0x03            Type of the descriptor (Interface)
-    3        id              1       ID              Module-unique ID for this interface
+    3        (pad)           1       0               Reserved (pad to 4 byte boundary)
+    4        id              1       ID              Module-unique ID for this interface
+    5        (pad)           3       0               Reserved (pad to 8 bytes)
     =======  ==============  ======  ==========      ===========================
 
 CPort Descriptor
@@ -294,11 +301,12 @@ defined in the sections :ref:`device-class-protocols` and
     ========  ==============  ======  ==========  ===========================
     Offset    Field           Size    Value       Description
     ========  ==============  ======  ==========  ===========================
-    0         size            2       0x0007      Size of this descriptor
+    0         size            2       0x0008      Size of this descriptor
     2         type            1       0x04        Type of the descriptor (CPort)
-    3         interface       1       ID          Interface ID this CPort is associated with
-    4         id              2       ID          Id (destination address) of the CPort
-    6         protocol        1       Number      protocol is defined in Table :num:`table-cport-protocol`
+    3         (pad)           1       0           Reserved (pad to 4 byte boundary)
+    4         interface       1       ID          Interface ID this CPort is associated with
+    5         id              2       ID          Id (destination address) of the CPort
+    7         protocol        1       Number      protocol is defined in Table :num:`table-cport-protocol`
     ========  ==============  ======  ==========  ===========================
 
 .. todo::

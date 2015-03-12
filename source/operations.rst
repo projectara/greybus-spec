@@ -134,6 +134,7 @@ operation message header.
     2         id              2       ID              Requestor-supplied unique request identifier
     4         type            1       Number          Type of Greybus operation (protocol-specific)
     5         status          1       Number          Operation result (response message only)
+    6         (pad)           2       0               Reserved (pad to 8 bytes)
     ========  ==============  ======  ==========      ===========================
 
 The *size* includes the operation message header as well as any
