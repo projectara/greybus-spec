@@ -232,17 +232,17 @@ descriptor can be found in Table :num:`table-string-descriptor`.
     :alt: String Descriptor
     :spec: l l c c l
 
-    ========  ==============  ========  ==========  ===========================
-    Offset    Field           Size      Value       Description
-    ========  ==============  ========  ==========  ===========================
-    0         size            2         Number      Size of this descriptor
-    2         type            1         0x02        Type of the descriptor (String)
-    3         (pad)           1         0           Reserved (pad to 4 byte boundary)
-    4         length          1         Number      Length of the string in bytes
-    5         id              1         ID          String id for this descriptor
-    6         string          length    UTF-8       Characters for the string
-    6+length  (pad)           0-3       0           Reserved (pad to 4 byte boundary)
-    ========  ==============  ========  ==========  ===========================
+    ============  ==============  ========  ==========  ===========================
+    Offset        Field           Size      Value       Description
+    ============  ==============  ========  ==========  ===========================
+    0             size            2         Number      Size of this descriptor
+    2             type            1         0x02        Type of the descriptor (String)
+    3             (pad)           1         0           Reserved (pad to 4 byte boundary)
+    4             length          1         Number      Length of the string in bytes
+    5             id              1         ID          String id for this descriptor
+    6             string          *length*  UTF-8       Characters for the string
+    6+\ *length*  (pad)           0-3       0           Reserved (pad to 4 byte boundary)
+    ============  ==============  ========  ==========  ===========================
 
 The *id* field shall not be 0x00, as that is an invalid String ID value.
 

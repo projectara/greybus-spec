@@ -1241,7 +1241,7 @@ to to be transmitted.
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ===========     ===========================
     0        size            2       Number          Size in bytes of data to be transmitted
-    2        data            size    Characters      0 or more bytes of data to be transmitted
+    2        data            *size*  Characters      0 or more bytes of data to be transmitted
     =======  ==============  ======  ===========     ===========================
 
 Greybus UART Send Data Response
@@ -1270,12 +1270,12 @@ received, and the data bytes to be received.
     :caption: UART Protocol Receive Data Request
     :spec: l l c c l
 
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        size            2       Number          Size in bytes of received data
-    2        data            size    Characters      1 or more bytes of received data
-    =======  ==============  ======  ==========      ===========================
+    =======  ==============  =======  ==========      ===========================
+    Offset   Field           Size     Value           Description
+    =======  ==============  =======  ==========      ===========================
+    0        size            2        Number          Size in bytes of received data
+    2        data            *size*   Characters      1 or more bytes of received data
+    =======  ==============  =======  ==========      ===========================
 
 Greybus UART Received Data Response
 """""""""""""""""""""""""""""""""""
@@ -3181,7 +3181,7 @@ sends one or more complete audio samples.
     0        sample_number   4       Number          Sample number of first
                                                      sample in message
     4        size            4       Number          Bytes in data field
-    8        data            ...     Data            Audio data
+    8        data            ...     *size*          Audio data
     =======  ==============  ======  ==========      ===========================
 
 Greybus I2S Send Data Response

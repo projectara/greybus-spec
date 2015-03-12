@@ -795,7 +795,7 @@ Greybus NFC Send Packet Request
 """""""""""""""""""""""""""""""
 
 The Greybus NFC Send Packet Request contains a 4-byte size and
-a valid NFC NCI Packet of 'size' bytes as defined in table
+a valid NFC NCI Packet of *size* bytes as defined in table
 :num:`table-nfc-send-packet-request`.
 
 .. figtable::
@@ -808,7 +808,7 @@ a valid NFC NCI Packet of 'size' bytes as defined in table
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
     0        size            4       Number          Size of the NFC NCI packet
-    4        packet          'size'  Data            NFC NCI Packet
+    4        packet          *size*  Data            NFC NCI Packet
     =======  ==============  ======  ==========      ===========================
 
 Greybus NFC Send Packet Response
