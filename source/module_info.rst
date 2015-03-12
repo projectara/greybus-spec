@@ -27,16 +27,20 @@ Together, these Descriptors define the module's capabilities and means of
 communication via |unipro| from the perspective of the application layer
 and above.
 
-.. _general-requirements:
+.. _manifest-data-requirements:
 
-General Requirements
---------------------
+Data Requirements
+-----------------
 
-All data found in message structures defined below shall adhere to the
-following general requirements:
+All data found in Manifest structures defined below shall adhere to
+the following general requirements:
 
 * All numeric values shall be unsigned unless explicitly stated otherwise.
+* All descriptor field values shall have little endian format.
 * Numeric values prefixed with 0x are hexadecimal; they are decimal otherwise.
+* All offset and size values are expressed in units of bytes unless
+  explicitly stated otherwise.
+* All string descriptors shall consist of UTF-8 encoded characters.
 * All headers and descriptor data within a Manifest shall be
   implicitly followed by pad bytes as necessary to bring the
   structure's total size to a multiple of 4 bytes.
@@ -45,10 +49,6 @@ following general requirements:
 * Any reserved or unused space (including implicit padding) in a
   header or descriptor shall be ignored when read, and zero-filled
   when written.
-* All descriptor field values shall have little endian format.
-* All offset and size values are expressed in units of bytes unless
-  explicitly stated otherwise.
-* All string descriptors shall consist of UTF-8 encoded characters.
 * All major structures (like the Manifest header) and interface
   protocols (like that between the AP and SVC) shall be versioned, to
   allow future extensions (or fixes) to be added and recognized.

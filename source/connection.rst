@@ -62,7 +62,7 @@ Note that *GB_OP_INTERNAL* should never be used in a response message. It
 is reserved for internal use by the Greybus application stack only.
 
 All protocols defined herein are subject to the
-:ref:`general-requirements` listed above.
+:ref:`message-data-requirements` listed above.
 
 Protocol Versions
 -----------------

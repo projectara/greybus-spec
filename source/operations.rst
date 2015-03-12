@@ -78,6 +78,34 @@ explanations that follow, we refer to the interface through which a
 request operation is sent as the source, and the interface from which
 the response is sent as the destination.
 
+.. _message-data-requirements:
+
+Message Data Requirements
+-------------------------
+
+All data found in message structures defined below shall adhere to
+the following general requirements:
+
+* All numeric values shall be unsigned unless explicitly stated otherwise.
+* All numeric field values shall have little endian format.
+* Numeric values prefixed with 0x are hexadecimal; they are decimal otherwise.
+* All offset and size values are expressed in units of bytes unless
+  explicitly stated otherwise.
+* All string values shall consist of UTF-8 encoded characters.
+* String values shall be paired with a numeric value indicating the
+  number of characters in the string.
+* String values shall not include terminating NUL characters.
+* Any reserved space in a message structure shall be
+  ignored when read, and zero-filled when written.
+* All protocols shall be versioned, to allow future extensions (or
+  fixes) to be added and recognized.
+
+Fields within a message payload have no specific alignment
+requirements.  Message headers are padded to fill 8 bytes,
+so the alignment of a message's payload is comparable to
+that of its header.  If alignment is required, it is achieved
+using explicitly defined reserved fields.
+
 Operation Messages
 ------------------
 
