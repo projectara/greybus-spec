@@ -122,20 +122,20 @@ shall report major version |gb-major|, minor version |gb-minor|.
 Greybus Vibrator On Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus Vibrator on operation allows the AP to request the
+The Greybus vibrator on operation allows the AP to request the
 vibrator be enabled for the specified number of milliseconds.
 
-Greybus Vibrator On Control Request
-"""""""""""""""""""""""""""""""""""
+Greybus Vibrator On Request
+"""""""""""""""""""""""""""
 
-Table :num:`table-vibrator-on-control-request` defines the Greybus
-Vibrator on request.  The request supplies the amount of time that the
+Table :num:`table-vibrator-on-request` defines the Greybus Vibrator
+On request.  The request supplies the amount of time that the
 vibrator should now be enabled for.
 
 .. figtable::
     :nofig:
-    :label: table-vibrator-on-control-request
-    :caption: Vibrator Protocol Activate Request
+    :label: table-vibrator-on-request
+    :caption: Vibrator Protocol On Request
     :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
@@ -144,17 +144,17 @@ vibrator should now be enabled for.
     0        timeout_ms      2       Number          timeout in milliseconds
     =======  ==============  ======  ==========      ===========================
 
-Greybus Vibrator On Control Response
-""""""""""""""""""""""""""""""""""""
+Greybus Vibrator On Response
+""""""""""""""""""""""""""""
 
-Table :num:`table-vibrator-on-control-response` defines the Greybus
-Vibrator on control response. The response contains only the status
+Table :num:`table-vibrator-on-response` defines the Greybus
+vibrator on control response. The response contains only the status
 byte.
 
 .. figtable::
     :nofig:
-    :label: table-vibrator-on-control-response
-    :caption: Vibrator On Control Response
+    :label: table-vibrator-on-response
+    :caption: Vibrator On Response
     :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
@@ -169,22 +169,22 @@ Greybus Vibrator Off Operation
 The Greybus Vibrator off operation allows the AP to request the
 vibrator be turned off as soon as possible.
 
-Greybus Vibrator Off Control Request
-""""""""""""""""""""""""""""""""""""
+Greybus Vibrator Off Request
+""""""""""""""""""""""""""""
 
 The Greybus vibrator off request message has no payload.
 
-Greybus Vibrator Off Control Response
-"""""""""""""""""""""""""""""""""""""
+Greybus Vibrator Off Response
+"""""""""""""""""""""""""""""
 
-Table :num:`table-vibrator-off-control-response` defines the Greybus
-Vibrator off control response. The response contains only the status
+Table :num:`table-vibrator-off-response` defines the Greybus
+vibrator off response. The response contains only the status
 byte.
 
 .. figtable::
     :nofig:
-    :label: table-vibrator-off-control-response
-    :caption: Vibrator Off Control Response
+    :label: table-vibrator-off-response
+    :caption: Vibrator Off Response
     :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
