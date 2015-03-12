@@ -335,10 +335,8 @@ output.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        direction       1       0 or 1          Direction
+    0        direction       1       0 or 1          Direction (0 for output, 1 for input)
     =======  ==============  ======  ==========      ===========================
-
-*direction* is 0 for output, and 1 for input.
 
 Greybus GPIO Direction Input Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -394,10 +392,8 @@ line and its initial value.
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
     0        which           1       Number          Controller-relative GPIO line number
-    1        value           1       0 or 1          Initial value
+    1        value           1       0 or 1          Initial value (0 is low, 1 is high)
     =======  ==============  ======  ==========      ===========================
-
-For the *value* field, 0 is low, and 1 is high.
 
 Greybus GPIO Direction Output Response
 """"""""""""""""""""""""""""""""""""""
@@ -444,10 +440,8 @@ line in question.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        value           1       0 or 1          Value
+    0        value           1       0 or 1          Value (0 is low, 1 is high)
     =======  ==============  ======  ==========      ===========================
-
-*value* is 0 for low, and 1 for high.
 
 Greybus GPIO Set Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -473,13 +467,11 @@ be set.
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
     0        which           1       Number          Controller-relative GPIO line number
-    1        value           1       0 or 1          Initial value
+    1        value           1       0 or 1          Initial value (0 is low, 1 is high)
     =======  ==============  ======  ==========      ===========================
 
 .. todo::
     Possibly make this a mask to allow multiple values to be set at once.
-
-For the *value* field, 0 is low, and 1 is high.
 
 Greybus GPIO Set Response
 """""""""""""""""""""""""
@@ -2580,7 +2572,7 @@ supported by I2S Bundles.  It is used by
     5        bytes_per_channel     1      Number     Number of audio bytes per
                                                      channel
     6        byte_order            1      Bit Mask   :ref:`i2s-byte-order-bits`
-    7        pad                   1                 Padding
+    7        pad                   1      0          Padding
     8        spatial_locations     4      Bit Mask   :ref:`i2s-spatial-location-bits`
     12       ll_protocol           4      Bit Mask   :ref:`i2s-protocol-bits`
     16       ll_bclk_role          1      Bit Mask   :ref:`i2s-role-bits`
@@ -2590,7 +2582,7 @@ supported by I2S Bundles.  It is used by
     20       ll_data_tx_edge       1      Bit Mask   :ref:`i2s-clock-edge-bits`
     21       ll_data_rx_edge       1      Bit Mask   :ref:`i2s-clock-edge-bits`
     22       ll_data_offset        1      Number     BCLK-WCLK offset
-    23       ll_pad                1                 Padding
+    23       ll_pad                1      0          Padding
     =======  ====================  =====  =========  ==============================
 
 The `ll_wclk_change_edge`, `ll_data_tx_edge`, and `ll_data_rx_edge` fields
