@@ -147,21 +147,7 @@ vibrator should now be enabled for.
 Greybus Vibrator On Response
 """"""""""""""""""""""""""""
 
-Table :num:`table-vibrator-on-response` defines the Greybus
-vibrator on control response. The response contains only the status
-byte.
-
-.. figtable::
-    :nofig:
-    :label: table-vibrator-on-response
-    :caption: Vibrator On Response
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        status          1       Number          :ref:`greybus-protocol-error-codes`
-    =======  ==============  ======  ==========      ===========================
+The Greybus vibrator on response message has no payload.
 
 Greybus Vibrator Off Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -177,21 +163,7 @@ The Greybus vibrator off request message has no payload.
 Greybus Vibrator Off Response
 """""""""""""""""""""""""""""
 
-Table :num:`table-vibrator-off-response` defines the Greybus
-vibrator off response. The response contains only the status
-byte.
-
-.. figtable::
-    :nofig:
-    :label: table-vibrator-off-response
-    :caption: Vibrator Off Response
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        status          1       Number          :ref:`greybus-protocol-error-codes`
-    =======  ==============  ======  ==========      ===========================
+The Greybus vibrator off response message has no payload.
 
 Battery Protocol
 ----------------
@@ -350,9 +322,9 @@ The Greybus battery technology request message has no payload.
 Greybus Battery Technology Response
 """""""""""""""""""""""""""""""""""
 
-The Greybus battery functionality response contains the status byte
-and a 2-byte value that represents the type of battery being
-controlled as defined in Table :num:`table-battery-technology-response`.
+The Greybus battery functionality response contains a 2-byte value
+that represents the type of battery being controlled as defined in
+Table :num:`table-battery-technology-response`.
 
 .. figtable::
     :nofig:
@@ -363,8 +335,7 @@ controlled as defined in Table :num:`table-battery-technology-response`.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        status          1       Number          :ref:`greybus-protocol-error-codes`
-    1        technology      2       Number          :ref:`battery-technology-type`
+    0        technology      2       Number          :ref:`battery-technology-type`
     =======  ==============  ======  ==========      ===========================
 
 .. _battery-technology-type:
@@ -408,9 +379,9 @@ The Greybus battery status request message has no payload.
 Greybus Battery Status Response
 """""""""""""""""""""""""""""""
 
-The Greybus battery status response contains the status byte and a
-2-byte value that represents the status of battery being controlled as
-defined in table :num:`table-battery-status-response`.
+The Greybus battery status response contains a 2-byte value that
+represents the status of battery being controlled as defined in
+table :num:`table-battery-status-response`.
 
 .. figtable::
     :nofig:
@@ -421,8 +392,7 @@ defined in table :num:`table-battery-status-response`.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        status          1       Number          :ref:`greybus-protocol-error-codes`
-    1        battery_status  2       Number          :ref:`battery-status`
+    0        battery_status  2       Number          :ref:`battery-status`
     =======  ==============  ======  ==========      ===========================
 
 .. _battery-status:
@@ -464,10 +434,9 @@ The Greybus battery max voltage request message has no payload.
 Greybus Battery Max Voltage Response
 """"""""""""""""""""""""""""""""""""
 
-The Greybus battery max voltage response contains the status byte and
-a 4-byte value that represents the maximum voltage of the battery
-being controlled, in |mu| V as defined in table
-:num:`table-battery-max-voltage-response`.
+The Greybus battery max voltage response contains a 4-byte value
+that represents the maximum voltage of the battery being controlled,
+in |mu| V as defined in table :num:`table-battery-max-voltage-response`.
 
 .. figtable::
     :nofig:
@@ -478,8 +447,7 @@ being controlled, in |mu| V as defined in table
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        status          1       Number          :ref:`greybus-protocol-error-codes`
-    1        max_voltage     4       Number          Battery maximum voltage in |mu| V
+    0        max_voltage     4       Number          Battery maximum voltage in |mu| V
     =======  ==============  ======  ==========      ===========================
 
 Greybus Battery Capacity Operation
@@ -496,9 +464,9 @@ The Greybus battery capacity request message has no payload.
 Greybus Battery Percent Capacity Response
 """""""""""""""""""""""""""""""""""""""""
 
-The Greybus battery capacity response contains the status byte and a
-4-byte value that represents the capacity of the battery being
-controlled, in percentage as defined in table
+The Greybus battery capacity response contains a 4-byte value that
+represents the capacity of the battery being controlled, in
+percentage as defined in table
 :num:`table-battery-percent-capacity-response`.
 
 .. figtable::
@@ -510,8 +478,7 @@ controlled, in percentage as defined in table
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        status          1       Number          :ref:`greybus-protocol-error-codes`
-    1        capacity        4       Number          Battery capacity in %
+    0        capacity        4       Number          Battery capacity in %
     =======  ==============  ======  ==========      ===========================
 
 Greybus Battery Temperature Operation
@@ -528,9 +495,9 @@ The Greybus battery temperature request message has no payload.
 Greybus Battery Temperature Response
 """"""""""""""""""""""""""""""""""""
 
-The Greybus battery temperature response contains the status byte and
-a 4-byte value that represents the temperature of the battery being
-controlled, in 0.1 |degree-c| increments as defined in table
+The Greybus battery temperature response contains a 4-byte value
+that represents the temperature of the battery being controlled, in
+0.1 |degree-c| increments as defined in table
 :num:`table-battery-temp-response`.
 
 .. figtable::
@@ -542,8 +509,7 @@ controlled, in 0.1 |degree-c| increments as defined in table
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        status          1       Number          :ref:`greybus-protocol-error-codes`
-    1        temperature     4       Number          Battery temperature (0.1 |degree-c| units)
+    0        temperature     4       Number          Battery temperature (0.1 |degree-c| units)
     =======  ==============  ======  ==========      ===========================
 
 Greybus Battery Voltage Operation
@@ -560,9 +526,9 @@ The Greybus battery voltage request message has no payload.
 Greybus Battery Voltage Response
 """"""""""""""""""""""""""""""""
 
-The Greybus battery voltage response contains the status byte and a
-4-byte value that represents the voltage of the battery being
-controlled, in |mu| V as defined in table
+The Greybus battery voltage response contains a 4-byte value that
+represents the voltage of the battery being controlled, in |mu| V as
+defined in table
 :num:`table-battery-voltage-response`.
 
 .. figtable::
@@ -574,8 +540,7 @@ controlled, in |mu| V as defined in table
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        status          1       Number          :ref:`greybus-protocol-error-codes`
-    1        voltage         4       Number          Battery voltage in |mu| V
+    0        voltage         4       Number          Battery voltage in |mu| V
     =======  ==============  ======  ==========      ===========================
 
 Greybus Battery Current Operation
@@ -592,10 +557,9 @@ The Greybus battery current request message has no payload.
 Greybus Battery Current Response
 """"""""""""""""""""""""""""""""
 
-The Greybus battery current response contains the status byte and a
-4-byte value that represents the current of the battery being
-controlled, in |mu| A as defined in table
-:num:`table-battery-current-response`.
+The Greybus battery current response contains a 4-byte value that
+represents the current of the battery being controlled, in |mu| A as
+defined in table :num:`table-battery-current-response`.
 
 .. figtable::
     :nofig:
@@ -606,8 +570,7 @@ controlled, in |mu| A as defined in table
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        status          1       Number          :ref:`greybus-protocol-error-codes`
-    1        current         4       Number          Battery current in |mu| A
+    0        current         4       Number          Battery current in |mu| A
     =======  ==============  ======  ==========      ===========================
 
 Greybus Battery Total Capacity Operation
@@ -623,10 +586,9 @@ The Greybus battery total capacity request message has no payload.
 
 Greybus Battery Total Capacity Response
 """""""""""""""""""""""""""""""""""""""
-The Greybus battery total capacity response contains the status byte and a
-4-byte value that represents the total capacity of the battery being
-controlled, in mAh as defined in table
-:num:`table-battery-total-capacity-response`.
+The Greybus battery total capacity response contains a 4-byte value
+that represents the total capacity of the battery being controlled,
+in mAh as defined in table :num:`table-battery-total-capacity-response`.
 
 .. figtable::
     :nofig:
@@ -637,8 +599,7 @@ controlled, in mAh as defined in table
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        status          1       Number          :ref:`greybus-protocol-error-codes`
-    1        capacity        4       Number          Battery capacity in mAh
+    0        capacity        4       Number          Battery capacity in mAh
     =======  ==============  ======  ==========      ===========================
 
 Greybus Battery Shutdown Temperature Operation
@@ -654,10 +615,9 @@ The Greybus battery shutdown temperature request message has no payload.
 
 Greybus Battery Shutdown Temperature Response
 """""""""""""""""""""""""""""""""""""""""""""
-The Greybus battery shutdown temperature response contains the status
-byte and a 4-byte value that represents the temperature at which the
-battery shuts down as defined in table
-:num:`table-battery-shutdown-temp-response`.
+The Greybus battery shutdown temperature response contains a 4-byte
+value that represents the temperature at which the battery shuts
+down as defined in table :num:`table-battery-shutdown-temp-response`.
 
 .. figtable::
     :nofig:
@@ -668,8 +628,7 @@ battery shuts down as defined in table
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        status          1       Number          :ref:`greybus-protocol-error-codes`
-    1        temperature     4       Number          Battery temperature (0.1 |degree-c| units)
+    0        temperature     4       Number          Battery temperature (0.1 |degree-c| units)
     =======  ==============  ======  ==========      ===========================
 
 Audio Protocol
@@ -855,21 +814,7 @@ a valid NFC NCI Packet of 'size' bytes as defined in table
 Greybus NFC Send Packet Response
 """"""""""""""""""""""""""""""""
 
-Table :num:`table-nfc-send-packet-response` defines the Greybus
-NFC Send Packet response. The response contains only the status
-byte.
-
-.. figtable::
-    :nofig:
-    :label: table-nfc-send-packet-response
-    :caption: NFC Send Packet Response
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        status          1       Number          :ref:`greybus-protocol-error-codes`
-    =======  ==============  ======  ==========      ===========================
+The Greybus NFS send packet response message has no payload.
 
 Power Profile Protocol
 ----------------------
