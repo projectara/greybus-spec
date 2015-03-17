@@ -1041,17 +1041,17 @@ transfer request.
     :caption: SPI Protocol Transfer Request
     :spec: l l c c l
 
-    ==========     ==============  ======    ======================    ===========================
-    Offset         Field           Size      Value                     Description
-    ==========     ==============  ======    ======================    ===========================
-    0              chip-select     1         Number                    chip-select pin for the slave device
-    1              mode            1         Number                    :ref:`spi-mode-bits`
-    2              count           2         Number                    Number of gb_spi_transfer descriptors
-    4              transfers[0]    12        struct gb_spi_transfer    First SPI gb_spi_transfer descriptor in the transfer
-    ...            ...             12        struct gb_spi_transfer    ...
-    4+12*(N)       op[N]           12        struct gb_spi_transfer    Nth SPI gb_spi_transfer descriptor
-    4+12*(N+1)     data            ...       Data                      Data for all the write transfers
-    ==========     ==============  ======    ======================    ===========================
+    ==========     ==============  ======    ===============    ===========================
+    Offset         Field           Size      Value              Description
+    ==========     ==============  ======    ===============    ===========================
+    0              chip-select     1         Number             chip-select pin for the slave device
+    1              mode            1         Number             :ref:`spi-mode-bits`
+    2              count           2         Number             Number of gb_spi_transfer descriptors
+    4              transfers[0]    12        gb_spi_transfer    First SPI gb_spi_transfer descriptor in the transfer
+    ...            ...             12        gb_spi_transfer    ...
+    4+12*(N)       op[N]           12        gb_spi_transfer    Nth SPI gb_spi_transfer descriptor
+    4+12*(N+1)     data            ...       Data               Data for all the write transfers
+    ==========     ==============  ======    ===============    ===========================
 
 Any data to be written follows the last gb_spi_transfer descriptor. Data for
 the first write gb_spi_transfer descriptor in the array immediately follows
@@ -3519,16 +3519,16 @@ transfer request.
     :caption: I2C Protocol Transfer Request
     :spec: l l c c l
 
-    ===========  ==============  =======  ==============   ===================================
-    Offset       Field           Size     Value            Description
-    ===========  ==============  =======  ==============   ===================================
-    0            op_count        2        Number           Number of I2C ops in transfer
-    2            op[1]           6        struct i2c_op    Descriptor for first I2C op in the transfer
-    ...          ...             6        struct i2c_op    ...
-    2+6*(N-1)    op[N]           6        struct i2c_op    Descriptor for Nth I2C op
-    2+6*N        data            6        Data             Data for first write op in the transfer
-    ...          ...             ...      Data             Data for last write op on the transfer
-    ===========  ==============  =======  ==============   ===================================
+    ===========  ==============  =======  ======   ===================================
+    Offset       Field           Size     Value    Description
+    ===========  ==============  =======  ======   ===================================
+    0            op_count        2        Number   Number of I2C ops in transfer
+    2            op[1]           6        i2c_op   Descriptor for first I2C op in the transfer
+    ...          ...             6        i2c_op   ...
+    2+6*(N-1)    op[N]           6        i2c_op   Descriptor for Nth I2C op
+    2+6*N        data            6        Data     Data for first write op in the transfer
+    ...          ...             ...      Data     Data for last write op on the transfer
+    ===========  ==============  =======  ======   ===================================
 
 Any data to be written follows the last op descriptor.  Data for
 the first write op in the array immediately follows the last op in
