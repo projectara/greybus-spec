@@ -1049,7 +1049,7 @@ transfer request.
     2              count           2         Number             Number of gb_spi_transfer descriptors
     4              op[1]           12        gb_spi_transfer    First SPI gb_spi_transfer descriptor in the transfer
     ...            ...             12        gb_spi_transfer    ...
-    4+12*(N-1)     op[N]           12        gb_spi_transfer    Nth SPI gb_spi_transfer descriptor
+    4+12*(N-1)     op[N]           12        gb_spi_transfer    Last SPI gb_spi_transfer descriptor
     4+12*N         data            ...       Data               Data for all the write transfers
     ==========     ==============  ======    ===============    ===========================
 
@@ -1076,7 +1076,7 @@ of the request.
     =======  ==============  ======  ==========      ======================================
     0        data                    Data            Data for first read gb_spi_transfer descriptor on the transfer
     ...      ...             ...     Data            ...
-    ...      ...             ...     Data            Data for Nth read gb_spi_transfer descriptor on the transfer
+    ...      ...             ...     Data            Data for last read gb_spi_transfer descriptor on the transfer
     =======  ==============  ======  ==========      ======================================
 
 
@@ -3525,7 +3525,7 @@ transfer request.
     0            op_count        2        Number   Number of I2C ops in transfer
     2            op[1]           6        i2c_op   Descriptor for first I2C op in the transfer
     ...          ...             6        i2c_op   ...
-    2+6*(N-1)    op[N]           6        i2c_op   Descriptor for Nth I2C op
+    2+6*(N-1)    op[N]           6        i2c_op   Descriptor for last I2C op
     2+6*N        data            6        Data     Data for first write op in the transfer
     ...          ...             ...      Data     Data for last write op on the transfer
     ===========  ==============  =======  ======   ===================================
