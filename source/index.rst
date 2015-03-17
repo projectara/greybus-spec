@@ -58,5 +58,6 @@
    module_info
    operations
    connection
+   special
    device_class
    bridged_phy
