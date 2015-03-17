@@ -1047,7 +1047,7 @@ transfer request.
     0              chip-select     1         Number             chip-select pin for the slave device
     1              mode            1         Number             :ref:`spi-mode-bits`
     2              count           2         Number             Number of gb_spi_transfer descriptors
-    4              transfers[0]    12        gb_spi_transfer    First SPI gb_spi_transfer descriptor in the transfer
+    4              op[0]           12        gb_spi_transfer    First SPI gb_spi_transfer descriptor in the transfer
     ...            ...             12        gb_spi_transfer    ...
     4+12*(N)       op[N]           12        gb_spi_transfer    Nth SPI gb_spi_transfer descriptor
     4+12*(N+1)     data            ...       Data               Data for all the write transfers
