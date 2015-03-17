@@ -1012,10 +1012,8 @@ and a block of zero or more bytes of data to be written.
 
 .. _gb_spi_transfer:
 
-**Greybus SPI gb_spi_transfer descriptor**
-
-Table :num:`table-spi-transfer-descriptor` defines the Greybus SPI
-gb_spi_transfer descriptor. This describes the configuration of a segment
+Table :num:`table-spi-transfer-descriptor` defines the **Greybus SPI
+gb_spi_transfer descriptor**. This describes the configuration of a segment
 of a SPI transaction.
 
 .. figtable::
@@ -3467,9 +3465,7 @@ The Greybus I2C transfer request contains a message count, an array of
 message descriptors, and a block of zero or more bytes of data to be
 written.
 
-**Greybus I2C Op**
-
-Table :num:`table-i2c-op` defines the Greybus I2C op. An I2C op
+Table :num:`table-i2c-op` defines the **Greybus I2C op**. An I2C op
 describes a segment of an I2C transaction.
 
 .. figtable::
