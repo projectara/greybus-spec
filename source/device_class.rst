@@ -322,7 +322,7 @@ The Greybus battery technology request message has no payload.
 Greybus Battery Technology Response
 """""""""""""""""""""""""""""""""""
 
-The Greybus battery functionality response contains a 2-byte value
+The Greybus battery technology response contains a 2-byte value
 that represents the type of battery being controlled as defined in
 Table :num:`table-battery-technology-response`.
 
