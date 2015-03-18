@@ -1568,14 +1568,14 @@ from the PWM controller, also taking the form of a PWM controller
 message.  The request and response messages for each PWM operation are
 defined below.
 
-The following table describes the Greybus PWM protocol operation types
-and their values. Both the request type and response type values are
-shown.
+Table :num:`table-pwm-operation-type` describes the Greybus PWM protocol
+operation types and their values. Both the request type and response type values
+are shown.
 
 .. figtable::
     :nofig:
-    :label: table-gpio-operation-type
-    :caption: GPIO Operation Types
+    :label: table-pwm-operation-type
+    :caption: PWM Operation Types
     :spec: l l l
 
     ===========================  =============  ==============
@@ -2668,8 +2668,8 @@ Specification Version 2.0
 Greybus I2S Protocol Bit Masks
 """"""""""""""""""""""""""""""
 
-This table defines the bit masks which specify the set of supported
-I2S Low-level Protocols.
+Table :num:`table-i2s-spatial-location-bit-mask` defines the bit masks which
+specify the set of supported I2S Low-level Protocols.
 See :ref:`i2s-low-level-attributes` for further details.
 
 .. figtable::
