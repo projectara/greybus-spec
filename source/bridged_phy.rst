@@ -729,10 +729,10 @@ Conceptually, the operations in the Greybus SPI protocol are:
     Performs a SPI transaction as one or more SPI transfers, defined in the
     supplied array.
 
-A transfer is made up of an array of gb_spi_transfer descriptors, each of which
-specifies SPI master configurations during transfers. For write requests, the
-data is sent following the array of messages; for read requests, the data is
-returned in a response message from the SPI master.
+A transfer is made up of an array of :ref:`gb_spi_transfer <gb_spi_transfer>`
+descriptors, each of which specifies SPI master configurations during transfers.
+For write requests, the data is sent following the array of messages; for read
+requests, the data is returned in a response message from the SPI master.
 
 Greybus SPI Message Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -992,16 +992,16 @@ the maximum number of chip select pins supported by the SPI master.
 Greybus SPI Transfer Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus SPI transfer operation requests that the SPI master
-perform a SPI transaction. The operation consists of a set of one or
-more gb_spi_transfer descriptors, which define data transfers to be
-performed by the SPI master. The transfer operation request includes
-data for each :ref:`gb_spi_transfer <gb_spi_transfer>` descriptor
-involving a write operation.  The data shall be sent immediately
-following the gb_spi_transfer descriptors (with no intervening pad
+The Greybus SPI transfer operation requests that the SPI master perform a SPI
+transaction. The operation consists of a set of one or more
+:ref:`gb_spi_transfer <gb_spi_transfer>` descriptors, which define data
+transfers to be performed by the SPI master. The transfer operation request
+includes data for each :ref:`gb_spi_transfer <gb_spi_transfer>` descriptor
+involving a write operation.  The data shall be sent immediately following the
+:ref:`gb_spi_transfer <gb_spi_transfer>` descriptors (with no intervening pad
 bytes).  The transfer operation response includes data for each
-gb_spi_transfer descriptor involving a read operation, with all read
-data transferred contiguously.
+:ref:`gb_spi_transfer <gb_spi_transfer>` descriptor involving a read operation,
+with all read data transferred contiguously.
 
 Greybus SPI Transfer Request
 """"""""""""""""""""""""""""
@@ -1046,17 +1046,19 @@ transfer request.
     ==========     ==============  ======    ===============    ===========================
     0              chip-select     1         Number             chip-select pin for the slave device
     1              mode            1         Number             :ref:`spi-mode-bits`
-    2              count           2         Number             Number of gb_spi_transfer descriptors
-    4              op[1]           12        gb_spi_transfer    First SPI gb_spi_transfer descriptor in the transfer
+    2              count           2         Number             Number of :ref:`gb_spi_transfer <gb_spi_transfer>` descriptors
+    4              op[1]           12        gb_spi_transfer    First SPI :ref:`gb_spi_transfer <gb_spi_transfer>` descriptor in the transfer
     ...            ...             12        gb_spi_transfer    ...
-    4+12*(N-1)     op[N]           12        gb_spi_transfer    Last SPI gb_spi_transfer descriptor
+    4+12*(N-1)     op[N]           12        gb_spi_transfer    Last SPI :ref:`gb_spi_transfer <gb_spi_transfer>` descriptor
     4+12*N         data            ...       Data               Data for all the write transfers
     ==========     ==============  ======    ===============    ===========================
 
-Any data to be written follows the last gb_spi_transfer descriptor. Data for
-the first write gb_spi_transfer descriptor in the array immediately follows
-the last gb_spi_transfer descriptor in the array, and no padding shall be
-inserted between data sent for distinct SPI gb_spi_transfer descriptors.
+Any data to be written follows the last :ref:`gb_spi_transfer <gb_spi_transfer>`
+descriptor. Data for the first write :ref:`gb_spi_transfer <gb_spi_transfer>`
+descriptor in the array immediately follows the last :ref:`gb_spi_transfer
+<gb_spi_transfer>` descriptor in the array, and no padding shall be inserted
+between data sent for distinct SPI :ref:`gb_spi_transfer <gb_spi_transfer>`
+descriptors.
 
 Greybus SPI Transfer Response
 """""""""""""""""""""""""""""
@@ -1074,11 +1076,10 @@ of the request.
     =======  ==============  ======  ==========      ======================================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ======================================
-    0        data                    Data            Data for first read gb_spi_transfer descriptor on the transfer
+    0        data                    Data            Data for first read :ref:`gb_spi_transfer <gb_spi_transfer>` descriptor on the transfer
     ...      ...             ...     Data            ...
-    ...      ...             ...     Data            Data for last read gb_spi_transfer descriptor on the transfer
+    ...      ...             ...     Data            Data for Last read :ref:`gb_spi_transfer <gb_spi_transfer>` descriptor on the transfer
     =======  ==============  ======  ==========      ======================================
-
 
 UART Protocol
 -------------
