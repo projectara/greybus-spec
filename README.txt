@@ -11,7 +11,8 @@ On Ubuntu:
 
 Then:
 
-$ make latexpdf
+$ make latexpdf # For generating pdf
+$ make html # For generating html
 
 Output goes in build/latex. Build backends other than PDF are not
 currently tested.
