@@ -175,10 +175,10 @@ module descriptor as described in Table :num:`table-module-descriptor`.
     0        size               2       0x0014      Size of this descriptor
     2        type               1       0x01        Type of the descriptor (Module)
     3        (pad)              1       0           Reserved (pad to 4 byte boundary)
-    4        vendor             2       ID          Module vendor id
-    6        product            2       ID          Module product id
-    8        vendor_string_id   1       ID          String id for the vendor name
-    9        product_string_id  1       ID          String id for the product name
+    4        vendor             2       ID          Module vendor ID
+    6        product            2       ID          Module product ID
+    8        vendor_string_id   1       ID          String ID for the vendor name
+    9        product_string_id  1       ID          String ID for the product name
     10       unique_id          8       ID          Unique ID of the module
     18       (pad)              2       0           Reserved (pad to 20 bytes)
     =======  =================  ======  ==========  ==============================
@@ -191,13 +191,13 @@ vendor ID application process.
 The *product* field is controlled by the vendor, and should be unique
 per type of module that is created.
 
-*vendor_string_id* is a reference to a specific string descriptor id
+*vendor_string_id* is a reference to a specific string descriptor ID
 that provides a description of the vendor who created the module.  If
 there is no string present for this value in the Manifest, this
 value shall be 0x00.  See the :ref:`string-descriptor` section below for
 more details.
 
-*product_string_id* is a reference to a specific string descriptor id
+*product_string_id* is a reference to a specific string descriptor ID
 that provides a description of the product.  If there is no string
 present for this value in the Manifest, this value shall be 0x00.
 See the :ref:`string-descriptor` section below for more details.
@@ -222,7 +222,7 @@ not an even multiple of 4 bytes in length shall be padded out to a
 4-byte boundary with 0x00 values.  Strings consist of UTF-8 characters
 and are not required to be zero terminated. A string descriptor shall
 be referenced only once within the Manifest, e.g. only one product (or
-vendor) string field may refer to string id 2.  The format of the string
+vendor) string field may refer to string ID 2.  The format of the string
 descriptor can be found in Table :num:`table-string-descriptor`.
 
 .. figtable::
@@ -239,7 +239,7 @@ descriptor can be found in Table :num:`table-string-descriptor`.
     2             type            1         0x02        Type of the descriptor (String)
     3             (pad)           1         0           Reserved (pad to 4 byte boundary)
     4             length          1         Number      Length of the string in bytes
-    5             id              1         ID          String id for this descriptor
+    5             id              1         ID          String ID for this descriptor
     6             string          *length*  UTF-8       Characters for the string
     6+\ *length*  (pad)           0-3       0           Reserved (pad to 4 byte boundary)
     ============  ==============  ========  ==========  ===========================
@@ -254,8 +254,8 @@ Interface Descriptor
 An interface descriptor describes an access point for a module to the
 |unipro| network. Each interface represents a single physical port
 through which |unipro| packets are transferred. Every module shall have
-at least one interface. Each interface has an id whose value is unique
-within the module.  The first interface shall have id 0, the second
+at least one interface. Each interface has an ID whose value is unique
+within the module.  The first interface shall have ID 0, the second
 (if present) shall have value 1, and so on. The purpose of these Ids
 is to allow CPort descriptors to define which interface they are
 associated with.  The interface descriptor is defined in Table
@@ -282,7 +282,7 @@ CPort Descriptor
 ^^^^^^^^^^^^^^^^
 
 This descriptor describes a CPort implemented within the module. Each
-CPort is associated with one of the module's interfaces, and has an id
+CPort is associated with one of the module's interfaces, and has an ID
 unique for that interface.  Every CPort defines the protocol used by
 the AP to interact with the CPort. A special control CPort shall be
 defined for every interface, and shall be defined to use the *Control
@@ -305,7 +305,7 @@ defined in the sections :ref:`device-class-protocols` and
     2         type            1       0x04        Type of the descriptor (CPort)
     3         (pad)           1       0           Reserved (pad to 4 byte boundary)
     4         interface       1       ID          Interface ID this CPort is associated with
-    5         id              2       ID          Id (destination address) of the CPort
+    5         id              2       ID          ID (destination address) of the CPort
     7         protocol        1       Number      protocol is defined in Table :num:`table-cport-protocol`
     ========  ==============  ======  ==========  ===========================
 
@@ -317,7 +317,7 @@ The *id* field is the CPort identifier used by other modules to direct
 traffic to this CPort. The IDs for CPorts using the same interface
 shall be unique. Certain low-numbered CPort identifiers (such as the
 control CPort) are reserved. Implementors shall assign CPorts
-low-numbered id values, generally no higher than 31. (Higher-numbered
+low-numbered ID values, generally no higher than 31. (Higher-numbered
 CPort ids impact on the total usable number of |unipro| devices and
 typically should not be used.)
 

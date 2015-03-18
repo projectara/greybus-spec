@@ -40,13 +40,13 @@ Conceptually, the operations in the Greybus control protocol are:
 .. c:function:: int probe(u16 endo_id, u8 intf_id, u16 *auth_size, u8 *auth_data);
 
     This operation is used at initial power-on, sent by the SVC to
-    discover which module contains the AP.  The endo id supplied by
+    discover which module contains the AP.  The endo ID supplied by
     the SVC defines the type of endo used by the Greybus system,
     including the size of the endo and the positions and sizes of
-    modules that it holds.  The interface id supplied by the SVC
+    modules that it holds.  The interface ID supplied by the SVC
     indicates which interface block on the endo is being probed.
     Together these two values define the location of the module
-    containing the interface.  Interface id 0 represents the SVC
+    containing the interface.  Interface ID 0 represents the SVC
     itself; other values are defined in the *Project Ara Module
     Developers Kit*.  The response to this operation contains a
     block of data used by a module to identify itself as
@@ -107,9 +107,9 @@ Greybus Control Probe Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus control probe request is sent only by the SVC.  It
-supplies the endo id, which defines the size of the endo and
+supplies the endo ID, which defines the size of the endo and
 the positions available to hold modules.  It also informs the module
-via the interface id the module location of the interface that
+via the interface ID the module location of the interface that
 receives the request.
 
 .. figtable::
@@ -121,8 +121,8 @@ receives the request.
     =======  ==============  ======  ============    ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ============    ===========================
-    0        endo_id         2       Endo id         Defines endo geometry
-    2        intf_id         1       Interface Id    Position of receiving interface on endo
+    0        endo_id         2       Endo ID         Defines endo geometry
+    2        intf_id         1       Interface ID    Position of receiving interface on endo
     =======  ==============  ======  ============    ===========================
 
 Greybus Control Probe Response
