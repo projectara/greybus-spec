@@ -112,6 +112,12 @@ the positions available to hold modules.  It also informs the module
 via the interface id the module location of the interface that
 receives the request.
 
+.. figtable::
+    :nofig:
+    :label: table-control-probe-request
+    :caption: Control Protocol Probe Request
+    :spec: l l c c l
+
     =======  ==============  ======  ============    ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ============    ===========================
@@ -126,6 +132,12 @@ The Greybus control probe response contains a block of
 authentication data.  The AP module responds with data that
 identifies it as containing the AP.  All other modules respond
 with no data (*auth_size* is 0).
+
+.. figtable::
+    :nofig:
+    :label: table-control-probe-response
+    :caption: Control Protocol Probe Response
+    :spec: l l c c l
 
     =======  ==============  ===========  ==========      ===========================
     Offset   Field           Size         Value           Description
@@ -148,6 +160,12 @@ Greybus Control Connected Request
 
 The Greybus control connected request supplies the CPort ID on the
 receiving interface that has been connected.
+
+.. figtable::
+    :nofig:
+    :label: table-control-connected-request
+    :caption: Control Protocol Connected Request
+    :spec: l l c c l
 
     =======  ==============  ======  ============    ===========================
     Offset   Field           Size    Value           Description
@@ -174,6 +192,12 @@ Greybus Control Disconnected Request
 
 The Greybus control disconnected request supplies the CPort ID on the
 receiving interface that is no longer connected.
+
+.. figtable::
+    :nofig:
+    :label: table-control-disconnected-request
+    :caption: Control Protocol Disconnected Request
+    :spec: l l c c l
 
     =======  ==============  ======  ============    ===========================
     Offset   Field           Size    Value           Description
