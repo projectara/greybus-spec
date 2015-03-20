@@ -271,7 +271,7 @@ associated with.  The interface descriptor is defined in Table
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        size            2       0x0004          Size of this descriptor
+    0        size            2       0x0008          Size of this descriptor
     2        type            1       0x03            Type of the descriptor (Interface)
     3        (pad)           1       0               Reserved (pad to 4 byte boundary)
     4        id              1       ID              Module-unique ID for this interface
