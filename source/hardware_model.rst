@@ -9,13 +9,13 @@ Greybus Specification is a *Greybus system*.
 A Greybus system shall be composed of the following physical
 components:
 
-1. An "endoskeleton," consisting of the following elements:
+1. An "endoskeleton" (or *Endo*), consisting of the following elements:
 
    - One or more |unipro| switches, which distribute |unipro| network
      traffic throughout the Greybus network.
 
    - One or more *interface blocks*. These are the connectors which
-     expose the endoskeleton's communication interface to other
+     expose the Endo's communication interface to other
      elements in a Greybus system.
 
    - Exactly one Supervisory Controller, hereafter referred to as the
@@ -24,7 +24,7 @@ components:
      and its RF bus.
 
 2. One or more modules, which are physically inserted into slots on
-   the endoskeleton. Modules shall implement communication protocols
+   the Endo. Modules shall implement communication protocols
    in accordance with this document's specifications.
 
 3. Exactly one Application Processor module, hereafter referred to as
