@@ -20,7 +20,7 @@ Vibrator Protocol
 -----------------
 
 This section defines the operations used on a connection implementing
-the Greybus vibrator protocol.  This protocol allows an AP to manage
+the Greybus vibrator protocol.  This protocol allows an AP Module to manage
 a vibrator device present on a module.  The protocol is very simple,
 and maps almost directly to the Android HAL vibrator interface.
 
@@ -120,7 +120,7 @@ shall report major version |gb-major|, minor version |gb-minor|.
 Greybus Vibrator On Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus vibrator on operation allows the AP to request the
+The Greybus vibrator on operation allows the AP Module to request the
 vibrator be enabled for the specified number of milliseconds.
 
 Greybus Vibrator On Request
@@ -150,7 +150,7 @@ The Greybus vibrator on response message has no payload.
 Greybus Vibrator Off Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus Vibrator off operation allows the AP to request the
+The Greybus Vibrator off operation allows the AP Module to request the
 vibrator be turned off as soon as possible.
 
 Greybus Vibrator Off Request
@@ -167,7 +167,7 @@ Battery Protocol
 ----------------
 
 This section defines the operations used on a connection implementing
-the Greybus battery protocol. This protocol allows an AP to manage a
+the Greybus battery protocol. This protocol allows an AP Module to manage a
 battery device present on a module. The protocol consists of few basic
 operations, whose request and response message formats are defined
 here.
@@ -308,7 +308,7 @@ shall report major version |gb-major|, minor version |gb-minor|.
 Greybus Battery Technology Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus battery technology operation allows the AP to determine
+The Greybus battery technology operation allows the AP Module to determine
 the details of the battery technology controller by the battery
 adapter.
 
@@ -366,7 +366,7 @@ taken directly from the <linux/power_supply.h> header file.
 Greybus Battery Status Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus battery status operation allows the AP to determine the
+The Greybus battery status operation allows the AP Module to determine the
 status of the battery by the battery adapter.
 
 Greybus Battery Status Request
@@ -421,7 +421,7 @@ taken directly from the <linux/power_supply.h> header file.
 Greybus Battery Max Voltage Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus battery Max Voltage operation allows the AP to determine
+The Greybus battery Max Voltage operation allows the AP Module to determine
 the maximum possible voltage of the battery.
 
 Greybus Battery Max Voltage Request
@@ -451,7 +451,7 @@ in |mu| V as defined in table :num:`table-battery-max-voltage-response`.
 Greybus Battery Capacity Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus battery Capacity operation allows the AP to determine the
+The Greybus battery Capacity operation allows the AP Module to determine the
 current capacity percent of the battery.
 
 Greybus Battery Percent Capacity Request
@@ -482,7 +482,7 @@ percentage as defined in table
 Greybus Battery Temperature Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus battery temperature operation allows the AP to determine
+The Greybus battery temperature operation allows the AP Module to determine
 the current temperature of the battery.
 
 Greybus Battery Temperature Request
@@ -513,7 +513,7 @@ that represents the temperature of the battery being controlled, in
 Greybus Battery Voltage Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus battery Voltage operation allows the AP to determine the
+The Greybus battery Voltage operation allows the AP Module to determine the
 voltage being supplied by the battery.
 
 Greybus Battery Voltage Request
@@ -544,7 +544,7 @@ defined in table
 Greybus Battery Current Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus battery Current operation allows the AP to determine the
+The Greybus battery Current operation allows the AP Module to determine the
 current current of the battery.
 
 Greybus Battery Current Request
@@ -574,7 +574,7 @@ defined in table :num:`table-battery-current-response`.
 Greybus Battery Total Capacity Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus battery total capacity operation allows the AP to determine
+The Greybus battery total capacity operation allows the AP Module to determine
 the total capacity of the battery.
 
 Greybus Battery Total Capacity Request
@@ -602,7 +602,7 @@ in mAh as defined in table :num:`table-battery-total-capacity-response`.
 
 Greybus Battery Shutdown Temperature Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The Greybus battery shutdown temperature operation allows the AP to
+The Greybus battery shutdown temperature operation allows the AP Module to
 determine the battery temperature at which the battery will shut
 itself down.
 
@@ -1096,7 +1096,7 @@ NFC Protocol
 
 This section defines the operations used on a connection implementing
 the Greybus Near Field Communication (NFC) Protocol.  This protocol
-allows an AP (Device Host (DH) in NFC's NFC Controller Interface (NCI)
+allows an AP Module (Device Host (DH) in NFC's NFC Controller Interface (NCI)
 terminology) to communicate with a Greybus NFC Module (NFC Controller
 (NFCC) in NFC NCI terminology) using the NFC Forum's NCI Specification
 version 1.1.  This specification is available from the
@@ -1129,8 +1129,8 @@ The operations in the Greybus NFC Protocol are:
 
 .. c:function:: int send_packet(u32 size, u8 *packet);
 
-    Sends an NFC NCI Packet of the specified size from an AP
-    (or NFC Module) to the associated NFC Module (or AP).
+    Sends an NFC NCI Packet of the specified size from an AP Module
+    (or NFC Module) to the associated NFC Module (or AP Module).
 
 Greybus NFC Message Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1207,8 +1207,8 @@ shall report major version |gb-major|, minor version |gb-minor|.
 Greybus NFC Send Packet Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus NFC Send Packet Operation allows an AP or NFC Module
-to send an NFC NCI Packet to the associated NFC Module or AP,
+The Greybus NFC Send Packet Operation allows an AP Module or NFC Module
+to send an NFC NCI Packet to the associated NFC Module or AP Module,
 respectively.
 
 Greybus NFC Send Packet Request

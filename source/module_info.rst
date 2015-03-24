@@ -48,17 +48,18 @@ the following general requirements:
   header or descriptor shall be ignored when read, and zero-filled
   when written.
 * All major structures (like the Manifest header) and interface
-  protocols (like that between the AP and SVC) shall be versioned, to
-  allow future extensions (or fixes) to be added and recognized.
+  protocols (like that between the AP Module and SVC) shall be
+  versioned, to allow future extensions (or fixes) to be added and
+  recognized.
 
 Manifest
 --------
 
-The Manifest is a contiguous block of data that includes a
-Manifest Header and a set of Descriptors.  When read, a
-Manifest is transferred in its entirety.  This allows the module to be
-described to the AP all at once, alleviating the need for multiple
-communication messages during the enumeration phase of the module.
+The Manifest is a contiguous block of data that includes a Manifest
+Header and a set of Descriptors.  When read, a Manifest is transferred
+in its entirety.  This allows the module to be described to the AP
+Module all at once, alleviating the need for multiple communication
+messages during the enumeration phase of the module.
 
 Manifest Header
 ^^^^^^^^^^^^^^^
@@ -282,7 +283,7 @@ CPort Descriptor
 This descriptor describes a CPort implemented within the module. Each
 CPort is associated with one of the module's interfaces, and has an ID
 unique for that interface.  Every CPort defines the protocol used by
-the AP to interact with the CPort. A special control CPort shall be
+the AP Module to interact with the CPort. A special control CPort shall be
 defined for every interface, and shall be defined to use the *Control
 Protocol*. The Cport Descriptor is defined in Table
 :num:`table-cport-descriptor`. The details of these protocols are

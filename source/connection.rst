@@ -3,11 +3,11 @@ Connection Protocols
 
 The following sections define the request and response message formats
 for all operations for specific connection protocols. Requests are
-most often (but not always) initiated by the AP. Each request has a
+most often (but not always) initiated by the AP Module. Each request has a
 unique identifier, supplied by the requestor, and each response
 includes the identifier of the request with which it is associated.
 This allows operations to complete asynchronously, so multiple
-operations can be "in flight" between the AP and a |unipro|-attached
+operations can be "in flight" between the AP Module and a |unipro|-attached
 adapter at once.
 
 Each response includes a status byte in its message header, which

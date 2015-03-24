@@ -2371,11 +2371,11 @@ and audio data overrun.  The I2S Bundle shall report events when
 one or more I2S Transmitter or Receiver CPorts are active;
 otherwise, it shall not report events.
 
-The *halted* event indicates that the I2S Bundle is unable to
-continue streaming.  This event shall be preceded by another
-event indicating why the I2S Bundle halted.  Once an I2S Bundle
-reports the halted event, the AP shall deactivate all active I2S
-Transmitter and Receiver CPorts.
+The *halted* event indicates that the I2S Bundle is unable to continue
+streaming.  This event shall be preceded by another event indicating
+why the I2S Bundle halted.  Once an I2S Bundle reports the halted
+event, the AP Module shall deactivate all active I2S Transmitter and
+Receiver CPorts.
 
 In order to prevent flooding the AP Module with events,
 an I2S Bundle shall only report an event once per occurrence

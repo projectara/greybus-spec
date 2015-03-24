@@ -9,15 +9,16 @@ purpose in a Greybus system.
 The first is the control protocol.  Every interface shall provide a
 CPort that uses the control protocol.  It's used by the SVC to do
 initial probes of interfaces at system power on.  It is also used by
-the AP to notify interfaces when connections are available for them
+the AP Module to notify interfaces when connections are available for them
 to use.
 
-The second is the SVC protocol, which is used only between the SVC
-and AP.  The SVC provides low-level control of the |unipro|
+The second is the SVC protocol, which is used only between the SVC and
+AP Module.  The SVC provides low-level control of the |unipro|
 network.  The SVC performs almost all of its activities under
-direction of the AP, and the SVC protocol is used by the AP to
-exert this control.  The SVC also uses this protocol to notify the
-AP of events, such as the insertion or removal of a module.
+direction of the AP Module, and the SVC protocol is used by the AP
+Module to exert this control.  The SVC also uses this protocol to
+notify the AP Module of events, such as the insertion or removal of a
+Module.
 
 .. _control-protocol:
 
@@ -28,7 +29,7 @@ All interfaces are required to define a CPort that uses the control
 protocol, and shall be prepared to receive operation requests on that
 CPort at any time.  A Greybus connection is established whenever a
 control connection is used, but the interface is never notified that
-such a connection exists.  Only the SVC and AP are able to send
+such a connection exists.  Only the SVC and AP Module are able to send
 control requests.  Any other interface shall only send control
 response messages, and such messages shall only be sent in reply to
 a request received its control CPort.
@@ -48,7 +49,7 @@ Conceptually, the operations in the Greybus control protocol are:
     itself; other values are defined in the *Project Ara Module
     Developers Kit*.  The response to this operation contains a
     block of data used by a module to identify itself as
-    authentically containing an AP.  Non-AP modules respond with no
+    authentically containing an AP.  Non-AP Modules respond with no
     authentication data (*auth_size* is 0).
 
 .. c:function:: int connected(u16 cport_id);
@@ -98,8 +99,8 @@ Greybus Control Probe Operation
 
 The Greybus control probe operation is sent by the SVC to all
 interfaces at power-on to determine which module contains the AP.
-Once the AP has been found, the SVC begins a process that transfers
-full control of the |unipro| network to the AP.
+Once the AP Module has been found, the SVC begins a process that transfers
+full control of the |unipro| network to the AP Module.
 
 Greybus Control Probe Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -127,7 +128,7 @@ Greybus Control Probe Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus control probe response contains a block of
-authentication data.  The AP module responds with data that
+authentication data.  The AP Module responds with data that
 identifies it as containing the AP.  All other modules respond
 with no data (*auth_size* is 0).
 
@@ -147,11 +148,11 @@ with no data (*auth_size* is 0).
 Greybus Control Connected Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus control connected operation is sent to notify an
-interface that one of its CPorts now has a connection established.
-The SVC sends this request when it has set up a Greybus SVC
-connection with an AP interface.  The AP sends this request to other
-interfaces when it has set up Greybus connections for them to use.
+The Greybus control connected operation is sent to notify an interface
+that one of its CPorts now has a connection established.  The SVC
+sends this request when it has set up a Greybus SVC connection with an
+AP Module interface.  The AP Module sends this request to other interfaces
+when it has set up Greybus connections for them to use.
 
 Greybus Control Connected Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

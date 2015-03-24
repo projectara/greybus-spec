@@ -8,9 +8,9 @@ the sender to know whether the effects of sending a message were what
 was expected. For example, a request sent to a |unipro| switch
 controller requesting a reconfiguration of the routing table could
 fail, and proceeding as if a failure had not occurred in this case
-leads to undefined (and possibly dangerous) behavior.  Similarly, the AP module
-likely needs to retrieve information from other modules; this
-requires that a message requesting information be paired with a
+leads to undefined (and possibly dangerous) behavior.  Similarly, the
+AP Module likely needs to retrieve information from other modules;
+this requires that a message requesting information be paired with a
 returned message containing the information requested.
 
 For this reason, Greybus performs communication between modules using
@@ -29,18 +29,18 @@ the operation--either success or a reason for a failure.
 Operations are performed over Greybus Connections.  A connection is a
 communication path between two modules.  Each end of a connection is a
 |unipro| CPort, associated with a particular interface in a Greybus
-module.  A connection can be established once the AP learns of the
-existence of a CPort in another module.  The AP shall allocate a CPort
-for its end of the connection, and once the |unipro| network switch is
-configured properly the connection can be used for data transfer (and
-in particular, for operations).
+module.  A connection can be established once the AP Module learns of
+the existence of a CPort in another module.  The AP Module shall
+allocate a CPort for its end of the connection, and once the |unipro|
+network switch is configured properly the connection can be used for
+data transfer (and in particular, for operations).
 
 Each CPort in a Greybus module has associated with it a protocol.  The
 protocol dictates the way the CPort interprets incoming operation
 messages.  Stated another way, the meaning of the operation type found
 in a request message depends on which protocol the connection uses.
 Operation type 5 might mean "receive data" in one protocol, while
-operation 5 might mean "go to sleep" in another. When the AP
+operation 5 might mean "go to sleep" in another. When the AP Module
 establishes a connection with a CPort in another module, that
 connection uses the CPort's advertised protocol.
 

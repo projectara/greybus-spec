@@ -25,8 +25,8 @@ components:
    the Endo. Modules shall implement communication protocols
    in accordance with this document's specifications.
 
-3. Exactly one Application Processor module, hereafter referred to as
-   the "AP."
+3. Exactly one Application Processor Module, hereafter referred to as
+   the "AP Module."
 
 For a full description of the Project Ara platform, please see the
 *Project Ara Module Developers Kit* specification.

@@ -64,9 +64,9 @@ communication is not supported.
 
 Project Ara presently requires that exactly one application processor
 (AP) is present on the system for storing user data and executing
-applications. The module that contains the AP is the *AP module*; the
+applications. The Module that contains the AP is the *AP Module*; the
 Greybus specification defines a :ref:`control-protocol` to allow the
-AP module to accomplish its tasks.
+AP Module to accomplish its tasks.
 
 In order to ensure interoperability between the wide array of
 application processors and hardware peripherals commonly available on
