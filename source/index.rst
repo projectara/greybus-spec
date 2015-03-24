@@ -1,4 +1,4 @@
-﻿.. ----------------------------------------------------------------------
+.. ----------------------------------------------------------------------
 .. Notes for Project Ara Internal Team Use
 
 .. Go look at README FIRST before doing anything else:
