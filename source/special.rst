@@ -8,7 +8,7 @@ Special Protocols
 This section defines two protocols, each of which serves a special
 purpose in a Greybus system.
 
-The first is the control protocol.  Every interface must provide a
+The first is the control protocol.  Every interface shall provide a
 CPort that uses the control protocol.  It's used by the SVC to do
 initial probes of interfaces at system power on.  It is also used by
 the AP to notify interfaces when connections are available for them
@@ -27,7 +27,7 @@ Control Protocol
 ----------------
 
 All interfaces are required to define a CPort that uses the control
-protocol, and must be prepared to receive operation requests on that
+protocol, and shall be prepared to receive operation requests on that
 CPort at any time.  A Greybus connection is established whenever a
 control connection is used, but the interface is never notified that
 such a connection exists.  Only the SVC and AP are able to send
@@ -57,7 +57,7 @@ Conceptually, the operations in the Greybus control protocol are:
 
     This operation is used to notify an interface that a Greybus
     connection has been established using the indicated CPort.
-    Upon receiving this request, an interface must be prepared to
+    Upon receiving this request, an interface shall be prepared to
     receive messages on the indicated CPort.  The interface may send
     messages over the indicated CPort once it has sent a response
     to the connected request.
