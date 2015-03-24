@@ -59,3 +59,4 @@
    special
    device_class
    bridged_phy
+   bibliography
