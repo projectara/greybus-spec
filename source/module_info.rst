@@ -304,7 +304,7 @@ defined in the sections :ref:`device-class-protocols` and
     3         (pad)           1       0           Reserved (pad to 4 byte boundary)
     4         interface       1       ID          Interface ID this CPort is associated with
     5         id              2       ID          ID (destination address) of the CPort
-    7         protocol        1       Number      protocol is defined in Table :num:`table-cport-protocol`
+    7         protocol        1       Number      See Table :num:`table-cport-protocol`
     ========  ==============  ======  ==========  ===========================
 
 .. todo::
