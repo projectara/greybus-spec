@@ -2,20 +2,20 @@ Greybus Operations
 ==================
 
 Greybus communication is built on the use of |unipro| messages to send
-information between modules. And although |unipro| offers reliable
+information between Modules. And although |unipro| offers reliable
 transfer of data frames between interfaces, it is often necessary for
 the sender to know whether the effects of sending a message were what
 was expected. For example, a request sent to a |unipro| switch
 controller requesting a reconfiguration of the routing table could
 fail, and proceeding as if a failure had not occurred in this case
 leads to undefined (and possibly dangerous) behavior.  Similarly, the
-AP Module likely needs to retrieve information from other modules;
+AP Module likely needs to retrieve information from other Modules;
 this requires that a message requesting information be paired with a
 returned message containing the information requested.
 
-For this reason, Greybus performs communication between modules using
+For this reason, Greybus performs communication between Modules using
 Greybus Operations.  A Greybus Operation defines an activity (such as
-a data transfer) initiated in one module that is implemented (or
+a data transfer) initiated in one Module that is implemented (or
 executed) by another. The particular activity performed is defined by
 the operation's type. An operation is implemented by a pair of
 messages--one containing a request, and the other containing a
@@ -27,21 +27,21 @@ responses contain a byte in message header to communicate status of
 the operation--either success or a reason for a failure.
 
 Operations are performed over Greybus Connections.  A connection is a
-communication path between two modules.  Each end of a connection is a
+communication path between two Modules.  Each end of a connection is a
 |unipro| CPort, associated with a particular interface in a Greybus
-module.  A connection can be established once the AP Module learns of
-the existence of a CPort in another module.  The AP Module shall
+Module.  A connection can be established once the AP Module learns of
+the existence of a CPort in another Module.  The AP Module shall
 allocate a CPort for its end of the connection, and once the |unipro|
 network switch is configured properly the connection can be used for
 data transfer (and in particular, for operations).
 
-Each CPort in a Greybus module has associated with it a protocol.  The
+Each CPort in a Greybus Module has associated with it a protocol.  The
 protocol dictates the way the CPort interprets incoming operation
 messages.  Stated another way, the meaning of the operation type found
 in a request message depends on which protocol the connection uses.
 Operation type 5 might mean "receive data" in one protocol, while
 operation 5 might mean "go to sleep" in another. When the AP Module
-establishes a connection with a CPort in another module, that
+establishes a connection with a CPort in another Module, that
 connection uses the CPort's advertised protocol.
 
 Each Greybus protocol has a two-byte version associated with it.
@@ -69,7 +69,7 @@ the version of the protocol contained in the response.
 The Greybus Operations mechanism forms a base layer on which other
 protocols are built. Protocols define the format of request messages,
 their expected response data, and the effect of the request on state
-in one or both modules. Users of a protocol can rely on the Greybus
+in one or both Modules. Users of a protocol can rely on the Greybus
 core getting the operation request message to its intended target, and
 transferring the operation status and any other data back. In the
 explanations that follow, we refer to the interface through which a

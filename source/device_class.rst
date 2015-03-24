@@ -13,15 +13,15 @@ are said to be *device class conformant*.
 .. note:: Two |unipro|\ -based protocols will take the place of device
           class protocol definitions in this section:
 
-          - MIPI CSI-3: for camera modules
-          - JEDEC UFS: for storage modules
+          - MIPI CSI-3: for camera Modules
+          - JEDEC UFS: for storage Modules
 
 Vibrator Protocol
 -----------------
 
 This section defines the operations used on a connection implementing
 the Greybus vibrator protocol.  This protocol allows an AP Module to manage
-a vibrator device present on a module.  The protocol is very simple,
+a vibrator device present on a Module.  The protocol is very simple,
 and maps almost directly to the Android HAL vibrator interface.
 
 The operations in the Greybus vibrator protocol are:
@@ -168,7 +168,7 @@ Battery Protocol
 
 This section defines the operations used on a connection implementing
 the Greybus battery protocol. This protocol allows an AP Module to manage a
-battery device present on a module. The protocol consists of few basic
+battery device present on a Module. The protocol consists of few basic
 operations, whose request and response message formats are defined
 here.
 

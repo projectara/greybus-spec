@@ -74,13 +74,13 @@ version of the protocol shall change. Any time a protocol changes in a
 way that requires the handling code be updated to function properly,
 the protocol's major version shall change.
 
-Two modules may implement different versions of a protocol, and as a
+Two Modules may implement different versions of a protocol, and as a
 result they shall negotiate a common version of the protocol to
 use. This is done by each side exchanging information about the
 version of the protocol it supports at the time a connection
-between module interfaces is set up.
+between Module interfaces is set up.
 The version of a particular protocol advertised by a
-module is the same as the version of the document that defines the
+Module is the same as the version of the document that defines the
 protocol (so for protocols defined herein, the version is |gb-major|.\
 |gb-minor|).  In the future, if the protocol specifications are removed from
 this document, the versions will become independent of the

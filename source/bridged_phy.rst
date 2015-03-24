@@ -4,7 +4,7 @@ Bridged PHY Connection Protocols
 ================================
 
 This section defines a group of protocols whose purpose is to support
-communication with modules on the Greybus network which do not comply
+communication with Modules on the Greybus network which do not comply
 with an existing device class protocol, and which include integrated
 circuits using alternative physical interfaces to |unipro|. Modules
 which implement any of the protocols defined in this section are said
@@ -1134,7 +1134,7 @@ UART Protocol Operations
 
 This section defines the operations for a connection using the UART
 protocol. The UART protocol allows a requestor to control a UART device
-contained within a Greybus module.
+contained within a Greybus Module.
 
 Greybus UART Protocol Operations
 """"""""""""""""""""""""""""""""
@@ -1445,7 +1445,7 @@ Greybus UART Serial State Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Unlike most other Greybus UART operations, the Greybus UART serial
-state operation is initiated by the module implementing the UART
+state operation is initiated by the Module implementing the UART
 protocol. It notifies the peer that a control line status has changed,
 or that there is an error with the UART.
 
@@ -2455,7 +2455,7 @@ the :ref:`i2s-management-protocol`:
 
 When multiple I2S Data Connections are used in an audio stream,
 the AP Module shall ensure that the selected configuration satisfies
-the constraints of all the I2S Bundles, intermediate modules,
+the constraints of all the I2S Bundles, intermediate Modules,
 and non-\ |unipro| devices involved.
 
 .. _i2s-management-protocol:
@@ -3191,7 +3191,7 @@ I2C Protocol
 
 This section defines the operations used on a connection implementing
 the Greybus I2C protocol. This protocol allows for management of an I2C
-device present on a module. The protocol consists of five basic
+device present on a Module. The protocol consists of five basic
 operations, whose request and response message formats are defined
 here.
 

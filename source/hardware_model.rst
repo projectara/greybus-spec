@@ -21,7 +21,7 @@ components:
      system's |unipro| switches, its power bus, its wake/detect pins,
      and its RF bus.
 
-2. One or more modules, which are physically inserted into slots on
+2. One or more Modules, which are physically inserted into slots on
    the Endo. Modules shall implement communication protocols
    in accordance with this document's specifications.
 

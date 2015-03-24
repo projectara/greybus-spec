@@ -39,16 +39,16 @@ Conceptually, the operations in the Greybus control protocol are:
 .. c:function:: int probe(u16 endo_id, u8 intf_id, u16 *auth_size, u8 *auth_data);
 
     This operation is used at initial power-on, sent by the SVC to
-    discover which module contains the AP.  The Endo ID supplied by
+    discover which Module contains the AP.  The Endo ID supplied by
     the SVC defines the type of Endo used by the Greybus system,
     including the size of the Endo and the positions and sizes of
-    modules that it holds.  The interface ID supplied by the SVC
+    Modules that it holds.  The interface ID supplied by the SVC
     indicates which interface block on the Endo is being probed.
-    Together these two values define the location of the module
+    Together these two values define the location of the Module
     containing the interface.  Interface ID 0 represents the SVC
     itself; other values are defined in the *Project Ara Module
     Developers Kit*.  The response to this operation contains a
-    block of data used by a module to identify itself as
+    block of data used by a Module to identify itself as
     authentically containing an AP.  Non-AP Modules respond with no
     authentication data (*auth_size* is 0).
 
@@ -98,7 +98,7 @@ Greybus Control Probe Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus control probe operation is sent by the SVC to all
-interfaces at power-on to determine which module contains the AP.
+interfaces at power-on to determine which Module contains the AP.
 Once the AP Module has been found, the SVC begins a process that transfers
 full control of the |unipro| network to the AP Module.
 
@@ -107,8 +107,8 @@ Greybus Control Probe Request
 
 The Greybus control probe request is sent only by the SVC.  It
 supplies the Endo ID, which defines the size of the Endo and
-the positions available to hold modules.  It also informs the module
-via the interface ID the module location of the interface that
+the positions available to hold Modules.  It also informs the Module
+via the interface ID the Module location of the interface that
 receives the request.
 
 .. figtable::
@@ -129,7 +129,7 @@ Greybus Control Probe Response
 
 The Greybus control probe response contains a block of
 authentication data.  The AP Module responds with data that
-identifies it as containing the AP.  All other modules respond
+identifies it as containing the AP.  All other Modules respond
 with no data (*auth_size* is 0).
 
 .. figtable::

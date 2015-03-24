@@ -15,13 +15,13 @@ Module Information
   </div></div>
   </blockquote>
 
-A Greybus module shall provide self-descriptive information in order to
-establish communications with other modules on the |unipro| network.
+A Greybus Module shall provide self-descriptive information in order to
+establish communications with other Modules on the |unipro| network.
 This information is provided via a Manifest, which describes
-components present within the module that are accessible via |unipro|.
+components present within the Module that are accessible via |unipro|.
 The Manifest is a data structure, which includes a set of
-Descriptors, that presents a functional description of the module.
-Together, these Descriptors define the module's capabilities and means of
+Descriptors, that presents a functional description of the Module.
+Together, these Descriptors define the Module's capabilities and means of
 communication via |unipro| from the perspective of the application layer
 and above.
 
@@ -57,9 +57,9 @@ Manifest
 
 The Manifest is a contiguous block of data that includes a Manifest
 Header and a set of Descriptors.  When read, a Manifest is transferred
-in its entirety.  This allows the module to be described to the AP
+in its entirety.  This allows the Module to be described to the AP
 Module all at once, alleviating the need for multiple communication
-messages during the enumeration phase of the module.
+messages during the enumeration phase of the Module.
 
 Manifest Header
 ^^^^^^^^^^^^^^^
@@ -157,9 +157,9 @@ values are described in Table :num:`table-descriptor-type`.
 Module Descriptor
 ^^^^^^^^^^^^^^^^^
 
-This descriptor describes module-specific values as set by the vendor
-who created the module. Every Manifest shall have exactly one
-module descriptor as described in Table :num:`table-module-descriptor`.
+This descriptor describes Module-specific values as set by the vendor
+who created the Module. Every Manifest shall have exactly one
+Module descriptor as described in Table :num:`table-module-descriptor`.
 
 .. figtable::
     :nofig:
@@ -178,20 +178,20 @@ module descriptor as described in Table :num:`table-module-descriptor`.
     6        product            2       ID          Module product ID
     8        vendor_string_id   1       ID          String ID for the vendor name
     9        product_string_id  1       ID          String ID for the product name
-    10       unique_id          8       ID          Unique ID of the module
+    10       unique_id          8       ID          Unique ID of the Module
     18       (pad)              2       0           Reserved (pad to 20 bytes)
     =======  =================  ======  ==========  ==============================
 
 The *vendor* field is a value assigned by Google.  All vendors should
 apply for a Project Ara vendor ID in order to properly mark their
-modules. Contact ara-dev@google.com for more information regarding the
+Modules. Contact ara-dev@google.com for more information regarding the
 vendor ID application process.
 
 The *product* field is controlled by the vendor, and should be unique
-per type of module that is created.
+per type of Module that is created.
 
 *vendor_string_id* is a reference to a specific string descriptor ID
-that provides a description of the vendor who created the module.  If
+that provides a description of the vendor who created the Module.  If
 there is no string present for this value in the Manifest, this
 value shall be 0x00.  See the :ref:`string-descriptor` section below for
 more details.
@@ -204,9 +204,9 @@ See the :ref:`string-descriptor` section below for more details.
 The *unique_id* field is an 8 byte Unique ID that is written into each
 Greybus compliant chip during manufacturing. Google manages the Unique
 IDs, providing each manufacturer with the means to generate compliant
-Unique IDs for their products. In a module that contains multiple
+Unique IDs for their products. In a Module that contains multiple
 interfaces, there is more than one hardware Unique ID
-available. It is the responsibility of the module designer to
+available. It is the responsibility of the Module designer to
 designate one primary interface and expose that primary Unique ID in
 this field.
 
@@ -250,11 +250,11 @@ The *length* field excludes any trailing padding bytes in the descriptor.
 Interface Descriptor
 ^^^^^^^^^^^^^^^^^^^^
 
-An interface descriptor describes an access point for a module to the
+An interface descriptor describes an access point for a Module to the
 |unipro| network. Each interface represents a single physical port
-through which |unipro| packets are transferred. Every module shall have
+through which |unipro| packets are transferred. Every Module shall have
 at least one interface. Each interface has an ID whose value is unique
-within the module.  The first interface shall have ID 0, the second
+within the Module.  The first interface shall have ID 0, the second
 (if present) shall have value 1, and so on. The purpose of these Ids
 is to allow CPort descriptors to define which interface they are
 associated with.  The interface descriptor is defined in Table
@@ -280,8 +280,8 @@ associated with.  The interface descriptor is defined in Table
 CPort Descriptor
 ^^^^^^^^^^^^^^^^
 
-This descriptor describes a CPort implemented within the module. Each
-CPort is associated with one of the module's interfaces, and has an ID
+This descriptor describes a CPort implemented within the Module. Each
+CPort is associated with one of the Module's interfaces, and has an ID
 unique for that interface.  Every CPort defines the protocol used by
 the AP Module to interact with the CPort. A special control CPort shall be
 defined for every interface, and shall be defined to use the *Control
@@ -312,7 +312,7 @@ defined in the sections :ref:`device-class-protocols` and
     The details of how the CPort identifier is determined will be
     specified in a later version of this document.
 
-The *id* field is the CPort identifier used by other modules to direct
+The *id* field is the CPort identifier used by other Modules to direct
 traffic to this CPort. The IDs for CPorts using the same interface
 shall be unique. Certain low-numbered CPort identifiers (such as the
 control CPort) are reserved. Implementors shall assign CPorts

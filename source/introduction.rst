@@ -31,10 +31,10 @@ reference.
 
 The Greybus Specification is included within the MDK; its purpose is
 to define software interfaces whose data and control flow cross
-module boundaries. This is required to ensure software compatibility
-and interoperability between modules and the Endo.
+Module boundaries. This is required to ensure software compatibility
+and interoperability between Modules and the Endo.
 
-Project Ara utilizes the |unipro| protocol for inter-module
+Project Ara utilizes the |unipro| protocol for inter-Module
 communication. The |unipro| specification is defined by the |mipi|
 Alliance. |unipro|\ 's design follows a layered architecture, and
 specifies how communication shall occur up to the Application layer in
@@ -43,20 +43,20 @@ the `OSI model
 Project Ara's architecture requires an application layer specification
 which can handle dynamic device insertion and removal from the system
 at any time and at variable locations. It also requires that existing
-modules interoperate with modules introduced at later dates. This
+Modules interoperate with Modules introduced at later dates. This
 document aims to define a suite of application layer protocols which
 meet these needs.
 
 In addition to |unipro|, Project Ara also specifies a small number of
-other interfaces between modules and the Endo. These include a
+other interfaces between Modules and the Endo. These include a
 power bus, signals which enable hotplug and power management
-functions, and interface pins for modules which emit and receive radio
+functions, and interface pins for Modules which emit and receive radio
 signals. The Greybus Specification also defines the behavior of the
 system's software with respect to these interfaces.
 
-A Project Ara "module" is a device that slides into a physical slot on
-a Project Ara Endo.  Each module communicates with other
-modules on the network via one or more |unipro| CPorts. A CPort is a
+A Project Ara "Module" is a device that slides into a physical slot on
+a Project Ara Endo.  Each Module communicates with other
+Modules on the network via one or more |unipro| CPorts. A CPort is a
 bidirectional pipe through which |unipro| traffic is
 exchanged. Modules send "messages" via CPorts; messages are datagrams
 with ancillary metadata. All CPort traffic is peer-to-peer; multicast
@@ -72,17 +72,17 @@ In order to ensure interoperability between the wide array of
 application processors and hardware peripherals commonly available on
 mobile handsets, the Greybus Specification defines a suite of
 :ref:`device-class-protocols`, which allow for communication between
-the various modules on the system, regardless of the particulars of
+the various Modules on the system, regardless of the particulars of
 the chipsets involved.
 
-The main functional chipsets on modules may communicate via a native
+The main functional chipsets on Modules may communicate via a native
 |unipro| interface or via "bridges," special-purpose ASICs which
 intermediate between these chipsets and the |unipro| network. In order
 to provide a transition path for chipsets without native |unipro|
 interfaces, the Greybus Specification defines a variety of
-:ref:`bridged-phy-protocols`, which allow module developers to expose
+:ref:`bridged-phy-protocols`, which allow Module developers to expose
 these existing protocols to the network. In addition to providing an
 "on-ramp" to the platform, this also allows the implementation of
-modules which require communication that does not comply with a device
+Modules which require communication that does not comply with a device
 class protocol.
 
