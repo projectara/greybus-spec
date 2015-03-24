@@ -2,7 +2,7 @@ Connection Protocols
 ====================
 
 The following sections define the request and response message formats
-for all operations for specific connection protocols. Requests are
+for all operations for specific connection Protocols. Requests are
 most often (but not always) initiated by the AP Module. Each request has a
 unique identifier, supplied by the requestor, and each response
 includes the identifier of the request with which it is associated.
@@ -22,11 +22,11 @@ conveyed by one of the positive values defined in Table
 Protocol Status
 ---------------
 
-A protocol can define its own status values if needed. These status
+A Protocol can define its own status values if needed. These status
 values shall lie within the range defined by the "(Reserved for
-protocol use)" table entry in Table
+Protocol use)" table entry in Table
 :num:`table-connection-status-values`. Every status byte with a MSB set
-to one other than 0xff is a valid protocol status value.
+to one other than 0xff is a valid Protocol status value.
 
 .. figtable::
     :nofig:
@@ -47,52 +47,52 @@ to one other than 0xff is a valid protocol status value.
     GB_OP_RETRY                   0x07             Request should be retried
     GB_OP_NONEXISTENT             0x08             The device does not exist
     Reserved                      0x09 to 0x7f     Reserved for future use
-    Reserved for protocol use     0x80 to 0xfd     Status defined by the protocol in use
+    Reserved for Protocol use     0x80 to 0xfd     Status defined by the Protocol in use
     GB_OP_UNKNOWN_ERROR           0xfe             Unknown error occured
     GB_OP_INTERNAL                0xff             Invalid initial value.
     ============================  ===============  =======================
 
-Values marked *Reserved for protocol use* are to be used by the
-individual protocols as defined in the :ref:`device-class-protocols` and
+Values marked *Reserved for Protocol use* are to be used by the
+individual Protocols as defined in the :ref:`device-class-protocols` and
 :ref:`bridged-phy-protocols` sections below.
 
 Note that *GB_OP_INTERNAL* should never be used in a response message. It
 is reserved for internal use by the Greybus application stack only.
 
-All protocols defined herein are subject to the
+All Protocols defined herein are subject to the
 :ref:`message-data-requirements` listed above.
 
 Protocol Versions
 -----------------
 
-Every protocol has a version, which comprises two one-byte values,
-major and minor. A protocol definition can evolve to add new
+Every Protocol has a version, which comprises two one-byte values,
+major and minor. A Protocol definition can evolve to add new
 capabilities, and as it does so, its version changes. If existing (or
-old) protocol handling code which complies with this specification can
+old) Protocol handling code which complies with this specification can
 function properly with the new feature in place, only the minor
-version of the protocol shall change. Any time a protocol changes in a
+version of the Protocol shall change. Any time a Protocol changes in a
 way that requires the handling code be updated to function properly,
-the protocol's major version shall change.
+the Protocol's major version shall change.
 
-Two Modules may implement different versions of a protocol, and as a
-result they shall negotiate a common version of the protocol to
+Two Modules may implement different versions of a Protocol, and as a
+result they shall negotiate a common version of the Protocol to
 use. This is done by each side exchanging information about the
-version of the protocol it supports at the time a connection
+version of the Protocol it supports at the time a connection
 between Module interfaces is set up.
-The version of a particular protocol advertised by a
+The version of a particular Protocol advertised by a
 Module is the same as the version of the document that defines the
-protocol (so for protocols defined herein, the version is |gb-major|.\
-|gb-minor|).  In the future, if the protocol specifications are removed from
+Protocol (so for Protocols defined herein, the version is |gb-major|.\
+|gb-minor|).  In the future, if the Protocol specifications are removed from
 this document, the versions will become independent of the
 overall Greybus Specification document.
 
-To agree on a protocol, an operation request supplies the (greatest)
-major and minor version of the protocol supported by the source of a
+To agree on a Protocol, an operation request supplies the (greatest)
+major and minor version of the Protocol supported by the source of a
 request. The request destination compares that version with the
-(greatest) version of the protocol it supports.  The version that is the
-largest common version number of the protocol sent by both sides shall
+(greatest) version of the Protocol it supports.  The version that is the
+largest common version number of the Protocol sent by both sides shall
 be the version that is to be used in communication between the devices.
 This chosen version is returned back as a response of the
-request.  As a consequence of this, protocol handlers shall be capable of
-handling all prior versions of the protocol.
+request.  As a consequence of this, Protocol handlers shall be capable of
+handling all prior versions of the Protocol.
 

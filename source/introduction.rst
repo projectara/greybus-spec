@@ -84,5 +84,5 @@ interfaces, the Greybus Specification defines a variety of
 these existing protocols to the network. In addition to providing an
 "on-ramp" to the platform, this also allows the implementation of
 Modules which require communication that does not comply with a device
-class protocol.
+class Protocol.
 

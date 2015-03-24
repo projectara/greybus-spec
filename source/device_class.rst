@@ -3,15 +3,15 @@
 Device Class Connection Protocols
 =================================
 
-This section defines a group of protocols whose purpose is to provide
+This section defines a group of Protocols whose purpose is to provide
 a device abstraction for functionality commonly found on mobile
-handsets. Modules which implement at least one of the protocols
+handsets. Modules which implement at least one of the Protocols
 defined in this section, and which do not implement any of the
-protocols defined below in :ref:`bridged-phy-protocols`,
+Protocols defined below in :ref:`bridged-phy-protocols`,
 are said to be *device class conformant*.
 
 .. note:: Two |unipro|\ -based protocols will take the place of device
-          class protocol definitions in this section:
+          class Protocol definitions in this section:
 
           - MIPI CSI-3: for camera Modules
           - JEDEC UFS: for storage Modules
@@ -20,20 +20,20 @@ Vibrator Protocol
 -----------------
 
 This section defines the operations used on a connection implementing
-the Greybus vibrator protocol.  This protocol allows an AP Module to manage
-a vibrator device present on a Module.  The protocol is very simple,
+the Greybus vibrator Protocol.  This Protocol allows an AP Module to manage
+a vibrator device present on a Module.  The Protocol is very simple,
 and maps almost directly to the Android HAL vibrator interface.
 
-The operations in the Greybus vibrator protocol are:
+The operations in the Greybus vibrator Protocol are:
 
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Negotiates the major and minor version of the protocol used for
+    Negotiates the major and minor version of the Protocol used for
     communication over the connection.  The sender offers the
-    version of the protocol it supports.  The receiver replies with
+    version of the Protocol it supports.  The receiver replies with
     the version that will be used--either the one offered if
     supported or its own (lower) version otherwise.  Protocol
-    handling code adhering to the protocol specified herein supports
+    handling code adhering to the Protocol specified herein supports
     major version |gb-major|, minor version |gb-minor|.
 
 .. c:function:: int vibrator_on(u16 timeout_ms);
@@ -71,16 +71,16 @@ operation is a request or a response.
 Greybus Vibrator Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus vibrator protocol version operation allows the protocol
+The Greybus vibrator Protocol version operation allows the Protocol
 handling software on both ends of a connection to negotiate the
-version of the vibrator protocol to use.
+version of the vibrator Protocol to use.
 
 Greybus Vibrator Protocol Version Request
 """""""""""""""""""""""""""""""""""""""""
 
 Table :num:`table-vibrator-version-request` defines the Greybus vibrator
 version request payload. The request supplies the greatest major and
-minor version of the vibrator protocol supported by the sender.
+minor version of the vibrator Protocol supported by the sender.
 
 .. figtable::
     :nofig:
@@ -91,17 +91,17 @@ minor version of the vibrator protocol supported by the sender.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Offered vibrator protocol major version
-    1        version_minor   1       |gb-minor|      Offered vibrator protocol minor version
+    0        version_major   1       |gb-major|      Offered vibrator Protocol major version
+    1        version_minor   1       |gb-minor|      Offered vibrator Protocol minor version
     =======  ==============  ======  ==========      ===========================
 
 Greybus Vibrator Protocol Version Response
 """"""""""""""""""""""""""""""""""""""""""
 
-The Greybus vibrator protocol version response payload contains two
+The Greybus vibrator Protocol version response payload contains two
 one-byte values, as defined in table
 :num:`table-vibrator-protocol-version-response`.
-A Greybus vibrator controller adhering to the protocol specified herein
+A Greybus vibrator controller adhering to the Protocol specified herein
 shall report major version |gb-major|, minor version |gb-minor|.
 
 .. figtable::
@@ -113,8 +113,8 @@ shall report major version |gb-major|, minor version |gb-minor|.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Vibrator protocol major version
-    1        version_minor   1       |gb-minor|      Vibrator protocol minor version
+    0        version_major   1       |gb-major|      Vibrator Protocol major version
+    1        version_minor   1       |gb-minor|      Vibrator Protocol minor version
     =======  ==============  ======  ==========      ===========================
 
 Greybus Vibrator On Operation
@@ -167,21 +167,21 @@ Battery Protocol
 ----------------
 
 This section defines the operations used on a connection implementing
-the Greybus battery protocol. This protocol allows an AP Module to manage a
-battery device present on a Module. The protocol consists of few basic
+the Greybus battery Protocol. This Protocol allows an AP Module to manage a
+battery device present on a Module. The Protocol consists of few basic
 operations, whose request and response message formats are defined
 here.
 
-Conceptually, the operations in the Greybus battery protocol are:
+Conceptually, the operations in the Greybus battery Protocol are:
 
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Negotiates the major and minor version of the protocol used for
+    Negotiates the major and minor version of the Protocol used for
     communication over the connection.  The sender offers the
-    version of the protocol it supports.  The receiver replies with
+    version of the Protocol it supports.  The receiver replies with
     the version that will be used--either the one offered if
     supported or its own (lower) version otherwise.  Protocol
-    handling code adhering to the protocol specified herein supports
+    handling code adhering to the Protocol specified herein supports
     major version |gb-major|, minor version |gb-minor|.
 
 .. c:function:: int get_technology(u16 *technology);
@@ -258,16 +258,16 @@ operation is a request or a response.
 Greybus Battery Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus battery protocol version operation allows the protocol
+The Greybus battery Protocol version operation allows the Protocol
 handling software on both ends of a connection to negotiate the
-version of the battery protocol to use.
+version of the battery Protocol to use.
 
 Greybus Battery Protocol Version Request
 """"""""""""""""""""""""""""""""""""""""
 
 Table :num:`table-battery-version-request` defines the Greybus battery
 version request payload. The request supplies the greatest major and
-minor version of the battery protocol supported by the sender.
+minor version of the battery Protocol supported by the sender.
 
 .. figtable::
     :nofig:
@@ -278,18 +278,18 @@ minor version of the battery protocol supported by the sender.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Offered battery protocol major version
-    1        version_minor   1       |gb-minor|      Offered battery protocol minor version
+    0        version_major   1       |gb-major|      Offered battery Protocol major version
+    1        version_minor   1       |gb-minor|      Offered battery Protocol minor version
     =======  ==============  ======  ==========      ===========================
 
 
 Greybus Battery Protocol Version Response
 """""""""""""""""""""""""""""""""""""""""
 
-The Greybus battery protocol version response payload contains two
+The Greybus battery Protocol version response payload contains two
 one-byte values, as defined in table
 :num:`table-battery-protocol-version-response`.
-A Greybus battery controller adhering to the protocol specified herein
+A Greybus battery controller adhering to the Protocol specified herein
 shall report major version |gb-major|, minor version |gb-minor|.
 
 .. figtable::
@@ -301,8 +301,8 @@ shall report major version |gb-major|, minor version |gb-minor|.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Battery protocol major version
-    1        version_minor   1       |gb-minor|      Battery protocol minor version
+    0        version_major   1       |gb-major|      Battery Protocol major version
+    1        version_minor   1       |gb-minor|      Battery Protocol minor version
     =======  ==============  ======  ==========      ===========================
 
 Greybus Battery Technology Operation
@@ -1095,7 +1095,7 @@ NFC Protocol
 ------------
 
 This section defines the operations used on a connection implementing
-the Greybus Near Field Communication (NFC) Protocol.  This protocol
+the Greybus Near Field Communication (NFC) Protocol.  This Protocol
 allows an AP Module (Device Host (DH) in NFC's NFC Controller Interface (NCI)
 terminology) to communicate with a Greybus NFC Module (NFC Controller
 (NFCC) in NFC NCI terminology) using the NFC Forum's NCI Specification
@@ -1119,12 +1119,12 @@ The operations in the Greybus NFC Protocol are:
 
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Negotiates the major and minor version of the protocol used for
+    Negotiates the major and minor version of the Protocol used for
     communication over the connection.  The sender offers the
-    version of the protocol it supports.  The receiver replies with
+    version of the Protocol it supports.  The receiver replies with
     the version that will be used--either the one offered if
     supported or its own (lower) version otherwise.  Protocol
-    handling code adhering to the protocol specified herein supports
+    handling code adhering to the Protocol specified herein supports
     major version |gb-major|, minor version |gb-minor|.
 
 .. c:function:: int send_packet(u32 size, u8 *packet);
@@ -1158,16 +1158,16 @@ operation is a request or a response.
 Greybus NFC Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus NFC protocol version operation allows the protocol
+The Greybus NFC Protocol version operation allows the Protocol
 handling software on both ends of a connection to negotiate the
-version of the NFC protocol to use.
+version of the NFC Protocol to use.
 
 Greybus NFC Protocol Version Request
 """"""""""""""""""""""""""""""""""""
 
 Table :num:`table-nfc-version-request` defines the Greybus NFC
 version request payload. The request supplies the greatest major and
-minor version of the NFC protocol supported by the sender.
+minor version of the NFC Protocol supported by the sender.
 
 .. figtable::
     :nofig:
@@ -1178,17 +1178,17 @@ minor version of the NFC protocol supported by the sender.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Offered NFC protocol major version
-    1        version_minor   1       |gb-minor|      Offered NFC protocol minor version
+    0        version_major   1       |gb-major|      Offered NFC Protocol major version
+    1        version_minor   1       |gb-minor|      Offered NFC Protocol minor version
     =======  ==============  ======  ==========      ===========================
 
 Greybus NFC Protocol Version Response
 """""""""""""""""""""""""""""""""""""
 
-The Greybus NFC protocol version response payload contains two
+The Greybus NFC Protocol version response payload contains two
 one-byte values, as defined in table
 :num:`table-nfc-protocol-version-response`.
-A Greybus NFC controller adhering to the protocol specified herein
+A Greybus NFC controller adhering to the Protocol specified herein
 shall report major version |gb-major|, minor version |gb-minor|.
 
 .. figtable::
@@ -1200,8 +1200,8 @@ shall report major version |gb-major|, minor version |gb-minor|.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      NFC protocol major version
-    1        version_minor   1       |gb-minor|      NFC protocol minor version
+    0        version_major   1       |gb-major|      NFC Protocol major version
+    1        version_minor   1       |gb-minor|      NFC Protocol minor version
     =======  ==============  ======  ==========      ===========================
 
 Greybus NFC Send Packet Operation

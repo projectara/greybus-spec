@@ -22,7 +22,7 @@ components:
      and its RF bus.
 
 2. One or more Modules, which are physically inserted into slots on
-   the Endo. Modules shall implement communication protocols
+   the Endo. Modules shall implement Communication Protocols
    in accordance with this document's specifications.
 
 3. Exactly one Application Processor Module, hereafter referred to as

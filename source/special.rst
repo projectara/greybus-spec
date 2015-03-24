@@ -3,20 +3,20 @@
 Special Protocols
 =================
 
-This section defines two protocols, each of which serves a special
+This section defines two Protocols, each of which serves a special
 purpose in a Greybus system.
 
-The first is the control protocol.  Every interface shall provide a
-CPort that uses the control protocol.  It's used by the SVC to do
+The first is the control Protocol.  Every interface shall provide a
+CPort that uses the control Protocol.  It's used by the SVC to do
 initial probes of interfaces at system power on.  It is also used by
 the AP Module to notify interfaces when connections are available for them
 to use.
 
-The second is the SVC protocol, which is used only between the SVC and
+The second is the SVC Protocol, which is used only between the SVC and
 AP Module.  The SVC provides low-level control of the |unipro|
 network.  The SVC performs almost all of its activities under
-direction of the AP Module, and the SVC protocol is used by the AP
-Module to exert this control.  The SVC also uses this protocol to
+direction of the AP Module, and the SVC Protocol is used by the AP
+Module to exert this control.  The SVC also uses this Protocol to
 notify the AP Module of events, such as the insertion or removal of a
 Module.
 
@@ -26,7 +26,7 @@ Control Protocol
 ----------------
 
 All interfaces are required to define a CPort that uses the control
-protocol, and shall be prepared to receive operation requests on that
+Protocol, and shall be prepared to receive operation requests on that
 CPort at any time.  A Greybus connection is established whenever a
 control connection is used, but the interface is never notified that
 such a connection exists.  Only the SVC and AP Module are able to send
@@ -34,7 +34,7 @@ control requests.  Any other interface shall only send control
 response messages, and such messages shall only be sent in reply to
 a request received its control CPort.
 
-Conceptually, the operations in the Greybus control protocol are:
+Conceptually, the operations in the Greybus control Protocol are:
 
 .. c:function:: int probe(u16 endo_id, u8 intf_id, u16 *auth_size, u8 *auth_data);
 
@@ -75,7 +75,7 @@ response.  The request and response messages for each control
 operation are defined below.
 
 Table :num:`table-control-operation-type` defines the Greybus
-control protocol operation types and their values. Both the request
+control Protocol operation types and their values. Both the request
 type and response type values are shown.
 
 .. figtable::

@@ -1,4 +1,4 @@
-.. These substitution definitions allow us to rev the Greybus protocol
+.. These substitution definitions allow us to rev the Greybus Protocol
    consistently throughout the document.
 
 .. |gb-major| replace:: 0

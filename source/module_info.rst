@@ -48,7 +48,7 @@ the following general requirements:
   header or descriptor shall be ignored when read, and zero-filled
   when written.
 * All major structures (like the Manifest header) and interface
-  protocols (like that between the AP Module and SVC) shall be
+  Protocols (like that between the AP Module and SVC) shall be
   versioned, to allow future extensions (or fixes) to be added and
   recognized.
 
@@ -65,7 +65,7 @@ Manifest Header
 ^^^^^^^^^^^^^^^
 
 The Manifest Header is present at the beginning of the Manifest
-and defines the size of the manifest and the version of the Greybus protocol
+and defines the size of the manifest and the version of the Greybus Protocol
 with which the Manifest complies.
 
 .. figtable::
@@ -88,7 +88,7 @@ the highest version of this document (currently |gb-major|.\
 |gb-minor|) with which the format complies.
 
 Minor versions increment with modifications to the Greybus
-definition, in such a way that any protocol handler that supports
+definition, in such a way that any Protocol handler that supports
 the version_major can correctly interpret a Manifest in the
 modified format.
 A changed version_major indicates major differences in the
@@ -282,11 +282,11 @@ CPort Descriptor
 
 This descriptor describes a CPort implemented within the Module. Each
 CPort is associated with one of the Module's interfaces, and has an ID
-unique for that interface.  Every CPort defines the protocol used by
+unique for that interface.  Every CPort defines the Protocol used by
 the AP Module to interact with the CPort. A special control CPort shall be
 defined for every interface, and shall be defined to use the *Control
 Protocol*. The Cport Descriptor is defined in Table
-:num:`table-cport-descriptor`. The details of these protocols are
+:num:`table-cport-descriptor`. The details of these Protocols are
 defined in the sections :ref:`device-class-protocols` and
 :ref:`bridged-phy-protocols` below.
 

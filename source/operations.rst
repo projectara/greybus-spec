@@ -35,41 +35,41 @@ allocate a CPort for its end of the connection, and once the |unipro|
 network switch is configured properly the connection can be used for
 data transfer (and in particular, for operations).
 
-Each CPort in a Greybus Module has associated with it a protocol.  The
-protocol dictates the way the CPort interprets incoming operation
+Each CPort in a Greybus Module has associated with it a Protocol.  The
+Protocol dictates the way the CPort interprets incoming operation
 messages.  Stated another way, the meaning of the operation type found
-in a request message depends on which protocol the connection uses.
-Operation type 5 might mean "receive data" in one protocol, while
+in a request message depends on which Protocol the connection uses.
+Operation type 5 might mean "receive data" in one Protocol, while
 operation 5 might mean "go to sleep" in another. When the AP Module
 establishes a connection with a CPort in another Module, that
-connection uses the CPort's advertised protocol.
+connection uses the CPort's advertised Protocol.
 
-Each Greybus protocol has a two-byte version associated with it.
-This allows protocols to evolve, and provides a way for protocol
+Each Greybus Protocol has a two-byte version associated with it.
+This allows Protocols to evolve, and provides a way for Protocol
 handling software to correctly handle messages transferred over a
-connection.  A protocol version, for example 0.1, consists of a
+connection.  A Protocol version, for example 0.1, consists of a
 major and minor part (0 and 1 in this case).  The major version is
-changed (increased) if new features of the protocol are incompatible
-with existing protocol handling code.  Protocol changes (such as the
+changed (increased) if new features of the Protocol are incompatible
+with existing Protocol handling code.  Protocol changes (such as the
 addition of optional features) that do not require software changes
 are indicated by a change to the minor version number.
 
-Greybus protocol handling code shall record the maximum protocol
+Greybus Protocol handling code shall record the maximum Protocol
 version it can support.  It shall also support all versions (major
-and minor) of the protocol lower than that maximum.  The protocol
+and minor) of the Protocol lower than that maximum.  The Protocol
 handlers on the two ends of the connection negotiate the version of
-the protocol to use when a connection is established.  Every
-protocol implements a *version* operation for this purpose.  The
-version request message contains the major and minor protocol
+the Protocol to use when a connection is established.  Every
+Protocol implements a *version* operation for this purpose.  The
+version request message contains the major and minor Protocol
 version supported by the sending side.  The recieving end decides
 whether that version should be used, or if a different (lower)
 version that it supports should be used instead.  Both sides use
-the version of the protocol contained in the response.
+the version of the Protocol contained in the response.
 
 The Greybus Operations mechanism forms a base layer on which other
-protocols are built. Protocols define the format of request messages,
+Protocols are built. Protocols define the format of request messages,
 their expected response data, and the effect of the request on state
-in one or both Modules. Users of a protocol can rely on the Greybus
+in one or both Modules. Users of a Protocol can rely on the Greybus
 core getting the operation request message to its intended target, and
 transferring the operation status and any other data back. In the
 explanations that follow, we refer to the interface through which a
@@ -95,7 +95,7 @@ the following general requirements:
 * String values shall not include terminating NUL characters.
 * Any reserved space in a message structure shall be
   ignored when read, and zero-filled when written.
-* All protocols shall be versioned, to allow future extensions (or
+* All Protocols shall be versioned, to allow future extensions (or
   fixes) to be added and recognized.
 
 Fields within a message payload have no specific alignment
@@ -130,17 +130,17 @@ operation message header.
     ========  ==============  ======  ==========      ===========================
     0         size            2       Number          Size of this operation message
     2         id              2       ID              Requestor-supplied unique request identifier
-    4         type            1       Number          Type of Greybus operation (protocol-specific)
+    4         type            1       Number          Type of Greybus operation (Protocol-specific)
     5         status          1       Number          Operation result (response message only)
     6         (pad)           2       0               Reserved (pad to 8 bytes)
     ========  ==============  ======  ==========      ===========================
 
 The *size* includes the operation message header as well as any
 payload that follows it. As mentioned earlier, the meaning of a type
-value depends on the protocol in use on the connection carrying the
-message. Only 127 operations are available for a given protocol,
+value depends on the Protocol in use on the connection carrying the
+message. Only 127 operations are available for a given Protocol,
 0x01..0x7f. Operation 0x00 is reserved as an invalid value for all
-protocols.  The high
+Protocols.  The high
 bit (0x80) of an operation type is used as a flag that distinguishes a
 request operation from its response.  For requests, this bit is 0, for
 responses, it is 1.  For example the request and response messages
@@ -148,8 +148,8 @@ for operation 0x0a contain 0x0a and 0x8a (respectively) in their type
 fields.  The ID allows many operations to be "in flight" on a
 connection at once.
 
-A connection protocol is defined by describing the format of the
-operations supported by the protocol.  Each operation specifies the
+A connection Protocol is defined by describing the format of the
+operations supported by the Protocol.  Each operation specifies the
 payload portions of the request and response messages used for the
-protocol, along with all actions or state changes that take place as a
+Protocol, along with all actions or state changes that take place as a
 result of the operation.
