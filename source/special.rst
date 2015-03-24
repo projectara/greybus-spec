@@ -1,5 +1,3 @@
-﻿.. include:: defines.rst
-
 .. _special_protocols:
 
 Special Protocols

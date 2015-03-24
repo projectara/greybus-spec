@@ -1,5 +1,3 @@
-.. include:: defines.rst
-
 Contributors
 ============
 

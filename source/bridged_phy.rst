@@ -1,5 +1,3 @@
-﻿.. include:: defines.rst
-
 .. _bridged-phy-protocols:
 
 Bridged PHY Connection Protocols

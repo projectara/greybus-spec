@@ -13,8 +13,6 @@
 
 .. highlight:: none
 
-.. include:: defines.rst
-
 .. Headers and footers
 
 .. footer::

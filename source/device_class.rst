@@ -1,5 +1,3 @@
-﻿.. include:: defines.rst
-
 .. _device-class-protocols:
 
 Device Class Connection Protocols
