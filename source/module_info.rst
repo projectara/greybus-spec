@@ -107,11 +107,6 @@ The layout for the Manifest Header can be seen in Table
 Descriptors
 ^^^^^^^^^^^
 
-Following the Manifest Header is one or more Descriptors.  Each
-Descriptor is composed of a Descriptor Header followed by Descriptor
-Data. The format of the Descriptor Header can be seen in Table
-:num:`table-descriptor-header`.
-
 .. figtable::
     :nofig:
     :label: table-descriptor-header
@@ -126,6 +121,11 @@ Data. The format of the Descriptor Header can be seen in Table
     2        type            1       Number          :ref:`descriptor-type`
     3        (pad)           1       0               Reserved (pad to 4 bytes)
     =======  ==============  ======  ==========      ===========================
+
+Following the Manifest Header is one or more Descriptors.  Each
+Descriptor is composed of a Descriptor Header followed by Descriptor
+Data. The format of the Descriptor Header can be seen in Table
+:num:`table-descriptor-header`.
 
 .. _descriptor-type:
 
