@@ -6,76 +6,76 @@ Special Protocols
 This section defines two Protocols, each of which serves a special
 purpose in a Greybus system.
 
-The first is the control Protocol.  Every interface shall provide a
-CPort that uses the control Protocol.  It's used by the SVC to do
-initial probes of interfaces at system power on.  It is also used by
-the AP Module to notify interfaces when connections are available for them
-to use.
+The first is the Control Protocol.  Every Interface shall provide a
+CPort that uses the Control Protocol.  It's used by the SVC to do
+initial probes of Interfaces at system power on.  It is also used by
+the AP Module to notify Interfaces when connections are available
+for them to use.
 
-The second is the SVC Protocol, which is used only between the SVC and
-AP Module.  The SVC provides low-level control of the |unipro|
+The second is the SVC Protocol, which is used only between the SVC
+and AP Module.  The SVC provides low-level control of the |unipro|
 network.  The SVC performs almost all of its activities under
 direction of the AP Module, and the SVC Protocol is used by the AP
-Module to exert this control.  The SVC also uses this Protocol to
-notify the AP Module of events, such as the insertion or removal of a
-Module.
+Module to exert this control.  The SVC also uses this protocol to
+notify the AP Module of events, such as the insertion or removal of
+a Module.
 
 .. _control-protocol:
 
 Control Protocol
 ----------------
 
-All interfaces are required to define a CPort that uses the control
-Protocol, and shall be prepared to receive operation requests on that
+All Interfaces are required to define a CPort that uses the Control
+Protocol, and shall be prepared to receive Operation requests on that
 CPort at any time.  A Greybus connection is established whenever a
-control connection is used, but the interface is never notified that
+control connection is used, but the Interface is never notified that
 such a connection exists.  Only the SVC and AP Module are able to send
-control requests.  Any other interface shall only send control
+control requests.  Any other Interface shall only send control
 response messages, and such messages shall only be sent in reply to
 a request received its control CPort.
 
-Conceptually, the operations in the Greybus control Protocol are:
+Conceptually, the Operations in the Greybus Control Protocol are:
 
 .. c:function:: int probe(u16 endo_id, u8 intf_id, u16 *auth_size, u8 *auth_data);
 
-    This operation is used at initial power-on, sent by the SVC to
+    This Operation is used at initial power-on, sent by the SVC to
     discover which Module contains the AP.  The Endo ID supplied by
     the SVC defines the type of Endo used by the Greybus system,
     including the size of the Endo and the positions and sizes of
-    Modules that it holds.  The interface ID supplied by the SVC
-    indicates which interface block on the Endo is being probed.
+    Modules that it holds.  The Interface ID supplied by the SVC
+    indicates which Interface Block on the Endo is being probed.
     Together these two values define the location of the Module
-    containing the interface.  Interface ID 0 represents the SVC
+    containing the Interface.  Interface ID 0 represents the SVC
     itself; other values are defined in the *Project Ara Module
-    Developers Kit*.  The response to this operation contains a
+    Developers Kit*.  The response to this Operation contains a
     block of data used by a Module to identify itself as
     authentically containing an AP.  Non-AP Modules respond with no
     authentication data (*auth_size* is 0).
 
 .. c:function:: int connected(u16 cport_id);
 
-    This operation is used to notify an interface that a Greybus
+    This Operation is used to notify an Interface that a Greybus
     connection has been established using the indicated CPort.
-    Upon receiving this request, an interface shall be prepared to
-    receive messages on the indicated CPort.  The interface may send
+    Upon receiving this request, an Interface shall be prepared to
+    receive messages on the indicated CPort.  The Interface may send
     messages over the indicated CPort once it has sent a response
     to the connected request.
 
 .. c:function:: int disconnected(u16 cport_id);
 
-    This operation is used to notify an interface that a previously
+    This Operation is used to notify an Interface that a previously
     established Greybus connection may no longer be used.
 
-Greybus Control Message Operations
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus Control Operations
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-All control operations are contained within a Greybus control
+All control Operations are contained within a Greybus control
 request message. Every control request results in a matching
 response.  The request and response messages for each control
-operation are defined below.
+Operation are defined below.
 
 Table :num:`table-control-operation-type` defines the Greybus
-control Protocol operation types and their values. Both the request
+Control Protocol Operation types and their values. Both the request
 type and response type values are shown.
 
 .. figtable::
@@ -97,10 +97,10 @@ type and response type values are shown.
 Greybus Control Probe Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus control probe operation is sent by the SVC to all
-interfaces at power-on to determine which Module contains the AP.
-Once the AP Module has been found, the SVC begins a process that transfers
-full control of the |unipro| network to the AP Module.
+The Greybus control probe Operation is sent by the SVC to all
+Interfaces at power-on to determine which Module contains the AP.
+Once the AP Module has been found, the SVC begins a process that
+transfers full control of the |unipro| network to the AP Module.
 
 Greybus Control Probe Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -108,7 +108,7 @@ Greybus Control Probe Request
 The Greybus control probe request is sent only by the SVC.  It
 supplies the Endo ID, which defines the size of the Endo and
 the positions available to hold Modules.  It also informs the Module
-via the interface ID the Module location of the interface that
+via the Interface ID the Module location of the Interface that
 receives the request.
 
 .. figtable::
@@ -121,7 +121,7 @@ receives the request.
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ============    ===========================
     0        endo_id         2       Endo ID         Defines Endo geometry
-    2        intf_id         1       Interface ID    Position of receiving interface on Endo
+    2        intf_id         1       Interface ID    Position of receiving Interface on Endo
     =======  ==============  ======  ============    ===========================
 
 Greybus Control Probe Response
@@ -148,17 +148,17 @@ with no data (*auth_size* is 0).
 Greybus Control Connected Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus control connected operation is sent to notify an interface
+The Greybus Control Connected Operation is sent to notify an Interface
 that one of its CPorts now has a connection established.  The SVC
 sends this request when it has set up a Greybus SVC connection with an
-AP Module interface.  The AP Module sends this request to other interfaces
+AP Module Interface.  The AP Module sends this request to other Interfaces
 when it has set up Greybus connections for them to use.
 
 Greybus Control Connected Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus control connected request supplies the CPort ID on the
-receiving interface that has been connected.
+receiving Interface that has been connected.
 
 .. figtable::
     :nofig:
@@ -180,9 +180,9 @@ The Greybus control connected response message contains no payload.
 Greybus Control Disconnected Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus control disconnected operation is sent to notify an
-interface that a CPort that was formerly the subject of a Greybus
-control connected operation shall no longer be used.  No more
+The Greybus control disconnected Operation is sent to notify an
+Interface that a CPort that was formerly the subject of a Greybus
+Control Connected Operation shall no longer be used.  No more
 messages may be sent over this connection, and any messages received
 shall be discarded.
 
@@ -190,7 +190,7 @@ Greybus Control Disconnected Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus control disconnected request supplies the CPort ID on the
-receiving interface that is no longer connected.
+receiving Interface that is no longer connected.
 
 .. figtable::
     :nofig:
