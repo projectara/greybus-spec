@@ -1047,7 +1047,7 @@ Table :num:`table-hid-set-report-request`.
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
     0        Report Type     1       Number          :ref:`hid-report-type`
-    1        Report ID       1       Number          Report ID defined by `USB-HID [HID01]_ specifications
+    1        Report ID       1       Number          Report ID defined by [HID01]_ specifications
     2        Report          ...     Data            Report defined by [HID01]_
     =======  ==============  ======  ==========      ===========================
 
