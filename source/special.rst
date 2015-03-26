@@ -103,7 +103,7 @@ Once the AP Module has been found, the SVC begins a process that
 transfers full control of the |unipro| network to the AP Module.
 
 Greybus Control Probe Request
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""""""""""""
 
 The Greybus control probe request is sent only by the SVC.  It
 supplies the Endo ID, which defines the size of the Endo and
@@ -125,7 +125,7 @@ receives the request.
     =======  ==============  ======  ============    ===========================
 
 Greybus Control Probe Response
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+""""""""""""""""""""""""""""""
 
 The Greybus control probe response contains a block of
 authentication data.  The AP Module responds with data that
@@ -155,7 +155,7 @@ AP Module Interface.  The AP Module sends this request to other Interfaces
 when it has set up Greybus connections for them to use.
 
 Greybus Control Connected Request
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""""""""""""""""
 
 The Greybus control connected request supplies the CPort ID on the
 receiving Interface that has been connected.
@@ -173,7 +173,7 @@ receiving Interface that has been connected.
     =======  ==============  ======  ============    ===========================
 
 Greybus Control Connected Response
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+""""""""""""""""""""""""""""""""""
 
 The Greybus control connected response message contains no payload.
 
@@ -187,7 +187,7 @@ messages may be sent over this connection, and any messages received
 shall be discarded.
 
 Greybus Control Disconnected Request
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+""""""""""""""""""""""""""""""""""""
 
 The Greybus control disconnected request supplies the CPort ID on the
 receiving Interface that is no longer connected.
@@ -205,7 +205,7 @@ receiving Interface that is no longer connected.
     =======  ==============  ======  ============    ===========================
 
 Greybus Control Disconnected Response
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""""""""""""""""""""
 
 The Greybus control disconnected response message contains no payload.
 
@@ -316,7 +316,7 @@ device ids.  Note that the SVC always uses device ID 0, and the AP
 Module always uses device ID 1.
 
 Greybus SVC Interface Device ID Request
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""""""""""""""""""""""
 
 The Greybus SVC Interface device ID request is sent only by the AP
 Module to the SVC.  It supplies the device ID that the SVC should
@@ -346,7 +346,7 @@ destroyed.
     =======  ==============  ======  ============    ===========================
 
 Greybus SVC Interface Device ID Response
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+""""""""""""""""""""""""""""""""""""""""
 
 The Greybus SVC Interface Device ID response message contains no payload.
 
@@ -365,7 +365,7 @@ this data is TBD.
 .. XXX CSV disabled to ensure these messages are delivered reliably
 
 Greybus SVC Interface Hotplug Request
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""""""""""""""""""""
 
 The Greybus SVC hotplug request is sent only by the SVC to the AP
 Module.  The Interface ID informs the AP Module which Interface now
@@ -390,7 +390,7 @@ power-on).
     =======  ==============  ======  ============    ===========================
 
 Greybus SVC Interface Hotplug Response
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+""""""""""""""""""""""""""""""""""""""
 
 The Greybus SVC hotplug response message contains no payload.
 
@@ -406,7 +406,7 @@ event to the AP Module when this occurs.
 .. XXX to ensure these messages are delivered reliably.
 
 Greybus SVC Interface Hot Unplug Request
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+""""""""""""""""""""""""""""""""""""""""
 
 The Greybus SVC hot unplog request is sent only by the SVC to the AP
 Module.  The Interface ID informs the AP which Interface no longer
@@ -427,7 +427,7 @@ before sending a hot unplug.
     =======  ==============  ======  ============    ===========================
 
 Greybus SVC Interface Hot Unplug Response
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""""""""""""""""""""""""
 
 The Greybus SVC hot unplug response message contains no payload.
 
@@ -438,7 +438,7 @@ The SVC sends this to the AP Module to request it reset the
 indicated link.
 
 Greybus SVC Interface Reset Request
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""""""""""""""""""
 
 The Greybus SVC Interface Reset Request is sent only by the SVC to
 the AP Module.  The Interface ID informs the AP Module which
@@ -457,7 +457,7 @@ Interface needs to be reset.
     =======  ==============  ======  ============    ===========================
 
 Greybus SVC Interface Reset Response
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+""""""""""""""""""""""""""""""""""""
 
 The Greybus SVC Interface Reset response message contains no payload.
 
@@ -472,7 +472,7 @@ attempt to create a connection using a CPort that is
 already in use in another connection.
 
 Greybus SVC Connection Create Request
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""""""""""""""""""""
 
 The Greybus SVC connection create request is sent only by the AP
 Module to the SVC.  The first Interface ID and first CPort ID define
@@ -495,7 +495,7 @@ Interface ID and CPort ID define the other end.
     =======  ==============  ======  ==================  ===========================
 
 Greybus SVC Connection Create Response
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+""""""""""""""""""""""""""""""""""""""
 
 The Greybus SVC connection create response message contains no payload.
 
@@ -509,7 +509,7 @@ Operations to the two Interfaces prior to this call.  It is an error
 to attempt to destroy a connection more than once.
 
 Greybus SVC Connection Destroy Request
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+""""""""""""""""""""""""""""""""""""""
 
 The Greybus SVC connection destroy request is sent only by the AP
 Module to the SVC.  The two (Interface ID, CPort ID) pairs define
@@ -531,6 +531,6 @@ the connection to be destroyed.
     =======  ==============  ======  ==================  ===========================
 
 Greybus SVC Connection Destroy Response
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""""""""""""""""""""""
 
 The Greybus SVC connection destroy response message contains no payload.
