@@ -386,7 +386,7 @@ power-on).
     =======  ==============  ======  ============    ===========================
     0        intf_id         1       Interface ID    Interface that now has a module present
     1        size            1       Number          Size of descriptive data
-    1        data            *size*  Data            Descriptive data
+    2        data            *size*  Data            Descriptive data
     =======  ==============  ======  ============    ===========================
 
 Greybus SVC Interface Hotplug Response
