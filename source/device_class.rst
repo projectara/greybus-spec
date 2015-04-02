@@ -899,7 +899,7 @@ described in Table :num:`table-hid-descriptor`.
     3        hid_version         2       Number          Version of the HID Protocol, as defined by [HID01]_
     5        product_id          2       Number          Product ID of the device
     7        vendor_id           2       Number          Vendor ID of the device
-    9        country_code        1       Number          Country code of the localized hardware, refer USB-HID specs.
+    9        country_code        1       Number          Country code of the localized hardware; see [HID01]_
     =======  ==================  ======  ==========      ===========================
 
 
@@ -987,7 +987,7 @@ defined by Table :num:`table-hid-get-report-request`.
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
     0        report_type     1       Number          :ref:`hid-report-type`
-    1        report_id       1       Number          Report ID defined by USB-HID specifications
+    1        report_id       1       Number          Report ID defined by [HID01]_
     =======  ==============  ======  ==========      ===========================
 
 .. _hid-report-type:
@@ -1042,7 +1042,7 @@ Greybus HID Set Report Request
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
     0        report_type     1       Number          :ref:`hid-report-type`
-    1        report_id       1       Number          Report ID defined by [HID01]_ specifications
+    1        report_id       1       Number          Report ID defined by [HID01]_
     2        report          ...     Data            Report defined by [HID01]_
     =======  ==============  ======  ==========      ===========================
 
