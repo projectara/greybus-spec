@@ -891,16 +891,16 @@ described in Table :num:`table-hid-descriptor`.
     :caption: Greybus HID Descriptor
     :spec: l l c c l
 
-    =======  =================  ======  ==========      ===========================
-    Offset   Field              Size    Value           Description
-    =======  =================  ======  ==========      ===========================
-    0        bLength            1       Number          Length of this descriptor
-    1        wReportDescLength  2       Number          Length of the report descriptor
-    3        bcdHID             2       Number          Version of the HID Protocol, as defined by [HID01]_
-    5        wProductID         2       Number          Product ID of the device
-    7        wVendorID          2       Number          Vendor ID of the device
-    9        bCountryCode       1       Number          Country code of the localized hardware, refer USB-HID specs.
-    =======  =================  ======  ==========      ===========================
+    =======  ==================  ======  ==========      ===========================
+    Offset   Field               Size    Value           Description
+    =======  ==================  ======  ==========      ===========================
+    0        length              1       Number          Length of this descriptor
+    1        report_desc_length  2       Number          Length of the report descriptor
+    3        hid_version         2       Number          Version of the HID Protocol, as defined by [HID01]_
+    5        product_id          2       Number          Product ID of the device
+    7        vendor_id           2       Number          Vendor ID of the device
+    9        country_code        1       Number          Country code of the localized hardware, refer USB-HID specs.
+    =======  ==================  ======  ==========      ===========================
 
 
 Greybus HID Get Report Descriptor Operation
@@ -986,8 +986,8 @@ defined by Table :num:`table-hid-get-report-request`.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        Report Type     1       Number          :ref:`hid-report-type`
-    1        Report ID       1       Number          Report ID defined by USB-HID specifications
+    0        report_type     1       Number          :ref:`hid-report-type`
+    1        report_id       1       Number          Report ID defined by USB-HID specifications
     =======  ==============  ======  ==========      ===========================
 
 .. _hid-report-type:
@@ -1041,9 +1041,9 @@ Greybus HID Set Report Request
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        Report Type     1       Number          :ref:`hid-report-type`
-    1        Report ID       1       Number          Report ID defined by [HID01]_ specifications
-    2        Report          ...     Data            Report defined by [HID01]_
+    0        report_type     1       Number          :ref:`hid-report-type`
+    1        report_id       1       Number          Report ID defined by [HID01]_ specifications
+    2        report          ...     Data            Report defined by [HID01]_
     =======  ==============  ======  ==========      ===========================
 
 The Greybus HID set report request contain report-type, report-id and
