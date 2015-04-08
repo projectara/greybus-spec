@@ -1,5 +1,5 @@
-Module Information
-==================
+Interface Information
+=====================
 
 .. raw:: latex
 
@@ -15,15 +15,15 @@ Module Information
   </div></div>
   </blockquote>
 
-A Greybus Module shall provide self-descriptive information in order to
-establish communications with other Modules on the |unipro| network.
-This information is provided via a Manifest, which describes
-components present within the Module that are accessible via |unipro|.
-The Manifest is a data structure, which includes a set of
-Descriptors, that presents a functional description of the Module.
-Together, these Descriptors define the Module's capabilities and means of
-communication via |unipro| from the perspective of the application layer
-and above.
+A Greybus Interface shall provide self-descriptive information in
+order to establish communications with other Interfaces on the
+|unipro| network.  This information is provided via a Manifest, which
+describes components present within the Interface that are accessible
+via |unipro|.  The Manifest is a data structure, which includes a set
+of Descriptors, that presents a functional description of the
+Interface.  Together, these Descriptors define the Interface's
+capabilities and means of communication via |unipro| from the
+perspective of the application layer and above.
 
 .. _manifest-data-requirements:
 
@@ -57,9 +57,9 @@ Manifest
 
 The Manifest is a contiguous block of data that includes a Manifest
 Header and a set of Descriptors.  When read, a Manifest is transferred
-in its entirety.  This allows the Module to be described to the AP
+in its entirety.  This allows the Interface to be described to the AP
 Module all at once, alleviating the need for multiple communication
-messages during the enumeration phase of the Module.
+messages during the enumeration phase of the Interface.
 
 Manifest Header
 ^^^^^^^^^^^^^^^
@@ -146,39 +146,44 @@ values are described in Table :num:`table-descriptor-type`.
     Descriptor Type                 Value
     ============================    ==========
     Invalid                         0x00
-    Module                          0x01
+    Interface                       0x01
     String                          0x02
-    Interface                       0x03
+    Bundle                          0x03
     CPort                           0x04
     Class                           0x05
     (All other values reserved)     0x06..0xff
     ============================    ==========
 
-Module Descriptor
-^^^^^^^^^^^^^^^^^
+Interface Descriptor
+^^^^^^^^^^^^^^^^^^^^
 
-This descriptor describes Module-specific values as set by the vendor
-who created the Module. Every Manifest shall have exactly one
-Module descriptor as described in Table :num:`table-module-descriptor`.
+Interface descriptor describes an access point for a Module to the
+|unipro| network. Each interface represents a single physical port
+through which |unipro| packets are transferred. Every Module shall have
+at least one interface. Each interface has an unique ID within the Endo.
+
+This descriptor describes Interface-specific values as set by the vendor who
+created the Interface. Every Manifest shall have exactly one Interface
+descriptor as described in Table :num:`table-interface-descriptor`.
 
 .. figtable::
     :nofig:
-    :label: table-module-descriptor
-    :caption: Module Descriptor
-    :alt: Module Descriptor
+    :label: table-interface-descriptor
+    :caption: Interface Descriptor
+    :alt: Interface Descriptor
     :spec: l l c c l
 
     =======  =================  ======  ==========  ==============================
     Offset   Field              Size    Value       Description
     =======  =================  ======  ==========  ==============================
     0        size               2       0x0014      Size of this descriptor
-    2        type               1       0x01        Type of the descriptor (Module)
+    2        type               1       0x01        Type of the descriptor (Interface)
     3        (pad)              1       0           Reserved (pad to 4 byte boundary)
     4        vendor             2       ID          Module vendor ID
     6        product            2       ID          Module product ID
     8        vendor_string_id   1       ID          String ID for the vendor name
     9        product_string_id  1       ID          String ID for the product name
-    10       unique_id          8       ID          Unique ID of the Module
+    10       unique_id          8       ID          Unique ID of the Interface
     18       (pad)              2       0           Reserved (pad to 20 bytes)
     =======  =================  ======  ==========  ==============================
 
@@ -204,11 +209,7 @@ See the :ref:`string-descriptor` section below for more details.
 The *unique_id* field is an 8 byte Unique ID that is written into each
 Greybus compliant chip during manufacturing. Google manages the Unique
 IDs, providing each manufacturer with the means to generate compliant
-Unique IDs for their products. In a Module that contains multiple
-interfaces, there is more than one hardware Unique ID
-available. It is the responsibility of the Module designer to
-designate one primary interface and expose that primary Unique ID in
-this field.
+Unique IDs for their products.
 
 .. _string-descriptor:
 
@@ -247,44 +248,79 @@ The *id* field shall not be 0x00, as that is an invalid String ID value.
 
 The *length* field excludes any trailing padding bytes in the descriptor.
 
-Interface Descriptor
-^^^^^^^^^^^^^^^^^^^^
+Bundle Descriptor
+^^^^^^^^^^^^^^^^^
 
-An interface descriptor describes an access point for a Module to the
-|unipro| network. Each interface represents a single physical port
-through which |unipro| packets are transferred. Every Module shall have
-at least one interface. Each interface has an ID whose value is unique
-within the Module.  The first interface shall have ID 0, the second
-(if present) shall have value 1, and so on. The purpose of these Ids
-is to allow CPort descriptors to define which interface they are
-associated with.  The interface descriptor is defined in Table
-:num:`table-interface-descriptor`.
+A Bundle represents a device in Greybus.  Bundles communicate with each other on
+the network via one or more |unipro| CPorts.
 
 .. figtable::
     :nofig:
-    :label: table-interface-descriptor
-    :caption: Interface Descriptor
-    :alt: Interface Descriptor
+    :label: table-bundle-descriptor
+    :caption: Bundle Descriptor
+    :alt: Bundle Descriptor
     :spec: l l c c l
 
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        size            2       0x0008          Size of this descriptor
-    2        type            1       0x03            Type of the descriptor (Interface)
-    3        (pad)           1       0               Reserved (pad to 4 byte boundary)
-    4        id              1       ID              Module-unique ID for this interface
-    5        (pad)           3       0               Reserved (pad to 8 bytes)
-    =======  ==============  ======  ==========      ===========================
+    ============  ==============  ========  ==========  ===========================
+    Offset        Field           Size      Value       Description
+    ============  ==============  ========  ==========  ===========================
+    0             size            2         0x0008      Size of this descriptor
+    2             type            1         0x02        Type of the descriptor (Bundle)
+    3             (pad)           1         0           Reserved (pad to 4 byte boundary)
+    4             id              1         ID          Interface-unique ID for this Bundle
+    5             class           1         Number      See Table :num:`table-bundle-class`
+    6             (pad)           2         0           Reserved (pad to 8 bytes)
+    ============  ==============  ========  ==========  ===========================
+
+The *id* field uniquely identifies a Bundle within the Interface.  The first
+Bundle shall have ID 0, the second (if present) shall have value 1, and so on.
+The purpose of these Ids is to allow CPort descriptors to define which Bundle
+they are associated with.  The Bundle descriptor is defined in Table
+:num:`table-bundle-descriptor`.
+
+The *class* field defines the class of the bundle. This shall be used by
+the AP to find what to expect from the bundle and how to configure/use
+it.  Class types are defined in :num:'table-bundle-class'.
+
+.. figtable::
+    :nofig:
+    :label: table-bundle-class
+    :caption: Bundle Class Types
+    :alt: Bundle Class Types
+    :spec: l c
+
+    ============================    ==========
+    Class type                      Value
+    ============================    ==========
+    Control                         0x00
+    AP                              0x01
+    GPIO                            0x02
+    I2C                             0x03
+    UART                            0x04
+    HID                             0x05
+    USB                             0x06
+    SDIO                            0x07
+    Battery                         0x08
+    PWM                             0x09
+    I2S                             0x0a
+    SPI                             0x0b
+    Display                         0x0c
+    Camera                          0x0d
+    Sensor                          0x0e
+    LED                             0x0f
+    Vibrator                        0x10
+    (All other values reserved)     0x11..0xfe
+    Vendor Specific                 0xff
+    ============================    ==========
 
 CPort Descriptor
 ^^^^^^^^^^^^^^^^
 
-This descriptor describes a CPort implemented within the Module. Each
-CPort is associated with one of the Module's interfaces, and has an ID
-unique for that interface.  Every CPort defines the Protocol used by
+A CPort descriptor describes a CPort implemented within the Module. Each
+CPort is associated with one of the Interface's Bundle, and has an ID
+unique for that Interface.  Every CPort defines the Protocol used by
 the AP Module to interact with the CPort. A special control CPort shall be
-defined for every interface, and shall be defined to use the *Control
+defined for every Interface, and shall be defined to use the *Control
 Protocol*. The Cport Descriptor is defined in Table
 :num:`table-cport-descriptor`. The details of these Protocols are
 defined in the sections :ref:`device-class-protocols` and
@@ -303,7 +339,7 @@ defined in the sections :ref:`device-class-protocols` and
     0         size            2       0x0008      Size of this descriptor
     2         type            1       0x04        Type of the descriptor (CPort)
     3         (pad)           1       0           Reserved (pad to 4 byte boundary)
-    4         interface       1       ID          Interface ID this CPort is associated with
+    4         bundle          1       ID          Bundle ID this CPort is associated with
     5         id              2       ID          ID (destination address) of the CPort
     7         protocol        1       Number      See Table :num:`table-cport-protocol`
     ========  ==============  ======  ==========  ===========================
@@ -313,7 +349,7 @@ defined in the sections :ref:`device-class-protocols` and
     specified in a later version of this document.
 
 The *id* field is the CPort identifier used by other Modules to direct
-traffic to this CPort. The IDs for CPorts using the same interface
+traffic to this CPort. The IDs for CPorts using the same Interface
 shall be unique. Certain low-numbered CPort identifiers (such as the
 control CPort) are reserved. Implementors shall assign CPorts
 low-numbered ID values, generally no higher than 31. (Higher-numbered
