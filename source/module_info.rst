@@ -150,8 +150,7 @@ values are described in Table :num:`table-descriptor-type`.
     String                          0x02
     Bundle                          0x03
     CPort                           0x04
-    Class                           0x05
-    (All other values reserved)     0x06..0xff
+    (All other values reserved)     0x05..0xff
     ============================    ==========
 
 Interface Descriptor
