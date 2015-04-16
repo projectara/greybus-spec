@@ -216,11 +216,9 @@ String Descriptor
 ^^^^^^^^^^^^^^^^^
 
 A string descriptor provides a human-readable string for a
-specific value, such as a vendor or product string.  Any string that is
-not an even multiple of 4 bytes in length shall be padded out to a
-4-byte boundary with 0x00 values.  Strings consist of UTF-8 characters
-and are not required to be zero terminated. A string descriptor shall
-be referenced only once within the Manifest, e.g. only one product (or
+specific value, such as a vendor or product string. Strings consist of UTF-8
+characters and are not required to be zero terminated. A string descriptor
+shall be referenced only once within the Manifest, e.g. only one product (or
 vendor) string field may refer to string ID 2.  The format of the string
 descriptor can be found in Table :num:`table-string-descriptor`.
 
