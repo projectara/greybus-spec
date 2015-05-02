@@ -336,8 +336,8 @@ defined in the sections :ref:`device-class-protocols` and
     0         size            2       0x0008      Size of this descriptor
     2         type            1       0x04        Type of the descriptor (CPort)
     3         (pad)           1       0           Reserved (pad to 4 byte boundary)
-    4         bundle          1       ID          Bundle ID this CPort is associated with
-    5         id              2       ID          ID (destination address) of the CPort
+    4         id              2       ID          ID (destination address) of the CPort
+    6         bundle          1       ID          Bundle ID this CPort is associated with
     7         protocol        1       Number      See Table :num:`table-cport-protocol`
     ========  ==============  ======  ==========  ===========================
 
