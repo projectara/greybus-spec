@@ -175,24 +175,13 @@ descriptor as described in Table :num:`table-interface-descriptor`.
     =======  =================  ======  ==========  ==============================
     Offset   Field              Size    Value       Description
     =======  =================  ======  ==========  ==============================
-    0        size               2       0x0014      Size of this descriptor
+    0        size               2       0x0008      Size of this descriptor
     2        type               1       0x01        Type of the descriptor (Interface)
     3        (pad)              1       0           Reserved (pad to 4 byte boundary)
-    4        vendor             2       ID          Module vendor ID
-    6        product            2       ID          Module product ID
-    8        vendor_string_id   1       ID          String ID for the vendor name
-    9        product_string_id  1       ID          String ID for the product name
-    10       unique_id          8       ID          Unique ID of the Interface
-    18       (pad)              2       0           Reserved (pad to 20 bytes)
+    4        vendor_string_id   1       ID          String ID for the vendor name
+    5        product_string_id  1       ID          String ID for the product name
+    6        (pad)              2       0           Reserved (pad to 4 byte boundlary)
     =======  =================  ======  ==========  ==============================
-
-The *vendor* field is a value assigned by Google.  All vendors should
-apply for a Project Ara vendor ID in order to properly mark their
-Modules. Contact ara-dev@google.com for more information regarding the
-vendor ID application process.
-
-The *product* field is controlled by the vendor, and should be unique
-per type of Module that is created.
 
 *vendor_string_id* is a reference to a specific string descriptor ID
 that provides a description of the vendor who created the Module.  If
@@ -204,11 +193,6 @@ more details.
 that provides a description of the product.  If there is no string
 present for this value in the Manifest, this value shall be 0x00.
 See the :ref:`string-descriptor` section below for more details.
-
-The *unique_id* field is an 8 byte Unique ID that is written into each
-Greybus compliant chip during manufacturing. Google manages the Unique
-IDs, providing each manufacturer with the means to generate compliant
-Unique IDs for their products.
 
 .. _string-descriptor:
 
