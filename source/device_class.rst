@@ -1084,7 +1084,277 @@ TBD
 Lights Protocol
 ---------------
 
-TBD
+This section defines operations used on a connection implementing the Greybus
+Lights Protocol. This Protocol allows an AP Module to control Lights devices
+present on a Module. The Protocol consists of some basic operations that are
+defined here.
+
+The operations in the Greybus Lights Protocol are:
+
+.. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
+
+    Negotiates the major and minor version of the Protocol used for
+    communication over the connection.  The sender offers the
+    version of the Protocol it supports.  The receiver replies with
+    the version that will be used--either the one offered if
+    supported or its own (lower) version otherwise.  Protocol
+    handling code adhering to the Protocol specified herein supports
+    major version |gb-major|, minor version |gb-minor|.
+
+.. c:function:: int get_brightness(u8 *brightness);
+
+   Return the value of the actual brightness level.
+
+.. c:function:: int set_brightness(u8 brightness);
+
+   Set the level of brightness with the specified value.
+
+.. c:function:: int set_blink(u64 delay_on, u64 delay_off);
+
+   Set hardware blink if supported by the device, the delays are specified in
+   milliseconds.
+
+.. c:function:: int get_functions(u32 *functions);
+
+   Returns a bitmask indicating the functions a Light device can represent.
+
+Greybus Lights Message Types
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Table :num:`table-lights-operation-type` describes the Greybus Lights
+operation types and their values. A message type consists of an
+operation type combined with a flag (0x80) indicating whether the
+operation is a request or a response.
+
+.. figtable::
+    :nofig:
+    :label: table-lights-operation-type
+    :caption: Lights Operation Types
+    :spec: l l l
+
+    ===========================  =============  ==============
+    Lights Operation Type        Request Value  Response Value
+    ===========================  =============  ==============
+    Invalid                      0x00           0x80
+    Protocol Version             0x01           0x81
+    Get Brightness               0x02           0x82
+    Set Brightness               0x03           0x83
+    Set Blink                    0x04           0x84
+    Get Function                 0x05           0x85
+    (all other values reserved)  0x06..0x7f     0x86..0xff
+    ===========================  =============  ==============
+
+Greybus Lights Protocol Version Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Lights Protocol version operation allows the Protocol handling
+software on both ends of a connection to negotiate the version of the Greybus
+Lights Protocol to use.
+
+Greybus Lights Protocol Version Request
+"""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-lights-version-request` defines the Greybus Lights version
+request payload. The request supplies the greatest major and minor version of
+the Greybus Lights Protocol supported by the sender.
+
+.. figtable::
+    :nofig:
+    :label: table-lights-version-request
+    :caption: Lights Protocol Version Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        version_major   1       |gb-major|      Offered Greybus Lights Protocol major version
+    1        version_minor   1       |gb-minor|      Offered Greybus Lights Protocol minor version
+    =======  ==============  ======  ==========      ===========================
+
+
+Greybus Lights Protocol Version Response
+""""""""""""""""""""""""""""""""""""""""
+
+The Greybus Lights Protocol version response payload contains two 1-byte values,
+as defined in table :num:`table-lights-protocol-version-response`. A Greybus
+Lights controller adhering to the Protocol specified herein shall report major
+version |gb-major|, minor version |gb-minor|.
+
+.. figtable::
+    :nofig:
+    :label: table-lights-protocol-version-response
+    :caption: Lights Protocol Version Response
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        version_major   1       |gb-major|      Greybus Lights Protocol major version
+    1        version_minor   1       |gb-minor|      Greybus Lights Protocol minor version
+    =======  ==============  ======  ==========      ===========================
+
+
+Greybus Lights Get Brightness Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Lights Get Brightness operation allows the AP Module to determine
+the actual level of brightness of the light device.
+
+Greybus Lights Get Brightness Request
+"""""""""""""""""""""""""""""""""""""
+The Greybus Lights Get Brightness request message has no payload.
+
+
+Greybus Lights Get Brightness Response
+""""""""""""""""""""""""""""""""""""""
+
+The Greybus Lights Get Brightness response payload contains a 1-byte value that
+represents the current level of brightness of the light device being controlled,
+in which 0 represent the lower level (off) and 255 represent the highest
+possible brightness level as defined in table
+:num:`table-lights-get-brightness-response`.
+
+.. figtable::
+    :nofig:
+    :label: table-lights-get-brightness-response
+    :caption: Lights Get Brightness Response
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        brightness      1       Number          Light current brightness level
+    =======  ==============  ======  ==========      ===========================
+
+Greybus Lights Set Brightness Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Lights Set Brightness operation allows the AP Module to request the
+light device to set is brightness level to the specified value.
+
+Greybus Lights Set Brightness Request
+"""""""""""""""""""""""""""""""""""""
+The Greybus Lights Set Brightness request payload contains a 1-byte value that
+represents the level of brightness to be set by the light device being
+controlled, in which 0 represent the lower level (off) and 255 represent the
+highest possible brightness level as defined in table
+:num:`table-lights-set-brightness-request`.
+
+.. figtable::
+    :nofig:
+    :label: table-lights-set-brightness-request
+    :caption: Lights Set Brightness Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        brightness      1       Number          Light brightness level to set
+    =======  ==============  ======  ==========      ===========================
+
+
+Greybus Lights Set Brightness Response
+""""""""""""""""""""""""""""""""""""""
+
+The Greybus Lights Set Brightness response message has no payload.
+
+
+Greybus Lights Set Blink Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Lights Set Blink operation allows the AP Module to request the light
+device to enable the blink mode, if supported and described by one Descriptor in
+the Manifest data structure, for the specified values in milliseconds for the on
+and off periods.  The blink mode shall be disabled by setting the brightness to
+a specific value using the Set Brightness Operantion.
+
+Greybus Lights Set Blink Request
+""""""""""""""""""""""""""""""""
+The Greybus Lights Set Blink request payload contains a two 4-byte values
+that represents the duration in milliseconds of the on and off period during
+the blink to be set by the light device being controlled, as defined
+in table :num:`table-lights-set-blink-request`.
+
+.. figtable::
+    :nofig:
+    :label: table-lights-set-blink-request
+    :caption: Lights Set Blink Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        delay_on        4       Number          Delay on in milliseconds
+    4        delay_off       4       Number          Delay off in milliseconds
+    =======  ==============  ======  ==========      ===========================
+
+
+Greybus Lights Set Blink Response
+"""""""""""""""""""""""""""""""""
+
+The Greybus Lights Set Blink response message has no payload.
+
+Greybus Lights Get Function Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Lights Get Function operation allows the AP Module to request
+the light device to determine the detail of the functions supported.
+
+Greybus Lights Get Function Request
+"""""""""""""""""""""""""""""""""""
+The Greybus Lights Get Function request message has no payload.
+
+Greybus Lights Get Function Response
+""""""""""""""""""""""""""""""""""""
+
+The Greybus Lights Get Function response payload contains a 4-byte value whose
+bits represents the support of certain function which the lights devices can
+represent, as defined in table :num:`table-lights-get-function-response`.
+
+.. figtable::
+    :nofig:
+    :label: `table-lights-get-function-response`.
+    :caption: Lights Get Function Response
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        functions       4       Number          :ref:`lights-function-bits`
+    =======  ==============  ======  ==========      ===========================
+
+.. _lights-function-bits:
+
+
+Greybus Lights Get Function Bit Masks
+"""""""""""""""""""""""""""""""""""""
+Table :num:`table-lights-function-bit-mask` define the functionality bit
+masks for Greybus Lights devices.
+
+.. figtable::
+    :nofig:
+    :label: table-lights-function-bit-mask
+    :caption: Lights Get Function Bit Masks
+    :spec: l l l
+
+    ===============================  ===================================================  ========================
+    Light Function                   Brief Description                                    Mask Value
+    ===============================  ===================================================  ========================
+    LIGHT_FUNC_NONE                  Device do not represent any specific function        0x00000000
+    LIGHT_FUNC_BATTERY               Device can represent the battery function            0x00000001
+    LIGHT_FUNC_POWER                 Device can represent the power function              0x00000002
+    LIGHT_FUNC_WIFI                  Device can represent wifi activity function          0x00000004
+    LIGHT_FUNC_BLUETOOTH             Device can represent bluetooth activity function     0x00000008
+    LIGHT_FUNC_KEYBOARD              Device can represent light related to the keyboard   0x00000010
+    LIGHT_FUNC_BUTTONS               Device can represent light related to buttons        0x00000020
+    LIGHT_FUNC_NOTIFICATION          Device can represent general notification light      0x00000040
+    LIGHT_FUNC_ATTENTION             Device can represent general attention light         0x00000080
+    LIGHT_FUNC_FLASH                 Device can be used as a flash light device           0x00000100
+    |_|                              (Reserved Range)                                     0x00000200..0x00080000
+    LIGHT_FUNC_VENDOR                Device can be used as vendor specific function       0x00100000..0x08000000
+    |_|                              (Reserved Range)                                     0x10000000..0x80000000
+    ===============================  ===================================================  ========================
+
 
 NFC Protocol
 ------------
