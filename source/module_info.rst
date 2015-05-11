@@ -288,7 +288,7 @@ it.  Class types are defined in :num:'table-bundle-class'.
     Display                         0x0c
     Camera                          0x0d
     Sensor                          0x0e
-    LED                             0x0f
+    Lights                          0x0f
     Vibrator                        0x10
     (All other values reserved)     0x11..0xfe
     Vendor Specific                 0xff
