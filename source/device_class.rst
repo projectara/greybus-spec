@@ -1114,7 +1114,7 @@ The operations in the Greybus Lights Protocol are:
    Set hardware blink if supported by the device, the delays are specified in
    milliseconds.
 
-.. c:function:: int get_functions(u32 *functions);
+.. c:function:: int get_modes(u32 *modes);
 
    Returns a bitmask indicating the functions a Light device can represent.
 
@@ -1140,7 +1140,7 @@ operation is a request or a response.
     Get Brightness               0x02           0x82
     Set Brightness               0x03           0x83
     Set Blink                    0x04           0x84
-    Get Function                 0x05           0x85
+    Get Mode                     0x05           0x85
     (all other values reserved)  0x06..0x7f     0x86..0xff
     ===========================  =============  ==============
 
@@ -1294,64 +1294,64 @@ Greybus Lights Set Blink Response
 
 The Greybus Lights Set Blink response message has no payload.
 
-Greybus Lights Get Function Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus Lights Get Mode Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus Lights Get Function operation allows the AP Module to request
-the light device to determine the detail of the functions supported.
+The Greybus Lights Get Mode operation allows the AP Module to request the light
+device to determine the detail of the functions modes supported.
 
-Greybus Lights Get Function Request
-"""""""""""""""""""""""""""""""""""
-The Greybus Lights Get Function request message has no payload.
+Greybus Lights Get Mode Request
+"""""""""""""""""""""""""""""""
+The Greybus Lights Get Mode request message has no payload.
 
-Greybus Lights Get Function Response
-""""""""""""""""""""""""""""""""""""
+Greybus Lights Get Mode Response
+""""""""""""""""""""""""""""""""
 
-The Greybus Lights Get Function response payload contains a 4-byte value whose
-bits represents the support of certain function which the lights devices can
-represent, as defined in table :num:`table-lights-get-function-response`.
+The Greybus Lights Get Mode response payload contains a 4-byte value whose bits
+represents the support of certain mode which the lights devices can represent,
+as defined in table :num:`table-lights-get-mode-response`.
 
 .. figtable::
     :nofig:
-    :label: `table-lights-get-function-response`.
-    :caption: Lights Get Function Response
+    :label: `table-lights-get-mode-response`.
+    :caption: Lights Get Mode Response
     :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        functions       4       Number          :ref:`lights-function-bits`
+    0        Mode            4       Number          :ref:`lights-mode-bits`
     =======  ==============  ======  ==========      ===========================
 
-.. _lights-function-bits:
+.. _lights-mode-bits:
 
 
-Greybus Lights Get Function Bit Masks
+Greybus Lights Get Mode Bit Masks
 """""""""""""""""""""""""""""""""""""
-Table :num:`table-lights-function-bit-mask` define the functionality bit
-masks for Greybus Lights devices.
+Table :num:`table-lights-mode-bit-mask` define the modes bit masks for Greybus
+Lights devices.
 
 .. figtable::
     :nofig:
-    :label: table-lights-function-bit-mask
-    :caption: Lights Get Function Bit Masks
+    :label: table-lights-mode-bit-mask
+    :caption: Lights Get Mode Bit Masks
     :spec: l l l
 
     ===============================  ===================================================  ========================
-    Light Function                   Brief Description                                    Mask Value
+    Light Mode                       Brief Description                                    Mask Value
     ===============================  ===================================================  ========================
-    LIGHT_FUNC_NONE                  Device do not represent any specific function        0x00000000
-    LIGHT_FUNC_BATTERY               Device can represent the battery function            0x00000001
-    LIGHT_FUNC_POWER                 Device can represent the power function              0x00000002
-    LIGHT_FUNC_WIFI                  Device can represent wifi activity function          0x00000004
-    LIGHT_FUNC_BLUETOOTH             Device can represent bluetooth activity function     0x00000008
-    LIGHT_FUNC_KEYBOARD              Device can represent light related to the keyboard   0x00000010
-    LIGHT_FUNC_BUTTONS               Device can represent light related to buttons        0x00000020
-    LIGHT_FUNC_NOTIFICATION          Device can represent general notification light      0x00000040
-    LIGHT_FUNC_ATTENTION             Device can represent general attention light         0x00000080
-    LIGHT_FUNC_FLASH                 Device can be used as a flash light device           0x00000100
+    LIGHT_MODE_NONE                  Device do not represent any specific mode            0x00000000
+    LIGHT_MODE_BATTERY               Device can represent the battery mode                0x00000001
+    LIGHT_MODE_POWER                 Device can represent the power mode                  0x00000002
+    LIGHT_MODE_WIFI                  Device can represent wifi activity mode              0x00000004
+    LIGHT_MODE_BLUETOOTH             Device can represent bluetooth activity mode         0x00000008
+    LIGHT_MODE_KEYBOARD              Device can represent light related to the keyboard   0x00000010
+    LIGHT_MODE_BUTTONS               Device can represent light related to buttons        0x00000020
+    LIGHT_MODE_NOTIFICATION          Device can represent general notification light      0x00000040
+    LIGHT_MODE_ATTENTION             Device can represent general attention light         0x00000080
+    LIGHT_MODE_FLASH                 Device can be used as a flash light device           0x00000100
     |_|                              (Reserved Range)                                     0x00000200..0x00080000
-    LIGHT_FUNC_VENDOR                Device can be used as vendor specific function       0x00100000..0x08000000
+    LIGHT_MODE_VENDOR                Device can be used as vendor specific mode           0x00100000..0x08000000
     |_|                              (Reserved Range)                                     0x10000000..0x80000000
     ===============================  ===================================================  ========================
 
