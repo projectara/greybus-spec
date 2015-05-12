@@ -1516,3 +1516,171 @@ WiFi Protocol
 
 TBD
 
+Loopback Protocol
+-----------------
+
+This section defines the operations used on a connection implementing
+the Greybus loopback Protocol.  This Protocol is used for testing a
+Greybus device and the connection to the device, by sending and
+receiving data in a "loop".
+
+The operations in the Greybus loopback Protocol are:
+
+.. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
+
+    Negotiates the major and minor version of the Protocol used for
+    communication over the connection.  The sender offers the
+    version of the Protocol it supports.  The receiver replies with
+    the version that will be used--either the one offered if
+    supported or its own (lower) version otherwise.  Protocol
+    handling code adhering to the Protocol specified herein supports
+    major version |gb-major|, minor version |gb-minor|.
+
+.. c:function:: int ping(void);
+
+   Sends a "ping" message to the device, from the host, that needs to be
+   acknowledged by the device.  By measuring how long this message takes
+   to succeed, an idea of the speed of the connection can be made.
+
+.. c:function:: int transfer(u32 len, char *send, char *receive);
+
+   Sends a stream of bytes to the device and receives them back from the
+   device.
+
+Greybus Loopback Message Types
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Table :num:`table-loopback-operation-type` describes the Greybus
+loopback operation types and their values. A message type consists of an
+operation type combined with a flag (0x80) indicating whether the
+operation is a request or a response.
+
+.. figtable::
+    :nofig:
+    :label: table-loopback-operation-type
+    :caption: Loopback Operation Types
+    :spec: l l l
+
+    ===========================  =============  ==============
+    Loopback Operation Type      Request Value  Response Value
+    ===========================  =============  ==============
+    Invalid                      0x00           0x80
+    Protocol Version             0x01           0x81
+    Ping                         0x02           0x82
+    Transfer                     0x03           0x83
+    (all other values reserved)  0x04..0x7f     0x84..0xff
+    ===========================  =============  ==============
+
+Greybus Loopback Protocol Version Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus loopback Protocol version operation allows the Protocol
+handling software on both ends of a connection to negotiate the
+version of the loopback Protocol to use.
+
+Greybus Loopback Protocol Version Request
+"""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-loopback-version-request` defines the Greybus loopback
+version request payload. The request supplies the greatest major and
+minor version of the loopback Protocol supported by the sender.
+
+.. figtable::
+    :nofig:
+    :label: table-loopback-version-request
+    :caption: Loopback Protocol Version Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        version_major   1       |gb-major|      Offered loopback Protocol major version
+    1        version_minor   1       |gb-minor|      Offered loopback Protocol minor version
+    =======  ==============  ======  ==========      ===========================
+
+Greybus Loopback Protocol Version Response
+""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus loopback Protocol version response payload contains two
+one-byte values, as defined in table
+:num:`table-loopback-protocol-version-response`.
+A Greybus loopback controller adhering to the Protocol specified herein
+shall report major version |gb-major|, minor version |gb-minor|.
+
+.. figtable::
+    :nofig:
+    :label: table-loopback-protocol-version-response
+    :caption: Loopback Protocol Version Response
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        version_major   1       |gb-major|      Loopback Protocol major version
+    1        version_minor   1       |gb-minor|      Loopback Protocol minor version
+    =======  ==============  ======  ==========      ===========================
+
+Greybus Loopback Ping Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus ping operation is a simple message that has no response.  It
+is used to time how long a single message takes to be sent and
+acknowledged from the receiver.
+
+Greybus Loopback Ping Request
+"""""""""""""""""""""""""""""
+
+The Greybus ping request message has no payload.
+
+Greybus Loopback Ping Response
+""""""""""""""""""""""""""""""
+
+The Greybus ping response message has no payload.
+
+Greybus Loopback Transfer Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Loopback transfer operation sends data and then the same
+data is returned.  This is used to determine the time required to
+transfer different size messages.
+
+Greybus Loopback Transfer Request
+"""""""""""""""""""""""""""""""""
+
+Table :num:`table-loopback-request` defines the Greybus Loopback
+Transfer request.  The request supplies size of the data that is sent to
+the device, and the data itself.
+
+.. figtable::
+    :nofig:
+    :label: table-loopback-request
+    :caption: Loopback Protocol Transfer Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        len             4       Number          length in bytes of the data field
+    4        data            X       Data            array of data bytes
+    =======  ==============  ======  ==========      ===========================
+
+
+Greybus Loopback Transfer Response
+""""""""""""""""""""""""""""""""""
+
+Table :num:`table-loopback-response` defines the Greybus Loopback
+Transfer response.  The response contains the same data that was sent in
+the request.
+
+.. figtable::
+    :nofig:
+    :label: table-loopback-response
+    :caption: Loopback Protocol Transfer Response
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        data            X       Data            array of data bytes
+    =======  ==============  ======  ==========      ===========================
+
