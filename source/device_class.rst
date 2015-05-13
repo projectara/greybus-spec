@@ -1684,3 +1684,133 @@ the request.
     0        data            X       Data            array of data bytes
     =======  ==============  ======  ==========      ===========================
 
+Raw Protocol
+------------
+
+This section defines the operations used on a connection implementing
+the Greybus Raw Protocol.  This Protocol is used for streaming "raw"
+data from userspace directly to or from the device.  The data contained
+by the protocol is not interpreted by the kernel, but requires a
+userspace program to handle it.  It can almost be considered a "vendor
+specific" protocol in that the format of the data is unspecified, and
+will vary by device.
+
+The operations in the Greybus Raw Protocol are:
+
+.. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
+
+    Negotiates the major and minor version of the Protocol used for
+    communication over the connection.  The sender offers the
+    version of the Protocol it supports.  The receiver replies with
+    the version that will be used--either the one offered if
+    supported or its own (lower) version otherwise.  Protocol
+    handling code adhering to the Protocol specified herein supports
+    major version |gb-major|, minor version |gb-minor|.
+
+.. c:function:: int send(u32 len, char *data);
+
+   Sends a stream of data from the AP to the device.
+
+Greybus Raw Message Types
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Table :num:`table-raw-operation-type` describes the Greybus
+Raw operation types and their values. A message type consists of an
+operation type combined with a flag (0x80) indicating whether the
+operation is a request or a response.
+
+.. figtable::
+    :nofig:
+    :label: table-raw-operation-type
+    :caption: Raw Operation Types
+    :spec: l l l
+
+    ===========================  =============  ==============
+    Raw Operation Type           Request Value  Response Value
+    ===========================  =============  ==============
+    Invalid                      0x00           0x80
+    Protocol Version             0x01           0x81
+    Send                         0x02           0x82
+    (all other values reserved)  0x04..0x7f     0x84..0xff
+    ===========================  =============  ==============
+
+Greybus Raw Protocol Version Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Raw Protocol version operation allows the Protocol
+handling software on both ends of a connection to negotiate the
+version of the Raw Protocol to use.
+
+Greybus Raw Protocol Version Request
+""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-raw-version-request` defines the Greybus Raw
+version request payload. The request supplies the greatest major and
+minor version of the Raw Protocol supported by the requester.
+
+.. figtable::
+    :nofig:
+    :label: table-raw-version-request
+    :caption: Raw Protocol Version Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        version_major   1       |gb-major|      Offered Raw Protocol major version
+    1        version_minor   1       |gb-minor|      Offered Raw Protocol minor version
+    =======  ==============  ======  ==========      ===========================
+
+Greybus Raw Protocol Version Response
+"""""""""""""""""""""""""""""""""""""
+
+The Greybus Raw Protocol version response payload contains two
+one-byte values, as defined in table
+:num:`table-raw-protocol-version-response`.
+A Greybus Raw controller adhering to the Protocol specified herein
+shall report major version |gb-major|, minor version |gb-minor|.
+
+.. figtable::
+    :nofig:
+    :label: table-raw-protocol-version-response
+    :caption: Raw Protocol Version Response
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        version_major   1       |gb-major|      Raw Protocol major version
+    1        version_minor   1       |gb-minor|      Raw Protocol minor version
+    =======  ==============  ======  ==========      ===========================
+
+Greybus Raw Send Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Raw send operation sends data from the requester to the
+respondent.
+
+Greybus Raw Send Request
+""""""""""""""""""""""""
+
+Table :num:`table-raw-send-request` defines the Greybus Raw Send
+request.  The request supplies size of the data that is sent to the
+device, and the data itself.
+
+.. figtable::
+    :nofig:
+    :label: table-raw-send-request
+    :caption: Raw Send Protocol Transfer Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        len             4       Number          length in bytes of the data field
+    4        data            *len*   Data            data to be sent
+    =======  ==============  ======  ==========      ===========================
+
+
+Greybus Raw Send Response
+"""""""""""""""""""""""""
+
+The Greybus Raw send response message has no payload.

@@ -371,7 +371,8 @@ typically should not be used.)
     LED                             0x0f
     Vibrator                        0x10
     Loopback                        0x11
-    (All other values reserved)     0x12..0xfe
+    (All other values reserved)     0x12..0xfd
+    Raw                             0xfe
     Vendor Specific                 0xff
     ============================    ==========
 
