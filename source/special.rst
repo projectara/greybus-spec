@@ -59,12 +59,14 @@ Conceptually, the Operations in the Greybus Control Protocol are:
     Upon receiving this request, an Interface shall be prepared to
     receive messages on the indicated CPort.  The Interface may send
     messages over the indicated CPort once it has sent a response
-    to the connected request.
+    to the connected request.  This operation is never used for
+    control CPort.
 
 .. c:function:: int disconnected(u16 cport_id);
 
     This Operation is used to notify an Interface that a previously
-    established Greybus connection may no longer be used.
+    established Greybus connection may no longer be used.  This
+    operation is never used for control CPort.
 
 Greybus Control Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -149,10 +151,11 @@ Greybus Control Connected Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus Control Connected Operation is sent to notify an Interface
-that one of its CPorts now has a connection established.  The SVC
-sends this request when it has set up a Greybus SVC connection with an
-AP Module Interface.  The AP Module sends this request to other Interfaces
-when it has set up Greybus connections for them to use.
+that one of its CPorts (other than control CPort) now has a connection
+established.  The SVC sends this request when it has set up a Greybus
+SVC connection with an AP Module Interface.  The AP Module sends this
+request to other Interfaces when it has set up Greybus connections for
+them to use.
 
 Greybus Control Connected Request
 """""""""""""""""""""""""""""""""
@@ -181,10 +184,10 @@ Greybus Control Disconnected Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus control disconnected Operation is sent to notify an
-Interface that a CPort that was formerly the subject of a Greybus
-Control Connected Operation shall no longer be used.  No more
-messages may be sent over this connection, and any messages received
-shall be discarded.
+Interface that a CPort (other than control CPort) that was formerly
+the subject of a Greybus Control Connected Operation shall no longer
+be used.  No more messages may be sent over this connection, and any
+messages received shall be discarded.
 
 Greybus Control Disconnected Request
 """"""""""""""""""""""""""""""""""""
