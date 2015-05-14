@@ -36,7 +36,7 @@ a request received its control CPort.
 
 Conceptually, the Operations in the Greybus Control Protocol are:
 
-.. c:function:: int probe(u16 endo_id, u8 intf_id, u16 *auth_size, u8 *auth_data);
+.. c:function:: int probe_ap(u16 endo_id, u8 intf_id, u16 *auth_size, u8 *auth_data);
 
     This Operation is used at initial power-on, sent by the SVC to
     discover which Module contains the AP.  The Endo ID supplied by
@@ -88,24 +88,24 @@ type and response type values are shown.
     Control Operation Type       Request Value  Response Value
     ===========================  =============  ==============
     Invalid                      0x00           0x80
-    Probe                        0x01           0x81
+    Probe AP                     0x01           0x81
     Connected                    0x02           0x82
     Disconnected                 0x03           0x83
     (all other values reserved)  0x04..0x7f     0x84..0xff
     ===========================  =============  ==============
 
-Greybus Control Probe Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus Control Probe AP Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus control probe Operation is sent by the SVC to all
+The Greybus control probe AP Operation is sent by the SVC to all
 Interfaces at power-on to determine which Module contains the AP.
 Once the AP Module has been found, the SVC begins a process that
 transfers full control of the |unipro| network to the AP Module.
 
-Greybus Control Probe Request
-"""""""""""""""""""""""""""""
+Greybus Control Probe AP Request
+""""""""""""""""""""""""""""""""
 
-The Greybus control probe request is sent only by the SVC.  It
+The Greybus control probe AP request is sent only by the SVC.  It
 supplies the Endo ID, which defines the size of the Endo and
 the positions available to hold Modules.  It also informs the Module
 via the Interface ID the Module location of the Interface that
@@ -113,8 +113,8 @@ receives the request.
 
 .. figtable::
     :nofig:
-    :label: table-control-probe-request
-    :caption: Control Protocol Probe Request
+    :label: table-control-probe-ap-request
+    :caption: Control Protocol Probe AP Request
     :spec: l l c c l
 
     =======  ==============  ======  ============    ===========================
@@ -124,18 +124,18 @@ receives the request.
     2        intf_id         1       Interface ID    Position of receiving Interface on Endo
     =======  ==============  ======  ============    ===========================
 
-Greybus Control Probe Response
-""""""""""""""""""""""""""""""
+Greybus Control Probe AP Response
+"""""""""""""""""""""""""""""""""
 
-The Greybus control probe response contains a block of
+The Greybus control probe AP response contains a block of
 authentication data.  The AP Module responds with data that
 identifies it as containing the AP.  All other Modules respond
 with no data (*auth_size* is 0).
 
 .. figtable::
     :nofig:
-    :label: table-control-probe-response
-    :caption: Control Protocol Probe Response
+    :label: table-control-probe-ap-response
+    :caption: Control Protocol Probe AP Response
     :spec: l l c c l
 
     =======  ==============  ===========  ==========      ===========================
@@ -216,7 +216,7 @@ SVC Protocol
 
 The AP Module is required to provide a CPort that uses the SVC
 Protocol on an Interface.  During system initialization the SVC uses
-Probe Operations to find an Interface on the AP Module.  Once that
+Probe AP Operations to find an Interface on the AP Module.  Once that
 Interface is found, the SVC sets up a |unipro| connection from
 one of its CPorts to the AP Module Interface's SVC CPort.  It sends
 a Control Protocol connected operation to the Interface, notifying
