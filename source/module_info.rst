@@ -246,7 +246,7 @@ the network via one or more |unipro| CPorts.
     Offset        Field           Size      Value       Description
     ============  ==============  ========  ==========  ===========================
     0             size            2         0x0008      Size of this descriptor
-    2             type            1         0x02        Type of the descriptor (Bundle)
+    2             type            1         0x03        Type of the descriptor (Bundle)
     3             (pad)           1         0           Reserved (pad to 4 byte boundary)
     4             id              1         ID          Interface-unique ID for this Bundle
     5             class           1         Number      See Table :num:`table-bundle-class`
