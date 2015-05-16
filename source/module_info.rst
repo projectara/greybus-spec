@@ -368,7 +368,7 @@ typically should not be used.)
     Display                         0x0c
     Camera                          0x0d
     Sensor                          0x0e
-    LED                             0x0f
+    Lights                          0x0f
     Vibrator                        0x10
     Loopback                        0x11
     (All other values reserved)     0x12..0xfd
