@@ -363,7 +363,7 @@ typically should not be used.)
     SDIO                            0x07
     Battery                         0x08
     PWM                             0x09
-    I2S                             0x0a
+    I2S Management                  0x0a
     SPI                             0x0b
     Display                         0x0c
     Camera                          0x0d
@@ -371,7 +371,9 @@ typically should not be used.)
     Lights                          0x0f
     Vibrator                        0x10
     Loopback                        0x11
-    (All other values reserved)     0x12..0xfd
+    I2S Receiver                    0x12
+    I2S Transmitter                 0x13
+    (All other values reserved)     0x14..0xfd
     Raw                             0xfe
     Vendor Specific                 0xff
     ============================    ==========
