@@ -36,6 +36,16 @@ a request received its control CPort.
 
 Conceptually, the Operations in the Greybus Control Protocol are:
 
+.. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
+
+    Negotiates the major and minor version of the Protocol used for
+    communication over the connection.  The sender offers the
+    version of the Protocol it supports.  The receiver replies with
+    the version that will be used--either the one offered if
+    supported or its own (lower) version otherwise.  Protocol
+    handling code adhering to the Protocol specified herein supports
+    major version |gb-major|, minor version |gb-minor|.
+
 .. c:function:: int probe_ap(u16 endo_id, u8 intf_id, u16 *auth_size, u8 *auth_data);
 
     This Operation is used at initial power-on, sent by the SVC to
@@ -90,11 +100,61 @@ type and response type values are shown.
     Control Operation Type       Request Value  Response Value
     ===========================  =============  ==============
     Invalid                      0x00           0x80
-    Probe AP                     0x01           0x81
-    Connected                    0x02           0x82
-    Disconnected                 0x03           0x83
-    (all other values reserved)  0x04..0x7f     0x84..0xff
+    Protocol Version             0x01           0x81
+    Probe AP                     0x02           0x82
+    Connected                    0x03           0x83
+    Disconnected                 0x04           0x84
+    (all other values reserved)  0x05..0x7f     0x85..0xff
     ===========================  =============  ==============
+
+Greybus Control Protocol Version Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Control Protocol version operation allows the Protocol
+handling software on both ends of a connection to negotiate the version
+of the Control Protocol to use.
+
+Greybus Control Protocol Version Request
+""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-control-version-request` defines the Greybus Control
+version request payload. The request supplies the greatest major and
+minor version of the Control Protocol supported by the sender.
+
+.. figtable::
+    :nofig:
+    :label: table-control-version-request
+    :caption: Control Protocol Version Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        version_major   1       |gb-major|      Offered Control Protocol major version
+    1        version_minor   1       |gb-minor|      Offered Control Protocol minor version
+    =======  ==============  ======  ==========      ===========================
+
+Greybus Control Protocol Version Response
+"""""""""""""""""""""""""""""""""""""""""
+
+The Greybus Control Protocol version response payload contains two
+one-byte values, as defined in table
+:num:`table-control-protocol-version-response`.
+A Greybus Control controller adhering to the Protocol specified herein
+shall report major version |gb-major|, minor version |gb-minor|.
+
+.. figtable::
+    :nofig:
+    :label: table-control-protocol-version-response
+    :caption: Control Protocol Version Response
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        version_major   1       |gb-major|      Control Protocol major version
+    1        version_minor   1       |gb-minor|      Control Protocol minor version
+    =======  ==============  ======  ==========      ===========================
 
 Greybus Control Probe AP Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
