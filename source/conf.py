@@ -25,6 +25,9 @@ sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'extens
 import html_mods
 import latex_mods
 
+# get the version of sphinx as we need to do different things for older
+# versions (lovely backwards compatibility...)
+from sphinx import version_info
 
 # -- Project Ara configuration --------------------------------------------
 
@@ -126,7 +129,15 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
+
+# Use the "default" theme if we are using an "old" version of Sphinx,
+# otherwise use the "classic" theme (gotta love backwards compatibility...)
 html_theme = 'default'
+version_minor = version_info[1]
+version_major = version_info[0]
+if version_major >= 1:
+    if version_minor >= 3:
+        html_theme = 'classic'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
