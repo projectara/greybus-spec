@@ -96,7 +96,7 @@ Conceptually, the GPIO Protocol operations are:
 
     Requests the GPIO controller unmask the specified gpio irq line.
 
-.. c:function:: int irq_event(u8 which);
+.. c:function:: void irq_event(u8 which);
 
     GPIO controller request to recipient signaling an event on the specified
     gpio irq line.
@@ -137,7 +137,7 @@ response type values are shown.
     IRQ Type                     0x0b           0x8b
     IRQ Mask                     0x0c           0x8c
     IRQ Unmask                   0x0d           0x8d
-    IRQ Event                    0x0e           0x8e
+    IRQ Event                    0x0e           N/A
     (all other values reserved)  0x0f..0x7f     0x1f..0xff
     ===========================  =============  ==============
 
@@ -627,6 +627,11 @@ Greybus GPIO IRQ Event Operation
 The Greybus GPIO IRQ event operation signals to the recipient that a
 GPIO IRQ event has occurred on the GPIO Controller.
 
+The GPIO controller is responsible for masking the interrupt before sending the
+event.
+
+Note that the GPIO IRQ event operation is unidirectional and has no response.
+
 Greybus GPIO IRQ Event Request
 """"""""""""""""""""""""""""""
 
@@ -646,10 +651,6 @@ an event.
     0        which           1       Number          Controller-relative GPIO line number
     =======  ==============  ======  ==========      ===========================
 
-Greybus GPIO IRQ Event Response
-"""""""""""""""""""""""""""""""
-
-The Greybus GPIO IRQ event response message has no payload.
 
 SPI Protocol
 ------------
