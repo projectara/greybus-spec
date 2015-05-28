@@ -96,10 +96,6 @@ Conceptually, the GPIO Protocol operations are:
 
     Requests the GPIO controller unmask the specified gpio irq line.
 
-.. c:function:: int irq_ack(u8 which);
-
-    Requests the GPIO controller ack the specified gpio irq line.
-
 .. c:function:: int irq_event(u8 which);
 
     GPIO controller request to recipient signaling an event on the specified
@@ -139,11 +135,10 @@ response type values are shown.
     Set                          0x09           0x89
     Set Debounce                 0x0a           0x8a
     IRQ Type                     0x0b           0x8b
-    IRQ Ack                      0x0c           0x8c
-    IRQ Mask                     0x0d           0x8d
-    IRQ Unmask                   0x0e           0x8e
-    IRQ Event                    0x0f           0x8f
-    (all other values reserved)  0x10..0x7f     0x90..0xff
+    IRQ Mask                     0x0c           0x8c
+    IRQ Unmask                   0x0d           0x8d
+    IRQ Event                    0x0e           0x8e
+    (all other values reserved)  0x0f..0x7f     0x1f..0xff
     ===========================  =============  ==============
 
 Greybus GPIO Protocol Version Operation
@@ -626,35 +621,6 @@ Greybus GPIO IRQ Unmask Response
 """"""""""""""""""""""""""""""""
 
 The Greybus GPIO IRQ unmask response message has no payload.
-
-Greybus GPIO IRQ Ack Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The Greybus GPIO IRQ ack operation requests the GPIO controller to ack
-a GPIO IRQ line.
-
-Greybus GPIO IRQ Ack Request
-""""""""""""""""""""""""""""
-
-Table :num:`table-gpio-irq-ack-request` defines the Greybus GPIO IRQ Ack
-request.  This request supplies the number of the line to be acked.
-
-.. figtable::
-    :nofig:
-    :label: table-gpio-irq-ack-request
-    :caption: GPIO IRQ Mask Request
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        which           1       Number          Controller-relative GPIO line number
-    =======  ==============  ======  ==========      ===========================
-
-Greybus GPIO IRQ Ack Response
-"""""""""""""""""""""""""""""
-
-The Greybus GPIO IRQ Ack response message has no payload.
 
 Greybus GPIO IRQ Event Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
