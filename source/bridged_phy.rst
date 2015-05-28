@@ -535,8 +535,7 @@ Greybus GPIO IRQ Type Bits
 """"""""""""""""""""""""""
 
 Table :num:`table-gpio-irq-type-bits` describes the defined interrupt
-trigger type bit values defined for Greybus GPIO IRQ chips. These values
-are taken directly from the <linux/interrupt.h> header file. Only a
+trigger type bit values defined for Greybus GPIO IRQ chips. Only a
 single trigger type is valid, a mask of two or more values results
 in a *GB_OP_INVALID* response.
 
@@ -546,16 +545,16 @@ in a *GB_OP_INVALID* response.
     :caption: GPIO IRQ Type Bits
     :spec: l l l
 
-    ===============================  ===================================================  ==========
-    Linux Symbol                     Brief Description                                    Value
-    ===============================  ===================================================  ==========
-    IRQF_TRIGGER_NONE                No trigger specified, uses default/previous setting  0x00
-    IRQF_TRIGGER_RISING              Rising edge triggered                                0x01
-    IRQF_TRIGGER_FALLING             Falling edge triggered                               0x02
-    IRQF_TRIGGER_HIGH                Level triggered high                                 0x04
-    IRQF_TRIGGER_LOW                 Level triggered low                                  0x08
-    |_|                              (All other values reserved)                          0x10..0xff
-    ===============================  ===================================================  ==========
+    =====================  ===================================================  ==========
+    Symbol                 Brief Description                                    Value
+    =====================  ===================================================  ==========
+    IRQ_TYPE_NONE          No trigger specified, uses default/previous setting  0x00
+    IRQ_TYPE_EDGE_RISING   Rising edge triggered                                0x01
+    IRQ_TYPE_EDGE_FALLING  Falling edge triggered                               0x02
+    IRQ_TYPE_LEVEL_HIGH    Level triggered high                                 0x04
+    IRQ_TYPE_LEVEL_LOW     Level triggered low                                  0x08
+    |_|                    (All other values reserved)                          0x10..0xff
+    =====================  ===================================================  ==========
 
 Greybus GPIO IRQ Type Response
 """"""""""""""""""""""""""""""
