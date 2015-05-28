@@ -1707,7 +1707,7 @@ Greybus PWM Activate Response
 
 The Greybus PWM activate response message has no payload.
 
-Greybuf PWM Deactivate Operation
+Greybus PWM Deactivate Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus PWM instance deactivate operation notifies the PWM
