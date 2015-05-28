@@ -51,7 +51,7 @@ Conceptually, the GPIO Protocol operations are:
 
 .. c:function:: int deactivate(u8 which);
 
-    Notifies the GPIO controller that a previously-activated line has
+    Notifies the GPIO controller that a previously activated line has
     been unassigned and can be deactivated.
 
 .. c:function:: int get_direction(u8 which, u8 *direction);
@@ -264,7 +264,7 @@ Greybus GPIO Deactivate Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus GPIO deactivate operation notifies the GPIO controller
-that a previously-activated line is no longer in use and can be
+that a previously activated line is no longer in use and can be
 deactivated.
 
 Greybus GPIO Deactivate Request
@@ -1535,7 +1535,7 @@ Conceptually, the PWM Protocol operations are:
 
 .. c:function:: int deactivate(u8 which);
 
-    Notifies the PWM controller that a previously-activated instance
+    Notifies the PWM controller that a previously activated instance
     has been unassigned and can be deactivated.
 
 .. c:function:: int config(u8 which, u32 duty, u32 period);
@@ -1711,7 +1711,7 @@ Greybuf PWM Deactivate Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus PWM instance deactivate operation notifies the PWM
-controller that a previously-activated instance is no longer in use
+controller that a previously activated instance is no longer in use
 and can be deactivated.
 
 Greybus PWM Deactivate Request

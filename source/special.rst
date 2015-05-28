@@ -274,7 +274,7 @@ Conceptually, the operations in the Greybus SVC Protocol are:
 .. c:function:: int connection_destroy(u8 intf1_id, u16 cport1_id, u8 intf2_id, u16 cport2_id);
 
     The AP Module uses this operation to request the SVC tear down a
-    previously-created connection.
+    previously created connection.
 
 Greybus SVC Operations
 ^^^^^^^^^^^^^^^^^^^^^^
