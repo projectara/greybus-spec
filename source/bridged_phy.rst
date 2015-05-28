@@ -554,7 +554,7 @@ in a *GB_OP_INVALID* response.
     IRQF_TRIGGER_FALLING             Falling edge triggered                               0x00000002
     IRQF_TRIGGER_HIGH                Level triggered high                                 0x00000004
     IRQF_TRIGGER_LOW                 Level triggered low                                  0x00000008
-    |_|                              (All other values reserved)                          0x00000010..0x80000000
+    |_|                              (All other values reserved)                          0x00000010..0xffffffff
     ===============================  ===================================================  ========================
 
 Greybus GPIO IRQ Type Response
