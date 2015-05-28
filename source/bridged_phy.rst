@@ -139,9 +139,9 @@ response type values are shown.
     Set                          0x09           0x89
     Set Debounce                 0x0a           0x8a
     IRQ Type                     0x0b           0x8b
-    IRQ Mask                     0x0c           0x8c
-    IRQ Unmask                   0x0d           0x8d
-    IRQ Ack                      0x0e           0x8e
+    IRQ Ack                      0x0c           0x8c
+    IRQ Mask                     0x0d           0x8d
+    IRQ Unmask                   0x0e           0x8e
     IRQ Event                    0x0f           0x8f
     (all other values reserved)  0x10..0x7f     0x90..0xff
     ===========================  =============  ==============
