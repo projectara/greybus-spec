@@ -526,7 +526,7 @@ to be used for the line.
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
     0        which           1       Number          Controller-relative GPIO line number
-    1        type            4       Number          :ref:`gpio-irq-type-bits`
+    1        type            1       Number          :ref:`gpio-irq-type-bits`
     =======  ==============  ======  ==========      ===========================
 
 .. _gpio-irq-type-bits:
@@ -546,16 +546,16 @@ in a *GB_OP_INVALID* response.
     :caption: GPIO IRQ Type Bits
     :spec: l l l
 
-    ===============================  ===================================================  ========================
+    ===============================  ===================================================  ==========
     Linux Symbol                     Brief Description                                    Value
-    ===============================  ===================================================  ========================
-    IRQF_TRIGGER_NONE                No trigger specified, uses default/previous setting  0x00000000
-    IRQF_TRIGGER_RISING              Rising edge triggered                                0x00000001
-    IRQF_TRIGGER_FALLING             Falling edge triggered                               0x00000002
-    IRQF_TRIGGER_HIGH                Level triggered high                                 0x00000004
-    IRQF_TRIGGER_LOW                 Level triggered low                                  0x00000008
-    |_|                              (All other values reserved)                          0x00000010..0xffffffff
-    ===============================  ===================================================  ========================
+    ===============================  ===================================================  ==========
+    IRQF_TRIGGER_NONE                No trigger specified, uses default/previous setting  0x00
+    IRQF_TRIGGER_RISING              Rising edge triggered                                0x01
+    IRQF_TRIGGER_FALLING             Falling edge triggered                               0x02
+    IRQF_TRIGGER_HIGH                Level triggered high                                 0x04
+    IRQF_TRIGGER_LOW                 Level triggered low                                  0x08
+    |_|                              (All other values reserved)                          0x10..0xff
+    ===============================  ===================================================  ==========
 
 Greybus GPIO IRQ Type Response
 """"""""""""""""""""""""""""""
