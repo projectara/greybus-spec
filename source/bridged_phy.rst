@@ -613,7 +613,7 @@ unmasked.
 .. figtable::
     :nofig:
     :label: table-gpio-irq-unmask-request
-    :caption: GPIO IRQ Mask Request
+    :caption: GPIO IRQ Unmask Request
     :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
