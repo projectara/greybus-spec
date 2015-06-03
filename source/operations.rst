@@ -62,7 +62,7 @@ handlers on the two ends of the connection negotiate the version of
 the Protocol to use when a connection is established.  Every
 Protocol implements a *version* operation for this purpose.  The
 version request message contains the major and minor Protocol
-version supported by the sending side.  The recieving end decides
+version supported by the sending side.  The receiving end decides
 whether that version should be used, or if a different (lower)
 version that it supports should be used instead.  Both sides use
 the version of the Protocol contained in the response.
