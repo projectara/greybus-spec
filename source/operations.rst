@@ -19,11 +19,11 @@ a data transfer) initiated in one Module that is implemented (or
 executed) by another. The particular activity performed is defined by
 the operation's type. An operation is generally implemented by a pair of
 messages--one containing a request, and the other containing a response, but
-unidirectional operations (i.e. requests without matching responses) are also
+*unidirectional* operations (i.e. requests without matching responses) are also
 supported. Both messages contain a simple header that includes the type of the
 operation and size of the message. In addition, each operation has a unique ID,
 and both messages in an operation contain this value so a response can be
-associated with its matching request (unidirectional messages use a reserved
+associated with its matching request (unidirectional operations use a reserved
 ID). Finally, all responses contain a byte in message header to communicate
 status of the operation--either success or a reason for a failure.
 
