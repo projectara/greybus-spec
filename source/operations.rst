@@ -27,6 +27,11 @@ associated with its matching request (unidirectional operations use a reserved
 ID). Finally, all responses contain a byte in message header to communicate
 status of the operation--either success or a reason for a failure.
 
+Whether a particular operation has a response message or not (i.e. is
+unidirectional) is protocol dependent. It usually makes sense for operations
+which may be initiated by the AP Module to have responses as any errors can be
+logged and often also reported up the stack (e.g. to userspace).
+
 Operations are performed over Greybus Connections.  A connection is a
 communication path between two Modules.  Each end of a connection is a
 |unipro| CPort, associated with a particular interface in a Greybus
