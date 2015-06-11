@@ -3544,7 +3544,7 @@ Conceptually, the operations in the Greybus SDIO Protocol are:
 
 .. c:function:: int get_capabilities(u32 *caps);
 
-   Request the SDIO controller to return a set of capabilities 
+   Request the SDIO controller to return a set of capabilities
    available.
 
 .. c:function:: int set_ios(struct gb_sdio_ios *ios);
@@ -3683,7 +3683,7 @@ controller, as defined in table :num:`table-sdio-get-caps-response`.
 .. _sdio-caps-bits:
 
 Greybus SDIO Get Capabilities Bit Masks
-""""""""""""""""""""""""""""""""""""""" 
+"""""""""""""""""""""""""""""""""""""""
 Table :num:`table-sdio-get-caps` define the Capabilities bit masks for
 Greybus SDIO.
 
@@ -4043,10 +4043,10 @@ Transfer request.
     |_|                              (All other values reserved)                             0x08..0x80
     ===============================  ======================================================  ========================
 
-If data_flags field have the GB_SDIO_DATA_WRITE flag set, the size 
+If data_flags field have the GB_SDIO_DATA_WRITE flag set, the size
 field define the length in bytes of data to be transfer in
 the data field. If data_flags field have the GB_SDIO_DATA_READ
-set, the size field define the length of data 
+set, the size field define the length of data
 to be read and for that the data field is empty.
 
 Greybus SDIO Transfer Response
