@@ -3524,5 +3524,605 @@ of messages.
 SDIO Protocol
 -------------
 
-TBD
+This section defines the operations used on a connection
+implementing the Greybus SDIO Protocol. This Protocol allows for
+management of a SDIO device present on a Module. The Protocol
+consists of operations, whose request and response message
+formats are defined here.
+
+Conceptually, the operations in the Greybus SDIO Protocol are:
+
+.. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
+
+    Negotiates the major and minor version of the Protocol used
+    for communication over the connection.  The sender offers the
+    version of the Protocol it supports.  The receiver replies
+    with the version that will be used--either the one offered if
+    supported or its own (lower) version otherwise.  Protocol
+    handling code adhering to the Protocol specified herein
+    supports major version |gb-major|, minor version |gb-minor|.
+
+.. c:function:: int get_capabilities(u32 *caps);
+
+   Request the SDIO controller to return a set of capabilities 
+   available.
+
+.. c:function:: int set_ios(struct gb_sdio_ios *ios);
+
+    Request the SDIO controller to setup various parameters
+    related with the interface.
+
+.. c:function:: int command(u32 opcode, u32 arg, u32 data_flags, u32 *resp[4]);
+
+    Send a control command as specified by the SD Association and
+    return the correspondent response.
+
+.. c:function:: int transfer(u8 data_flags, u16 *size, u8 *data);
+
+    Performs a SDIO data transaction defined by the size to be
+    send/received.
+
+.. c:function:: int sdio_event(u8 event);
+
+    The SDIO controller notifies the recipient of SD card related
+    events.
+
+
+Greybus SDIO Protocol Operations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+All operations sent to a SDIO controller are contained within a
+Greybus SDIO request message. Every operation request results in
+a matching response from the SDIO controller, also taking the
+form of a SDIO controller message.  The request and response
+messages for each SDIO operation are defined below.
+
+Table :num:`table-sdio-operation-type` defines the Greybus SDIO
+Protocol operation types and their values. Both the request type
+and response type values are shown.
+
+.. figtable::
+    :nofig:
+    :label: table-sdio-operation-type
+    :caption: SDIO Operation Types
+    :spec: l l l
+
+    ===========================  =============  ==============
+    SDIO Operation Type          Request Value  Response Value
+    ===========================  =============  ==============
+    Invalid                      0x00           0x80
+    Protocol Version             0x01           0x81
+    Get Capabilities             0x02           0x82
+    Set Ios                      0x03           0x83
+    Command                      0x04           0x84
+    Transfer                     0x05           0x85
+    Event                        0x06           N/A
+    (all other values reserved)  0x07..0x7f     0x87..0xff
+    ===========================  =============  ==============
+
+Greybus SDIO Protocol Version Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SDIO Protocol version operation allows the Protocol
+handling software on both ends of a connection to negotiate the
+version of the SDIO Protocol to use.
+
+Greybus SDIO Protocol Version Request
+"""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-sdio-version-request` defines the Greybus SDIO
+version request payload. The request supplies the greatest major
+and minor version of the SDIO Protocol supported by the sender.
+
+.. figtable::
+    :nofig:
+    :label: table-sdio-version-request
+    :caption: SDIO Protocol Version Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        version_major   1       |gb-major|      Offered SDIO Protocol major version
+    1        version_minor   1       |gb-minor|      Offered SDIO Protocol minor version
+    =======  ==============  ======  ==========      ===========================
+
+Greybus SDIO Protocol Version Response
+""""""""""""""""""""""""""""""""""""""
+
+The Greybus SDIO Protocol version response payload contains two
+one-byte values, as defined in table
+:num:`table-sdio-protocol-version-response`.  A Greybus SDIO
+controller adhering to the Protocol specified herein shall report
+major version |gb-major|, minor version |gb-minor|.
+
+.. figtable::
+    :nofig:
+    :caption: SDIO Protocol Version Response
+    :label: table-sdio-protocol-version-response
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        version_major   1       |gb-major|      SDIO Protocol major version
+    1        version_minor   1       |gb-minor|      SDIO Protocol minor version
+    =======  ==============  ======  ==========      ===========================
+
+Greybus SDIO Get Capabilities Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SDIO Get Capabilities operation allows the requester to
+fetch capabilities that are supported by the Controller.
+
+Greybus SDIO Get Capabilities Request
+"""""""""""""""""""""""""""""""""""""
+
+The Greybus SDIO Get Capabilities request message has no payload.
+
+Greybus SDIO Get Capabilities Response
+""""""""""""""""""""""""""""""""""""""
+
+The Greybus SDIO Get Capabilities response message returns value whose
+bits represent the support of certain capability from the SDIO
+controller, as defined in table :num:`table-sdio-get-caps-response`.
+
+
+.. figtable::
+    :nofig:
+    :label: table-sdio-get-caps-response
+    :caption: SDIO Protocol Get Capabilities Response
+    :spec: l l c c l
+
+    =========    ==============  ======  ==========      ===========================
+    Offset       Field           Size    Value           Description
+    =========    ==============  ======  ==========      ===========================
+    0            caps            4       Bit Mask        :ref:`sdio-caps-bits`
+    =========    ==============  ======  ==========      ===========================
+
+.. _sdio-caps-bits:
+
+Greybus SDIO Get Capabilities Bit Masks
+""""""""""""""""""""""""""""""""""""""" 
+Table :num:`table-sdio-get-caps` define the Capabilities bit masks for
+Greybus SDIO.
+
+.. figtable::
+    :nofig:
+    :label: table-sdio-get-caps
+    :caption: SDIO Protocol Get Capabilities Bit Masks
+    :spec: l l l
+
+    ===============================  ======================================================  ========================
+    Symbol                           Brief Description                                       Mask Value
+    ===============================  ======================================================  ========================
+    GB_SDIO_CAP_NONREMOVABLE         Device is unremovable from the slot                     0x00000001
+    GB_SDIO_CAP_4_BIT_DATA           Host support 4 bit transfers                            0x00000002
+    GB_SDIO_CAP_8_BIT_DATA           Host support 8 bit transfers                            0x00000004
+    GB_SDIO_CAP_MMC_HS               Host support mmc high-speed timings                     0x00000008
+    GB_SDIO_CAP_SD_HS                Host support SD high-speed timings                      0x00000010
+    GB_SDIO_CAP_ERASE                Host allow erase and trim commands                      0x00000020
+    GB_SDIO_CAP_1_2V_DDR             Host support DDR mode at 1.2V                           0x00000040
+    GB_SDIO_CAP_1_8V_DDR             Host support DDR mode at 1.8V                           0x00000080
+    GB_SDIO_CAP_POWER_OFF_CARD       Host can power off card                                 0x00000100
+    GB_SDIO_CAP_UHS_SDR12            Host support UHS SDR12 mode                             0x00000200
+    GB_SDIO_CAP_UHS_SDR25            Host support UHS SDR25 mode                             0x00000400
+    GB_SDIO_CAP_UHS_SDR50            Host support UHS SDR50 mode                             0x00000800
+    GB_SDIO_CAP_UHS_SDR104           Host support UHS SDR104 mode                            0x00001000
+    GB_SDIO_CAP_UHS_DDR50            Host support UHS DDR50 mode                             0x00002000
+    GB_SDIO_CAP_DRIVER_TYPE_A        Host support Driver Type A                              0x00004000
+    GB_SDIO_CAP_DRIVER_TYPE_C        Host support Driver Type C                              0x00008000
+    GB_SDIO_CAP_DRIVER_TYPE_D        Host support Driver Type D                              0x00010000
+    GB_SDIO_CAP_HS200_1_2V           Host support HS200 mode at 1.2V                         0x00020000
+    GB_SDIO_CAP_HS200_1_8V           Host support HS200 mode at 1.8V                         0x00040000
+    GB_SDIO_CAP_HS400_1_2V           Host support HS200 mode at 1.2V                         0x00080000
+    GB_SDIO_CAP_HS400_1_8V           Host support HS200 mode at 1.8V                         0x00100000
+    |_|                              (All other mask values reserved)                        0x00200000..0x80000000
+    ===============================  ======================================================  ========================
+
+Greybus SDIO Set Ios Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SDIO Set Ios operation allows the requester to setup
+parameters listed in to SDIO controller
+
+Greybus SDIO Set Ios Request
+""""""""""""""""""""""""""""
+
+Table :num:`table-sdio-setios-request` defines the Greybus SDIO Set
+Ios request. The request shall pass a descriptor which contains a set
+of parameters for configuring the SDIO controller.
+
+.. figtable::
+    :nofig:
+    :label: table-sdio-setios-request
+    :caption: SDIO Protocol Set Ios Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ===========     ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ===========     ===========================
+    0        op              14      gb_sdio_ios     SDIO gb_sdio_ios descriptor
+    =======  ==============  ======  ===========     ===========================
+
+Table :num:`table-sdio-setios-descriptor` defines the Greybus SDIO
+gb_sdio_ios. This describes the parameters to configure the SDIO
+controller.
+
+.. figtable::
+    :nofig:
+    :label: table-sdio-setios-descriptor
+    :caption: SDIO Protocol Set Ios Descriptor
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        clock           4       Number          clock rate in Hz 
+    4        vdd             3       Number          :ref:`sdio-voltage-range`
+    7        bus_mode        1       Number          :ref:`sdio-bus-mode`
+    8        power_mode      1       Number          :ref:`sdio-power-mode`
+    9        bus_width       1       Number          :ref:`sdio-bus-width`
+    10       timing          1       Number          :ref:`sdio-timing`
+    11       signal_voltage  1       Number          :ref:`sdio-signal-voltage`
+    12       drv_type        1       Number          :ref:`sdio-driver-type`
+    =======  ==============  ======  ==========      ===========================
+
+
+.. _sdio-voltage-range:
+
+Greybus SDIO Protocol Voltage Range Bit Mask
+""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-sdio-voltage-range` defines the voltage ranges bit
+masks for the Greybus SDIO controllers.
+
+.. figtable::
+    :nofig:
+    :label: table-sdio-voltage-range
+    :caption: SDIO Protocol Voltage Range Bit Masks
+    :spec: l l l
+
+    ===============================  ======================================================  ========================
+    Symbol                           Brief Description                                       Mask Value
+    ===============================  ======================================================  ========================
+    GB_SDIO_VDD_165_195              VDD voltage 1.65 - 1.95                                 0x000001
+    GB_SDIO_VDD_20_21                VDD voltage 2.0 ~ 2.1                                   0x000002
+    GB_SDIO_VDD_21_22                VDD voltage 2.1 ~ 2.2                                   0x000004
+    GB_SDIO_VDD_22_23                VDD voltage 2.2 ~ 2.3                                   0x000008
+    GB_SDIO_VDD_23_24                VDD voltage 2.3 ~ 2.4                                   0x000010
+    GB_SDIO_VDD_24_25                VDD voltage 2.4 ~ 2.5                                   0x000020
+    GB_SDIO_VDD_25_26                VDD voltage 2.5 ~ 2.6                                   0x000040
+    GB_SDIO_VDD_26_27                VDD voltage 2.6 ~ 2.7                                   0x000080
+    GB_SDIO_VDD_27_28                VDD voltage 2.7 ~ 2.8                                   0x000100
+    GB_SDIO_VDD_28_29                VDD voltage 2.8 ~ 2.9                                   0x000200
+    GB_SDIO_VDD_29_30                VDD voltage 2.9 ~ 3.0                                   0x000400
+    GB_SDIO_VDD_30_31                VDD voltage 3.0 ~ 3.1                                   0x000800
+    GB_SDIO_VDD_31_32                VDD voltage 3.1 ~ 3.2                                   0x001000
+    GB_SDIO_VDD_32_33                VDD voltage 3.2 ~ 3.3                                   0x002000
+    GB_SDIO_VDD_33_34                VDD voltage 3.3 ~ 3.4                                   0x004000
+    GB_SDIO_VDD_34_35                VDD voltage 3.4 ~ 3.5                                   0x008000
+    GB_SDIO_VDD_35_36                VDD voltage 3.5 ~ 3.6                                   0x010000
+    |_|                              (All other mask values reserved)                        0x020000..0x800000
+    ===============================  ======================================================  ========================
+
+.. _sdio-bus-mode:
+
+Greybus SDIO Protocol Bus Mode
+""""""""""""""""""""""""""""""
+
+Table :num:`table-sdio-bus-mode` defines the Mode in which the Bus
+should be set for operation.
+
+.. figtable::
+    :nofig:
+    :label: table-sdio-bus-mode
+    :caption: SDIO Protocol Bus Mode
+    :spec: l l l
+
+    ===============================  ======================================================  ========================
+    Symbol                           Brief Description                                       Value
+    ===============================  ======================================================  ========================
+    GB_SDIO_BUSMODE_OPENDRAIN        SDIO open drain bus mode                                0x00
+    GB_SDIO_BUSMODE_PUSHPULL         SDIO push-pull bus mode                                 0x01
+    |_|                              (All other values reserved)                             0x02..0xff
+    ===============================  ======================================================  ========================
+
+.. _sdio-power-mode:
+
+Greybus SDIO Protocol Power Mode
+""""""""""""""""""""""""""""""""
+
+Table :num:`table-sdio-power-mode` defines the power supply mode in
+which the slot should be set.
+
+.. figtable::
+    :nofig:
+    :label: table-sdio-power-mode
+    :caption: SDIO Protocol Power Mode
+    :spec: l l l
+
+    ===============================  ======================================================  ========================
+    Symbol                           Brief Description                                       Value
+    ===============================  ======================================================  ========================
+    GB_SDIO_POWER_OFF                SDIO power off                                          0x00
+    GB_SDIO_POWER_UP                 SDIO power up                                           0x01
+    GB_SDIO_POWER_ON                 SDIO power on                                           0x02
+    GB_SDIO_POWER_UNDEFINED          SDIO power undefined                                    0x03
+    |_|                              (All other values reserved)                             0x04..0xff
+    ===============================  ======================================================  ========================
+
+.. _sdio-bus-width:
+
+Greybus SDIO Protocol Bus Width
+"""""""""""""""""""""""""""""""
+
+Table :num:`table-sdio-bus-width` defines the values in which the data
+bus width can be set.
+
+.. figtable::
+    :nofig:
+    :label: table-sdio-bus-width
+    :caption: SDIO Protocol Bus Width
+    :spec: l l l
+
+    ===============================  ======================================================  ========================
+    Symbol                           Brief Description                                       Value
+    ===============================  ======================================================  ========================
+    GB_SDIO_BUS_WIDTH_1              SDIO data bus width 1 bit mode                          0x00
+    GB_SDIO_BUS_WIDTH_4              SDIO data bus width 4 bit mode                          0x02
+    GB_SDIO_BUS_WIDTH_8              SDIO data bus width 8 bit mode                          0x03
+    |_|                              (All other values reserved)                             0x04..0xff
+    ===============================  ======================================================  ========================
+
+.. _sdio-timing:
+
+Greybus SDIO Protocol Timing
+""""""""""""""""""""""""""""
+
+Table :num:`table-sdio-timing` defines the timing specification values
+for the bus.
+
+.. figtable::
+    :nofig:
+    :label: table-sdio-timing
+    :caption: SDIO Protocol Timing
+    :spec: l l l
+
+    ===============================  ======================================================  ========================
+    Symbol                           Brief Description                                       Value
+    ===============================  ======================================================  ========================
+    GB_SDIO_TIMING_LEGACY            Default speed                                           0x00
+    GB_SDIO_TIMING_MMC_HS            MMC High speed                                          0x01
+    GB_SDIO_TIMING_SD_HS             SD High speed                                           0x02
+    GB_SDIO_TIMING_UHS_SDR12         Ultra High Speed SDR12                                  0x03
+    GB_SDIO_TIMING_UHS_SDR25         Ultra High Speed SDR25                                  0x04
+    GB_SDIO_TIMING_UHS_SDR50         Ultra High Speed SDR50                                  0x05
+    GB_SDIO_TIMING_UHS_SDR104        Ultra High Speed SDR104                                 0x06
+    GB_SDIO_TIMING_UHS_DDR50         Ultra High Speed DDR50                                  0x07
+    GB_SDIO_TIMING_MMC_DDR52         MMC DDR52                                               0x08
+    GB_SDIO_TIMING_MMC_HS200         MMC HS200                                               0x09
+    GB_SDIO_TIMING_MMC_HS400         MMC HS400                                               0x0A
+    |_|                              (All other values reserved)                             0x0B..0xff
+    ===============================  ======================================================  ========================
+
+.. _sdio-signal-voltage:
+
+Greybus SDIO Protocol Signal Voltage
+""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-sdio-signal-voltage` defines the signal voltage
+values allowed to be set for the bus.
+
+.. figtable::
+    :nofig:
+    :label: table-sdio-signal-voltage
+    :caption: SDIO Protocol Signal Voltage
+    :spec: l l l
+
+    ===============================  ======================================================  ========================
+    Symbol                           Brief Description                                       Value
+    ===============================  ======================================================  ========================
+    GB_SDIO_SIGNAL_VOLTAGE_330       Signal Voltage = 3.30V                                  0x00
+    GB_SDIO_SIGNAL_VOLTAGE_180       Signal Voltage = 1.80V                                  0x01
+    GB_SDIO_SIGNAL_VOLTAGE_120       Signal Voltage = 1.20V                                  0x02
+    |_|                              (All other values reserved)                             0x03..0xff
+    ===============================  ======================================================  ========================
+
+.. _sdio-driver-type:
+
+Greybus SDIO Protocol Driver Type
+"""""""""""""""""""""""""""""""""
+
+Table :num:`table-sdio-driver-type` defines the driver strength types
+in which the Controller shall be configured.
+
+.. figtable::
+    :nofig:
+    :label: table-sdio-driver-type
+    :caption: SDIO Protocol Driver Type
+    :spec: l l l
+
+    ===============================  ======================================================  ========================
+    Symbol                           Brief Description                                       Value
+    ===============================  ======================================================  ========================
+    GB_SDIO_SET_DRIVER_TYPE_B        Driver Type B                                           0x00
+    GB_SDIO_SET_DRIVER_TYPE_A        Driver Type A                                           0x01
+    GB_SDIO_SET_DRIVER_TYPE_C        Driver Type C                                           0x02
+    GB_SDIO_SET_DRIVER_TYPE_D        Driver Type D                                           0x03
+    |_|                              (All other values reserved)                             0x04..0xff
+    ===============================  ======================================================  ========================
+
+Greybus SDIO Command Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SDIO Command operation allows the requester to send
+control commands as specified by the SD Association to the SDIO
+controller.
+
+
+Greybus SDIO Command Request
+""""""""""""""""""""""""""""
+
+Table :num:`table-sdio-command-request` defines the Greybus SDIO
+Command request.
+
+
+.. figtable::
+    :nofig:
+    :label: table-sdio-command-request
+    :caption: SDIO Protocol Command Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        op_code         4       Number          SDIO command operation code, as specified by SD Association
+    4        args            4       Number          SDIO command arguments, as specified by SD Association
+    =======  ==============  ======  ==========      ===========================
+
+
+Greybus SDIO Command Response
+"""""""""""""""""""""""""""""
+
+Table :num:`table-sdio-command-response` defines the Greybus SDIO
+Command response.
+
+.. figtable::
+    :nofig:
+    :label: table-sdio-command-response
+    :caption: SDIO Protocol Command Response
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        resp            16      Number          SDIO command response, as specified by SD Association
+    =======  ==============  ======  ==========      ===========================
+
+Greybus SDIO Transfer Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SDIO Transfer operation allows the requester to send
+or receive data blocks and shall be preceded by a Greybus Command
+Request for data transfer command as specified by SD Association.
+
+Greybus SDIO Transfer Request
+"""""""""""""""""""""""""""""
+
+Table :num:`table-sdio-transfer-request` defines the Greybus SDIO
+Transfer request.
+
+.. figtable::
+    :nofig:
+    :label: table-sdio-transfer-request
+    :caption: SDIO Protocol Transfer Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        data_flags      1       Number          SDIO data flags
+    1        size            2       Number          SDIO size of data to transfer
+    3        data            ...     Data            SDIO Data
+    =======  ==============  ======  ==========      ===========================
+
+
+.. figtable::
+    :nofig:
+    :label: table-sdio-data-flags
+    :caption: SDIO Protocol Transfer Data Flags
+    :spec: l l l
+
+    ===============================  ======================================================  ========================
+    Symbol                           Brief Description                                       Value
+    ===============================  ======================================================  ========================
+    GB_SDIO_DATA_WRITE               Data present in data_blocks request to be written       0x01
+    GB_SDIO_DATA_READ                Data present in data_blocks response to be read         0x02
+    GB_SDIO_DATA_STREAM              Data will be transfer until a cancel command is send    0x04
+    |_|                              (All other values reserved)                             0x08..0x80
+    ===============================  ======================================================  ========================
+
+If data_flags field have the GB_SDIO_DATA_WRITE flag set, the size 
+field define the length in bytes of data to be transfer in
+the data field. If data_flags field have the GB_SDIO_DATA_READ
+set, the size field define the length of data 
+to be read and for that the data field is empty.
+
+Greybus SDIO Transfer Response
+""""""""""""""""""""""""""""""
+
+Table :num:`table-sdio-transfer-response` defines the Greybus SDIO
+Transfer response.
+
+.. figtable::
+    :nofig:
+    :label: table-sdio-transfer-response
+    :caption: SDIO Protocol Transfer Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        size            2       Number          SDIO size of data to be transfer
+    2        data            ...     Data            SDIO Data
+    =======  ==============  ======  ==========      ===========================
+
+If Request data_flags field have the GB_SDIO_DATA_WRITE flag set, the
+size field represent the size of data received in the Request in case
+of success. If data_flags field have the GB_SDIO_DATA_READ set, the
+size field defines the length of the data appended in the data field.
+
+Greybus SDIO Event Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SDIO Event operation signals to the recipient that
+a change in the device setup have occurred in the SDIO controller.
+
+This operation is unidirectional and does not have a correspondent
+response.
+
+Greybus SDIO Event Request
+""""""""""""""""""""""""""
+
+Table :num:`table-sdio-event-request` defines the Greybus SDIO Event
+Request. The Request supplies the one-byte event that has occurred on
+the sending controller.
+
+.. figtable::
+    :nofig:
+    :label: table-sdio-event-request
+    :caption: SDIO Protocol Detect Event Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        event           1       Bit Mask        :ref:`sdio-event-bits`
+    =======  ==============  ======  ==========      ===========================
+
+.. _sdio-event-bits:
+
+Greybus SDIO Event Bit Masks
+""""""""""""""""""""""""""""
+
+Table :num:`table-sdio-event-bit-mask` defines the bit masks which
+specify the set of events that a controller can trigger related to SD
+card. If card have the GB_SDIO_CAP_NONREMOVABLE capability, the
+card detection events shall be ignored.
+
+.. figtable::
+    :nofig:
+    :label: table-sdio-event-bit-mask
+    :caption: SDIO Protocol Event Bit Mask
+    :spec: l l l
+
+    ===============================  =============================  ===============
+    Symbol                           Brief Description              Mask Value
+    ===============================  =============================  ===============
+    GB_SDIO_CARD_INSERTED            Card insertion detect          0x01
+    GB_SDIO_CARD_REMOVED             Card removed detect            0x02
+    GB_SDIO_WP                       Card Write Protect Switch      0x04
+    |_|                              (All other values reserved)    0x08..0x80
+    ===============================  =============================  ===============
 
