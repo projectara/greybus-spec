@@ -3715,8 +3715,8 @@ Greybus SDIO.
     GB_SDIO_CAP_DRIVER_TYPE_D        Host support Driver Type D                              0x00010000
     GB_SDIO_CAP_HS200_1_2V           Host support HS200 mode at 1.2V                         0x00020000
     GB_SDIO_CAP_HS200_1_8V           Host support HS200 mode at 1.8V                         0x00040000
-    GB_SDIO_CAP_HS400_1_2V           Host support HS200 mode at 1.2V                         0x00080000
-    GB_SDIO_CAP_HS400_1_8V           Host support HS200 mode at 1.8V                         0x00100000
+    GB_SDIO_CAP_HS400_1_2V           Host support HS400 mode at 1.2V                         0x00080000
+    GB_SDIO_CAP_HS400_1_8V           Host support HS400 mode at 1.8V                         0x00100000
     |_|                              (All other mask values reserved)                        0x00200000..0x80000000
     ===============================  ======================================================  ========================
 
