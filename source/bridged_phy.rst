@@ -3953,6 +3953,11 @@ in which the Controller shall be configured.
     |_|                              (All other values reserved)                             0x04..0xff
     ===============================  ======================================================  ========================
 
+Greybus SDIO Set Ios Response
+"""""""""""""""""""""""""""""
+
+The Greybus SDIO Set Ios response message has no payload.
+
 Greybus SDIO Command Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
