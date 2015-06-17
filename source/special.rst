@@ -62,6 +62,14 @@ Conceptually, the Operations in the Greybus Control Protocol are:
     authentically containing an AP.  Non-AP Modules respond with no
     authentication data (*auth_size* is 0).
 
+.. c:function:: int get_manifest_size(u16 *size);
+
+    This Operation is used by the AP to discover the size of a module's
+    Interface Manifest.  This is used after the SVC has discovered which
+    Module contains the AP.  The response to this Operation contains the
+    size of the manifest, which is used by the AP to fetch the manifest
+    later.  This operation is only initiated by the AP.
+
 .. c:function:: int connected(u16 cport_id);
 
     This Operation is used to notify an Interface that a Greybus
@@ -102,9 +110,10 @@ type and response type values are shown.
     Invalid                      0x00           0x80
     Protocol Version             0x01           0x81
     Probe AP                     0x02           0x82
-    Connected                    0x03           0x83
-    Disconnected                 0x04           0x84
-    (all other values reserved)  0x05..0x7f     0x85..0xff
+    Get Manifest Size            0x03           0x83
+    Connected                    0x04           0x84
+    Disconnected                 0x05           0x85
+    (all other values reserved)  0x06..0x7f     0x86..0xff
     ===========================  =============  ==============
 
 Greybus Control Protocol Version Operation
@@ -205,6 +214,38 @@ with no data (*auth_size* is 0).
     =======  ==============  ===========  ==========      ===========================
     0        auth_size       2            Number          Size of authentication data that follows
     2        auth_data       *auth_size*  Data            Authentication data
+    =======  ==============  ===========  ==========      ===========================
+
+Greybus Control Get Manifest Size Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus control get manifest size Operation is used by the AP for
+all non-AP Interfaces (other than interface zero, which belongs to the
+SVC), on hotplug event, to determine the size of the manifest.
+
+Greybus Control Get Manifest Size Request
+"""""""""""""""""""""""""""""""""""""""""
+
+The Greybus control get manifest size request is sent by the AP to all
+non-AP modules.  The Greybus control get manifest size request message
+has no payload.
+
+Greybus Control Get Manifest Size Response
+""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus control get manifest size response contains a two byte field
+'size'.
+
+.. figtable::
+    :nofig:
+    :label: table-control-get-manifest-size-response
+    :caption: Control Protocol Get Manifest Size Response
+    :spec: l l c c l
+
+    =======  ==============  ===========  ==========      ===========================
+    Offset   Field           Size         Value           Description
+    =======  ==============  ===========  ==========      ===========================
+    0        size            2            Number          Size of the Manifest
     =======  ==============  ===========  ==========      ===========================
 
 Greybus Control Connected Operation
