@@ -52,6 +52,8 @@ the following general requirements:
   versioned, to allow future extensions (or fixes) to be added and
   recognized.
 
+.. _manifest-description:
+
 Manifest
 --------
 

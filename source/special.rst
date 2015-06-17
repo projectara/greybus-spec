@@ -70,6 +70,14 @@ Conceptually, the Operations in the Greybus Control Protocol are:
     size of the manifest, which is used by the AP to fetch the manifest
     later.  This operation is only initiated by the AP.
 
+.. c:function:: int get_manifest(u8 *manifest);
+
+    This Operation is used by the AP after the SVC has discovered
+    which Module contains the AP.  The response to this Operation
+    contains the manifest of the Module, which is used by the AP to
+    determine the functionality module provides.  This operation is only
+    initiated by the AP.
+
 .. c:function:: int connected(u16 cport_id);
 
     This Operation is used to notify an Interface that a Greybus
@@ -111,9 +119,10 @@ type and response type values are shown.
     Protocol Version             0x01           0x81
     Probe AP                     0x02           0x82
     Get Manifest Size            0x03           0x83
-    Connected                    0x04           0x84
-    Disconnected                 0x05           0x85
-    (all other values reserved)  0x06..0x7f     0x86..0xff
+    Get Manifest                 0x04           0x84
+    Connected                    0x05           0x85
+    Disconnected                 0x06           0x86
+    (all other values reserved)  0x07..0x7f     0x87..0xff
     ===========================  =============  ==============
 
 Greybus Control Protocol Version Operation
@@ -246,6 +255,39 @@ The Greybus control get manifest size response contains a two byte field
     Offset   Field           Size         Value           Description
     =======  ==============  ===========  ==========      ===========================
     0        size            2            Number          Size of the Manifest
+    =======  ==============  ===========  ==========      ===========================
+
+Greybus Control Get Manifest Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus control get manifest Operation is used by the AP for all
+non-AP Interfaces (other than interface zero, which belongs to the SVC),
+on hotplug event, to determine the functionality provided by the
+module via that interface.
+
+Greybus Control Get Manifest Request
+""""""""""""""""""""""""""""""""""""
+
+The Greybus control get manifest request is sent by the AP to all non-AP
+modules.  The Greybus control get manifest request message has no payload.
+
+Greybus Control Get Manifest Response
+"""""""""""""""""""""""""""""""""""""
+
+The Greybus control get manifest response contains a block of data, that
+describes the functionality provided by the module. This block of data is also
+known as :ref:`manifest-description`.
+
+.. figtable::
+    :nofig:
+    :label: table-control-get-manifest-response
+    :caption: Control Protocol Get Manifest Response
+    :spec: l l c c l
+
+    =======  ==============  ===========  ==========      ===========================
+    Offset   Field           Size         Value           Description
+    =======  ==============  ===========  ==========      ===========================
+    0        manifest        *size*       Data            Manifest
     =======  ==============  ===========  ==========      ===========================
 
 Greybus Control Connected Operation
