@@ -2006,6 +2006,8 @@ Low-level Interface Protocols is added.  The current I2S Low-level
 Attributes are:
 
 *   the Low-level Interface Protocol;
+*   the I2S Bundle's role (master or slave) with respect to the Master Clock
+    (MCLK);
 *   the I2S Bundle's role (master or slave) with respect to the Bit Clock (BCLK);
 *   the I2S Bundle's role with respect to the Word Clock (WCLK);
 *   the polarity of the WCLK;
@@ -2067,6 +2069,7 @@ signals the start of the next sample).
 Important points are:
 
 *   one or more audio channels may be transferred;
+*   the MCLK role may be master or slave;
 *   the BCLK role may be master or slave;
 *   the WCLK role may be master or slave;
 *   the WCLK polarity may be normal or reversed (normal is when
@@ -2093,6 +2096,7 @@ transferred.
 Important points are:
 
 *   there are two channels per sample;
+*   the MCLK role may be master or slave;
 *   the BCLK role may be master or slave;
 *   the WCLK role may be master or slave;
 *   the WCLK polarity may be normal or reversed (normal is when
@@ -2128,6 +2132,7 @@ when WCLK changes and when data for the next channel is presented.
 Important points are:
 
 *   there are two channels per sample;
+*   the MCLK role may be master or slave;
 *   the BCLK role may be master or slave;
 *   the WCLK role may be master or slave;
 *   the WCLK polarity may be normal or reversed (normal is when
@@ -2538,14 +2543,14 @@ supported by I2S Bundles.  It is used by
     7        pad                   1      0          Padding
     8        spatial_locations     4      Bit Mask   :ref:`i2s-spatial-location-bits`
     12       ll_protocol           4      Bit Mask   :ref:`i2s-protocol-bits`
-    16       ll_bclk_role          1      Bit Mask   :ref:`i2s-role-bits`
-    17       ll_wclk_role          1      Bit Mask   :ref:`i2s-role-bits`
-    18       ll_wclk_polarity      1      Bit Mask   :ref:`i2s-polarity-bits`
-    19       ll_wclk_change_edge   1      Bit Mask   :ref:`i2s-clock-edge-bits`
-    20       ll_data_tx_edge       1      Bit Mask   :ref:`i2s-clock-edge-bits`
-    21       ll_data_rx_edge       1      Bit Mask   :ref:`i2s-clock-edge-bits`
-    22       ll_data_offset        1      Number     BCLK-WCLK offset
-    23       ll_pad                1      0          Padding
+    16       ll_mclk_role          1      Bit Mask   :ref:`i2s-role-bits`
+    17       ll_bclk_role          1      Bit Mask   :ref:`i2s-role-bits`
+    18       ll_wclk_role          1      Bit Mask   :ref:`i2s-role-bits`
+    19       ll_wclk_polarity      1      Bit Mask   :ref:`i2s-polarity-bits`
+    20       ll_wclk_change_edge   1      Bit Mask   :ref:`i2s-clock-edge-bits`
+    21       ll_data_tx_edge       1      Bit Mask   :ref:`i2s-clock-edge-bits`
+    22       ll_data_rx_edge       1      Bit Mask   :ref:`i2s-clock-edge-bits`
+    23       ll_data_offset        1      Number     BCLK-WCLK offset
     =======  ====================  =====  =========  ==============================
 
 The `ll_wclk_change_edge`, `ll_data_tx_edge`, and `ll_data_rx_edge` fields
