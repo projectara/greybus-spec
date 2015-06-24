@@ -1203,7 +1203,7 @@ to to be transmitted.
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ===========     ===========================
     0        size            2       Number          Size in bytes of data to be transmitted
-    2        data            *size*  Characters      0 or more bytes of data to be transmitted
+    2        data            *size*  Characters      1 or more bytes of data to be transmitted
     =======  ==============  ======  ===========     ===========================
 
 Greybus UART Send Data Response
