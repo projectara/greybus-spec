@@ -1068,13 +1068,13 @@ conceptually:
 
 .. c:function:: int send_data(u16 size, u8 *data);
 
-    Requests that the UART device begin transmitting characters. One
+    Requests that the UART device begins transmitting characters. One
     or more bytes to be transmitted shall be supplied by the sender.
 
 .. c:function:: int receive_data(u16 size, u8 flags, u8 *data);
 
     Receive data from the UART and any line errors that might have
-    occurred. The indicated number of bytes have been received.
+    occurred.
 
 .. c:function:: int set_line_coding(u32 rate, u8 format, u8 parity, u8 data);
 
