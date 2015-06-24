@@ -1460,8 +1460,7 @@ UART is currently in.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        control         2       Number          Control data state
-    2        data            2       Number          :ref:`uart-control-flags`
+    0        control         2       Bit mask        :ref:`uart-control-flags`
     =======  ==============  ======  ==========      ===========================
 
 .. _uart-control-flags:
