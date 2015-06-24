@@ -1071,10 +1071,10 @@ conceptually:
     Requests that the UART device begin transmitting characters. One
     or more bytes to be transmitted shall be supplied by the sender.
 
-.. c:function:: int receive_data(u16 *size, u8 *data);
+.. c:function:: int receive_data(u16 size, u8 flags, u8 *data);
 
-    Receive data from the UART.  The indicated number of bytes has
-    been received.
+    Receive data from the UART and any line errors that might have
+    occurred. The indicated number of bytes have been received.
 
 .. c:function:: int set_line_coding(u32 rate, u8 format, u8 parity, u8 data);
 
@@ -1092,8 +1092,7 @@ conceptually:
 
 .. c:function:: int serial_state(u16 *state);
 
-    Receives the state of the UART's control lines and any line errors
-    that might have occurred.
+    Receives the state of the UART's control lines.
 
 UART Protocol Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1225,7 +1224,11 @@ Greybus UART Receive Data Request
 
 Table :num:`table-uart-receive-data-request` defines the Greybus UART
 receive data request. The request contains the size of the data to be
-received, and the data bytes to be received.
+received, associated line-status flags, and the data bytes to be received.
+Every receive-data-request message must have a size field >= 1, with
+firmware inserting a NUL byte as necessary when reporting a break event.
+Note that overrun is special in that it is not associated with any
+particular character.
 
 .. figtable::
     :nofig:
@@ -1237,13 +1240,39 @@ received, and the data bytes to be received.
     Offset   Field           Size     Value           Description
     =======  ==============  =======  ==========      ===========================
     0        size            2        Number          Size in bytes of received data
-    2        data            *size*   Characters      1 or more bytes of received data
+    2        flags           1        Bit mask        :ref:`uart-receive-data-status-flags`
+    3        data            *size*   Characters      1 or more bytes of received data
     =======  ==============  =======  ==========      ===========================
 
 Greybus UART Received Data Response
 """""""""""""""""""""""""""""""""""
 
 The Greybus UART event response message has no payload.
+
+.. _uart-receive-data-status-flags:
+
+Greybus UART Receive Data Status Flags
+"""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-uart-receive-data-request` defines the values supplied
+as flag values for the Greybus UART receive data request.
+Any combination of these values may be supplied in a single request.
+
+.. figtable::
+    :nofig:
+    :label: table-uart-receive-data-status-flags
+    :caption: UART Modem Receive Data Status Flags
+    :spec: l l l
+
+    ============================    ==============  ===================
+    Flag                            Value           Description
+    ============================    ==============  ===================
+    Framing Error                   0x01            Framing error detected
+    Parity Error                    0x02            Parity error detected
+    Overrun                         0x04            Received data lost due to overrun
+    Break                           0x08            Break condition detected
+    (all other values reserved)     0x10..0x80
+    ============================    ==============  ===================
 
 Greybus UART Set Line Coding Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1454,11 +1483,7 @@ a Greybus UART serial state request.
     ============================    ==============  ===================
     DCD                             0x0001          Carrier Detect line enabled
     DSR                             0x0002          DSR signal
-    Break                           0x0004          Break condition detected
     RI                              0x0008          Ring Signal detected
-    Framing Error                   0x0010          Framing error detected
-    Parity Error                    0x0020          Parity error detected
-    Overrun                         0x0040          Received data lost due to overrun
     (all other values reserved)     0x0080..0x8000
     ============================    ==============  ===================
 
