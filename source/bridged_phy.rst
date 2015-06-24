@@ -1090,7 +1090,7 @@ conceptually:
     Requests that the UART generate a break condition on its transmit
     line.
 
-.. c:function:: int serial_state(u16 *state);
+.. c:function:: int serial_state(u8 state);
 
     Receives the state of the UART's control lines.
 
@@ -1373,7 +1373,7 @@ bit mask of modem status flags to set.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        control         2       Bit mask        :ref:`uart-modem-status-flags`
+    0        control         1       Bit mask        :ref:`uart-modem-status-flags`
     =======  ==============  ======  ==========      ===========================
 
 .. _uart-modem-status-flags:
@@ -1395,9 +1395,9 @@ request.
     ============================    ==============  ===================
     Flag                            Value           Description
     ============================    ==============  ===================
-    DTR                             0x0001          Data Terminal Ready
-    RTS                             0x0002          Request To Send
-    (all other values reserved)     0x0004..0x8000
+    DTR                             0x01            Data Terminal Ready
+    RTS                             0x02            Request To Send
+    (all other values reserved)     0x04..0x80
     ============================    ==============  ===================
 
 Greybus UART Set Control Line State Response
@@ -1460,7 +1460,7 @@ UART is currently in.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        control         2       Bit mask        :ref:`uart-control-flags`
+    0        control         1       Bit mask        :ref:`uart-control-flags`
     =======  ==============  ======  ==========      ===========================
 
 .. _uart-control-flags:
@@ -1480,10 +1480,10 @@ a Greybus UART serial state request.
     ============================    ==============  ===================
     Flag                            Value           Description
     ============================    ==============  ===================
-    DCD                             0x0001          Carrier Detect line enabled
-    DSR                             0x0002          DSR signal
-    RI                              0x0008          Ring Signal detected
-    (all other values reserved)     0x0080..0x8000
+    DCD                             0x01            Carrier Detect line enabled
+    DSR                             0x02            DSR signal
+    RI                              0x08            Ring Signal detected
+    (all other values reserved)     0x10..0x80
     ============================    ==============  ===================
 
 Greybus UART Serial State Response
