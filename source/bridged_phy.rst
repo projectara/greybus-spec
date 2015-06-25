@@ -1252,7 +1252,7 @@ The Greybus UART event response message has no payload.
 .. _uart-receive-data-status-flags:
 
 Greybus UART Receive Data Status Flags
-"""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""
 
 Table :num:`table-uart-receive-data-request` defines the values supplied
 as flag values for the Greybus UART receive data request.
