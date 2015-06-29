@@ -1482,8 +1482,8 @@ a Greybus UART serial state request.
     ============================    ==============  ===================
     DCD                             0x01            Carrier Detect line enabled
     DSR                             0x02            DSR signal
-    RI                              0x08            Ring Signal detected
-    (all other values reserved)     0x10..0x80
+    RI                              0x04            Ring Signal detected
+    (all other values reserved)     0x08..0x80
     ============================    ==============  ===================
 
 Greybus UART Serial State Response
