@@ -3792,13 +3792,13 @@ controller.
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
     0        clock           4       Number          clock rate in Hz 
-    4        vdd             3       Number          :ref:`sdio-voltage-range`
-    7        bus_mode        1       Number          :ref:`sdio-bus-mode`
-    8        power_mode      1       Number          :ref:`sdio-power-mode`
-    9        bus_width       1       Number          :ref:`sdio-bus-width`
-    10       timing          1       Number          :ref:`sdio-timing`
-    11       signal_voltage  1       Number          :ref:`sdio-signal-voltage`
-    12       drv_type        1       Number          :ref:`sdio-driver-type`
+    4        vdd             4       Number          :ref:`sdio-voltage-range`
+    8        bus_mode        1       Number          :ref:`sdio-bus-mode`
+    9        power_mode      1       Number          :ref:`sdio-power-mode`
+    10       bus_width       1       Number          :ref:`sdio-bus-width`
+    11       timing          1       Number          :ref:`sdio-timing`
+    12       signal_voltage  1       Number          :ref:`sdio-signal-voltage`
+    13       drv_type        1       Number          :ref:`sdio-driver-type`
     =======  ==============  ======  ==========      ===========================
 
 
@@ -3819,24 +3819,24 @@ masks for the Greybus SDIO controllers.
     ===============================  ======================================================  ========================
     Symbol                           Brief Description                                       Mask Value
     ===============================  ======================================================  ========================
-    GB_SDIO_VDD_165_195              VDD voltage 1.65 - 1.95                                 0x000001
-    GB_SDIO_VDD_20_21                VDD voltage 2.0 ~ 2.1                                   0x000002
-    GB_SDIO_VDD_21_22                VDD voltage 2.1 ~ 2.2                                   0x000004
-    GB_SDIO_VDD_22_23                VDD voltage 2.2 ~ 2.3                                   0x000008
-    GB_SDIO_VDD_23_24                VDD voltage 2.3 ~ 2.4                                   0x000010
-    GB_SDIO_VDD_24_25                VDD voltage 2.4 ~ 2.5                                   0x000020
-    GB_SDIO_VDD_25_26                VDD voltage 2.5 ~ 2.6                                   0x000040
-    GB_SDIO_VDD_26_27                VDD voltage 2.6 ~ 2.7                                   0x000080
-    GB_SDIO_VDD_27_28                VDD voltage 2.7 ~ 2.8                                   0x000100
-    GB_SDIO_VDD_28_29                VDD voltage 2.8 ~ 2.9                                   0x000200
-    GB_SDIO_VDD_29_30                VDD voltage 2.9 ~ 3.0                                   0x000400
-    GB_SDIO_VDD_30_31                VDD voltage 3.0 ~ 3.1                                   0x000800
-    GB_SDIO_VDD_31_32                VDD voltage 3.1 ~ 3.2                                   0x001000
-    GB_SDIO_VDD_32_33                VDD voltage 3.2 ~ 3.3                                   0x002000
-    GB_SDIO_VDD_33_34                VDD voltage 3.3 ~ 3.4                                   0x004000
-    GB_SDIO_VDD_34_35                VDD voltage 3.4 ~ 3.5                                   0x008000
-    GB_SDIO_VDD_35_36                VDD voltage 3.5 ~ 3.6                                   0x010000
-    |_|                              (All other mask values reserved)                        0x020000..0x800000
+    GB_SDIO_VDD_165_195              VDD voltage 1.65 - 1.95                                 0x00000001
+    GB_SDIO_VDD_20_21                VDD voltage 2.0 ~ 2.1                                   0x00000002
+    GB_SDIO_VDD_21_22                VDD voltage 2.1 ~ 2.2                                   0x00000004
+    GB_SDIO_VDD_22_23                VDD voltage 2.2 ~ 2.3                                   0x00000008
+    GB_SDIO_VDD_23_24                VDD voltage 2.3 ~ 2.4                                   0x00000010
+    GB_SDIO_VDD_24_25                VDD voltage 2.4 ~ 2.5                                   0x00000020
+    GB_SDIO_VDD_25_26                VDD voltage 2.5 ~ 2.6                                   0x00000040
+    GB_SDIO_VDD_26_27                VDD voltage 2.6 ~ 2.7                                   0x00000080
+    GB_SDIO_VDD_27_28                VDD voltage 2.7 ~ 2.8                                   0x00000100
+    GB_SDIO_VDD_28_29                VDD voltage 2.8 ~ 2.9                                   0x00000200
+    GB_SDIO_VDD_29_30                VDD voltage 2.9 ~ 3.0                                   0x00000400
+    GB_SDIO_VDD_30_31                VDD voltage 3.0 ~ 3.1                                   0x00000800
+    GB_SDIO_VDD_31_32                VDD voltage 3.1 ~ 3.2                                   0x00001000
+    GB_SDIO_VDD_32_33                VDD voltage 3.2 ~ 3.3                                   0x00002000
+    GB_SDIO_VDD_33_34                VDD voltage 3.3 ~ 3.4                                   0x00004000
+    GB_SDIO_VDD_34_35                VDD voltage 3.4 ~ 3.5                                   0x00008000
+    GB_SDIO_VDD_35_36                VDD voltage 3.5 ~ 3.6                                   0x00010000
+    |_|                              (All other mask values reserved)                        0x00020000..0x80000000
     ===============================  ======================================================  ========================
 
 .. _sdio-bus-mode:
