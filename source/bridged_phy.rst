@@ -3571,10 +3571,11 @@ Conceptually, the operations in the Greybus SDIO Protocol are:
     handling code adhering to the Protocol specified herein
     supports major version |gb-major|, minor version |gb-minor|.
 
-.. c:function:: int get_capabilities(u32 *caps);
+.. c:function:: int get_capabilities(u32 *caps, u32 *ocr, u16 *max_blk_count, u16 *max_blk_size);
 
    Request the SDIO controller to return a set of capabilities
-   available.
+   available, supported voltage ranges and maximum block count/size
+   per data command transfer.
 
 .. c:function:: int set_ios(struct gb_sdio_ios *ios);
 
@@ -3707,6 +3708,9 @@ controller, as defined in table :num:`table-sdio-get-caps-response`.
     Offset       Field           Size    Value           Description
     =========    ==============  ======  ==========      ===========================
     0            caps            4       Bit Mask        :ref:`sdio-caps-bits`
+    4            ocr             4       Bit Mask        :ref:`sdio-voltage-range`
+    8            max_blk_count   2       Number          Maximum Number of blocks per data command transfer
+    10           max_blk_size    2       Number          Maximum size of each block to transfer
     =========    ==============  ======  ==========      ===========================
 
 .. _sdio-caps-bits:
