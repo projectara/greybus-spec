@@ -3582,7 +3582,7 @@ Conceptually, the operations in the Greybus SDIO Protocol are:
     Request the SDIO controller to setup various parameters
     related with the interface.
 
-.. c:function:: int command(u32 opcode, u32 arg, u32 data_flags, u32 *resp[4]);
+.. c:function:: int command(u8 cmd, u8 cmd_flags, u8 cmd_type, u32 arg, u32 *resp[4]);
 
     Send a control command as specified by the SD Association and
     return the correspondent response.
@@ -4015,10 +4015,59 @@ Command request.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        op_code         4       Number          SDIO command operation code, as specified by SD Association
-    4        args            4       Number          SDIO command arguments, as specified by SD Association
+    0        cmd             1       Number          SDIO command operation code, as specified by SD Association
+    1        cmd_flags       1       Bit Mask        :ref:`sdio-cmd-flags`
+    2        cmd_type        1       Number          :ref:`sdio-cmd-type`
+    3        arg             4       Number          SDIO command arguments, as specified by SD Association
     =======  ==============  ======  ==========      ===========================
 
+.. _sdio-cmd-flags:
+
+Greybus SDIO Protocol Command Flags
+"""""""""""""""""""""""""""""""""""
+Table :num:`table-sdio-cmd-flags` defines the flags that can be passed
+to a command.
+
+.. figtable::
+    :nofig:
+    :label: table-sdio-cmd-flags
+    :caption: SDIO Protocol Command Flags
+    :spec: l l l
+
+    ===============================  ======================================================  ========================
+    Symbol                           Brief Description                                       Mask Value
+    ===============================  ======================================================  ========================
+    GB_SDIO_RSP_NONE                 No Response is expected by the command                  0x00
+    GB_SDIO_RSP_PRESENT              Response is expected by the command                     0x01
+    GB_SDIO_RSP_136                  Long response is expected by the command                0x02
+    GB_SDIO_RSP_CRC                  A valid CRC is expected by the command                  0x04
+    GB_SDIO_RSP_BUSY                 Card may send a busy response                           0x08
+    GB_SDIO_RSP_OPCODE               Response contains opcode                                0x10
+    |_|                              (All other values reserved)                             0x20..0xff
+    ===============================  ======================================================  ========================
+
+.. _sdio-cmd-type:
+
+Greybus SDIO Protocol Command Type
+""""""""""""""""""""""""""""""""""
+Table :num:`table-sdio-cmd-type` defines the command type passed to
+the MMC/SD card.
+
+.. figtable::
+    :nofig:
+    :label: table-sdio-cmd-type
+    :caption: SDIO Protocol Command Type
+    :spec: l l l
+
+    ===============================  ======================================================  ========================
+    Symbol                           Brief Description                                       Value
+    ===============================  ======================================================  ========================
+    GB_SDIO_CMD_AC                   Addressed Command                                       0x00
+    GB_SDIO_CMD_ADTC                 Addressed Data Transfer Command                         0x01
+    GB_SDIO_CMD_BC                   Broadcasted Command, no response                        0x02
+    GB_SDIO_CMD_BCR                  Broadcasted Command with response                       0x03
+    |_|                              (All other values reserved)                             0x04..0xff
+    ===============================  ======================================================  ========================
 
 Greybus SDIO Command Response
 """""""""""""""""""""""""""""
