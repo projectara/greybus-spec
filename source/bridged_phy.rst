@@ -3587,7 +3587,7 @@ Conceptually, the operations in the Greybus SDIO Protocol are:
     Send a control command as specified by the SD Association and
     return the correspondent response.
 
-.. c:function:: int transfer(u8 data_flags, u16 *size, u8 *data);
+.. c:function:: int transfer(u8 data_flags, u16 *data_blocks, u16 *data_blksz, u8 *data);
 
     Performs a SDIO data transaction defined by the size to be
     send/received.
@@ -4110,8 +4110,9 @@ Transfer request.
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
     0        data_flags      1       Number          SDIO data flags
-    1        size            2       Number          SDIO size of data to transfer
-    3        data            ...     Data            SDIO Data
+    1        data_blocks     2       Number          SDIO number of blocks of data to transfer
+    3        data_blksz      2       Number          SDIO size of the blocks of data to transfer
+    5        data            ...     Data            SDIO Data
     =======  ==============  ======  ==========      ===========================
 
 
@@ -4151,8 +4152,9 @@ Transfer response.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        size            2       Number          SDIO size of data to be transfer
-    2        data            ...     Data            SDIO Data
+    0        data_blocks     2       Number          SDIO number of blocks of data to transfer
+    2        data_blksz      2       Number          SDIO size of the blocks of data to transfer
+    4        data            ...     Data            SDIO Data
     =======  ==============  ======  ==========      ===========================
 
 If Request data_flags field have the GB_SDIO_DATA_WRITE flag set, the
