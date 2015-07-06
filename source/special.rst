@@ -27,12 +27,17 @@ Control Protocol
 
 All Interfaces are required to define a CPort that uses the Control
 Protocol, and shall be prepared to receive Operation requests on that
-CPort at any time.  A Greybus connection is established whenever a
-control connection is used, but the Interface is never notified that
-such a connection exists.  Only the SVC and AP Module are able to send
-control requests.  Any other Interface shall only send control
-response messages, and such messages shall only be sent in reply to
-a request received its control CPort.
+CPort at any time. The CPort that uses the Control Protocol must have an
+id of '2'. CPort id '2' is a reserved CPort address for the Control
+Protocol. Similarly the bundle descriptor associated with the Control
+CPort must have an id of '0'. Bundle id '0' is a reserved id for the
+Control Protocol bundle descriptor.
+
+A Greybus connection is established whenever a control connection is used,
+but the Interface is never notified that such a connection exists. Only
+the SVC and AP Module are able to send control requests.  Any other
+Interface shall only send control response messages, and such messages
+shall only be sent in reply to a request received its control CPort.
 
 Conceptually, the Operations in the Greybus Control Protocol are:
 
