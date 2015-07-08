@@ -1313,7 +1313,7 @@ as defined in table :num:`table-lights-get-mode-response`.
 
 .. figtable::
     :nofig:
-    :label: `table-lights-get-mode-response`.
+    :label: table-lights-get-mode-response
     :caption: Lights Get Mode Response
     :spec: l l c c l
 
