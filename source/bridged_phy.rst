@@ -1219,6 +1219,8 @@ operation is initiated by the device implementing the UART
 Protocol. It notifies its peer that a data has been received by the
 UART.
 
+Note that the UART Receive Data Operation is unidirectional and has no response.
+
 Greybus UART Receive Data Request
 """""""""""""""""""""""""""""""""
 
@@ -1243,11 +1245,6 @@ particular character.
     2        flags           1        Bit mask        :ref:`uart-receive-data-status-flags`
     3        data            *size*   Characters      1 or more bytes of received data
     =======  ==============  =======  ==========      ===========================
-
-Greybus UART Received Data Response
-"""""""""""""""""""""""""""""""""""
-
-The Greybus UART event response message has no payload.
 
 .. _uart-receive-data-status-flags:
 
@@ -1444,6 +1441,8 @@ state operation is initiated by the Module implementing the UART
 Protocol. It notifies the peer that a control line status has changed,
 or that there is an error with the UART.
 
+Note that the UART Serial State Operation is unidirectional and has no response.
+
 Greybus UART Serial State Request
 """""""""""""""""""""""""""""""""
 
@@ -1485,11 +1484,6 @@ a Greybus UART serial state request.
     RI                              0x04            Ring Signal detected
     (all other values reserved)     0x08..0x80
     ============================    ==============  ===================
-
-Greybus UART Serial State Response
-""""""""""""""""""""""""""""""""""
-
-The Greybus UART serial state response message has no payload.
 
 PWM Protocol
 ------------
