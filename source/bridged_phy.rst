@@ -2629,7 +2629,7 @@ Specification Version 2.0
     GB_I2S_SPATIAL_LOCATION_BR       Back Right                     0x00000020
     GB_I2S_SPATIAL_LOCATION_FLC      Front Left of Center           0x00000040
     GB_I2S_SPATIAL_LOCATION_FRC      Front Right of Center          0x00000080
-    GB_I2S_SPATIAL_LOCATION_BC       Back Center                    0x00000100
+    GB_I2S_SPATIAL_LOCATION_C        Back Center                    0x00000100
     GB_I2S_SPATIAL_LOCATION_SL       Side Left                      0x00000200
     GB_I2S_SPATIAL_LOCATION_SR       Side Right                     0x00000400
     GB_I2S_SPATIAL_LOCATION_TC       Top Center                     0x00000800
@@ -2650,6 +2650,13 @@ Specification Version 2.0
     GB_I2S_SPATIAL_LOCATION_BRC      Back Right of Center           0x04000000
     GB_I2S_SPATIAL_LOCATION_RD       Raw Data                       0x80000000
     ===============================  ===========================    ===============
+
+.. note::
+
+    The `USB Audio Specification Version 2.0
+    <http://www.usb.org/developers/docs/devclass_docs/Audio2.0_final.zip>`_
+    uses 'BC' for 'Back Center' and for 'Bottom Center'.  To prevent a
+    name collision, 'C' is used for 'Back Center' in this Specification.
 
 .. _i2s-protocol-bits:
 
