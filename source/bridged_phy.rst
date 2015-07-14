@@ -141,6 +141,8 @@ response type values are shown.
     (all other values reserved)  0x0f..0x7f     0x1f..0xff
     ===========================  =============  ==============
 
+..
+
 Greybus GPIO Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -168,6 +170,8 @@ minor version of the GPIO Protocol supported by the sender.
     1        version_minor   1       |gb-minor|      Offered GPIO Protocol minor version
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus GPIO Protocol Version Response
 """"""""""""""""""""""""""""""""""""""
 
@@ -189,6 +193,8 @@ shall report major version |gb-major|, minor version |gb-minor|.
     0        version_major   1       |gb-major|      GPIO Protocol major version
     1        version_minor   1       |gb-minor|      GPIO Protocol minor version
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus GPIO Line Count Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -223,6 +229,8 @@ sequentially starting at zero.
     0        count           1       Number          Number of GPIO lines minus 1
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus GPIO Activate Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -249,6 +257,8 @@ be activated.
     =======  ==============  ======  ==========      ===========================
     0        which           1       Number          Controller-relative GPIO line number
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus GPIO Activate Response
 """"""""""""""""""""""""""""""
@@ -281,6 +291,8 @@ to be deactivated.
     0        which           1       Number          Controller-relative GPIO line number
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus Deactivate Response
 """""""""""""""""""""""""""
 
@@ -311,6 +323,8 @@ get direction request. The request supplies only the target line number.
     0        which           1       Number          Controller-relative GPIO line number
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus GPIO Get Direction Response
 """""""""""""""""""""""""""""""""""
 
@@ -330,6 +344,8 @@ output.
     =======  ==============  ======  ==========      ===========================
     0        direction       1       0 or 1          Direction (0 for output, 1 for input)
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus GPIO Direction Input Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -355,6 +371,8 @@ the line.
     =======  ==============  ======  ==========      ===========================
     0        which           1       Number          Controller-relative GPIO line number
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus GPIO Direction Input Response
 """""""""""""""""""""""""""""""""""""
@@ -388,6 +406,8 @@ line and its initial value.
     1        value           1       0 or 1          Initial value (0 is low, 1 is high)
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus GPIO Direction Output Response
 """"""""""""""""""""""""""""""""""""""
 
@@ -417,6 +437,8 @@ request. The request supplies only the target line number.
     0        which           1       Number          Controller-relative GPIO line number
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus GPIO Get Response
 """""""""""""""""""""""""
 
@@ -435,6 +457,8 @@ line in question.
     =======  ==============  ======  ==========      ===========================
     0        value           1       0 or 1          Value (0 is low, 1 is high)
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus GPIO Set Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -498,6 +522,8 @@ period specified is 0, debounce is disabled.
     1        usec            2       Number          Debounce period (microseconds)
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus GPIO Set Debounce Response
 """"""""""""""""""""""""""""""""""
 
@@ -529,6 +555,8 @@ to be used for the line.
     1        type            1       Number          :ref:`gpio-irq-type-bits`
     =======  ==============  ======  ==========      ===========================
 
+..
+
 .. _gpio-irq-type-bits:
 
 Greybus GPIO IRQ Type Bits
@@ -555,6 +583,8 @@ trigger type values are valid.
     IRQ_TYPE_LEVEL_LOW     Level triggered low                                  0x08
     |_|                    (All other values reserved)                          0x10..0xff
     =====================  ===================================================  ==========
+
+..
 
 Greybus GPIO IRQ Type Response
 """"""""""""""""""""""""""""""
@@ -586,6 +616,8 @@ masked.
     0        which           1       Number          Controller-relative GPIO line number
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus GPIO IRQ Mask Response
 """"""""""""""""""""""""""""""
 
@@ -615,6 +647,8 @@ unmasked.
     =======  ==============  ======  ==========      ===========================
     0        which           1       Number          Controller-relative GPIO line number
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus GPIO IRQ Unmask Response
 """"""""""""""""""""""""""""""""
@@ -650,6 +684,8 @@ an event.
     =======  ==============  ======  ==========      ===========================
     0        which           1       Number          Controller-relative GPIO line number
     =======  ==============  ======  ==========      ===========================
+
+..
 
 
 SPI Protocol
@@ -725,6 +761,8 @@ operation is a request or a response.
     (all other values reserved)  0x07..0x7f     0x87..0xff
     ===========================  =============  ==============
 
+..
+
 Greybus SPI Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -752,6 +790,8 @@ minor version of the SPI Protocol supported by the sender.
     1        version_minor   1       |gb-minor|      Offered SPI Protocol minor version
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus SPI Protocol Version Response
 """""""""""""""""""""""""""""""""""""
 
@@ -773,6 +813,8 @@ shall report major version |gb-major|, minor version |gb-minor|.
     0        version_major   1       |gb-major|      SPI Protocol major version
     1        version_minor   1       |gb-minor|      SPI Protocol minor version
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus SPI Protocol Mode Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -804,6 +846,8 @@ represent support or presence of certain modes in the SPI master.
     0        mode            2       Bit Mask        :ref:`spi-mode-bits`
     =======  ==============  ======  ==========      ===========================
 
+..
+
 .. _spi-mode-bits:
 
 Greybus SPI Protocol Mode Bit Masks
@@ -831,6 +875,8 @@ masters.
     GB_SPI_MODE_READY                Slave pulls low to pause                                0x0080
     |_|                              (All other mask values reserved)                        0x0100..0x8000
     ===============================  ======================================================  ========================
+
+..
 
 Greybus SPI Protocol Flags Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -862,6 +908,8 @@ represent constraints of the SPI master, if any.
     0        flags           2       Number          :ref:`spi-flags-bits`
     =======  ==============  ======  ==========      ===========================
 
+..
+
 .. _spi-flags-bits:
 
 Greybus SPI Protocol Flags Bit Masks
@@ -884,6 +932,8 @@ defined for Greybus SPI masters.
     GB_SPI_FLAG_NO_TX                Can't do buffer write                                0x0004
     |_|                              (All other flag values reserved)                     0x0008..0x8000
     ===============================  ===================================================  ========================
+
+..
 
 Greybus SPI Protocol Bits Per Word Mask Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -922,6 +972,8 @@ whose bits represent the bits per word mask of the SPI master.
     0        bits per word mask   4       Number          Bits per word mask of the SPI master
     =======  ==================   ======  ==========      ===========================
 
+..
+
 Greybus SPI Protocol Number of Chip Selects Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -952,6 +1004,8 @@ the maximum number of chip select pins supported by the SPI master.
     =======  ======================   ======  ==========      ===========================
     0        number of chip selects   2       Number          Maximum number of chip select pins
     =======  ======================   ======  ==========      ===========================
+
+..
 
 Greybus SPI Transfer Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1045,6 +1099,8 @@ of the request.
     ...      ...             ...     Data            Data for Last read :ref:`gb_spi_transfer <gb_spi_transfer>` descriptor on the transfer
     =======  ==============  ======  ==========      ======================================
 
+..
+
 UART Protocol
 -------------
 
@@ -1129,6 +1185,8 @@ operation is a request or a response.
     (all other values reserved)  0x08..0x7f     0x88..0xff
     ===========================  =============  ==============
 
+..
+
 Greybus UART Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1156,6 +1214,8 @@ minor version of the UART Protocol supported by the sender.
     1        version_minor   1       |gb-minor|      Offered UART Protocol minor version
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus UART Protocol Version Response
 """"""""""""""""""""""""""""""""""""""
 
@@ -1177,6 +1237,8 @@ shall report major version |gb-major|, minor version |gb-minor|.
     0        version_major   1       |gb-major|      UART Protocol major version
     1        version_minor   1       |gb-minor|      UART Protocol minor version
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus UART Send Data Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1205,6 +1267,8 @@ to to be transmitted.
     0        size            2       Number          Size in bytes of data to be transmitted
     2        data            *size*  Characters      1 or more bytes of data to be transmitted
     =======  ==============  ======  ===========     ===========================
+
+..
 
 Greybus UART Send Data Response
 """""""""""""""""""""""""""""""
@@ -1246,6 +1310,8 @@ particular character.
     3        data            *size*   Characters      1 or more bytes of received data
     =======  ==============  =======  ==========      ===========================
 
+..
+
 .. _uart-receive-data-status-flags:
 
 Greybus UART Receive Data Status Flags
@@ -1270,6 +1336,8 @@ Any combination of these values may be supplied in a single request.
     Break                           0x08            Break condition detected
     (all other values reserved)     0x10..0x80
     ============================    ==============  ===================
+
+..
 
 Greybus UART Set Line Coding Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1299,6 +1367,8 @@ line coding values to be set.
     6        data_bits       1       Number          Number of data bits
     =======  ==============  ======  ==========      ===========================
 
+..
+
 .. _uart-stop-bit-format:
 
 Greybus UART Stop Bit Format
@@ -1319,6 +1389,8 @@ bit formats.
     2 Stop Bits                     0x02
     (All other values reserved)     0x03..0xff
     ==============================  ====
+
+..
 
 .. _uart-parity-format:
 
@@ -1342,6 +1414,8 @@ formats.
     Space Parity                    0x04
     (All other values reserved)     0x05..0xff
     ==============================  ====
+
+..
 
 Greybus UART Set Line Coding State Response
 """""""""""""""""""""""""""""""""""""""""""
@@ -1373,6 +1447,8 @@ bit mask of modem status flags to set.
     0        control         1       Bit mask        :ref:`uart-modem-status-flags`
     =======  ==============  ======  ==========      ===========================
 
+..
+
 .. _uart-modem-status-flags:
 
 Greybus UART Modem Status Flags
@@ -1396,6 +1472,8 @@ request.
     RTS                             0x02            Request To Send
     (all other values reserved)     0x04..0x80
     ============================    ==============  ===================
+
+..
 
 Greybus UART Set Control Line State Response
 """"""""""""""""""""""""""""""""""""""""""""
@@ -1427,6 +1505,8 @@ condition that should be generated by the UART device transmit line.
     =======  ==============  ======  ==========      ===========================
     0        state           1       0 or 1          0 is off, 1 is on
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus UART Break Control Response
 """""""""""""""""""""""""""""""""""
@@ -1462,6 +1542,8 @@ UART is currently in.
     0        control         1       Bit mask        :ref:`uart-control-flags`
     =======  ==============  ======  ==========      ===========================
 
+..
+
 .. _uart-control-flags:
 
 Greybus UART Control Flags
@@ -1484,6 +1566,8 @@ a Greybus UART serial state request.
     RI                              0x04            Ring Signal detected
     (all other values reserved)     0x08..0x80
     ============================    ==============  ===================
+
+..
 
 PWM Protocol
 ------------
@@ -1576,6 +1660,8 @@ are shown.
     (all other values reserved)  0x09..0x7f     0x89..0xff
     ===========================  =============  ==============
 
+..
+
 Greybus PWM Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1603,6 +1689,8 @@ minor version of the PWM Protocol supported by the sender.
     1        version_minor   1       |gb-minor|      Offered PWM Protocol minor version
     =======  ==============  ======  ==========      ===========================
 
+..
+
 
 Greybus PWM Protocol Version Response
 """""""""""""""""""""""""""""""""""""
@@ -1625,6 +1713,8 @@ shall report major version |gb-major|, minor version |gb-minor|.
     0        version_major   1       |gb-major|      PWM Protocol major version
     1        version_minor   1       |gb-minor|      PWM Protocol minor version
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus PWM Count Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1659,6 +1749,8 @@ numbered sequentially starting at zero.
     0        count           1       Number          Number of PWM instances minus 1
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus PWM Activate Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1685,6 +1777,8 @@ to be activated.
     =======  ==============  ======  ==========      ===========================
     0        which           1       Number          Controller-relative PWM instance number
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus PWM Activate Response
 """""""""""""""""""""""""""""
@@ -1716,6 +1810,8 @@ instance to be deactivated.
     =======  ==============  ======  ==========      ===========================
     0        which           1       Number          Controller-relative PWM instance number
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus PWM Deactivate Response
 """""""""""""""""""""""""""""""
@@ -1749,6 +1845,8 @@ duty cycle, and period of the cycle.
     5        period          4       Number          Period (in nanoseconds)
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus PWM Configure Response
 """"""""""""""""""""""""""""""
 
@@ -1781,6 +1879,8 @@ a PWM instance is enabled.
     1        polarity        1       Number          0 for normal, 1 for inverted
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus PWM Polarity Response
 """""""""""""""""""""""""""""
 
@@ -1811,6 +1911,8 @@ enabled.
     0        which           1       Number          Controller-relative PWM instance number
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus PWM Enable Response
 """""""""""""""""""""""""""
 
@@ -1840,6 +1942,8 @@ disabled.
     =======  ==============  ======  ==========      ===========================
     0        which           1       Number          Controller-relative PWM instance number
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus PWM Disable Response
 """"""""""""""""""""""""""""
@@ -2600,6 +2704,8 @@ Applicable (NA)* value used for single-byte audio data.
     GB_I2S_BYTE_ORDER_LE             Little endian                  0x04
     ===============================  =============================  ===============
 
+..
+
 .. _i2s-spatial-location-bits:
 
 Greybus I2S Spatial Location Bit Masks
@@ -2651,6 +2757,8 @@ Specification Version 2.0
     GB_I2S_SPATIAL_LOCATION_RD       Raw Data                       0x80000000
     ===============================  ===========================    ===============
 
+..
+
 .. note::
 
     The `USB Audio Specification Version 2.0
@@ -2681,6 +2789,8 @@ See :ref:`i2s-low-level-attributes` for further details.
     GB_I2S_PROTOCOL_LR_STEREO        LR Stereo                      0x00000004
     ===============================  ===========================    ===============
 
+..
+
 .. _i2s-role-bits:
 
 Greybus I2S Role Bit Masks
@@ -2703,6 +2813,8 @@ specify the set of supported I2S clock roles.  See
     GB_I2S_ROLE_SLAVE                Not low-level clock generator  0x02
     ===============================  =============================  ===============
 
+..
+
 .. _i2s-polarity-bits:
 
 Greybus I2S Polarity Bit Masks
@@ -2724,6 +2836,8 @@ specify the set of supported I2S clock polarities.  See
     GB_I2S_POLARITY_NORMAL           Clock polarity normal          0x01
     GB_I2S_POLARITY_REVERSED         Clock polarity reversed        0x02
     ===============================  ========================       ===============
+
+..
 
 .. _i2s-clock-edge-bits:
 
@@ -2748,6 +2862,8 @@ specify the set of supported I2S clock edges.  See
     GB_I2S_EDGE_FALLING              Synchronized to falling        0x02
                                      or trailing clock edge
     ===============================  ========================       ===============
+
+..
 
 Greybus I2S Management Protocol Message Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2777,6 +2893,8 @@ whether the operation is a request or a response.
     :ref:`i2s-report-event-op`                   0x08           0x88
     (all other values reserved)                  0x09..0x7f     0x89..0xff
     ===========================================  =============  ==============
+
+..
 
 .. _i2s-get-supported-configurations-op:
 
@@ -2846,6 +2964,8 @@ selected in the bit mask fields.
     0        config          24      :ref:`i2s-configuration-struct`  Bundle's configuration values
     =======  ==============  ======  ===============================  ================================
 
+..
+
 Greybus I2S Set Configuration Response
 """"""""""""""""""""""""""""""""""""""
 
@@ -2882,6 +3002,8 @@ number of audio samples that the transmitter shall include in each
     =======  ===================  ======  ==========      =========================
     0        samples_per_message  2       Number          Samples per message
     =======  ===================  ======  ==========      =========================
+
+..
 
 Greybus I2S Set Samples per Message Response
 """"""""""""""""""""""""""""""""""""""""""""
@@ -2925,6 +3047,8 @@ microseconds.
     0        microseconds    4       Number          Processing delay
     =======  ==============  ======  ==========      ===========================
 
+..
+
 .. _i2s-set-start-delay-op:
 
 Greybus I2S Set Start Delay Operation
@@ -2958,6 +3082,8 @@ audio data.
     =======  ==============  ======  ==========      ===========================
     0        microseconds    4       Number          Delay before starting
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus I2S Set Start Delay Response
 """"""""""""""""""""""""""""""""""""
@@ -2993,6 +3119,8 @@ activated.
                                                      CPort
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus I2S Activate CPort Response
 """""""""""""""""""""""""""""""""""
 
@@ -3027,6 +3155,8 @@ shall be deactivated.
                                                      CPort
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus I2S Deactivate CPort Response
 """""""""""""""""""""""""""""""""""""
 
@@ -3059,6 +3189,8 @@ has occurred on the sending controller.
     =======  ==============  ======  ==========      ===========================
     0        event           1       Number          :ref:`i2s-audio-events`
     =======  ==============  ======  ==========      ===========================
+
+..
 
 .. _i2s-audio-events:
 
@@ -3093,6 +3225,8 @@ events and their values.
     GB_I2S_EVENT_DATA_LEN            Invalid message data           0x0a
                                      length
     ===============================  ========================       ===============
+
+..
 
 Greybus I2S Report Event Response
 """""""""""""""""""""""""""""""""
@@ -3146,6 +3280,8 @@ responses except for Send Data Request.
     (all other values reserved)    0x02..0x7f     0x82..0xff
     =============================  =============  ==============
 
+..
+
 .. _i2s-send-data-op:
 
 Greybus I2S Send Data Operation
@@ -3176,6 +3312,8 @@ sends one or more complete audio samples.
     4        size            4       Number          Bytes in data field
     8        data            ...     *size*          Audio data
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus I2S Send Data Response
 """"""""""""""""""""""""""""""
@@ -3255,6 +3393,8 @@ operation is a request or a response.
     (all other values reserved)  0x06..0x7f     0x86..0xff
     ===========================  =============  ==============
 
+..
+
 Greybus I2C Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -3282,6 +3422,8 @@ minor version of the I2C Protocol supported by the sender.
     1        version_minor   1       |gb-minor|      Offered I2C Protocol minor version
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus I2C Protocol Version Response
 """""""""""""""""""""""""""""""""""""
 
@@ -3303,6 +3445,8 @@ shall report major version |gb-major|, minor version |gb-minor|.
     0        version_major   1       |gb-major|      I2C Protocol major version
     1        version_minor   1       |gb-minor|      I2C Protocol minor version
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus I2C Functionality Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -3335,6 +3479,8 @@ the I2C adapter.
     =======  ==============  ======  ==========      ===========================
     0        functionality   4       Number          :ref:`i2c-functionality-bits`
     =======  ==============  ======  ==========      ===========================
+
+..
 
 .. _i2c-functionality-bits:
 
@@ -3377,6 +3523,8 @@ directly from the <linux/i2c.h> header file.
     |_|                              (All other values reserved)                          0x10000000..0x80000000
     ===============================  ===================================================  ========================
 
+..
+
 Greybus I2C Set Timeout Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -3404,6 +3552,8 @@ used.
     =======  ==============  ======  ==========      ===========================
     0        msec            2       Number          Timeout period in milliseconds
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus I2C Set Timeout Response
 """"""""""""""""""""""""""""""""
@@ -3434,6 +3584,8 @@ representing the number of retries to be used by an I2C adapter.
     =======  ==============  ======  ==========      ===========================
     0        count           1       Number          Retry count
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus I2C Set Retries Response
 """"""""""""""""""""""""""""""""
@@ -3477,6 +3629,8 @@ describes a segment of an I2C transaction.
     4        size            2       Number          Size of data to transfer
     =======  ==============  ======  ==========      ===========================
 
+..
+
 .. _i2c-op-flag-bits:
 
 Greybus I2C Op Flag Bit Masks
@@ -3504,6 +3658,8 @@ defined for Greybus I2C ops. They are taken directly from the
     I2C_M_NOSTART   Skip repeated start sequence                    0x4000
     |_|             (Reserved)                                      0x8000
     ==============  =========================================       ===============
+
+..
 
 Table :num:`table-i2c-transfer-request` defines the Greybus I2C
 transfer request.
@@ -3550,6 +3706,8 @@ of messages.
     ...      ...             ...     Data            ...
     ...      ...             ...     Data            Data for last read op on the transfer
     =======  ==============  ======  ==========      ======================================
+
+..
 
 SDIO Protocol
 -------------
@@ -3631,6 +3789,8 @@ and response type values are shown.
     (all other values reserved)  0x07..0x7f     0x87..0xff
     ===========================  =============  ==============
 
+..
+
 Greybus SDIO Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -3658,6 +3818,8 @@ and minor version of the SDIO Protocol supported by the sender.
     1        version_minor   1       |gb-minor|      Offered SDIO Protocol minor version
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus SDIO Protocol Version Response
 """"""""""""""""""""""""""""""""""""""
 
@@ -3679,6 +3841,8 @@ major version |gb-major|, minor version |gb-minor|.
     0        version_major   1       |gb-major|      SDIO Protocol major version
     1        version_minor   1       |gb-minor|      SDIO Protocol minor version
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus SDIO Get Capabilities Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -3713,6 +3877,8 @@ controller, as defined in table :num:`table-sdio-get-caps-response`.
     8            max_blk_count   2       Number          Maximum Number of blocks per data command transfer
     10           max_blk_size    2       Number          Maximum size of each block to transfer
     =========    ==============  ======  ==========      ===========================
+
+..
 
 .. _sdio-caps-bits:
 
@@ -3753,6 +3919,8 @@ Greybus SDIO.
     GB_SDIO_CAP_HS400_1_8V           Host support HS400 mode at 1.8V                         0x00100000
     |_|                              (All other mask values reserved)                        0x00200000..0x80000000
     ===============================  ======================================================  ========================
+
+..
 
 Greybus SDIO Set Ios Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -3802,6 +3970,7 @@ controller.
     13       drv_type        1       Number          :ref:`sdio-driver-type`
     =======  ==============  ======  ==========      ===========================
 
+..
 
 .. _sdio-voltage-range:
 
@@ -3840,6 +4009,8 @@ masks for the Greybus SDIO controllers.
     |_|                              (All other mask values reserved)                        0x00020000..0x80000000
     ===============================  ======================================================  ========================
 
+..
+
 .. _sdio-bus-mode:
 
 Greybus SDIO Protocol Bus Mode
@@ -3861,6 +4032,8 @@ should be set for operation.
     GB_SDIO_BUSMODE_PUSHPULL         SDIO push-pull bus mode                                 0x01
     |_|                              (All other values reserved)                             0x02..0xff
     ===============================  ======================================================  ========================
+
+..
 
 .. _sdio-power-mode:
 
@@ -3886,6 +4059,8 @@ which the slot should be set.
     |_|                              (All other values reserved)                             0x04..0xff
     ===============================  ======================================================  ========================
 
+..
+
 .. _sdio-bus-width:
 
 Greybus SDIO Protocol Bus Width
@@ -3908,6 +4083,8 @@ bus width can be set.
     GB_SDIO_BUS_WIDTH_8              SDIO data bus width 8 bit mode                          0x03
     |_|                              (All other values reserved)                             0x04..0xff
     ===============================  ======================================================  ========================
+
+..
 
 .. _sdio-timing:
 
@@ -3940,6 +4117,8 @@ for the bus.
     |_|                              (All other values reserved)                             0x0B..0xff
     ===============================  ======================================================  ========================
 
+..
+
 .. _sdio-signal-voltage:
 
 Greybus SDIO Protocol Signal Voltage
@@ -3962,6 +4141,8 @@ values allowed to be set for the bus.
     GB_SDIO_SIGNAL_VOLTAGE_120       Signal Voltage = 1.20V                                  0x02
     |_|                              (All other values reserved)                             0x03..0xff
     ===============================  ======================================================  ========================
+
+..
 
 .. _sdio-driver-type:
 
@@ -3986,6 +4167,8 @@ in which the Controller shall be configured.
     GB_SDIO_SET_DRIVER_TYPE_D        Driver Type D                                           0x03
     |_|                              (All other values reserved)                             0x04..0xff
     ===============================  ======================================================  ========================
+
+..
 
 Greybus SDIO Set Ios Response
 """""""""""""""""""""""""""""
@@ -4022,6 +4205,8 @@ Command request.
     3        arg             4       Number          SDIO command arguments, as specified by SD Association
     =======  ==============  ======  ==========      ===========================
 
+..
+
 .. _sdio-cmd-flags:
 
 Greybus SDIO Protocol Command Flags
@@ -4047,6 +4232,8 @@ to a command.
     |_|                              (All other values reserved)                             0x20..0xff
     ===============================  ======================================================  ========================
 
+..
+
 .. _sdio-cmd-type:
 
 Greybus SDIO Protocol Command Type
@@ -4070,6 +4257,8 @@ the MMC/SD card.
     |_|                              (All other values reserved)                             0x04..0xff
     ===============================  ======================================================  ========================
 
+..
+
 Greybus SDIO Command Response
 """""""""""""""""""""""""""""
 
@@ -4087,6 +4276,8 @@ Command response.
     =======  ==============  ======  ==========      ===========================
     0        resp            16      Number          SDIO command response, as specified by SD Association
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus SDIO Transfer Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -4115,6 +4306,8 @@ Transfer request.
     3        data_blksz      2       Number          SDIO size of the blocks of data to transfer
     5        data            ...     Data            SDIO Data
     =======  ==============  ======  ==========      ===========================
+
+..
 
 
 .. figtable::
@@ -4191,6 +4384,8 @@ the sending controller.
     0        event           1       Bit Mask        :ref:`sdio-event-bits`
     =======  ==============  ======  ==========      ===========================
 
+..
+
 .. _sdio-event-bits:
 
 Greybus SDIO Event Bit Masks
@@ -4215,4 +4410,3 @@ card detection events shall be ignored.
     GB_SDIO_WP                       Card Write Protect Switch      0x04
     |_|                              (All other values reserved)    0x08..0x80
     ===============================  =============================  ===============
-

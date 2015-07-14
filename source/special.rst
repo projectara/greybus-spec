@@ -130,6 +130,8 @@ type and response type values are shown.
     (all other values reserved)  0x07..0x7f     0x87..0xff
     ===========================  =============  ==============
 
+..
+
 Greybus Control Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -157,6 +159,8 @@ minor version of the Control Protocol supported by the sender.
     1        version_minor   1       |gb-minor|      Offered Control Protocol minor version
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus Control Protocol Version Response
 """""""""""""""""""""""""""""""""""""""""
 
@@ -178,6 +182,8 @@ shall report major version |gb-major|, minor version |gb-minor|.
     0        version_major   1       |gb-major|      Control Protocol major version
     1        version_minor   1       |gb-minor|      Control Protocol minor version
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus Control Probe AP Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -209,6 +215,8 @@ receives the request.
     2        intf_id         1       Interface ID    Position of receiving Interface on Endo
     =======  ==============  ======  ============    ===========================
 
+..
+
 Greybus Control Probe AP Response
 """""""""""""""""""""""""""""""""
 
@@ -229,6 +237,8 @@ with no data (*auth_size* is 0).
     0        auth_size       2            Number          Size of authentication data that follows
     2        auth_data       *auth_size*  Data            Authentication data
     =======  ==============  ===========  ==========      ===========================
+
+..
 
 Greybus Control Get Manifest Size Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -261,6 +271,8 @@ The Greybus control get manifest size response contains a two byte field
     =======  ==============  ===========  ==========      ===========================
     0        size            2            Number          Size of the Manifest
     =======  ==============  ===========  ==========      ===========================
+
+..
 
 Greybus Control Get Manifest Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -295,6 +307,8 @@ known as :ref:`manifest-description`.
     0        manifest        *size*       Data            Manifest
     =======  ==============  ===========  ==========      ===========================
 
+..
+
 Greybus Control Connected Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -322,6 +336,8 @@ receiving Interface that has been connected.
     =======  ==============  ======  ============    ===========================
     0        cport_id        2       CPort ID        CPort that is now connected
     =======  ==============  ======  ============    ===========================
+
+..
 
 Greybus Control Connected Response
 """"""""""""""""""""""""""""""""""
@@ -354,6 +370,8 @@ receiving Interface that is no longer connected.
     =======  ==============  ======  ============    ===========================
     0        cport_id        2       CPort ID        CPort that is now disconnected
     =======  ==============  ======  ============    ===========================
+
+..
 
 Greybus Control Disconnected Response
 """""""""""""""""""""""""""""""""""""
@@ -455,6 +473,8 @@ response type values are shown.
     (all other values reserved)  0x07..0x7f     0x87..0xff
     ===========================  =============  ==============
 
+..
+
 Greybus SVC Interface Device ID Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -495,6 +515,8 @@ destroyed.
     0        intf_id         1       Interface ID    Interface ID whose device ID is being assigned
     1        device_id       1       Device ID       |unipro| device ID for Interface
     =======  ==============  ======  ============    ===========================
+
+..
 
 Greybus SVC Interface Device ID Response
 """"""""""""""""""""""""""""""""""""""""
@@ -540,6 +562,8 @@ power-on).
     2        data            *size*  Data            Descriptive data
     =======  ==============  ======  ============    ===========================
 
+..
+
 Greybus SVC Interface Hotplug Response
 """"""""""""""""""""""""""""""""""""""
 
@@ -577,6 +601,8 @@ before sending a hot unplug.
     0        intf_id         1       Interface ID    Interface that no longer has an attached module
     =======  ==============  ======  ============    ===========================
 
+..
+
 Greybus SVC Interface Hot Unplug Response
 """""""""""""""""""""""""""""""""""""""""
 
@@ -606,6 +632,8 @@ Interface needs to be reset.
     =======  ==============  ======  ============    ===========================
     0        intf_id         1       Interface ID    Interface to reset
     =======  ==============  ======  ============    ===========================
+
+..
 
 Greybus SVC Interface Reset Response
 """"""""""""""""""""""""""""""""""""
@@ -645,6 +673,8 @@ Interface ID and CPort ID define the other end.
     4        cport2_id       2       CPort ID            CPort on second Interface
     =======  ==============  ======  ==================  ===========================
 
+..
+
 Greybus SVC Connection Create Response
 """"""""""""""""""""""""""""""""""""""
 
@@ -680,6 +710,8 @@ the connection to be destroyed.
     3        intf2_id        1       Interface ID        Second Interface
     4        cport2_id       2       CPort ID            CPort on second Interface
     =======  ==============  ======  ==================  ===========================
+
+..
 
 Greybus SVC Connection Destroy Response
 """""""""""""""""""""""""""""""""""""""

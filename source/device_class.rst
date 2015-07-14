@@ -68,6 +68,8 @@ operation is a request or a response.
     (all other values reserved)  0x04..0x7f     0x84..0xff
     ===========================  =============  ==============
 
+..
+
 Greybus Vibrator Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -95,6 +97,8 @@ minor version of the vibrator Protocol supported by the sender.
     1        version_minor   1       |gb-minor|      Offered vibrator Protocol minor version
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus Vibrator Protocol Version Response
 """"""""""""""""""""""""""""""""""""""""""
 
@@ -116,6 +120,8 @@ shall report major version |gb-major|, minor version |gb-minor|.
     0        version_major   1       |gb-major|      Vibrator Protocol major version
     1        version_minor   1       |gb-minor|      Vibrator Protocol minor version
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus Vibrator On Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -141,6 +147,8 @@ vibrator should now be enabled for.
     =======  ==============  ======  ==========      ===========================
     0        timeout_ms      2       Number          timeout in milliseconds
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus Vibrator On Response
 """"""""""""""""""""""""""""
@@ -255,6 +263,8 @@ operation is a request or a response.
     (all other values reserved)  0x0b..0x7f     0x8b..0xff
     ===========================  =============  ==============
 
+..
+
 Greybus Battery Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -282,6 +292,8 @@ minor version of the battery Protocol supported by the sender.
     1        version_minor   1       |gb-minor|      Offered battery Protocol minor version
     =======  ==============  ======  ==========      ===========================
 
+..
+
 
 Greybus Battery Protocol Version Response
 """""""""""""""""""""""""""""""""""""""""
@@ -304,6 +316,8 @@ shall report major version |gb-major|, minor version |gb-minor|.
     0        version_major   1       |gb-major|      Battery Protocol major version
     1        version_minor   1       |gb-minor|      Battery Protocol minor version
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus Battery Technology Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -336,6 +350,8 @@ Table :num:`table-battery-technology-response`.
     0        technology      2       Number          :ref:`battery-technology-type`
     =======  ==============  ======  ==========      ===========================
 
+..
+
 .. _battery-technology-type:
 
 Greybus Battery Technology Type
@@ -362,6 +378,8 @@ taken directly from the <linux/power_supply.h> header file.
     NiCd            0x0005
     LiMn            0x0006
     =============   ======
+
+..
 
 Greybus Battery Status Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -393,6 +411,8 @@ table :num:`table-battery-status-response`.
     0        battery_status  2       Number          :ref:`battery-status`
     =======  ==============  ======  ==========      ===========================
 
+..
+
 .. _battery-status:
 
 Greybus Battery Status Type
@@ -417,6 +437,8 @@ taken directly from the <linux/power_supply.h> header file.
     Not Charging    0x0003
     Full            0x0004
     ==============  ======
+
+..
 
 Greybus Battery Max Voltage Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -447,6 +469,8 @@ in |mu| V as defined in table :num:`table-battery-max-voltage-response`.
     =======  ==============  ======  ==========      ===========================
     0        max_voltage     4       Number          Battery maximum voltage in |mu| V
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus Battery Capacity Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -479,6 +503,8 @@ percentage as defined in table
     0        capacity        4       Number          Battery capacity in %
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus Battery Temperature Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -509,6 +535,8 @@ that represents the temperature of the battery being controlled, in
     =======  ==============  ======  ==========      ===========================
     0        temperature     4       Number          Battery temperature (0.1 |degree-c| units)
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus Battery Voltage Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -541,6 +569,8 @@ defined in table
     0        voltage         4       Number          Battery voltage in |mu| V
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus Battery Current Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -571,6 +601,8 @@ defined in table :num:`table-battery-current-response`.
     0        current         4       Number          Battery current in |mu| A
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus Battery Total Capacity Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -600,6 +632,8 @@ in mAh as defined in table :num:`table-battery-total-capacity-response`.
     0        capacity        4       Number          Battery capacity in mAh
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus Battery Shutdown Temperature Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The Greybus battery shutdown temperature operation allows the AP Module to
@@ -628,6 +662,8 @@ down as defined in table :num:`table-battery-shutdown-temp-response`.
     =======  ==============  ======  ==========      ===========================
     0        temperature     4       Number          Battery temperature (0.1 |degree-c| units)
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Audio Protocol
 --------------
@@ -817,6 +853,8 @@ flag (0x80) indicating whether the operation is a request or a response.
     (all other values reserved)  0x09..0x7f     0x89..0xff
     ===========================  =============  ==============
 
+..
+
 Greybus HID Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -844,6 +882,7 @@ Greybus HID Protocol supported by the sender.
     1        version_minor   1       |gb-minor|      Offered Greybus HID Protocol minor version
     =======  ==============  ======  ==========      ===========================
 
+..
 
 Greybus HID Protocol Version Response
 """""""""""""""""""""""""""""""""""""
@@ -866,6 +905,7 @@ controller adhering to the Protocol specified herein shall report major version
     1        version_minor   1       |gb-minor|      Greybus HID Protocol minor version
     =======  ==============  ======  ==========      ===========================
 
+..
 
 Greybus HID Get Descriptor Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -902,6 +942,7 @@ described in Table :num:`table-hid-descriptor`.
     9        country_code        1       Number          Country code of the localized hardware; see [HID01]_
     =======  ==================  ======  ==========      ===========================
 
+..
 
 Greybus HID Get Report Descriptor Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -990,6 +1031,8 @@ defined by Table :num:`table-hid-get-report-request`.
     1        report_id       1       Number          Report ID defined by [HID01]_
     =======  ==============  ======  ==========      ===========================
 
+..
+
 .. _hid-report-type:
 
 Greybus HID Report Type
@@ -1011,6 +1054,8 @@ defined for Greybus HID devices.
     Output Report       0x0001
     Feature Report      0x0002
     ===============     ======
+
+..
 
 Greybus HID Get Report Response
 """""""""""""""""""""""""""""""
@@ -1144,6 +1189,8 @@ operation is a request or a response.
     (all other values reserved)  0x06..0x7f     0x86..0xff
     ===========================  =============  ==============
 
+..
+
 Greybus Lights Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1171,6 +1218,7 @@ the Greybus Lights Protocol supported by the sender.
     1        version_minor   1       |gb-minor|      Offered Greybus Lights Protocol minor version
     =======  ==============  ======  ==========      ===========================
 
+..
 
 Greybus Lights Protocol Version Response
 """"""""""""""""""""""""""""""""""""""""
@@ -1193,6 +1241,7 @@ version |gb-major|, minor version |gb-minor|.
     1        version_minor   1       |gb-minor|      Greybus Lights Protocol minor version
     =======  ==============  ======  ==========      ===========================
 
+..
 
 Greybus Lights Get Brightness Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1226,6 +1275,8 @@ possible brightness level as defined in table
     0        brightness      1       Number          Light current brightness level
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus Lights Set Brightness Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1252,6 +1303,7 @@ highest possible brightness level as defined in table
     0        brightness      1       Number          Light brightness level to set
     =======  ==============  ======  ==========      ===========================
 
+..
 
 Greybus Lights Set Brightness Response
 """"""""""""""""""""""""""""""""""""""
@@ -1288,6 +1340,7 @@ in table :num:`table-lights-set-blink-request`.
     4        delay_off       4       Number          Delay off in milliseconds
     =======  ==============  ======  ==========      ===========================
 
+..
 
 Greybus Lights Set Blink Response
 """""""""""""""""""""""""""""""""
@@ -1323,6 +1376,8 @@ as defined in table :num:`table-lights-get-mode-response`.
     0        Mode            4       Number          :ref:`lights-mode-bits`
     =======  ==============  ======  ==========      ===========================
 
+..
+
 .. _lights-mode-bits:
 
 
@@ -1355,6 +1410,7 @@ Lights devices.
     |_|                              (Reserved Range)                                     0x10000000..0x80000000
     ===============================  ===================================================  ========================
 
+..
 
 NFC Protocol
 ------------
@@ -1420,6 +1476,8 @@ operation is a request or a response.
     (all other values reserved)  0x03..0x7f     0x83..0xff
     ===========================  =============  ==============
 
+..
+
 Greybus NFC Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1447,6 +1505,8 @@ minor version of the NFC Protocol supported by the sender.
     1        version_minor   1       |gb-minor|      Offered NFC Protocol minor version
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus NFC Protocol Version Response
 """""""""""""""""""""""""""""""""""""
 
@@ -1468,6 +1528,8 @@ shall report major version |gb-major|, minor version |gb-minor|.
     0        version_major   1       |gb-major|      NFC Protocol major version
     1        version_minor   1       |gb-minor|      NFC Protocol minor version
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus NFC Send Packet Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1495,6 +1557,8 @@ a valid NFC NCI Packet of *size* bytes as defined in table
     0        size            4       Number          Size of the NFC NCI packet
     4        packet          *size*  Data            NFC NCI Packet
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus NFC Send Packet Response
 """"""""""""""""""""""""""""""""
@@ -1571,6 +1635,8 @@ operation is a request or a response.
     (all other values reserved)  0x04..0x7f     0x84..0xff
     ===========================  =============  ==============
 
+..
+
 Greybus Loopback Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1598,6 +1664,8 @@ minor version of the loopback Protocol supported by the sender.
     1        version_minor   1       |gb-minor|      Offered loopback Protocol minor version
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus Loopback Protocol Version Response
 """"""""""""""""""""""""""""""""""""""""""
 
@@ -1619,6 +1687,8 @@ shall report major version |gb-major|, minor version |gb-minor|.
     0        version_major   1       |gb-major|      Loopback Protocol major version
     1        version_minor   1       |gb-minor|      Loopback Protocol minor version
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus Loopback Ping Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1664,6 +1734,7 @@ the device, and the data itself.
     4        data            X       Data            array of data bytes
     =======  ==============  ======  ==========      ===========================
 
+..
 
 Greybus Loopback Transfer Response
 """"""""""""""""""""""""""""""""""
@@ -1683,6 +1754,8 @@ the request.
     =======  ==============  ======  ==========      ===========================
     0        data            X       Data            array of data bytes
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Raw Protocol
 ------------
@@ -1734,6 +1807,8 @@ operation is a request or a response.
     (all other values reserved)  0x04..0x7f     0x84..0xff
     ===========================  =============  ==============
 
+..
+
 Greybus Raw Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1761,6 +1836,8 @@ minor version of the Raw Protocol supported by the requester.
     1        version_minor   1       |gb-minor|      Offered Raw Protocol minor version
     =======  ==============  ======  ==========      ===========================
 
+..
+
 Greybus Raw Protocol Version Response
 """""""""""""""""""""""""""""""""""""
 
@@ -1782,6 +1859,8 @@ shall report major version |gb-major|, minor version |gb-minor|.
     0        version_major   1       |gb-major|      Raw Protocol major version
     1        version_minor   1       |gb-minor|      Raw Protocol minor version
     =======  ==============  ======  ==========      ===========================
+
+..
 
 Greybus Raw Send Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1809,6 +1888,7 @@ device, and the data itself.
     4        data            *len*   Data            data to be sent
     =======  ==============  ======  ==========      ===========================
 
+..
 
 Greybus Raw Send Response
 """""""""""""""""""""""""

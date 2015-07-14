@@ -155,6 +155,8 @@ values are described in Table :num:`table-descriptor-type`.
     (All other values reserved)     0x05..0xff
     ============================    ==========
 
+..
+
 Interface Descriptor
 ^^^^^^^^^^^^^^^^^^^^
 
@@ -295,6 +297,8 @@ it.  Class types are defined in :num:'table-bundle-class'.
     (All other values reserved)     0x11..0xfe
     Vendor Specific                 0xff
     ============================    ==========
+
+..
 
 CPort Descriptor
 ^^^^^^^^^^^^^^^^
