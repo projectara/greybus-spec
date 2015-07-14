@@ -2771,14 +2771,14 @@ Specification Version 2.0
 Greybus I2S Protocol Bit Masks
 """"""""""""""""""""""""""""""
 
-Table :num:`table-i2s-spatial-location-bit-mask` defines the bit masks which
+Table :num:`table-i2s-protocol-bit-mask` defines the bit masks which
 specify the set of supported I2S Low-level Protocols.
 See :ref:`i2s-low-level-attributes` for further details.
 
 .. figtable::
     :nofig:
-    :label: table-i2s-spatial-location-bit-mask
-    :caption: I2S Protocol Spatial Location Bit Masks
+    :label: table-i2s-protocol-bit-mask
+    :caption: I2S Protocol Bit Masks
     :spec: l l l
 
     ===============================  ===========================    ===============
