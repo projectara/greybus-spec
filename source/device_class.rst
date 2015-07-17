@@ -670,11 +670,6 @@ Audio Protocol
 
 TBD
 
-Baseband Modem Protocol
------------------------
-
-TBD
-
 Bluetooth Protocol
 ------------------
 
@@ -682,11 +677,6 @@ TBD
 
 Consumer IR Protocol
 --------------------
-
-TBD
-
-Display Protocol
-----------------
 
 TBD
 
@@ -1565,18 +1555,8 @@ Greybus NFC Send Packet Response
 
 The Greybus NFS send packet response message has no payload.
 
-Power Profile Protocol
-----------------------
-
-TBD
-
 Sensors Protocol
 ----------------
-
-TBD
-
-WiFi Protocol
--------------
 
 TBD
 
