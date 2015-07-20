@@ -401,6 +401,16 @@ notification of changing power conditions).
 
 Conceptually, the operations in the Greybus SVC Protocol are:
 
+.. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
+
+    Negotiates the major and minor version of the Protocol used for
+    communication over the connection.  The SVC offers the
+    version of the Protocol it supports.  The AP replies with
+    the version that will be used--either the one offered if
+    supported or its own (lower) version otherwise.  Protocol
+    handling code adhering to the Protocol specified herein supports
+    major version |gb-major|, minor version |gb-minor|.
+
 .. c:function:: int intf_device_id(u8 intf_id, u8 device_id);
 
     This operation is used by the AP Module to request that the SVC
@@ -470,8 +480,63 @@ response type values are shown.
     Interface reset              0x04           0x84
     Connection create            0x05           0x85
     Connection destroy           0x06           0x86
-    (all other values reserved)  0x07..0x7f     0x87..0xff
+    Protocol Version             0x07           0x87
+    (all other values reserved)  0x08..0x7f     0x88..0xff
     ===========================  =============  ==============
+
+..
+
+Greybus SVC Protocol Version Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SVC Protocol version operation allows the Protocol
+handling software on both ends of a connection to negotiate the version
+of the SVC Protocol to use. It is sent by the SVC at initial
+power-on.
+
+Greybus SVC Protocol Version Request
+""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-version-request` defines the Greybus SVC
+Protocol version request payload. The request supplies the greatest
+major and minor version of the SVC Protocol supported by the SVC.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-version-request
+    :caption: SVC Protocol Version Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        version_major   1       |gb-major|      Offered SVC Protocol major version
+    1        version_minor   1       |gb-minor|      Offered SVC Protocol minor version
+    =======  ==============  ======  ==========      ===========================
+
+..
+
+Greybus SVC Protocol Version Response
+"""""""""""""""""""""""""""""""""""""
+
+The Greybus SVC Protocol version response payload contains two
+one-byte values, as defined in table
+:num:`table-svc-protocol-version-response`. A Greybus SVC
+controller adhering to the Protocol specified herein shall report
+major version |gb-major|, minor version |gb-minor|.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-protocol-version-response
+    :caption: SVC Protocol Version Response
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        version_major   1       |gb-major|      SVC Protocol major version
+    1        version_minor   1       |gb-minor|      SVC Protocol minor version
+    =======  ==============  ======  ==========      ===========================
 
 ..
 
