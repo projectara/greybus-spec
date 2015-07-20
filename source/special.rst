@@ -28,7 +28,7 @@ Control Protocol
 All Interfaces are required to define a CPort that uses the Control
 Protocol, and shall be prepared to receive Operation requests on that
 CPort at any time. The CPort that uses the Control Protocol must have an
-id of '2'. CPort id '2' is a reserved CPort address for the Control
+id of '0'. CPort id '0' is a reserved CPort address for the Control
 Protocol. Similarly the bundle descriptor associated with the Control
 CPort must have an id of '0'. Bundle id '0' is a reserved id for the
 Control Protocol bundle descriptor.
