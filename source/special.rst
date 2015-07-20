@@ -418,12 +418,12 @@ Conceptually, the operations in the Greybus SVC Protocol are:
 
 .. c:function:: int intf_hotplug(u8 intf_id, u16 size, u8 *data);
 
-.. XXX We may need to adjust based on whether detect is associated
-.. XXX with a module (as opposed to an Interface).
-
     The SVC sends this to the AP Module to inform it that it has
     detected a module on the indicated Interface.  It supplies a
     block of data that describes the module that been attached.
+
+.. XXX We may need to adjust based on whether detect is associated
+.. XXX with a module (as opposed to an Interface).
 
 .. c:function:: int intf_hotunplug(u8 intf_id);
 
