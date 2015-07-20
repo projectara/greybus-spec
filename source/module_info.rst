@@ -278,7 +278,7 @@ it.  Class types are defined in :num:'table-bundle-class'.
     Class type                      Value
     ============================    ==========
     Control                         0x00
-    AP                              0x01
+    SVC                             0x01
     GPIO                            0x02
     I2C                             0x03
     UART                            0x04
