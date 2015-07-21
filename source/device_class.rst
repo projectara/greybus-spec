@@ -1591,6 +1591,11 @@ The operations in the Greybus loopback Protocol are:
    Sends a stream of bytes to the device and receives them back from the
    device.
 
+.. c:function:: int sink(u32 len, char *send);
+
+   Sends a stream of bytes to the device that needs to be acknowledged by the
+   device. No data are sent back from the device.
+
 Greybus Loopback Message Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1612,7 +1617,8 @@ operation is a request or a response.
     Protocol Version             0x01           0x81
     Ping                         0x02           0x82
     Transfer                     0x03           0x83
-    (all other values reserved)  0x04..0x7f     0x84..0xff
+    Sink                         0x04           0x84
+    (all other values reserved)  0x05..0x7f     0x85..0xff
     ===========================  =============  ==============
 
 ..
@@ -1736,6 +1742,23 @@ the request.
     =======  ==============  ======  ==========      ===========================
 
 ..
+
+Greybus Loopback Sink Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Loopback sink operation sends data to the device.
+No data is returned back.
+
+Greybus Loopback Sink Request
+"""""""""""""""""""""""""""""
+
+The Greybus sink request message is identical to the Greybus transfer request
+message.
+
+Greybus Loopback Sink Response
+""""""""""""""""""""""""""""""
+
+The Greybus sink response message has no payload.
 
 Raw Protocol
 ------------
