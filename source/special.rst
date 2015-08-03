@@ -3,7 +3,7 @@
 Special Protocols
 =================
 
-This section defines two Protocols, each of which serves a special
+This section defines three Protocols, each of which serves a special
 purpose in a Greybus system.
 
 The first is the Control Protocol.  Every Interface shall provide a
@@ -19,6 +19,11 @@ direction of the AP Module, and the SVC Protocol is used by the AP
 Module to exert this control.  The SVC also uses this protocol to
 notify the AP Module of events, such as the insertion or removal of
 a Module.
+
+The third is the Firmware Protocol, which is used between the AP Module and any
+other module's bootloader to download firmware executables to the module.  When
+a module's manifest includes a CPort using the Firmware Protocol, the AP can
+connect to that CPort and download a firmware executable to the module.
 
 .. _control-protocol:
 
@@ -782,3 +787,338 @@ Greybus SVC Connection Destroy Response
 """""""""""""""""""""""""""""""""""""""
 
 The Greybus SVC connection destroy response message contains no payload.
+
+.. _firmware-protocol:
+
+Firmware Protocol
+-----------------
+
+The Greybus Firmware Protocol is used by a module's bootloader to communicate
+with the AP and download firmware executables via |unipro| when a module does
+not have its own firmware pre-loaded.
+
+The operations in the Greybus Firmware Protocol are:
+
+.. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
+
+    Negotiates the major and minor version of the Protocol used for
+    communication over the connection.  The AP sends the request offering the
+    version of the Protocol it supports.  The module responds with the version
+    that shall be used--either the one offered if supported, or its own lower
+    version.  Protocol handling code adhering to the Protocol specified here
+    supports major version |gb-major|, minor version |gb-minor|.
+
+.. c:function:: int firmware_size(u8 stage, u32 *size);
+
+    The module requests from the AP the size of the firmware it must
+    load, specifying the stage of the boot sequence for which the module is
+    requesting firmware.  The AP then locates a suitable firmware blob,
+    associates that firmware blob with the requested boot stage until it next
+    receives a firmware size request, and responds with the blob's size in
+    bytes, which must be nonzero.
+
+.. c:function:: int get_firmware(u32 offset, u32 size, void *data);
+
+    The module requests a finite stream of bytes in the firmware blob
+    from the AP, passing its current offset into the firmware blob, and the size
+    of the stream it currently needs.  The AP responds with exactly the number
+    of bytes requested, taken from the firmware blob currently associated with
+    this connection at the specified offset.
+
+.. c:function:: int ready_to_boot(u8 status);
+
+    The module implementing the Protocol requests permission from the AP to jump
+    into the firmware blob it has loaded.  The request sent to the AP includes a
+    status indicating whether the retrieved firmware blob is valid and secure,
+    valid but insecure, or invalid.  The AP decides whether to permit the module
+    to boot in its current condition: if so, it sends a success code in its
+    response's status byte, otherwise it sends an error code in its response's
+    status byte.
+
+Greybus Firmware Operations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Table :num:`table-firmware-operation-type` describes the Greybus firmware
+operation types and their values.  A message type consists of an operation type
+combined with a flag (0x80) indicating whether the operation is a request or a
+response.
+
+.. figtable::
+    :nofig:
+    :label: table-firmware-operation-type
+    :caption: Firmware Operation Types
+    :spec: l l l
+
+    ===========================  =============  ==============
+    Firmware Operation Type      Request Value  Response Value
+    ===========================  =============  ==============
+    Invalid                      0x00           0x80
+    Protocol Version             0x01           0x81
+    Firmware Size                0x02           0x82
+    Get Firmware                 0x03           0x83
+    Ready to Boot                0x04           0x84
+    (all other values reserved)  0x05..0x7f     0x85..0xff
+    ===========================  =============  ==============
+
+..
+
+Greybus Firmware Protocol Version Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus firmware Protocol version operation allows the Protocol handling
+software on both ends of a connection to negotiate the version of the firmware
+Protocol to use.
+
+Greybus Firmware Protocol Version Request
+"""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-firmware-version-request` defines the Greybus firmware version
+request payload.  The request supplies the greatest major and minor version of
+firmware Protocol supported by the sender (the AP).
+
+.. figtable::
+    :nofig:
+    :label: table-firmware-version-request
+    :caption: Firmware Protocol Version Request
+    :spec: l l c c l
+
+    ======  =====   ====    ==========  =======================================
+    Offset  Field   Size    Value       Description
+    ======  =====   ====    ==========  =======================================
+    0       major   1       |gb-major|  Offered firmware Protocol major version
+    1       minor   1       |gb-minor|  Offered firmware Protocol minor version
+    ======  =====   ====    ==========  =======================================
+
+..
+
+Greybus Firmware Protocol Version Response
+""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-firmware-version-response` defines the Greybus firmware
+version response payload.  A Greybus module implementing the Protocol described
+herein shall report major version |gb-major|, minor version |gb-minor|.
+
+.. figtable::
+    :nofig:
+    :label: table-firmware-version-response
+    :caption: Firmware Protocol Version Response
+    :spec: l l c c l
+
+    ======  =====   ====    ==========  ===============================
+    Offset  Field   Size    Value       Description
+    ======  =====   ====    ==========  ===============================
+    0       major   1       |gb-major|  Firmware Protocol major version
+    1       minor   1       |gb-minor|  Firmware Protocol minor version
+    ======  =====   ====    ==========  ===============================
+
+..
+
+Greybus Firmware Firmware Size Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Firmware firmware size operation allows the requestor to submit a
+boot stage to the AP, so that the AP can associate a firmware blob with that
+boot stage and respond with its size.  The AP keeps the firmware blob associated
+with the boot stage until it receives another Firmware Size Request on the same
+connection, but is not required to send identical firmware blobs in response to
+different requests with identical boot stages, even to the same module.
+
+.. _firmware-size-request:
+
+Greybus Firmware Firmware Size Request
+""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-firmware-size-request` defines the Greybus firmware size
+request payload.  The request supplies the boot stage of the module implementing
+the Protocol.
+
+.. figtable::
+    :nofig:
+    :label: table-firmware-size-request
+    :caption: Firmware Protocol Firmware Size Request
+    :spec: l l c c l
+
+    ======  =========  ====  ======  ===============================================
+    Offset  Field      Size  Value   Description
+    ======  =========  ====  ======  ===============================================
+    0       stage      1     Number  :ref:`firmware-boot-stages`
+    ======  =========  ====  ======  ===============================================
+
+..
+
+.. _firmware-boot-stages:
+
+Greybus Firmware Boot Stages
+""""""""""""""""""""""""""""
+
+Table :num:`table-firmware-boot-stages` defines the boot stages whose firmware
+can be requested from the AP via the Protocol.
+
+.. figtable::
+    :nofig:
+    :label: table-firmware-boot-stages
+    :caption: Firmware Protocol Boot Stages
+    :spec: l l l
+
+    ================  ======================================================  ==========
+    Boot Stage        Brief Description                                       Value
+    ================  ======================================================  ==========
+    BOOT_STAGE_ONE    Reserved for the boot ROM.                              0x01
+    BOOT_STAGE_TWO    Firmware package to be loaded by the boot ROM.          0x02
+    BOOT_STAGE_THREE  Module personality package loaded by Stage 2 firmware.  0x03
+    |_|               (Reserved Range)                                        0x04..0xFF
+    ================  ======================================================  ==========
+
+..
+
+.. _firmware-size-response:
+
+Greybus Firmware Firmware Size Response
+"""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-firmware-size-response` defines the Greybus firmware size
+response payload.  The response supplies the size of the AP's firmware blob for
+the module implementing the Protocol.
+
+.. figtable::
+    :nofig:
+    :label: table-firmware-size-response
+    :caption: Firmware Protocol Firmware Size Response
+    :spec: l l c c l
+
+    ======  =====  ====  ======  =========================
+    Offset  Field  Size  Value   Description
+    ======  =====  ====  ======  =========================
+    0       size   4     Number  Size of the blob in bytes
+    ======  =====  ====  ======  =========================
+
+..
+
+Greybus Firmware Get Firmware Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Firmware get firmware operation allows the requestor to retrieve a
+stream of bytes at an offset within the firmware blob from the AP.  The AP
+responds with the requested number of bytes from the connection's associated
+firmware blob at the requested offset, or with an error status without payload
+if no firmware blob has yet been associated with this connection or if the
+requested stream size exceeds the firmware blob's size minus the requested
+offset.
+
+Greybus Firmware Get Firmware Request
+"""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-firmware-get-firmware-request` defines the Greybus Firmware
+get firmware request payload.  The request specifies an offset into the firmware
+blob, and the size of the stream of bytes requested.  The stream size requested
+must be less than or equal to the size given by the most recent firmware size
+response (:ref:`firmware-size-response`) minus the offset; when it is not, the
+AP shall signal an error in its response.  The module is responsible for
+tracking its offset into the firmware blob as needed.
+
+.. figtable::
+    :nofig:
+    :label: table-firmware-get-firmware-request
+    :caption: Firmware Protocol Get Firmware Request
+    :spec: l l c c l
+
+    ======  ====== ====  ======  =================================
+    Offset  Field  Size  Value   Description
+    ======  ====== ====  ======  =================================
+    0       offset 4     Number  Offset into the firmware blob
+    4       size   4     Number  Size of the byte stream requested
+    ======  ====== ====  ======  =================================
+
+..
+
+Greybus Firmware Get Firmware Response
+""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-firmware-get-firmware-response` defines the Greybus Firmware
+get firmware response payload.  The response includes the stream of bytes
+requested by the module.  In the case that the AP cannot fulfill the request,
+such as when the requested stream size was greater than the total size of the
+firmware blob, it shall signal an error in the status byte of the response
+header.
+
+.. figtable::
+    :nofig:
+    :label: table-firmware-get-firmware-response
+    :caption: Firmware Protocol Get Firmware Response
+    :spec: l l c c l
+
+    ======  =====  ====== ======  =================================
+    Offset  Field  Size   Value   Description
+    ======  =====  ====== ======  =================================
+    4       data   *size* Data    Data from the firmware blob
+    ======  =====  ====== ======  =================================
+
+..
+
+Greybus Firmware Ready to Boot Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Firmware ready to boot operation lets the requesting module notify
+the AP that it has successfully loaded the connection's currently-associated
+firmware blob and is able to hand over control of the processor to that blob,
+indicating the status of its firmware blob.  The AP shall then send a response
+empty of payload, indicating via the header's status byte whether or not it
+permits the module to continue booting.
+
+The module shall send a ready to boot request only when it has successfully
+loaded a firmware blob and can execute that firmware.
+
+Greybus Firmware Ready to Boot Request
+""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-firmware-ready-to-boot-request` defines the Greybus Firmware
+ready to boot request payload.  The request gives the boot stage the module has
+achieved and the security status of its firmware blob.
+
+.. figtable::
+    :nofig:
+    :label: table-firmware-ready-to-boot-request
+    :caption: Firmware Protocol Ready to Boot Request
+    :spec: l l c c l
+
+    ======  ======  ====  ======  ===========================
+    Offset  Field   Size  Value   Description
+    ======  ======  ====  ======  ===========================
+    0       stage   1     Number  Boot stage
+    1       status  1     Number  :ref:`firmware-blob-status`
+    ======  ======  ====  ======  ===========================
+
+..
+
+.. _firmware-blob-status:
+
+Greybus Firmware Ready to Boot Firmware Blob Status
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-firmware-blob-status` defines the constants by which the
+module can indicate the status of its firmware blob to the AP in a Greybus
+Firmware Ready to Boot Request.
+
+.. figtable::
+    :nofig:
+    :label: table-firmware-blob-status
+    :caption: Firmware Ready to Boot Firmware Blob Statuses
+    :spec: l l l
+
+    ====================  ====================================  ============
+    Firmware Blob Status  Brief Description                     Status Value
+    ====================  ====================================  ============
+    BOOT_STATUS_INVALID   Firmware blob could not be validated  0x00
+    BOOT_STATUS_INSECURE  Firmware blob is valid but insecure   0x01
+    BOOT_STATUS_SECURE    Firmware blob is valid and secure     0x02
+    |_|                   (Reserved Range)                      0x03..0xFF
+    ====================  ====================================  ============
+
+..
+
+Greybus Firmware Ready to Boot Response
+"""""""""""""""""""""""""""""""""""""""
+
+If the AP permits the module to boot in its current status, the Greybus Firmware
+Ready to Boot response message shall have no payload.  In the case that the AP
+forbids the module from booting, it shall signal an error in the status byte of
+the response message's header.
