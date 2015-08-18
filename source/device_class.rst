@@ -1738,7 +1738,8 @@ the request.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        data            X       Data            array of data bytes
+    0        len             4       Number          length in bytes of the data field
+    4        data            X       Data            array of data bytes
     =======  ==============  ======  ==========      ===========================
 
 ..
