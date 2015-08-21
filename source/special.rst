@@ -367,7 +367,7 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     This operation is used by the AP Module to request that the SVC
     associate a device ID with the given Interface.
 
-.. c:function:: int intf_hotplug(u8 intf_id, u16 size, u8 *data);
+.. c:function:: int intf_hotplug(u8 intf_id, u32 unipro_mfg_id, u32 unipro_prod_id, u32 ara_vend_id, u32 ara_prod_id);
 
     The SVC sends this to the AP Module to inform it that it has
     detected a module on the indicated Interface.  It supplies a
@@ -683,8 +683,7 @@ it sends an Interface Hotplug Request to the AP Module.  The hotplug
 request is sent after the Interface's |unipro| link has been
 established.  The size and data values describe a structured block
 of additional information known by the SVC about the discovered
-Interface (such as the vendor and product ID).  The format of
-this data is TBD.
+Interface (such as the vendor and product ID).
 
 .. XXX SVC Protocol connections must have E2EFC enabled and CSD and
 .. XXX CSV disabled to ensure these messages are delivered reliably
@@ -706,13 +705,15 @@ power-on).
     :caption: SVC Protocol Hotplug Request
     :spec: l l c c l
 
-    =======  ==============  ======  ============    ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ============    ===========================
-    0        intf_id         1       Interface ID    Interface that now has a module present
-    1        size            1       Number          Size of descriptive data
-    2        data            *size*  Data            Descriptive data
-    =======  ==============  ======  ============    ===========================
+    ======  ==============  ====  ============  =======================================
+    Offset  Field           Size  Value         Description
+    ======  ==============  ====  ============  =======================================
+    0       intf_id         1     Interface ID  Interface that now has a module present
+    1       unipro_mfg_id   4     |unipro| VID  |unipro| DDB Level 1 Manufacturer ID
+    5       unipro_prod_id  4     |unipro| PID  |unipro| DDB Level 1 Product ID
+    9       ara_vend_id     4     Ara VID       Ara Vendor ID
+    13      ara_prod_id     4     Ara PID       Ara Product ID
+    ======  ==============  ====  ============  =======================================
 
 ..
 
