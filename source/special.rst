@@ -342,6 +342,15 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     handling code adhering to the Protocol specified herein supports
     major version |gb-major|, minor version |gb-minor|.
 
+.. c:function:: int svc_hello(u16 endo_id, u8 intf_id);
+
+    This Operation is used at initial power-on, sent by the SVC to
+    inform the AP of its environment. After version negotiation,
+    it is the next operation initiated by the SVC sent at
+    initialization. The descriptor describes details of the endo
+    environment such as number, placement, and features of interface
+    blocks, etc.
+
 .. c:function:: int intf_device_id(u8 intf_id, u8 device_id);
 
     This operation is used by the AP Module to request that the SVC
@@ -412,7 +421,8 @@ response type values are shown.
     Connection create            0x05           0x85
     Connection destroy           0x06           0x86
     Protocol Version             0x07           0x87
-    (all other values reserved)  0x08..0x7f     0x88..0xff
+    SVC Hello                    0x08           0x88
+    (all other values reserved)  0x09..0x7f     0x89..0xff
     ===========================  =============  ==============
 
 ..
@@ -470,6 +480,41 @@ major version |gb-major|, minor version |gb-minor|.
     =======  ==============  ======  ==========      ===========================
 
 ..
+
+Greybus SVC Hello Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SVC Hello Operation is sent by the SVC to the AP
+at power-on to inform the AP of its environment.
+
+Greybus SVC Hello Request
+"""""""""""""""""""""""""
+
+This Operation is used at initial power-on, sent by the SVC to
+inform the AP of its environment. After version negotiation, it is
+the next Operation sent by the SVC sent at initialization. The
+descriptor describes details of the endo environment and location of
+the AP interface.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-hello-request
+    :caption: SVC Protocol SVC Hello Request
+    :spec: l l c c l
+
+    =======  ==============  ===========  ===============  ===========================
+    Offset   Field           Size         Value            Description
+    =======  ==============  ===========  ===============  ===========================
+    0        endo_id         2            Endo ID          Endo ID
+    2        intf_id         1            AP Interface ID  AP Interface ID
+    =======  ==============  ===========  ===============  ===========================
+
+..
+
+Greybus SVC Hello Response
+""""""""""""""""""""""""""
+
+The Greybus SVC Hello response contains no payload.
 
 Greybus SVC Interface Device ID Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
