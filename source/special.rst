@@ -351,6 +351,12 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     environment such as number, placement, and features of interface
     blocks, etc.
 
+.. c:function:: int dme_peer_get(u8 intf_id, u16 attribute, u16 selector, u16 *result_code, u32 *value);
+
+    This Operation is used by the AP to direct the SVC to perform a
+    |unipro| DME peer get on its behalf. The SVC returns the value
+    of the DME attribute requested.
+
 .. c:function:: int intf_device_id(u8 intf_id, u8 device_id);
 
     This operation is used by the AP Module to request that the SVC
@@ -422,7 +428,8 @@ response type values are shown.
     Connection destroy           0x06           0x86
     Protocol Version             0x07           0x87
     SVC Hello                    0x08           0x88
-    (all other values reserved)  0x09..0x7f     0x89..0xff
+    DME peer get                 0x09           0x89
+    (all other values reserved)  0x0a..0x7f     0x8a..0xff
     ===========================  =============  ==============
 
 ..
@@ -515,6 +522,56 @@ Greybus SVC Hello Response
 """"""""""""""""""""""""""
 
 The Greybus SVC Hello response contains no payload.
+
+Greybus DME Peer Get Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SVC DME Peer Get Operation is sent by the SVC to the AP
+to direct the SVC to perform a |unipro| DME Peer Get on an Interface.
+
+Greybus DME Peer Get Request
+""""""""""""""""""""""""""""
+This can be used by the AP to query specific attributes located in
+the |unipro| stack of an Interface. The SVC returns the value of the
+DME attribute requested.
+
+.. figtable::
+    :nofig:
+    :label: table-dme-peer-get-request
+    :caption: SVC Protocol DME Peer Get Request
+    :spec: l l c c l
+
+    =======  ==============  ===========  ===============  ===========================
+    Offset   Field           Size         Value            Description
+    =======  ==============  ===========  ===============  ===========================
+    0        intf_id         1            Interface ID     Interface ID
+    1        attr            2            DME Attribute    |unipro| DME Attribute
+    3        selector        2            Selector index   |unipro| DME selector
+    =======  ==============  ===========  ===============  ===========================
+
+..
+
+Greybus DME Peer Get Response
+"""""""""""""""""""""""""""""
+
+The Greybus DME Peer Get response contains the ConfigResultCode as
+defined in the |unipro| specification, as well as the value of the
+attribute, if applicable.
+
+.. figtable::
+    :nofig:
+    :label: table-dme-peer-get-response
+    :caption: SVC Protocol DME Peer Get Response
+    :spec: l l c c l
+
+    =======  ==============  ===========  ================  =========================================
+    Offset   Field           Size         Value             Description
+    =======  ==============  ===========  ================  =========================================
+    0        result_code     2            ConfigResultCode  |unipro| DME Peer Get ConfigResultCode
+    2        attr_value      4            Attribute value   |unipro| DME Peer Get DME Attribute value
+    =======  ==============  ===========  ================  =========================================
+
+..
 
 Greybus SVC Interface Device ID Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
