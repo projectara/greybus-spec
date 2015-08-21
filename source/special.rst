@@ -367,6 +367,11 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     This Operation is used by the AP to direct the SVC to create
     a route for |unipro| traffic between two interfaces.
 
+.. c:function:: int route_destroy(u8 intf1_id, u8 intf2_id);
+
+    This Operation is used by the AP to direct the SVC to destroy
+    a route for |unipro| traffic between two interfaces.
+
 .. c:function:: int intf_device_id(u8 intf_id, u8 device_id);
 
     This operation is used by the AP Module to request that the SVC
@@ -441,7 +446,8 @@ response type values are shown.
     DME peer get                 0x09           0x89
     DME peer set                 0x0a           0x8a
     Route create                 0x0b           0x8b
-    (all other values reserved)  0x0c..0x7f     0x8c..0xff
+    Route destroy                0x0c           0x8c
+    (all other values reserved)  0x0d..0x7f     0x8d..0xff
     ===========================  =============  ==============
 
 ..
@@ -666,6 +672,40 @@ Greybus SVC Route Create Response
 """""""""""""""""""""""""""""""""
 
 The Greybus SVC Protocol Route Create response contains no payload.
+
+Greybus SVC Route Destroy Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SVC Protocol Route Destroy Operation allows the AP Module
+to request a route be torn down for |unipro| traffic between two
+Interfaces.
+
+Greybus SVC Route Destroy Request
+""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-route-destroy-request` defines the Greybus SVC
+Route Create request payload. The request supplies the Interface IDs
+of two Interfaces to be disconnected.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-route-destroy-request
+    :caption: SVC Protocol Route Destroy Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========  ===========================
+    Offset   Field           Size    Value       Description
+    =======  ==============  ======  ==========  ===========================
+    0        intf1_id        1       intf1_id    First Interface
+    1        intf2_id        1       intf2_id    Second Interface
+    =======  ==============  ======  ==========  ===========================
+
+..
+
+Greybus SVC Route Destroy Response
+""""""""""""""""""""""""""""""""""
+
+The Greybus SVC Protocol Route Destroy response contains no payload.
 
 Greybus SVC Interface Device ID Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
