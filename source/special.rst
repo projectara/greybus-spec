@@ -393,7 +393,7 @@ Conceptually, the operations in the Greybus SVC Protocol are:
 .. XXX down at some point--since we have no way to discover this
 .. XXX immediately.
 
-.. c:function:: int connection_create(u8 intf1_id, u16 cport1_id, u8 intf2_id, u16 cport2_id);
+.. c:function:: int connection_create(u8 intf1_id, u16 cport1_id, u8 intf2_id, u16 cport2_id, u8 tc, u8 flags);
 
     The AP Module uses this operation to request the SVC set up a
     |unipro| connection between CPorts on two Interfaces.
@@ -811,6 +811,11 @@ Module to the SVC.  The first Interface ID and first CPort ID define
 one end of the connection to be established, and the second
 Interface ID and CPort ID define the other end.
 
+CPort flags can be specified as a bitwise-or of flags in *flags*,
+and are defined in table :num:`table-svc-connection-create-request-flags`.
+When set, the corresponding feature is enabled. For example,
+specifying CSD enables |unipro| Controlled Segment Dropping.
+
 .. figtable::
     :nofig:
     :label: table-svc-connection-create-request
@@ -824,7 +829,25 @@ Interface ID and CPort ID define the other end.
     1        cport1_id       2       CPort ID            CPort on first Interface
     3        intf2_id        1       Interface ID        Second Interface
     4        cport2_id       2       CPort ID            CPort on second Interface
+    6        tc              1       Traffic class       |unipro| traffic class
+    7        flags           1       Connection flags    |unipro| connection flags
     =======  ==============  ======  ==================  ===========================
+
+..
+
+.. figtable::
+    :nofig:
+    :label: table-svc-connection-create-request-flags
+    :caption: SVC Protocol Connection Create Request Flags
+    :spec: l l l
+
+    =======  ==============  =====================================
+    Value    Flag            Description
+    =======  ==============  =====================================
+    0x01     E2EFC           |unipro| L4 End-to-End Flow Control
+    0x02     CSD             |unipro| Controlled Segment Dropping
+    0x04     CSV             |unipro| CPort Safety Valve
+    =======  ==============  =====================================
 
 ..
 
