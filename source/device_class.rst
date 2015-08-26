@@ -192,7 +192,7 @@ Conceptually, the operations in the Greybus battery Protocol are:
     handling code adhering to the Protocol specified herein supports
     major version |gb-major|, minor version |gb-minor|.
 
-.. c:function:: int get_technology(u16 *technology);
+.. c:function:: int get_technology(u32 *technology);
 
     Returns a value indicating the technology type that this battery
     adapter controls.
@@ -334,7 +334,7 @@ The Greybus battery technology request message has no payload.
 Greybus Battery Technology Response
 """""""""""""""""""""""""""""""""""
 
-The Greybus battery technology response contains a 2-byte value
+The Greybus battery technology response contains a 4-byte value
 that represents the type of battery being controlled as defined in
 Table :num:`table-battery-technology-response`.
 
@@ -347,7 +347,7 @@ Table :num:`table-battery-technology-response`.
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        technology      2       Number          :ref:`battery-technology-type`
+    0        technology      4       Number          :ref:`battery-technology-type`
     =======  ==============  ======  ==========      ===========================
 
 ..
