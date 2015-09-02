@@ -380,8 +380,8 @@ Conceptually, the operations in the Greybus SVC Protocol are:
 .. c:function:: int intf_hotplug(u8 intf_id, u32 unipro_mfg_id, u32 unipro_prod_id, u32 ara_vend_id, u32 ara_prod_id);
 
     The SVC sends this to the AP Module to inform it that it has
-    detected a module on the indicated Interface.  It supplies a
-    block of data that describes the module that been attached.
+    detected a module on the indicated Interface.  It supplies some information
+    that describes the module that has been attached.
 
 .. XXX We may need to adjust based on whether detect is associated
 .. XXX with a module (as opposed to an Interface).
@@ -761,9 +761,8 @@ Greybus SVC Interface Hotplug Operation
 When the SVC first detects that a module is present on an Interface,
 it sends an Interface Hotplug Request to the AP Module.  The hotplug
 request is sent after the Interface's |unipro| link has been
-established.  The size and data values describe a structured block
-of additional information known by the SVC about the discovered
-Interface (such as the vendor and product ID).
+established.  The request includes some additional information known by the SVC
+about the discovered Interface (such as the vendor and product ID).
 
 .. XXX SVC Protocol connections must have E2EFC enabled and CSD and
 .. XXX CSV disabled to ensure these messages are delivered reliably
@@ -773,7 +772,7 @@ Greybus SVC Interface Hotplug Request
 
 The Greybus SVC hotplug request is sent only by the SVC to the AP
 Module.  The Interface ID informs the AP Module which Interface now
-has a module present, and a block of data supplies information (such
+has a module present, and supplies information (such
 as the vendor and model numbers) the SVC knows about the Interface.
 Exactly one hotplug event shall be sent by the SVC for a module when
 it has been inserted (or if it was found to be present at initial
