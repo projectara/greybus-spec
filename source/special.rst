@@ -1256,8 +1256,8 @@ Greybus Firmware Ready to Boot Request
 """"""""""""""""""""""""""""""""""""""
 
 Table :num:`table-firmware-ready-to-boot-request` defines the Greybus Firmware
-ready to boot request payload.  The request gives the boot stage the module has
-achieved and the security status of its firmware blob.
+ready to boot request payload.  The request gives the security status of its
+firmware blob.
 
 .. figtable::
     :nofig:
@@ -1268,8 +1268,7 @@ achieved and the security status of its firmware blob.
     ======  ======  ====  ======  ===========================
     Offset  Field   Size  Value   Description
     ======  ======  ====  ======  ===========================
-    0       stage   1     Number  Boot stage
-    1       status  1     Number  :ref:`firmware-blob-status`
+    0       status  1     Number  :ref:`firmware-blob-status`
     ======  ======  ====  ======  ===========================
 
 ..
