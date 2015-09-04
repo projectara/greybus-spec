@@ -1172,11 +1172,20 @@ operation is a request or a response.
     ===========================  =============  ==============
     Invalid                      0x00           0x80
     Protocol Version             0x01           0x81
-    Get Brightness               0x02           0x82
-    Set Brightness               0x03           0x83
-    Set Blink                    0x04           0x84
-    Get Mode                     0x05           0x85
-    (all other values reserved)  0x06..0x7f     0x86..0xff
+    Get Lights                   0x02           0x82
+    Get Light Config             0x03           0x83
+    Get Channel Config           0x04           0x84
+    Get Channel Flash Config     0x05           0x85
+    Set Brightness               0x06           0x86
+    Set Blink                    0x07           0x87
+    Set Color                    0x08           0x88
+    Set Fade                     0x09           0x89
+    Event                        0x0a           N/A
+    Set Flash Intensity          0x0b           0x8b
+    Set Flash Strobe             0x0c           0x8c
+    Set Flash Timeout            0x0d           0x8d
+    Get Flash Fault              0x0e           0x8e
+    (all other values reserved)  0x0f..0x7f     0x8f..0xff
     ===========================  =============  ==============
 
 ..
