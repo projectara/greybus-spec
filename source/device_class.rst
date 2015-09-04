@@ -1136,22 +1136,67 @@ The operations in the Greybus Lights Protocol are:
     handling code adhering to the Protocol specified herein supports
     major version |gb-major|, minor version |gb-minor|.
 
-.. c:function:: int get_brightness(u8 *brightness);
+.. c:function:: int get_lights(u8 *lights_count);
 
-   Return the value of the actual brightness level.
+   Return the number of lights devices supported. lights_id used
+   in the following operations are sequential increments from 0 to
+   lights_count less one.
 
-.. c:function:: int set_brightness(u8 brightness);
+.. c:function:: int get_light_config(u8 light_id, u8 *channel_count, u8 *name[32]);
+
+   Request the number of channels controlled by a light controller
+   and it's name, providing a valid identifier for that light.
+   channel_id used in the following operations are sequential
+   increments from 0 to channel_count less one.
+
+
+.. c:function:: int get_channel_config(u8 light_id, u8 channel_id, u8 *channel_count, struct gb_channel_config *config);
+
+   Request a set of configuration parameters related to a channel in a
+   light controller. The return structure elements shall map the fields
+   of :ref:`lights-get-channel-config-response`.
+
+.. c:function:: int get_channel_flash_config(u8 light_id, u8 channel_id, struct gb_channel_flash_config *flash_config);
+
+   Request a set of flash configuration parameters related to a
+   channel in a light controller. The return structure elements shall
+   map the fields of :ref:`lights-get-channel-flash-config-response`
+
+.. c:function:: int set_blink(u8 light_id, u8 channel_id, u16 time_on_ms, u16 time_off_ms);
+
+   Set hardware blink if supported by the device, the time values are
+   specified in milliseconds. Setting time values to 0 shall disable
+   blink.
+
+.. c:function:: int set_brightness(u8 light_id, u8 channel_id, u8 brightness);
 
    Set the level of brightness with the specified value.
 
-.. c:function:: int set_blink(u64 delay_on, u64 delay_off);
+.. c:function:: int set_color(u8 light_id, u8 channel_id, u32 color);
 
-   Set hardware blink if supported by the device, the delays are specified in
-   milliseconds.
+   Set color code with the specified value.
 
-.. c:function:: int get_modes(u32 *modes);
+.. c:function:: int set_fade(u8 light_id, u8 channel_id, u32 fade_in, u32 fade_out);
 
-   Returns a bitmask indicating the functions a Light device can represent.
+   Set fade in and out level with the specified values.
+
+.. c:function:: int set_flash_intensity(u8 light_id, u8 channel_id, u32 intensity_uA);
+
+   Set flash current intensity in micro Amperes with the specified
+   value.
+
+.. c:function:: int set_flash_strobe(u8 light_id, u8 channel_id, u8 state);
+
+   Set flash strobe state with the specified value, value 0 means
+   strobe off other value means strobe on.
+
+.. c:function:: int set_flash_timeout(u8 light_id, u8 channel_id, u32 timeout_us);
+
+   Set flash timeout value in micro seconds with the specified value.
+
+.. c:function:: int get_flash_fault(u8 light_id, u8 channel_id, *u32 fault);
+
+   Get flash fault status from controller.
 
 Greybus Lights Message Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
