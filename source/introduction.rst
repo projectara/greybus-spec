@@ -56,7 +56,7 @@ system's software with respect to these interfaces.
 
 A Project Ara "Module" is a device that slides into a physical slot on
 a Project Ara Endo.  A module has one or more "Interface Blocks."  Each
-Interface Block is a single physical physical port through which
+Interface Block is a single physical port through which
 |unipro| packets are transferred.  Greybus represents each Interface
 Block with an "Interface" abstraction.  A Greybus Interface can support
 one or more "Bundles". A Bundle represents a device in Greybus.  Bundles
