@@ -59,12 +59,13 @@ a Project Ara Endo.  A module has one or more "Interface Blocks."  Each
 Interface Block is a single physical port through which
 |unipro| packets are transferred.  Greybus represents each Interface
 Block with an "Interface" abstraction.  A Greybus Interface can support
-one or more "Bundles". A Bundle represents a device in Greybus.  Bundles
-communicate with each other on the network via one or more |unipro|
-CPorts.  A CPort is a bidirectional pipe through which |unipro|
-traffic is exchanged.  Bundles send "messages" via CPorts; messages
-are datagrams with ancillary metadata.  All CPort traffic is
-peer-to-peer; multicast communication is not supported.
+one or more "Bundles". A Bundle represents a logical "device" in
+Greybus that does one logical "thing" as far as the host operating
+system works.  Bundles communicate with each other on the network via
+one or more |unipro| CPorts.  A CPort is a bidirectional pipe through
+which |unipro| traffic is exchanged.  Bundles send "messages" via
+CPorts; messages are datagrams with ancillary metadata.  All CPort
+traffic is peer-to-peer; multicast communication is not supported.
 
 Project Ara presently requires that exactly one application processor
 (AP) is present on the system for storing user data and executing
