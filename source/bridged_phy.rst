@@ -2504,8 +2504,10 @@ controller, as defined in table :num:`table-sdio-get-caps-response`.
     =========    ==============  ======  ==========      ===========================
     0            caps            4       Bit Mask        :ref:`sdio-caps-bits`
     4            ocr             4       Bit Mask        :ref:`sdio-voltage-range`
-    8            max_blk_count   2       Number          Maximum Number of blocks per data command transfer
-    10           max_blk_size    2       Number          Maximum size of each block to transfer
+    8            f_min           4       Number          Minimum frequency supported by the controller
+    12           f_max           4       Number          Maximum frequency supported by the controller
+    16           max_blk_count   2       Number          Maximum Number of blocks per data command transfer
+    18           max_blk_size    2       Number          Maximum size of each block to transfer
     =========    ==============  ======  ==========      ===========================
 
 ..
