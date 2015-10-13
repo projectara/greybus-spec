@@ -515,11 +515,12 @@ at power-on to inform the AP of its environment.
 Greybus SVC Hello Request
 """""""""""""""""""""""""
 
-This Operation is used at initial power-on, sent by the SVC to
-inform the AP of its environment. After version negotiation, it is
-the next Operation sent by the SVC sent at initialization. The
-descriptor describes details of the endo environment and location of
-the AP interface.
+Table :num:`table-svc-hello-request` defines the Greybus SVC Hello
+Request payload. This Operation is used at initial power-on, sent by
+the SVC to inform the AP of its environment. After version
+negotiation, it is the next Operation sent by the SVC sent at
+initialization. The descriptor describes details of the endo
+environment and location of the AP interface.
 
 .. figtable::
     :nofig:
@@ -541,17 +542,19 @@ Greybus SVC Hello Response
 
 The Greybus SVC Hello response contains no payload.
 
-Greybus DME Peer Get Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus SVC DME Peer Get Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus SVC DME Peer Get Operation is sent by the SVC to the AP
 to direct the SVC to perform a |unipro| DME Peer Get on an Interface.
 
-Greybus DME Peer Get Request
-""""""""""""""""""""""""""""
-This can be used by the AP to query specific attributes located in
-the |unipro| stack of an Interface. The SVC returns the value of the
-DME attribute requested.
+Greybus SVC DME Peer Get Request
+""""""""""""""""""""""""""""""""
+
+Table :num:`table-dme-peer-get-request` defines the Greybus SVC DME
+Peer Get Request payload. This request may be sent by the AP to query
+specific attributes located in the |unipro| stack of an Interface. The
+SVC returns the value of the DME attribute requested.
 
 .. figtable::
     :nofig:
@@ -569,12 +572,13 @@ DME attribute requested.
 
 ..
 
-Greybus DME Peer Get Response
-"""""""""""""""""""""""""""""
+Greybus SVC DME Peer Get Response
+"""""""""""""""""""""""""""""""""
 
-The Greybus DME Peer Get response contains the ConfigResultCode as
-defined in the |unipro| specification, as well as the value of the
-attribute, if applicable.
+Table :num:`table-dme-peer-get-response` defines the Greybus SVC DME
+Peer Get Response payload.  The Greybus DME Peer Get response contains
+the ConfigResultCode as defined in the |unipro| specification, as well
+as the value of the attribute, if applicable.
 
 .. figtable::
     :nofig:
@@ -591,16 +595,18 @@ attribute, if applicable.
 
 ..
 
-Greybus DME Peer Set Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus SVC DME Peer Set Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus SVC DME Peer Set Operation is sent by the SVC to the AP
 to direct the SVC to perform a |unipro| DME_PEER_SET on an Interface.
 
-Greybus DME Peer Set Request
-""""""""""""""""""""""""""""
-This can be used by the AP to set specific attributes located in
-the |unipro| stack of an Interface.
+Greybus SVC DME Peer Set Request
+""""""""""""""""""""""""""""""""
+
+Table :num:`table-dme-peer-set-request` defines the Greybus SVC DME
+Peer Set Request payload.  This request may be sent by the AP to set
+specific attributes located in the |unipro| stack of an Interface.
 
 .. figtable::
     :nofig:
@@ -619,11 +625,12 @@ the |unipro| stack of an Interface.
 
 ..
 
-Greybus DME Peer Set Response
-"""""""""""""""""""""""""""""
+Greybus SVC DME Peer Set Response
+"""""""""""""""""""""""""""""""""
 
-The Greybus DME Peer Set response contains the ConfigResultCode as
-defined in the |unipro| specification.
+Table :num:`table-dme-peer-set-response` defines the Greybus SVC DME
+Peer Set Response payload. The Greybus DME Peer Set response contains
+the ConfigResultCode as defined in the |unipro| specification.
 
 .. figtable::
     :nofig:
@@ -721,13 +728,17 @@ Module always uses device ID 1.
 Greybus SVC Interface Device ID Request
 """""""""""""""""""""""""""""""""""""""
 
-The Greybus SVC Interface device ID request is sent only by the AP
-Module to the SVC.  It supplies the device ID that the SVC should
-associate with the indicated Interface.  The AP Module can remove
-the association of an Interface with a device ID by assigning device
-ID value 0.  It is an error to assign a (non-zero) device ID to an
-Interface that already has one, or to clear the device ID of an
-Interface that has no device ID assigned.
+Table :num:`table-svc-device-id-request` defines the Greybus SVC
+Interface Device ID Request payload.
+
+The Greybus SVC Interface Device ID Request shall only be sent by the
+AP Module to the SVC.  It supplies the device ID that the SVC will
+associate with the indicated Interface.  The AP Module can remove the
+association of an Interface with a device ID by assigning device ID
+value 0. The AP shall not assign a (non-zero) device ID to an
+Interface that the SVC has already associated with an Interface, and
+shall not clear the device ID of an Interface that has no device ID
+assigned.
 
 Note that assigning a device ID to an Interface does not cause
 the SVC to set up any routes for that device ID.  Routes are
@@ -769,6 +780,9 @@ about the discovered Interface (such as the vendor and product ID).
 
 Greybus SVC Interface Hotplug Request
 """""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-hotplug-request` defines the Greybus SVC
+Interface Hotplug Request payload.
 
 The Greybus SVC hotplug request is sent only by the SVC to the AP
 Module.  The Interface ID informs the AP Module which Interface now
@@ -815,6 +829,9 @@ event to the AP Module when this occurs.
 Greybus SVC Interface Hot Unplug Request
 """"""""""""""""""""""""""""""""""""""""
 
+Table :num:`table-svc-hot-unplug-request` defines the Greybus SVC
+Interface Hot Unplug Request payload.
+
 The Greybus SVC hot unplog request is sent only by the SVC to the AP
 Module.  The Interface ID informs the AP which Interface no longer
 has a module attached to it.  The SVC shall ensure the hotplug event
@@ -848,6 +865,9 @@ indicated link.
 
 Greybus SVC Interface Reset Request
 """""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-reset-request` defines the Greybus SVC Interface
+Reset Request payload.
 
 The Greybus SVC Interface Reset Request is sent only by the SVC to
 the AP Module.  The Interface ID informs the AP Module which
@@ -884,6 +904,9 @@ already in use in another connection.
 
 Greybus SVC Connection Create Request
 """""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-connection-create-request` defines the Greybus
+SVC Connection Create Request payload.
 
 The Greybus SVC connection create request is sent only by the AP
 Module to the SVC.  The first Interface ID and first CPort ID define
@@ -946,6 +969,9 @@ to attempt to destroy a connection more than once.
 
 Greybus SVC Connection Destroy Request
 """"""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-connection-destroy-request` defines the Greybus
+SVC Connection Destroy Request payload.
 
 The Greybus SVC connection destroy request is sent only by the AP
 Module to the SVC.  The two (Interface ID, CPort ID) pairs define
