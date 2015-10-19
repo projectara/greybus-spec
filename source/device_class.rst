@@ -2144,7 +2144,9 @@ the request.
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
     0        len             4       Number          length in bytes of the data field
-    4        data            X       Data            array of data bytes
+    4        reserved0       4       Number          reserved for use by the implementation
+    8        reserved1       4       Number          reserved for use by the implementation
+    12       data            X       Data            array of data bytes
     =======  ==============  ======  ==========      ===========================
 
 ..
