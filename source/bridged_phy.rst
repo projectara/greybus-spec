@@ -2835,6 +2835,8 @@ Command request.
     1        cmd_flags       1       Bit Mask        :ref:`sdio-cmd-flags`
     2        cmd_type        1       Number          :ref:`sdio-cmd-type`
     3        arg             4       Number          SDIO command arguments, as specified by SD Association
+    7        data_blocks     2       Number          If data is available, represents the number of total blocks to transfer, 0 otherwise
+    9        data_blksz      2       Number          If data is available, represents the size of the blocks to transfer, 0 otherwise
     =======  ==============  ======  ==========      ===========================
 
 ..
