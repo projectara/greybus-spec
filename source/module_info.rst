@@ -265,7 +265,7 @@ they are associated with.  The Bundle descriptor is defined in Table
 
 The *class* field defines the class of the bundle. This shall be used by
 the AP to find what to expect from the bundle and how to configure/use
-it.  Class types are defined in :num:'table-bundle-class'.
+it. Class types are defined in Table :num:`table-bundle-class`.
 
 .. figtable::
     :nofig:
