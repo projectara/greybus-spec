@@ -171,16 +171,16 @@ Greybus Vibrator Off Response
 
 The Greybus vibrator off response message has no payload.
 
-Battery Protocol
-----------------
+Power Supply Protocol
+---------------------
 
 This section defines the operations used on a connection implementing
-the Greybus battery Protocol. This Protocol allows an AP Module to manage a
-battery device present on a Module. The Protocol consists of few basic
+the Greybus power supply Protocol. This Protocol allows an AP Module to manage a
+power supply device present on a Module. The Protocol consists of few basic
 operations, whose request and response message formats are defined
 here.
 
-Conceptually, the operations in the Greybus battery Protocol are:
+Conceptually, the operations in the Greybus power supply Protocol are:
 
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
@@ -194,60 +194,60 @@ Conceptually, the operations in the Greybus battery Protocol are:
 
 .. c:function:: int get_technology(u32 *technology);
 
-    Returns a value indicating the technology type that this battery
+    Returns a value indicating the technology type that this power supply
     adapter controls.
 
 .. c:function:: int get_status(u16 *status);
 
-    Returns a value indicating the charging status of the battery.
+    Returns a value indicating the charging status of the power supply.
 
 .. c:function:: int get_max_voltage(u32 *voltage);
 
-    Returns a value indicating the maximum voltage that the battery supports.
+    Returns a value indicating the maximum voltage that the power supply supports.
 
 .. c:function:: int get_percent_capacity(u32 *capacity);
 
     Returns a value indicating the current percent capacity of the
-    battery.
+    power supply.
 
 .. c:function:: int get_temperature(u32 *temperature);
 
-    Returns a value indicating the current temperature of the battery.
+    Returns a value indicating the current temperature of the power supply.
 
 .. c:function:: int get_voltage(u32 *voltage);
 
-    Returns a value indicating the voltage level of the battery.
+    Returns a value indicating the voltage level of the power supply.
 
 .. c:function:: int get_current(u32 *current);
 
     Returns a value indicating the current being supplied or drawn
-    from the battery.
+    from the power supply.
 
 .. c:function:: int get_total_capacity(u32 *capacity);
 
-    Returns a value indicating the total capacity in mAh of the battery.
+    Returns a value indicating the total capacity in mAh of the power supply.
 
 .. c:function:: int get_shutdown_temperature(u32 *temperature);
 
-    Returns a value indicating the temperature at which a battery
+    Returns a value indicating the temperature at which a power supply
     will automatically shut down.
 
-Greybus Battery Message Types
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus Power Supply Message Types
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Table :num:`table-battery-operation-type` describes the Greybus
-battery operation types and their values. A message type consists of an
+Table :num:`table-power-supply-operation-type` describes the Greybus
+power supply operation types and their values. A message type consists of an
 operation type combined with a flag (0x80) indicating whether the
 operation is a request or a response.
 
 .. figtable::
     :nofig:
-    :label: table-battery-operation-type
-    :caption: Battery Operation Types
+    :label: table-power-supply-operation-type
+    :caption: Power Supply Operation Types
     :spec: l l l
 
     ===========================  =============  ==============
-    Battery Operation Type       Request Value  Response Value
+    Power Supply Operation Type  Request Value  Response Value
     ===========================  =============  ==============
     Invalid                      0x00           0x80
     Protocol Version             0x01           0x81
@@ -265,402 +265,402 @@ operation is a request or a response.
 
 ..
 
-Greybus Battery Protocol Version Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus Power Supply Protocol Version Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus battery Protocol version operation allows the Protocol
+The Greybus power supply Protocol version operation allows the Protocol
 handling software on both ends of a connection to negotiate the
-version of the battery Protocol to use.
+version of the power supply Protocol to use.
 
-Greybus Battery Protocol Version Request
-""""""""""""""""""""""""""""""""""""""""
+Greybus Power Supply Protocol Version Request
+"""""""""""""""""""""""""""""""""""""""""""""
 
-Table :num:`table-battery-version-request` defines the Greybus battery
+Table :num:`table-power-supply-version-request` defines the Greybus power supply
 version request payload. The request supplies the greatest major and
-minor version of the battery Protocol supported by the sender.
+minor version of the power supply Protocol supported by the sender.
 
 .. figtable::
     :nofig:
-    :label: table-battery-version-request
-    :caption: Battery Protocol Version Request
+    :label: table-power-supply-version-request
+    :caption: Power Supply Protocol Version Request
     :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Offered battery Protocol major version
-    1        version_minor   1       |gb-minor|      Offered battery Protocol minor version
+    0        version_major   1       |gb-major|      Offered power supply Protocol major version
+    1        version_minor   1       |gb-minor|      Offered power supply Protocol minor version
     =======  ==============  ======  ==========      ===========================
 
 ..
 
 
-Greybus Battery Protocol Version Response
-"""""""""""""""""""""""""""""""""""""""""
+Greybus Power Supply Protocol Version Response
+""""""""""""""""""""""""""""""""""""""""""""""
 
-The Greybus battery Protocol version response payload contains two
+The Greybus power supply Protocol version response payload contains two
 one-byte values, as defined in table
-:num:`table-battery-protocol-version-response`.
-A Greybus battery controller adhering to the Protocol specified herein
+:num:`table-power-supply-protocol-version-response`.
+A Greybus power supply controller adhering to the Protocol specified herein
 shall report major version |gb-major|, minor version |gb-minor|.
 
 .. figtable::
     :nofig:
-    :label: table-battery-protocol-version-response
-    :caption: Battery Protocol Version Response
+    :label: table-power-supply-protocol-version-response
+    :caption: Power Supply Protocol Version Response
     :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Battery Protocol major version
-    1        version_minor   1       |gb-minor|      Battery Protocol minor version
+    0        version_major   1       |gb-major|      Power Supply Protocol major version
+    1        version_minor   1       |gb-minor|      Power Supply Protocol minor version
     =======  ==============  ======  ==========      ===========================
 
 ..
 
-Greybus Battery Technology Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus Power Supply Technology Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus battery technology operation allows the AP Module to determine
-the details of the battery technology controller by the battery
+The Greybus power supply technology operation allows the AP Module to determine
+the details of the power supply technology controller by the power supply
 adapter.
 
-Greybus Battery Technology Request
-""""""""""""""""""""""""""""""""""
+Greybus Power Supply Technology Request
+"""""""""""""""""""""""""""""""""""""""
 
-The Greybus battery technology request message has no payload.
+The Greybus power supply technology request message has no payload.
 
-Greybus Battery Technology Response
-"""""""""""""""""""""""""""""""""""
-
-The Greybus battery technology response contains a 4-byte value
-that represents the type of battery being controlled as defined in
-Table :num:`table-battery-technology-response`.
-
-.. figtable::
-    :nofig:
-    :label: table-battery-technology-response
-    :caption: Battery Technology Response
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        technology      4       Number          :ref:`battery-technology-type`
-    =======  ==============  ======  ==========      ===========================
-
-..
-
-.. _battery-technology-type:
-
-Greybus Battery Technology Type
-"""""""""""""""""""""""""""""""
-
-Table :num:`table-battery-tech-type` describes the defined battery
-technologies defined for Greybus battery adapters.  These values are
-taken directly from the <linux/power_supply.h> header file.
-
-.. figtable::
-    :nofig:
-    :label: table-battery-tech-type
-    :caption: Battery Technology Type
-    :spec: l l
-
-    =============   ======
-    Battery Type    Value
-    =============   ======
-    Unknown         0x0000
-    NiMH            0x0001
-    LION            0x0002
-    LIPO            0x0003
-    LiFe            0x0004
-    NiCd            0x0005
-    LiMn            0x0006
-    =============   ======
-
-..
-
-Greybus Battery Status Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The Greybus battery status operation allows the AP Module to determine the
-status of the battery by the battery adapter.
-
-Greybus Battery Status Request
-""""""""""""""""""""""""""""""
-
-The Greybus battery status request message has no payload.
-
-Greybus Battery Status Response
-"""""""""""""""""""""""""""""""
-
-The Greybus battery status response contains a 2-byte value that
-represents the status of battery being controlled as defined in
-table :num:`table-battery-status-response`.
-
-.. figtable::
-    :nofig:
-    :label: table-battery-status-response
-    :caption: Battery Status Response
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        battery_status  2       Number          :ref:`battery-status`
-    =======  ==============  ======  ==========      ===========================
-
-..
-
-.. _battery-status:
-
-Greybus Battery Status Type
-"""""""""""""""""""""""""""
-
-Table :num:`table-battery-status-type` describes the defined battery
-status values defined for Greybus battery adapters.  These values are
-taken directly from the <linux/power_supply.h> header file.
-
-.. figtable::
-    :nofig:
-    :label: table-battery-status-type
-    :caption: Battery Status Type
-    :spec: l l
-
-    ==============  ======
-    Battery Status  Value
-    ==============  ======
-    Unknown         0x0000
-    Charging        0x0001
-    Discharging     0x0002
-    Not Charging    0x0003
-    Full            0x0004
-    ==============  ======
-
-..
-
-Greybus Battery Max Voltage Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The Greybus battery Max Voltage operation allows the AP Module to determine
-the maximum possible voltage of the battery.
-
-Greybus Battery Max Voltage Request
-"""""""""""""""""""""""""""""""""""
-
-The Greybus battery max voltage request message has no payload.
-
-Greybus Battery Max Voltage Response
-""""""""""""""""""""""""""""""""""""
-
-The Greybus battery max voltage response contains a 4-byte value
-that represents the maximum voltage of the battery being controlled,
-in |mu| V as defined in table :num:`table-battery-max-voltage-response`.
-
-.. figtable::
-    :nofig:
-    :label: table-battery-max-voltage-response
-    :caption: Battery Max Voltage Response
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        max_voltage     4       Number          Battery maximum voltage in |mu| V
-    =======  ==============  ======  ==========      ===========================
-
-..
-
-Greybus Battery Capacity Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The Greybus battery Capacity operation allows the AP Module to determine the
-current capacity percent of the battery.
-
-Greybus Battery Percent Capacity Request
+Greybus Power Supply Technology Response
 """"""""""""""""""""""""""""""""""""""""
 
-The Greybus battery capacity request message has no payload.
-
-Greybus Battery Percent Capacity Response
-"""""""""""""""""""""""""""""""""""""""""
-
-The Greybus battery capacity response contains a 4-byte value that
-represents the capacity of the battery being controlled, in
-percentage as defined in table
-:num:`table-battery-percent-capacity-response`.
+The Greybus power supply technology response contains a 4-byte value
+that represents the type of power supply being controlled as defined in
+Table :num:`table-power-supply-technology-response`.
 
 .. figtable::
     :nofig:
-    :label: table-battery-percent-capacity-response
-    :caption: Battery Percent Capacity Response
+    :label: table-power-supply-technology-response
+    :caption: Power Supply Technology Response
     :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        capacity        4       Number          Battery capacity in %
+    0        technology      4       Number          :ref:`power-supply-technology-type`
     =======  ==============  ======  ==========      ===========================
 
 ..
 
-Greybus Battery Temperature Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. _power-supply-technology-type:
 
-The Greybus battery temperature operation allows the AP Module to determine
-the current temperature of the battery.
-
-Greybus Battery Temperature Request
-"""""""""""""""""""""""""""""""""""
-
-The Greybus battery temperature request message has no payload.
-
-Greybus Battery Temperature Response
+Greybus Power Supply Technology Type
 """"""""""""""""""""""""""""""""""""
 
-The Greybus battery temperature response contains a 4-byte value
-that represents the temperature of the battery being controlled, in
+Table :num:`table-power-supply-tech-type` describes the defined power supply
+technologies defined for Greybus power supply adapters.  These values are
+taken directly from the <linux/power_supply.h> header file.
+
+.. figtable::
+    :nofig:
+    :label: table-power-supply-tech-type
+    :caption: Power Supply Technology Type
+    :spec: l l
+
+    ==================   ======
+    Power Supply Type    Value
+    ==================   ======
+    Unknown              0x0000
+    NiMH                 0x0001
+    LION                 0x0002
+    LIPO                 0x0003
+    LiFe                 0x0004
+    NiCd                 0x0005
+    LiMn                 0x0006
+    ==================   ======
+
+..
+
+Greybus Power Supply Status Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus power supply status operation allows the AP Module to determine the
+status of the power supply by the power supply adapter.
+
+Greybus Power Supply Status Request
+"""""""""""""""""""""""""""""""""""
+
+The Greybus power supply status request message has no payload.
+
+Greybus Power Supply Status Response
+""""""""""""""""""""""""""""""""""""
+
+The Greybus power supply status response contains a 2-byte value that
+represents the status of power supply being controlled as defined in
+table :num:`table-power-supply-status-response`.
+
+.. figtable::
+    :nofig:
+    :label: table-power-supply-status-response
+    :caption: Power Supply Status Response
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        status          2       Number          :ref:`power-supply-status`
+    =======  ==============  ======  ==========      ===========================
+
+..
+
+.. _power-supply-status:
+
+Greybus Power Supply Status Type
+""""""""""""""""""""""""""""""""
+
+Table :num:`table-power-supply-status-type` describes the defined power supply
+status values defined for Greybus power supply adapters.  These values are
+taken directly from the <linux/power_supply.h> header file.
+
+.. figtable::
+    :nofig:
+    :label: table-power-supply-status-type
+    :caption: Power Supply Status Type
+    :spec: l l
+
+    ====================   ======
+    Power Supply Status    Value
+    ====================   ======
+    Unknown                0x0000
+    Charging               0x0001
+    Discharging            0x0002
+    Not Charging           0x0003
+    Full                   0x0004
+    ====================   ======
+
+..
+
+Greybus Power Supply Max Voltage Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus power supply Max Voltage operation allows the AP Module to determine
+the maximum possible voltage of the power supply.
+
+Greybus Power Supply Max Voltage Request
+""""""""""""""""""""""""""""""""""""""""
+
+The Greybus power supply max voltage request message has no payload.
+
+Greybus Power Supply Max Voltage Response
+"""""""""""""""""""""""""""""""""""""""""
+
+The Greybus power supply max voltage response contains a 4-byte value
+that represents the maximum voltage of the power supply being controlled,
+in |mu| V as defined in table :num:`table-power-supply-max-voltage-response`.
+
+.. figtable::
+    :nofig:
+    :label: table-power-supply-max-voltage-response
+    :caption: Power Supply Max Voltage Response
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        max_voltage     4       Number          Power Supply maximum voltage in |mu| V
+    =======  ==============  ======  ==========      ===========================
+
+..
+
+Greybus Power Supply Capacity Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus power supply Capacity operation allows the AP Module to determine the
+current capacity percent of the power supply.
+
+Greybus Power Supply Percent Capacity Request
+"""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus power supply capacity request message has no payload.
+
+Greybus Power Supply Percent Capacity Response
+""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus power supply capacity response contains a 4-byte value that
+represents the capacity of the power supply being controlled, in
+percentage as defined in table
+:num:`table-power-supply-percent-capacity-response`.
+
+.. figtable::
+    :nofig:
+    :label: table-power-supply-percent-capacity-response
+    :caption: Power Supply Percent Capacity Response
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        capacity        4       Number          Power Supply capacity in %
+    =======  ==============  ======  ==========      ===========================
+
+..
+
+Greybus Power Supply Temperature Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus power supply temperature operation allows the AP Module to determine
+the current temperature of the power supply.
+
+Greybus Power Supply Temperature Request
+""""""""""""""""""""""""""""""""""""""""
+
+The Greybus power supply temperature request message has no payload.
+
+Greybus Power Supply Temperature Response
+"""""""""""""""""""""""""""""""""""""""""
+
+The Greybus power supply temperature response contains a 4-byte value
+that represents the temperature of the power supply being controlled, in
 0.1 |degree-c| increments as defined in table
-:num:`table-battery-temp-response`.
+:num:`table-power-supply-temp-response`.
 
 .. figtable::
     :nofig:
-    :label: table-battery-temp-response
-    :caption: Battery Temperature Response
+    :label: table-power-supply-temp-response
+    :caption: Power Supply Temperature Response
     :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        temperature     4       Number          Battery temperature (0.1 |degree-c| units)
+    0        temperature     4       Number          Power Supply temperature (0.1 |degree-c| units)
     =======  ==============  ======  ==========      ===========================
 
 ..
 
-Greybus Battery Voltage Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus Power Supply Voltage Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus battery Voltage operation allows the AP Module to determine the
-voltage being supplied by the battery.
+The Greybus power supply Voltage operation allows the AP Module to determine the
+voltage being supplied by the power supply.
 
-Greybus Battery Voltage Request
-"""""""""""""""""""""""""""""""
+Greybus Power Supply Voltage Request
+""""""""""""""""""""""""""""""""""""
 
-The Greybus battery voltage request message has no payload.
+The Greybus power supply voltage request message has no payload.
 
-Greybus Battery Voltage Response
-""""""""""""""""""""""""""""""""
+Greybus Power Supply Voltage Response
+"""""""""""""""""""""""""""""""""""""
 
-The Greybus battery voltage response contains a 4-byte value that
-represents the voltage of the battery being controlled, in |mu| V as
+The Greybus power supply voltage response contains a 4-byte value that
+represents the voltage of the power supply being controlled, in |mu| V as
 defined in table
-:num:`table-battery-voltage-response`.
+:num:`table-power-supply-voltage-response`.
 
 .. figtable::
     :nofig:
-    :label: table-battery-voltage-response
-    :caption: Battery Voltage Response
+    :label: table-power-supply-voltage-response
+    :caption: Power Supply Voltage Response
     :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        voltage         4       Number          Battery voltage in |mu| V
+    0        voltage         4       Number          Power Supply voltage in |mu| V
     =======  ==============  ======  ==========      ===========================
 
 ..
 
-Greybus Battery Current Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus Power Supply Current Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus battery Current operation allows the AP Module to determine the
-current current of the battery.
+The Greybus power supply Current operation allows the AP Module to determine the
+current current of the power supply.
 
-Greybus Battery Current Request
-"""""""""""""""""""""""""""""""
+Greybus Power Supply Current Request
+""""""""""""""""""""""""""""""""""""
 
-The Greybus battery current request message has no payload.
+The Greybus power supply current request message has no payload.
 
-Greybus Battery Current Response
-""""""""""""""""""""""""""""""""
+Greybus Power Supply Current Response
+"""""""""""""""""""""""""""""""""""""
 
-The Greybus battery current response contains a 4-byte value that
-represents the current of the battery being controlled, in |mu| A as
-defined in table :num:`table-battery-current-response`.
+The Greybus power supply current response contains a 4-byte value that
+represents the current of the power supply being controlled, in |mu| A as
+defined in table :num:`table-power-supply-current-response`.
 
 .. figtable::
     :nofig:
-    :label: table-battery-current-response
-    :caption: Battery Current Response
+    :label: table-power-supply-current-response
+    :caption: Power Supply Current Response
     :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        current         4       Number          Battery current in |mu| A
+    0        current         4       Number          Power Supply current in |mu| A
     =======  ==============  ======  ==========      ===========================
 
 ..
 
-Greybus Battery Total Capacity Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus Power Supply Total Capacity Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus battery total capacity operation allows the AP Module to determine
-the total capacity of the battery.
+The Greybus power supply total capacity operation allows the AP Module to determine
+the total capacity of the power supply.
 
-Greybus Battery Total Capacity Request
-""""""""""""""""""""""""""""""""""""""
+Greybus Power Supply Total Capacity Request
+"""""""""""""""""""""""""""""""""""""""""""
 
-The Greybus battery total capacity request message has no payload.
+The Greybus power supply total capacity request message has no payload.
 
-Greybus Battery Total Capacity Response
-"""""""""""""""""""""""""""""""""""""""
-The Greybus battery total capacity response contains a 4-byte value
-that represents the total capacity of the battery being controlled,
-in mAh as defined in table :num:`table-battery-total-capacity-response`.
+Greybus Power Supply Total Capacity Response
+""""""""""""""""""""""""""""""""""""""""""""
+The Greybus power supply total capacity response contains a 4-byte value
+that represents the total capacity of the power supply being controlled,
+in mAh as defined in table :num:`table-power-supply-total-capacity-response`.
 
 .. figtable::
     :nofig:
-    :label: table-battery-total-capacity-response
-    :caption: Battery Total Capacity Response
+    :label: table-power-supply-total-capacity-response
+    :caption: Power Supply Total Capacity Response
     :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        capacity        4       Number          Battery capacity in mAh
+    0        capacity        4       Number          Power Supply capacity in mAh
     =======  ==============  ======  ==========      ===========================
 
 ..
 
-Greybus Battery Shutdown Temperature Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The Greybus battery shutdown temperature operation allows the AP Module to
-determine the battery temperature at which the battery will shut
+Greybus Power Supply Shutdown Temperature Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Greybus power supply shutdown temperature operation allows the AP Module to
+determine the power supply temperature at which the power supply will shut
 itself down.
 
-Greybus Battery Shutdown Temperature Request
-""""""""""""""""""""""""""""""""""""""""""""
+Greybus Power Supply Shutdown Temperature Request
+"""""""""""""""""""""""""""""""""""""""""""""""""
 
-The Greybus battery shutdown temperature request message has no payload.
+The Greybus power supply shutdown temperature request message has no payload.
 
-Greybus Battery Shutdown Temperature Response
-"""""""""""""""""""""""""""""""""""""""""""""
-The Greybus battery shutdown temperature response contains a 4-byte
-value that represents the temperature at which the battery shuts
-down as defined in table :num:`table-battery-shutdown-temp-response`.
+Greybus Power Supply Shutdown Temperature Response
+""""""""""""""""""""""""""""""""""""""""""""""""""
+The Greybus power supply shutdown temperature response contains a 4-byte
+value that represents the temperature at which the power supply shuts
+down as defined in table :num:`table-power-supply-shutdown-temp-response`.
 
 .. figtable::
     :nofig:
-    :label: table-battery-shutdown-temp-response
-    :caption: Battery Shutdown Temperature Response
+    :label: table-power-supply-shutdown-temp-response
+    :caption: Power Supply Shutdown Temperature Response
     :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        temperature     4       Number          Battery temperature (0.1 |degree-c| units)
+    0        temperature     4       Number          Power Supply temperature (0.1 |degree-c| units)
     =======  ==============  ======  ==========      ===========================
 
 ..

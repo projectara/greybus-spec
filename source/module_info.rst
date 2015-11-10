@@ -285,7 +285,7 @@ it. Class types are defined in Table :num:`table-bundle-class`.
     HID                             0x05
     USB                             0x06
     SDIO                            0x07
-    Battery                         0x08
+    Power Supply                    0x08
     PWM                             0x09
     I2S                             0x0a
     SPI                             0x0b
@@ -367,7 +367,7 @@ typically should not be used.)
     HID                             0x05
     USB                             0x06
     SDIO                            0x07
-    Battery                         0x08
+    Power Supply                    0x08
     PWM                             0x09
     I2S Management                  0x0a
     SPI                             0x0b
