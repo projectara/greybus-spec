@@ -58,7 +58,7 @@ Endo
     Endoskeleton.
 
 Endoskeleton
-    A phsyical entity within a :ref:`Greybus System
+    A physical entity within a :ref:`Greybus System
     <glossary-greybus-system>`, containing one or more |unipro|
     Switches, exactly one :ref:`SVC <glossary-svc>`, and a collection
     of :ref:`Interfaces <glossary-interface>`. Every :ref:`Module
