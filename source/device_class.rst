@@ -522,7 +522,7 @@ seconds and tenths of degrees Celsius unless otherwise stated.
     :spec: l l l
 
     =================================================== ====== ========================
-    Power Supply Type                                   Value  Description
+    Power Supply Property                               Value  Description
     =================================================== ====== ========================
     GB_POWER_SUPPLY_PROP_STATUS                         0x00   :ref:`power-supply-status`
     GB_POWER_SUPPLY_PROP_CHARGE_TYPE                    0x01   :ref:`power-supply-charge`
