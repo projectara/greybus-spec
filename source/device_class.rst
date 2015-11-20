@@ -1549,7 +1549,7 @@ Greybus Lights Get Light Config Request
 
 Table :num:`table-lights-get-light-config-request` describes the
 Greybus Lights Get Light Config request. The request supplies only the
-light_id which is an unique identifier between 0 and lights_count
+light_id which is a unique identifier between 0 and lights_count
 less one.
 
 .. figtable::
