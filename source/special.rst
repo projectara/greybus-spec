@@ -1019,6 +1019,14 @@ The operations in the Greybus Firmware Protocol are:
     version.  Protocol handling code adhering to the Protocol specified here
     supports major version |gb-major|, minor version |gb-minor|.
 
+.. c:function:: int ap_ready(void);
+
+    The AP sends a request to the module in order to confirm that the AP
+    is now ready to receive requests over its firmware cport and the
+    module can start firmware download process.  Until this request is
+    received by the module, it shall not send any requests on the
+    firmware cport.
+
 .. c:function:: int firmware_size(u8 stage, u32 *size);
 
     The module requests from the AP the size of the firmware it must
@@ -1067,7 +1075,8 @@ response.
     Firmware Size                0x02           0x82
     Get Firmware                 0x03           0x83
     Ready to Boot                0x04           0x84
-    (all other values reserved)  0x05..0x7f     0x85..0xff
+    AP Ready                     0x05           0x85
+    (all other values reserved)  0x06..0x7f     0x86..0xff
     ===========================  =============  ==============
 
 ..
@@ -1122,6 +1131,24 @@ herein shall report major version |gb-major|, minor version |gb-minor|.
     ======  =====   ====    ==========  ===============================
 
 ..
+
+Greybus Firmware Protocol AP Ready Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Firmware Protocol AP Ready operation allows the AP to
+indicate that it is ready to receive requests from the module over the
+firmware cport. Only after the module has received this request may it
+start sending requests on the firmware cport.
+
+Greybus Firmware Protocol AP Ready Request
+""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus Firmware AP Ready request message has no payload.
+
+Greybus Firmware Protocol AP Ready Response
+"""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus Firmware AP Ready response message has no payload.
 
 Greybus Firmware Firmware Size Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
