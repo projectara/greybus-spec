@@ -176,16 +176,16 @@ descriptor as described in Table :num:`table-interface-descriptor`.
     :alt: Interface Descriptor
     :spec: l l c c l
 
-    =======  =================  ======  ==========  ==============================
+    =======  =================  ======  ==========  ==================================
     Offset   Field              Size    Value       Description
-    =======  =================  ======  ==========  ==============================
+    =======  =================  ======  ==========  ==================================
     0        size               2       0x0008      Size of this descriptor
     2        type               1       0x01        Type of the descriptor (Interface)
-    3        (pad)              1       0           Reserved (pad to 4 byte boundary)
+    3        features           1       Bit Mask    :ref:`interface-feature-bits`
     4        vendor_string_id   1       ID          String ID for the vendor name
     5        product_string_id  1       ID          String ID for the product name
     6        (pad)              2       0           Reserved (pad to 4 byte boundlary)
-    =======  =================  ======  ==========  ==============================
+    =======  =================  ======  ==========  ==================================
 
 *vendor_string_id* is a reference to a specific string descriptor ID
 that provides a description of the vendor who created the Module.  If
@@ -197,6 +197,27 @@ more details.
 that provides a description of the product.  If there is no string
 present for this value in the Manifest, this value shall be 0x00.
 See the :ref:`string-descriptor` section below for more details.
+
+.. _interface-feature-bits:
+
+Greybus Interface Descriptor Feature Bits
+"""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-interface-feature-bits` defines the bits which specify the
+set of features supported by an Interface.
+
+.. figtable::
+    :nofig:
+    :label: table-interface-feature-bits
+    :caption: Interface Descriptor Feature Bits
+    :spec: l l l
+
+    ====================== ================================================== ==========
+    Symbol                 Descirption                                        Value
+    ====================== ================================================== ==========
+    GB_INTERFACE_TIME_SYNC The Interface supports Greybus TimeSync Operations 0x01
+    |_|                    (All other values are reserved)                    0x02..0x80
+    ====================== ================================================== ==========
 
 .. _string-descriptor:
 
