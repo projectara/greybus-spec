@@ -324,11 +324,11 @@ Interface's SVC CPort.
 
 The SVC has direct control over and responsibility for the Endo,
 including detecting when modules are present, configuring the
-|unipro| switch, powering module Interfaces, and attaching and
-detaching modules.  The AP Module controls the Endo through
-operations sent over the SVC connection.  And the SVC informs the AP
-Module about Endo events (such as the presence of a new module, or
-notification of changing power conditions).
+|unipro| switch, powering module Interfaces, providing the frame-time
+and attaching and detaching modules.  The AP Module controls the Endo
+through operations sent over the SVC connection.  And the SVC informs
+the AP Module about Endo events (such as the presence of a new module,
+or notification of changing power conditions).
 
 Conceptually, the operations in the Greybus SVC Protocol are:
 
@@ -413,6 +413,21 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     The AP Module uses this operation to request the SVC tear down a
     previously created connection.
 
+.. c:function:: int timesync_enable(u8 count, u32 strobe_delay, u32 strobe_mask);
+
+    The AP Module uses this operation to request the SVC to enable frame-time
+    tracking.
+
+.. c:function:: int timesync_disable(void);
+
+    The AP Module uses this operation to request the SVC stop tracking
+    frame-time. The SVC will immediately stop tracking frame-time.
+
+.. c:function:: int timesync_authoritative(void);
+
+    The AP Module uses this operation to request the SVC to send the
+    authoritative frame-time at each TIME_SYNC strobe.
+
 Greybus SVC Operations
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -447,7 +462,10 @@ response type values are shown.
     DME peer set                 0x0a           0x8a
     Route create                 0x0b           0x8b
     Route destroy                0x0c           0x8c
-    (all other values reserved)  0x0d..0x7f     0x8d..0xff
+    TimeSync enable              0x0d           0x8d
+    TimeSync disable             0x0e           0x8e
+    TimeSync authoritative       0x0f           0x8f
+    (all other values reserved)  0x10..0x7f     0x90..0xff
     ===========================  =============  ==============
 
 ..
@@ -999,6 +1017,101 @@ Greybus SVC Connection Destroy Response
 
 The Greybus SVC connection destroy response message contains no payload.
 
+Greybus SVC TimeSync Enable Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The AP Module uses this operation to request the SVC to enable frame-time
+tracking. After a successful timesync_enable operation the SVC will
+generate a pulse-train of 'count' logical TIME_SYNC strobes to the bitmask
+of WAKE_DETECT lines indicated by 'strobe_mask'. A delay of 'strobe_delay'
+milliseconds will be applied between each TIME_SYNC strobe. The range of
+the count variable is from 0..7 with an implied +1 yielding an effective
+range of 1-8 TIME_SYNC strobes.
+
+Greybus SVC TimeSync Enable Request
+"""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-timesync-enable-request` defines the Greybus SVC
+TimeSync Enable Request payload. The request supplies the number of
+TIME_SYNC strobes to perform (count), the delay between each strobe
+(strobe_delay) and the bit-mask of lines to strobe (strobe_mask).
+
+.. figtable::
+    :nofig:
+    :label: table-svc-timesync-enable-request
+    :caption: SVC Protocol TimeSync Enable Request
+    :spec: l l c c l
+
+    =======  ============  ======  ==========  ======================================
+    Offset   Field         Size    Value       Description
+    =======  ============  ======  ==========  ======================================
+    0        count         1       Number      Number of TIME_SYNC pulses
+    1        strobe_delay  4       Number      Inter-strobe delay in milliseconds
+    5        strobe_mask   4       Number      Bitmask of WAKE_DETECT lines to strobe
+    =======  ============  ======  ==========  ======================================
+
+..
+
+Greybus SVC TimeSync Enable Response
+""""""""""""""""""""""""""""""""""""
+
+The Greybus SVC Protocol TimeSync Enable response contains no payload.
+
+Greybus SVC TimeSync Disable Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The AP Module uses this operation to request the SVC stop tracking
+frame-time. The SVC will immediately stop tracking frame-time.
+
+Greybus SVC TimeSync Disable Request
+""""""""""""""""""""""""""""""""""""
+
+The Greybus SVC Protocol TimeSync Disable request contains no payload.
+
+Greybus SVC TimeSync Disable Response
+"""""""""""""""""""""""""""""""""""""
+
+The Greybus SVC Protocol TimeSync Disable response contains no payload.
+
+Greybus SVC TimeSync Authoritative Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The AP Module uses this operation to request the SVC to send the
+authoritative frame-time at each TIME_SYNC strobe. The SVC will return the
+authoritative frame-time at each TIME_SYNC in the response phase of this
+operation. Unused entires in the response frame shall be initialized to
+zero.
+
+Greybus SVC TimeSync Authoritative Request
+""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus SVC Protocol TimeSync Authoritative Request contains no payload.
+
+Greybus SVC TimeSync Authoritative Response
+"""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-timesync-authoritative-response` defines the Greybus SVC
+TimeSync Authoritative Response payload. The response specifies the
+authoritative frame-time at each TIME_SYNC strobe. Unused slots in the
+response shall contain zero.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-timesync-authoritative-response
+    :caption: SVC Protocol TimeSync Enable Request
+    :spec: l l c c l
+
+    =======  ============  ======  ==========  ======================================
+    Offset   Field         Size    Value       Description
+    =======  ============  ======  ==========  ======================================
+    0        time_sync0    8       Frame-Time  Authoritative frame-time at TIME_SYNC0
+    8        time_sync1    8       Frame-Time  Authoritative frame-time at TIME_SYNC1
+    16       time_sync2    8       Frame-Time  Authoritative frame-time at TIME_SYNC2
+    24       time_sync3    8       Frame-Time  Authoritative frame-time at TIME_SYNC3
+    32       time_sync4    8       Frame-Time  Authoritative frame-time at TIME_SYNC4
+    40       time_sync5    8       Frame-Time  Authoritative frame-time at TIME_SYNC5
+    48       time_sync6    8       Frame-Time  Authoritative frame-time at TIME_SYNC6
+    56       time_sync7    8       Frame-Time  Authoritative frame-time at TIME_SYNC7
+    =======  ============  ======  ==========  ======================================
+
+..
 .. _firmware-protocol:
 
 Firmware Protocol
