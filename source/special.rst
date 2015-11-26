@@ -86,6 +86,23 @@ Conceptually, the Operations in the Greybus Control Protocol are:
     established Greybus connection may no longer be used.  This
     operation is never used for control CPort.
 
+.. c:function:: int timesync_enable(u8 count, u32 strobe_delay);
+
+    The AP Module uses this operation to inform the Interface that
+    frame-time is being enabled.
+
+.. c:function:: int timesync_disable(void);
+
+    The AP Module uses this operation to switch off frame-time logic in an
+    Interface.
+
+.. c:function:: int timesync_authoritative(void);
+
+    The AP Module uses this operation to inform an Interface of the
+    authoritative frame-time reported by the SVC for each TIME_SYNC strobe.
+    The Interface shall return its own authoritative frame-time and
+    calculated propogation delay in the response phase of this operation.
+
 Greybus Control Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -114,7 +131,10 @@ type and response type values are shown.
     Get Manifest                 0x04           0x84
     Connected                    0x05           0x85
     Disconnected                 0x06           0x86
-    (all other values reserved)  0x07..0x7f     0x87..0xff
+    TimeSync enable              0x07           0x87
+    TimeSync disable             0x08           0x88
+    TimeSync authoritative       0x09           0x89
+    (all other values reserved)  0x0a..0x7f     0x8a..0xff
     ===========================  =============  ==============
 
 ..
@@ -309,6 +329,120 @@ Greybus Control Disconnected Response
 """""""""""""""""""""""""""""""""""""
 
 The Greybus control disconnected response message contains no payload.
+
+Greybus Control TimeSync Enable Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The AP Module uses this operation to inform the Interface of an upcoming
+pulse-train of TIME_SYNC strobes. The 'count' parameter informs the
+Interface of how many TIME_SYNC strobes will be issued. The range of the
+count variable is from 0..7 with an implied +1 yielding an effective
+range of 1-8 TIME_SYNC strobes. The 'strobe_delay' parameter informs the
+Interface of the expected delay between each TIME_SYNC strobe.
+
+A later operation initiated by the AP will inform the Interface of the
+authoritative frame-time at each TIME_SYNC strobe.
+
+Greybus Control TimeSync Enable Request
+"""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-control-timesync-enable-request` defines the Greybus
+Control TimeSync Enable Request payload. The request supplies the number
+of TIME_SYNC strobes to come (count) and the delay between each strobe
+(strobe_delay).
+
+.. figtable::
+    :nofig:
+    :label: table-control-timesync-enable-request
+    :caption: Control Protocol TimeSync Enable Request
+    :spec: l l c c l
+
+    =======  ============  ======  ==========  ======================================
+    Offset   Field         Size    Value       Description
+    =======  ============  ======  ==========  ======================================
+    0        count         1       Number      Number of TIME_SYNC pulses
+    1        strobe_delay  4       Number      Inter-strobe delay in milliseconds
+    =======  ============  ======  ==========  ======================================
+
+..
+
+Greybus Control TimeSync Enable Response
+""""""""""""""""""""""""""""""""""""""""
+
+The Greybus Control Protocol TimeSync Enable response contains no payload.
+
+Greybus Control TimeSync Disable Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The AP Module uses this operation to inform an Interface to stop tracking
+frame-time. The Interface will immediately stop tracking frame-time.
+
+Greybus Control TimeSync Disable Request
+""""""""""""""""""""""""""""""""""""""""
+
+The Greybus Control Protocol TimeSync Disable request contains no payload.
+
+Greybus Control TimeSync Disable Response
+"""""""""""""""""""""""""""""""""""""""""
+
+The Greybus Control Protocol TimeSync Disable response contains no payload.
+
+Greybus Control TimeSync Authoritative Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The AP Module uses this operation to inform the Interface of the previous
+authoritative frame-time at each TIME_SYNC strobe. The AP will store and
+forward this data to an Interface after interrogating this data from the
+SVC. Unused entires in the request shall be initialized to zero.
+
+Greybus Control TimeSync Authoritative Request
+""""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-control-timesync-authoritative-request` defines the Greybus
+Control TimeSync Authoritative Request payload. The request specifies the
+maximum jitter an Interface should tolerate with respect to a TIME_SYNC
+strobe specified in nanoseconds. The authoritative frame-time at each
+TIME_SYNC strobe as reported by the SVC to the AP Module is also included.
+Unused slots in the response shall contain zero.
+
+.. figtable::
+    :nofig:
+    :label: table-control-timesync-authoritative-request
+    :caption: Control Protocol TimeSync Authoritative Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========  ===================================================================
+    Offset   Field           Size    Value       Description
+    =======  ==============  ======  ==========  ===================================================================
+    0        maximum_jitter  4       Number      Maximum jitter to accept when calculating frame-time in nanoseconds
+    4        time_sync0      8       Frame-Time  Authoritative frame-time at TIME_SYNC0
+    12       time_sync1      8       Frame-Time  Authoritative frame-time at TIME_SYNC1
+    20       time_sync2      8       Frame-Time  Authoritative frame-time at TIME_SYNC2
+    28       time_sync3      8       Frame-Time  Authoritative frame-time at TIME_SYNC3
+    36       time_sync4      8       Frame-Time  Authoritative frame-time at TIME_SYNC4
+    44       time_sync5      8       Frame-Time  Authoritative frame-time at TIME_SYNC5
+    52       time_sync6      8       Frame-Time  Authoritative frame-time at TIME_SYNC6
+    60       time_sync7      8       Frame-Time  Authoritative frame-time at TIME_SYNC7
+    =======  ==============  ======  ==========  ===================================================================
+
+Greybus Control TimeSync Authoritative Response
+"""""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-control-timesync-authoritative-response` defines the
+Greybus Control TimeSync Authoritative Response payload. The response
+specifies the authoritative frame-time at the last TIME_SYNC strobe and the
+propogration offset calculated by the Interface.
+
+.. figtable::
+    :nofig:
+    :label: table-control-timesync-authoritative-response
+    :caption: Control Protocol TimeSync Authoritative Response
+    :spec: l l c c l
+
+    =======  ============  ======  ==========  ======================================================
+    Offset   Field         Size    Value       Description
+    =======  ============  ======  ==========  ======================================================
+    0        prop_offset   4       Number      Calculated TIME_SYNC propogation offset in nanoseconds
+    4        time_sync     8       Frame-Time  Authoritative frame-time at the last TIME_SYNC
+    =======  ============  ======  ==========  ======================================================
+..
 
 .. _svc-protocol:
 
