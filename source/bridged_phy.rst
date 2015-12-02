@@ -712,6 +712,10 @@ Conceptually, the operations in the Greybus SPI Protocol are:
 
     Returns a set of configuration parameters related to SPI master.
 
+.. c:function:: int device_config(u16 cs, u16 *mode, u8 *bpw, u32 *max_speed_hz, u8 *name[32]);
+
+    Returns a set of configuration parameters related to SPI device in a chipselect.
+
 .. c:function:: int transfer(u8 chip_select, u8 mode, u8 count, struct gb_spi_transfer *transfers);
 
     Performs a SPI transaction as one or more SPI transfers, defined in the
@@ -907,6 +911,61 @@ defined for Greybus SPI masters.
     GB_SPI_FLAG_NO_TX                Can't do buffer write                                0x0004
     |_|                              (All other flag values reserved)                     0x0008..0x8000
     ===============================  ===================================================  ========================
+
+..
+
+Greybus SPI Protocol Device Config Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SPI Device Config operation allows the requestor to determine the
+details of the configuration parameters of a access-enable device. This
+operation can be executed at any time, however it shall be executed after the
+the Master Config Operation for each chipselect till the number given by the
+num_chipselect in the Master Config Response. All transfer operations for the
+device should be discarded until the successful execution of this operation.
+
+Greybus SPI Protocol Device Config Request
+""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-spi-device-config-request` describes the Greybus SPI Device
+Config request. The request supplies the chip_select which is a unique
+identifier between 0 and num_chipselect.
+
+.. figtable::
+    :nofig:
+    :label: table-spi-device-config-request
+    :caption: SPI Device Config Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        chip_select     1       Number          Chip Select Number
+    =======  ==============  ======  ==========      ===========================
+
+..
+
+Greybus SPI Protocol Device Config Response
+"""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-spi-device-config-response` defines the Greybus SPI Device
+Config response. The response contains a set of values representing the
+limits and default values of certain configurations of a device.
+
+.. figtable::
+    :nofig:
+    :label: table-spi-device-config-response
+    :caption: SPI Protocol Device Config Response
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        mode            2       Bit Mask        :ref:`spi-mode-bits`
+    2        bpw             4       Number          bits per word supported by device
+    6        max_speed_hz    4       Number          Higher limit for transfer speed
+    10       name            32      Characters      Name and/or Device driver alias
+    =======  ==============  ======  ==========      ===========================
 
 ..
 
