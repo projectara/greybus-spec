@@ -708,21 +708,9 @@ Conceptually, the operations in the Greybus SPI Protocol are:
     handling code adhering to the Protocol specified herein supports
     major version |gb-major|, minor version |gb-minor|.
 
-.. c:function:: int get_mode(u16 *mode);
+.. c:function:: int master_config(u16 *mode, u16 *flags, u32 *bpw_mask, u16 *num_chipselect, u32 *min_speed_hz, u32 *max_speed_hz);
 
-    Returns a bit mask indicating the modes supported by the SPI master.
-
-.. c:function:: int get_flags(u16 *flags);
-
-    Returns a bit mask indicating the constraints of the SPI master.
-
-.. c:function:: int get_bits_per_word(u32 *bpw);
-
-    Returns the number of bits per word supported by the SPI master.
-
-.. c:function:: int get_chipselect_num(u16 *num);
-
-    Returns the number of chip select pins supported by the SPI master.
+    Returns a set of configuration parameters related to SPI master.
 
 .. c:function:: int transfer(u8 chip_select, u8 mode, u8 count, struct gb_spi_transfer *transfers);
 
@@ -753,12 +741,9 @@ operation is a request or a response.
     ===========================  =============  ==============
     Invalid                      0x00           0x80
     Protocol Version             0x01           0x81
-    Mode                         0x02           0x82
-    Flags                        0x03           0x83
-    Bits per word mask           0x04           0x84
-    Number of Chip select pins   0x05           0x85
-    Transfer                     0x06           0x86
-    (all other values reserved)  0x07..0x7f     0x87..0xff
+    Master Config                0x02           0x82
+    Transfer                     0x03           0x83
+    (all other values reserved)  0x04..0x7f     0x84..0xff
     ===========================  =============  ==============
 
 ..
@@ -816,34 +801,42 @@ shall report major version |gb-major|, minor version |gb-minor|.
 
 ..
 
-Greybus SPI Protocol Mode Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus SPI Protocol Master Config Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus SPI mode operation allows the requestor to determine the
-details of the modes supported by the SPI master.
+The Greybus SPI Master Config operation allows the requestor to determine the
+details of the configuration parameters by the SPI master. This operation can be
+executed at any time, however it shall be executed after the negotiation of the
+protocol version. All other operations should be discarded until the successful
+execution of this one.
 
-Greybus SPI Protocol Mode Request
-"""""""""""""""""""""""""""""""""
+Greybus SPI Protocol Master Config Request
+""""""""""""""""""""""""""""""""""""""""""
 
-The Greybus SPI mode request message has no payload.
+The Greybus SPI Master Config request message has no payload.
 
-Greybus SPI Protocol Mode Response
-""""""""""""""""""""""""""""""""""
+Greybus SPI Protocol Master Config Response
+"""""""""""""""""""""""""""""""""""""""""""
 
-Table :num:`table-spi-mode-response` defines the Greybus SPI mode
-response. The response contains a two-byte value whose bits
-represent support or presence of certain modes in the SPI master.
+Table :num:`table-spi-master-config-response` defines the Greybus SPI Master
+Config response. The response contains a set of values representing the support,
+limits and default values of certain configurations.
 
 .. figtable::
     :nofig:
-    :label: table-spi-mode-response
-    :caption: SPI Protocol Mode Response
+    :label: table-spi-master-config-response
+    :caption: SPI Protocol Master Config Response
     :spec: l l c c l
 
     =======  ==============  ======  ==========      ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
-    0        mode            2       Bit Mask        :ref:`spi-mode-bits`
+    0        bpw_mask        4       Bit Mask        :ref:'spi-bpw-mask`
+    4        min_speed_hz    4       Number          Lower limit for transfer speed
+    8        max_speed_hz    4       Number          Higher limit for transfer speed
+    10       mode            2       Bit Mask        :ref:`spi-mode-bits`
+    12       flags           2       Bit Mask        :ref:`spi-flags-bits`
+    14       num_chipselect  2       Number          Maximum chipselect supported by Master
     =======  ==============  ======  ==========      ===========================
 
 ..
@@ -878,37 +871,19 @@ masters.
 
 ..
 
-Greybus SPI Protocol Flags Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. _spi-bpw-mask:
 
-The Greybus SPI flags operation allows the requestor to determine the
-constraints, if any, of the SPI master.
+Greybus SPI Protocol Bits Per Word Mask
+"""""""""""""""""""""""""""""""""""""""
+The Greybus SPI bits per word mask allows the requestor to determine the mask
+indicating which values of bits_per_word are supported by the SPI master. If
+set, transfer with unsupported bits_per_word should be rejected. If not set,
+this value is simply ignored, and it's up to the individual driver to perform
+any validation.
 
-Greybus SPI Protocol Flags Request
-""""""""""""""""""""""""""""""""""
+Transfers should be rejected if following expression evaluates to zero:
 
-The Greybus SPI flags request message has no payload.
-
-Greybus SPI Protocol Flags Response
-"""""""""""""""""""""""""""""""""""
-
-Table :num:`table-spi-flags-response` defines the Greybus SPI flags
-response. The response contains a two-byte value whose bits
-represent constraints of the SPI master, if any.
-
-.. figtable::
-    :nofig:
-    :label: table-spi-flags-response
-    :caption: SPI Protocol Flags Response
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        flags           2       Number          :ref:`spi-flags-bits`
-    =======  ==============  ======  ==========      ===========================
-
-..
+        master->bits_per_word_mask & (1 << (tx_desc->bits_per_word - 1))
 
 .. _spi-flags-bits:
 
@@ -932,78 +907,6 @@ defined for Greybus SPI masters.
     GB_SPI_FLAG_NO_TX                Can't do buffer write                                0x0004
     |_|                              (All other flag values reserved)                     0x0008..0x8000
     ===============================  ===================================================  ========================
-
-..
-
-Greybus SPI Protocol Bits Per Word Mask Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The Greybus SPI bits per word mask operation allows the requestor to
-determine the mask indicating which values of bits_per_word are
-supported by the SPI master. If set, transfer with unsupported
-bits_per_word should be rejected. If not set, this value is simply
-ignored, and it's up to the individual driver to perform any validation.
-
-Transfers should be rejected if following expression evaluates to zero:
-
-        master->bits_per_word_mask & (1 << (tx_desc->bits_per_word - 1))
-
-Greybus SPI Protocol Bits Per Word Mask Request
-"""""""""""""""""""""""""""""""""""""""""""""""
-
-The Greybus SPI bits per word mask request message has no payload.
-
-Greybus SPI Protocol Bits Per Word Mask Response
-""""""""""""""""""""""""""""""""""""""""""""""""
-
-Table :num:`table-spi-bits-per-word-response` defines the Greybus SPI
-bits per word mask response. The response contains a four-byte value
-whose bits represent the bits per word mask of the SPI master.
-
-.. figtable::
-    :nofig:
-    :label: table-spi-bits-per-word-response
-    :caption: SPI Protocol Bits Per Word Mask Response
-    :spec: l l c c l
-
-    =======  ==================   ======  ==========      ===========================
-    Offset   Field                Size    Value           Description
-    =======  ==================   ======  ==========      ===========================
-    0        bits per word mask   4       Number          Bits per word mask of the SPI master
-    =======  ==================   ======  ==========      ===========================
-
-..
-
-Greybus SPI Protocol Number of Chip Selects Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The Greybus SPI number of chip selects operation allows the requestor
-to determine the maximum number of chip select pins supported by SPI
-master.
-
-Greybus SPI Protocol Number of Chip Selects Request
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-
-The Greybus SPI number of chip selects request message has no payload.
-
-Greybus SPI Protocol Number of Chip Selects Response
-""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-Table :num:`table-spi-number-of-chip-selects-response` defines the
-Greybus SPI number of chip selects response. The response contains
-the maximum number of chip select pins supported by the SPI master.
-
-.. figtable::
-    :nofig:
-    :label: table-spi-number-of-chip-selects-response
-    :caption: SPI Protocol Number of Chip Selects Response
-    :spec: l l c c l
-
-    =======  ======================   ======  ==========      ===========================
-    Offset   Field                    Size    Value           Description
-    =======  ======================   ======  ==========      ===========================
-    0        number of chip selects   2       Number          Maximum number of chip select pins
-    =======  ======================   ======  ==========      ===========================
 
 ..
 
