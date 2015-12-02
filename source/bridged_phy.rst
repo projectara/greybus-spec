@@ -1009,7 +1009,8 @@ of a SPI transaction.
     4        len             4       Number          Size of data to transfer
     8        delay_usecs     2       Number          Wait period after completion of transfer
     10       cs_change       1       Number          Toggle chip select pin after this transfer completes
-    11       bits_per_word   1       Number          Select bits per word for this trnasfer
+    11       bits_per_word   1       Number          Select bits per word for this transfer
+    12       rdwr            1       Bit Mask        Bit Mask indicating Read (0x01) and/or Write (0x02) transfer type
     =======  ==============  ======  ==========      ===========================
 
 Table :num:`table-spi-transfer-request` defines the Greybus SPI
