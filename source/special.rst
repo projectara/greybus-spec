@@ -972,8 +972,8 @@ Greybus SVC Interface Hot Unplug Operation
 
 The SVC sends this to the AP Module to tell it that an Interface
 that was previously the subject of an Interface Hotplug Operation is
-no longer present.  The SVC sends exactly Interface one hot unplug
-event to the AP Module when this occurs.
+no longer present.  The SVC sends exactly one hot unplug event, for
+the Interface, to the AP when this occurs.
 
 .. XXX CSD and CSV must not be enabled for SVC Protocol connections,
 .. XXX to ensure these messages are delivered reliably.
