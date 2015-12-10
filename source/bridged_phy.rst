@@ -963,9 +963,9 @@ limits and default values of certain configurations of a device.
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
     0        mode            2       Bit Mask        :ref:`spi-mode-bits`
-    2        bpw             4       Number          bits per word supported by device
-    6        max_speed_hz    4       Number          Higher limit for transfer speed
-    10       name            32      Characters      Name and/or Device driver alias
+    2        bpw             1       Number          bits per word supported by device
+    3        max_speed_hz    4       Number          Higher limit for transfer speed
+    7        name            32      Characters      Name and/or Device driver alias
     =======  ==============  ======  ==========      ===========================
 
 ..
