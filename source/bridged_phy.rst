@@ -841,7 +841,7 @@ limits and default values of certain configurations.
     8        max_speed_hz    4       Number          Higher limit for transfer speed
     10       mode            2       Bit Mask        :ref:`spi-mode-bits`
     12       flags           2       Bit Mask        :ref:`spi-flags-bits`
-    14       num_chipselect  2       Number          Maximum chipselect supported by Master
+    14       num_chipselect  1       Number          Maximum chipselect supported by Master
     =======  ==============  ======  ==========      ===========================
 
 ..
