@@ -746,8 +746,9 @@ operation is a request or a response.
     Invalid                      0x00           0x80
     Protocol Version             0x01           0x81
     Master Config                0x02           0x82
-    Transfer                     0x03           0x83
-    (all other values reserved)  0x04..0x7f     0x84..0xff
+    Device Config                0x03           0x83
+    Transfer                     0x04           0x84
+    (all other values reserved)  0x05..0x7f     0x85..0xff
     ===========================  =============  ==============
 
 ..
