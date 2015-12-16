@@ -476,7 +476,7 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     handling code adhering to the Protocol specified herein supports
     major version |gb-major|, minor version |gb-minor|.
 
-.. c:function:: int svc_hello(u16 endo_id, u8 intf_id);
+.. c:function:: int svc_hello(u16 endo_generation, u16 frame_variant, u8 intf_id);
 
     This Operation is used at initial power-on, sent by the SVC to
     inform the AP of its environment. After version negotiation,
@@ -680,12 +680,13 @@ environment and location of the AP interface.
     :caption: SVC Protocol SVC Hello Request
     :spec: l l c c l
 
-    =======  ==============  ===========  ===============  ===========================
-    Offset   Field           Size         Value            Description
-    =======  ==============  ===========  ===============  ===========================
-    0        endo_id         2            Endo ID          Endo ID
-    2        intf_id         1            AP Interface ID  AP Interface ID
-    =======  ==============  ===========  ===============  ===========================
+    =======  ================  ===========  ===============  ===========================
+    Offset   Field             Size         Value            Description
+    =======  ================  ===========  ===============  ===========================
+    0        endo_generation   2            Endo Generation  Endo Generation ID
+    2        frame_variant     2            Frame Variant    Endo Frame Variant within the Generation
+    4        intf_id           1            AP Interface ID  AP Interface ID
+    =======  ================  ===========  ===============  ===========================
 
 ..
 
