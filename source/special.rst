@@ -103,6 +103,11 @@ Conceptually, the Operations in the Greybus Control Protocol are:
     The Interface shall return its own authoritative frame-time and
     calculated propogation delay in the response phase of this operation.
 
+.. c:function:: int interface_version(u16 *major, u16 *minor);
+
+    This Operation is used by the AP to get the current version of the
+    interface.
+
 Greybus Control Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -134,7 +139,8 @@ type and response type values are shown.
     TimeSync enable              0x07           0x87
     TimeSync disable             0x08           0x88
     TimeSync authoritative       0x09           0x89
-    (all other values reserved)  0x0a..0x7f     0x8a..0xff
+    Interface Version            0x0a           0x8a
+    (all other values reserved)  0x0b..0x7f     0x8b..0xff
     ===========================  =============  ==============
 
 ..
@@ -442,6 +448,37 @@ propogration offset calculated by the Interface.
     0        prop_offset   4       Number      Calculated TIME_SYNC propogation offset in nanoseconds
     4        time_sync     8       Frame-Time  Authoritative frame-time at the last TIME_SYNC
     =======  ============  ======  ==========  ======================================================
+..
+
+Greybus Control Interface Version Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The AP uses this operation to retrieve the version of the interface.
+The version is represented by two 2-byte numbers, major and minor.
+
+Greybus Control Interface Version Request
+"""""""""""""""""""""""""""""""""""""""""
+
+The Greybus Control Interface Version request has no payload.
+
+Greybus Control Interface Version Response
+""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-control-interface-version-response` defines the
+Greybus Control Interface Version Response payload. The response
+contains two 2-byte numbers, major and minor.
+
+.. figtable::
+    :nofig:
+    :label: table-control-interface-version-response
+    :caption: Control Protocol Interface Version Response
+    :spec: l l c c l
+
+    =======  ============  ======  ==========  ===========================
+    Offset   Field         Size    Value       Description
+    =======  ============  ======  ==========  ===========================
+    0        major         2       Number      Major number of the version
+    2        minor         2       Number      Minor number of the version
+    =======  ============  ======  ==========  ===========================
 ..
 
 .. _svc-protocol:
