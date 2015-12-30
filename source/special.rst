@@ -621,14 +621,14 @@ response type values are shown.
     SVC Operation Type           Request Value  Response Value
     ===========================  =============  ==============
     Invalid                      0x00           0x80
-    Interface device ID          0x01           0x81
-    Interface hotplug            0x02           0x82
-    Interface hot unplug         0x03           0x83
-    Interface reset              0x04           0x84
-    Connection create            0x05           0x85
-    Connection destroy           0x06           0x86
-    Protocol Version             0x07           0x87
-    SVC Hello                    0x08           0x88
+    Protocol Version             0x01           0x81
+    SVC Hello                    0x02           0x82
+    Interface device ID          0x03           0x83
+    Interface hotplug            0x04           0x84
+    Interface hot unplug         0x05           0x85
+    Interface reset              0x06           0x86
+    Connection create            0x07           0x87
+    Connection destroy           0x08           0x88
     DME peer get                 0x09           0x89
     DME peer set                 0x0a           0x8a
     Route create                 0x0b           0x8b
