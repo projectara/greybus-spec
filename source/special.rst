@@ -548,7 +548,7 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     This operation is used by the AP Module to request that the SVC
     associate a device ID with the given Interface.
 
-.. c:function:: int intf_hotplug(u8 intf_id, u32 ddbl1_mfr_id, u32 ddbl1_prod_id, u32 ara_vend_id, u32 ara_prod_id);
+.. c:function:: int intf_hotplug(u8 intf_id, u32 ddbl1_mfr_id, u32 ddbl1_prod_id, u32 ara_vend_id, u32 ara_prod_id, u64 serial_number);
 
     The SVC sends this to the AP Module to inform it that it has
     detected a module on the indicated Interface.  It supplies some information
@@ -988,15 +988,16 @@ power-on).
     :caption: SVC Protocol Hotplug Request
     :spec: l l c c l
 
-    ======  ==============  ====  ============  =======================================
-    Offset  Field           Size  Value         Description
-    ======  ==============  ====  ============  =======================================
-    0       intf_id         1     Interface ID  Interface that now has a module present
-    1       ddbl1_mfr_id    4     |unipro| VID  |unipro| DDB Level 1 Manufacturer ID
-    5       ddbl1_prod_id   4     |unipro| PID  |unipro| DDB Level 1 Product ID
-    9       ara_vend_id     4     Ara VID       Ara Vendor ID
-    13      ara_prod_id     4     Ara PID       Ara Product ID
-    ======  ==============  ====  ============  =======================================
+    ======  ==============  ====  ==============  =======================================
+    Offset  Field           Size  Value           Description
+    ======  ==============  ====  ==============  =======================================
+    0       intf_id         1     Interface ID    Interface that now has a module present
+    1       ddbl1_mfr_id    4     |unipro| VID    |unipro| DDB Level 1 Manufacturer ID
+    5       ddbl1_prod_id   4     |unipro| PID    |unipro| DDB Level 1 Product ID
+    9       ara_vend_id     4     Ara VID         Ara Vendor ID
+    13      ara_prod_id     4     Ara PID         Ara Product ID
+    17      serial_number   8     Serial number   Module serial number that uniquely identifies modules with same ARA VID/PIDs
+    ======  ==============  ====  ==============  =======================================
 
 ..
 
