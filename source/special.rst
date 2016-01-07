@@ -735,7 +735,7 @@ The Greybus SVC Hello response contains no payload.
 Greybus SVC DME Peer Get Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus SVC DME Peer Get Operation is sent by the SVC to the AP
+The Greybus SVC DME Peer Get Operation is sent by the AP to the SVC
 to direct the SVC to perform a |unipro| DME Peer Get on an Interface.
 
 Greybus SVC DME Peer Get Request
@@ -788,7 +788,7 @@ as the value of the attribute, if applicable.
 Greybus SVC DME Peer Set Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus SVC DME Peer Set Operation is sent by the SVC to the AP
+The Greybus SVC DME Peer Set Operation is sent by the AP to the SVC
 to direct the SVC to perform a |unipro| DME_PEER_SET on an Interface.
 
 Greybus SVC DME Peer Set Request
