@@ -28,13 +28,7 @@ The operations in the Greybus vibrator Protocol are:
 
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Negotiates the major and minor version of the Protocol used for
-    communication over the connection.  The sender offers the
-    version of the Protocol it supports.  The receiver replies with
-    the version that will be used--either the one offered if
-    supported or its own (lower) version otherwise.  Protocol
-    handling code adhering to the Protocol specified herein supports
-    major version |gb-major|, minor version |gb-minor|.
+    Refer to :ref:`greybus-protocol-version-operation`.
 
 .. c:function:: int vibrator_on(u16 timeout_ms);
 
@@ -73,55 +67,13 @@ operation is a request or a response.
 Greybus Vibrator Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus vibrator Protocol version operation allows the Protocol
-handling software on both ends of a connection to negotiate the
-version of the vibrator Protocol to use.
+The Greybus Vibrator Protocol Version Operation is the
+:ref:`greybus-protocol-version-operation` for the Vibrator Protocol.
 
-Greybus Vibrator Protocol Version Request
-"""""""""""""""""""""""""""""""""""""""""
-
-Table :num:`table-vibrator-version-request` defines the Greybus vibrator
-version request payload. The request supplies the greatest major and
-minor version of the vibrator Protocol supported by the sender.
-
-.. figtable::
-    :nofig:
-    :label: table-vibrator-version-request
-    :caption: Vibrator Protocol Version Request
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Offered vibrator Protocol major version
-    1        version_minor   1       |gb-minor|      Offered vibrator Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
-
-Greybus Vibrator Protocol Version Response
-""""""""""""""""""""""""""""""""""""""""""
-
-The Greybus vibrator Protocol version response payload contains two
-one-byte values, as defined in table
-:num:`table-vibrator-protocol-version-response`.
-A Greybus vibrator controller adhering to the Protocol specified herein
-shall report major version |gb-major|, minor version |gb-minor|.
-
-.. figtable::
-    :nofig:
-    :label: table-vibrator-protocol-version-response
-    :caption: Vibrator Protocol Version Response
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Vibrator Protocol major version
-    1        version_minor   1       |gb-minor|      Vibrator Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
+Greybus implementations adhering to the Protocol specified herein
+shall specify the value |gb-major| for the version_major and
+|gb-minor| for the version_minor fields found in this Operation's
+request and response messages.
 
 Greybus Vibrator On Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -184,13 +136,7 @@ Conceptually, the operations in the Greybus Power Supply Protocol are:
 
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Negotiates the major and minor version of the Protocol used for
-    communication over the connection.  The sender offers the
-    version of the Protocol it supports.  The receiver replies with
-    the version that will be used--either the one offered if
-    supported or its own (lower) version otherwise.  Protocol
-    handling code adhering to the Protocol specified herein supports
-    major version |gb-major|, minor version |gb-minor|.
+    Refer to :ref:`greybus-protocol-version-operation`.
 
 .. c:function:: int get_power_supplies(u8 *psy_count);
 
@@ -259,55 +205,15 @@ operation is a request or a response.
 Greybus Power Supply Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus power supply Protocol version operation allows the Protocol
-handling software on both ends of a connection to negotiate the
-version of the power supply Protocol to use.
+The Greybus Power Supply Protocol Version Operation is the
+:ref:`greybus-protocol-version-operation` for the Power Supply
+Protocol.
 
-Greybus Power Supply Protocol Version Request
-"""""""""""""""""""""""""""""""""""""""""""""
+Greybus implementations adhering to the Protocol specified herein
+shall specify the value |gb-major| for the version_major and
+|gb-minor| for the version_minor fields found in this Operation's
+request and response messages.
 
-Table :num:`table-power-supply-version-request` defines the Greybus power supply
-version request payload. The request supplies the greatest major and
-minor version of the power supply Protocol supported by the sender.
-
-.. figtable::
-    :nofig:
-    :label: table-power-supply-version-request
-    :caption: Power Supply Protocol Version Request
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Offered Power Supply Protocol major version
-    1        version_minor   1       |gb-minor|      Offered Power Supply Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
-
-
-Greybus Power Supply Protocol Version Response
-""""""""""""""""""""""""""""""""""""""""""""""
-
-The Greybus power supply Protocol version response payload contains two one-byte
-values, as defined in table :num:`table-power-supply-protocol-version-response`.
-A Greybus power supply controller adhering to the Protocol specified herein
-shall report major version |gb-major|, minor version |gb-minor|.
-
-.. figtable::
-    :nofig:
-    :label: table-power-supply-protocol-version-response
-    :caption: Power Supply Protocol Version Response
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Power Supply Protocol major version
-    1        version_minor   1       |gb-minor|      Power Supply Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
 
 Greybus Power Supply Get Power Supplies Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -991,12 +897,7 @@ Conceptually, the operations in the greybus HID Protocol are:
 
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Negotiates the major and minor version of the Protocol used for
-    communication over the connection. The sender offers the version of the
-    Protocol it supports. The receiver replies with the version that will be
-    used--either the one offered if supported or its own (lower) version
-    otherwise. Protocol handling code adhering to the Protocol specified herein
-    supports major version |gb-major|, minor version |gb-minor|.
+    Refer to :ref:`greybus-protocol-version-operation`.
 
 .. c:function:: int get_descriptor(struct gb_hid_desc_response *desc);
 
@@ -1059,54 +960,14 @@ flag (0x80) indicating whether the operation is a request or a response.
 Greybus HID Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus HID Protocol version operation allows the Protocol handling software
-on both ends of a connection to negotiate the version of the Greybus HID
-Protocol to use.
+The Greybus HID Protocol Version Operation is the
+:ref:`greybus-protocol-version-operation` for the HID Protocol.
 
-Greybus HID Protocol Version Request
-""""""""""""""""""""""""""""""""""""
+Greybus implementations adhering to the Protocol specified herein
+shall specify the value |gb-major| for the version_major and
+|gb-minor| for the version_minor fields found in this Operation's
+request and response messages.
 
-Table :num:`table-hid-version-request` defines the Greybus HID version request
-payload. The request supplies the greatest major and minor version of the
-Greybus HID Protocol supported by the sender.
-
-.. figtable::
-    :nofig:
-    :label: table-hid-version-request
-    :caption: HID Protocol Version Request
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Offered Greybus HID Protocol major version
-    1        version_minor   1       |gb-minor|      Offered Greybus HID Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
-
-Greybus HID Protocol Version Response
-"""""""""""""""""""""""""""""""""""""
-
-The Greybus HID Protocol version response payload contains two 1-byte values, as
-defined in table :num:`table-hid-protocol-version-response`. A Greybus HID
-controller adhering to the Protocol specified herein shall report major version
-|gb-major|, minor version |gb-minor|.
-
-.. figtable::
-    :nofig:
-    :label: table-hid-protocol-version-response
-    :caption: HID Protocol Version Response
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Greybus HID Protocol major version
-    1        version_minor   1       |gb-minor|      Greybus HID Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
 
 Greybus HID Get Descriptor Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1339,13 +1200,7 @@ The operations in the Greybus Lights Protocol are:
 
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Negotiates the major and minor version of the Protocol used for
-    communication over the connection.  The sender offers the
-    version of the Protocol it supports.  The receiver replies with
-    the version that will be used--either the one offered if
-    supported or its own (lower) version otherwise.  Protocol
-    handling code adhering to the Protocol specified herein supports
-    major version |gb-major|, minor version |gb-minor|.
+   Refer to :ref:`greybus-protocol-version-operation`.
 
 .. c:function:: int get_lights(u8 *lights_count);
 
@@ -1449,54 +1304,13 @@ operation is a request or a response.
 Greybus Lights Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus Lights Protocol version operation allows the Protocol handling
-software on both ends of a connection to negotiate the version of the Greybus
-Lights Protocol to use.
+The Greybus Lights Protocol Version Operation is the
+:ref:`greybus-protocol-version-operation` for the Lights Protocol.
 
-Greybus Lights Protocol Version Request
-"""""""""""""""""""""""""""""""""""""""
-
-Table :num:`table-lights-version-request` defines the Greybus Lights version
-request payload. The request supplies the greatest major and minor version of
-the Greybus Lights Protocol supported by the sender.
-
-.. figtable::
-    :nofig:
-    :label: table-lights-version-request
-    :caption: Lights Protocol Version Request
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Offered Greybus Lights Protocol major version
-    1        version_minor   1       |gb-minor|      Offered Greybus Lights Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
-
-Greybus Lights Protocol Version Response
-""""""""""""""""""""""""""""""""""""""""
-
-The Greybus Lights Protocol version response payload contains two 1-byte values,
-as defined in table :num:`table-lights-protocol-version-response`. A Greybus
-Lights controller adhering to the Protocol specified herein shall report major
-version |gb-major|, minor version |gb-minor|.
-
-.. figtable::
-    :nofig:
-    :label: table-lights-protocol-version-response
-    :caption: Lights Protocol Version Response
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Greybus Lights Protocol major version
-    1        version_minor   1       |gb-minor|      Greybus Lights Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
+Greybus implementations adhering to the Protocol specified herein
+shall specify the value |gb-major| for the version_major and
+|gb-minor| for the version_minor fields found in this Operation's
+request and response messages.
 
 Greybus Lights Get Lights Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2188,13 +2002,7 @@ The operations in the Greybus loopback Protocol are:
 
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Negotiates the major and minor version of the Protocol used for
-    communication over the connection.  The sender offers the
-    version of the Protocol it supports.  The receiver replies with
-    the version that will be used--either the one offered if
-    supported or its own (lower) version otherwise.  Protocol
-    handling code adhering to the Protocol specified herein supports
-    major version |gb-major|, minor version |gb-minor|.
+   Refer to :ref:`greybus-protocol-version-operation`.
 
 .. c:function:: int ping(void);
 
@@ -2242,55 +2050,14 @@ operation is a request or a response.
 Greybus Loopback Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus loopback Protocol version operation allows the Protocol
-handling software on both ends of a connection to negotiate the
-version of the loopback Protocol to use.
+The Greybus Loopback Protocol Version Operation is the
+:ref:`greybus-protocol-version-operation` for the Loopback Protocol.
 
-Greybus Loopback Protocol Version Request
-"""""""""""""""""""""""""""""""""""""""""
+Greybus implementations adhering to the Protocol specified herein
+shall specify the value |gb-major| for the version_major and
+|gb-minor| for the version_minor fields found in this Operation's
+request and response messages.
 
-Table :num:`table-loopback-version-request` defines the Greybus loopback
-version request payload. The request supplies the greatest major and
-minor version of the loopback Protocol supported by the sender.
-
-.. figtable::
-    :nofig:
-    :label: table-loopback-version-request
-    :caption: Loopback Protocol Version Request
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Offered loopback Protocol major version
-    1        version_minor   1       |gb-minor|      Offered loopback Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
-
-Greybus Loopback Protocol Version Response
-""""""""""""""""""""""""""""""""""""""""""
-
-The Greybus loopback Protocol version response payload contains two
-one-byte values, as defined in table
-:num:`table-loopback-protocol-version-response`.
-A Greybus loopback controller adhering to the Protocol specified herein
-shall report major version |gb-major|, minor version |gb-minor|.
-
-.. figtable::
-    :nofig:
-    :label: table-loopback-protocol-version-response
-    :caption: Loopback Protocol Version Response
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Loopback Protocol major version
-    1        version_minor   1       |gb-minor|      Loopback Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
 
 Greybus Loopback Ping Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2394,13 +2161,7 @@ The operations in the Greybus Raw Protocol are:
 
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Negotiates the major and minor version of the Protocol used for
-    communication over the connection.  The sender offers the
-    version of the Protocol it supports.  The receiver replies with
-    the version that will be used--either the one offered if
-    supported or its own (lower) version otherwise.  Protocol
-    handling code adhering to the Protocol specified herein supports
-    major version |gb-major|, minor version |gb-minor|.
+   Refer to :ref:`greybus-protocol-version-operation`.
 
 .. c:function:: int send(u32 len, char *data);
 
@@ -2434,55 +2195,14 @@ operation is a request or a response.
 Greybus Raw Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus Raw Protocol version operation allows the Protocol
-handling software on both ends of a connection to negotiate the
-version of the Raw Protocol to use.
+The Greybus Raw Protocol Version Operation is the
+:ref:`greybus-protocol-version-operation` for the Raw Protocol.
 
-Greybus Raw Protocol Version Request
-""""""""""""""""""""""""""""""""""""
+Greybus implementations adhering to the Protocol specified herein
+shall specify the value |gb-major| for the version_major and
+|gb-minor| for the version_minor fields found in this Operation's
+request and response messages.
 
-Table :num:`table-raw-version-request` defines the Greybus Raw
-version request payload. The request supplies the greatest major and
-minor version of the Raw Protocol supported by the requester.
-
-.. figtable::
-    :nofig:
-    :label: table-raw-version-request
-    :caption: Raw Protocol Version Request
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Offered Raw Protocol major version
-    1        version_minor   1       |gb-minor|      Offered Raw Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
-
-Greybus Raw Protocol Version Response
-"""""""""""""""""""""""""""""""""""""
-
-The Greybus Raw Protocol version response payload contains two
-one-byte values, as defined in table
-:num:`table-raw-protocol-version-response`.
-A Greybus Raw controller adhering to the Protocol specified herein
-shall report major version |gb-major|, minor version |gb-minor|.
-
-.. figtable::
-    :nofig:
-    :label: table-raw-protocol-version-response
-    :caption: Raw Protocol Version Response
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Raw Protocol major version
-    1        version_minor   1       |gb-minor|      Raw Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
 
 Greybus Raw Send Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
