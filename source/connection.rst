@@ -93,6 +93,102 @@ request. The request destination compares that version with the
 largest common version number of the Protocol sent by both sides shall
 be the version that is to be used in communication between the devices.
 This chosen version is returned back as a response of the
-request.  As a consequence of this, Protocol handlers shall be capable of
-handling all prior versions of the Protocol.
+request.
 
+.. _greybus-protocol-version-operation:
+
+Common Greybus Protocol Version Operation
+-----------------------------------------
+
+Every Connection Protocol shall specify an Operation which allows the
+Protocol handling software on both ends of a connection to negotiate
+the version of the Protocol to use. This Operation shall be named the
+Protocol Version Operation. All Connection Protocol Operations with
+this name shall have the same semantics, as defined in this section.
+
+Conceptually, this operation is:
+
+.. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
+
+    Negotiates the major and minor version of the Protocol used for
+    communication over the connection.  The requestor offers the
+    version of the Protocol it supports.  The respondent replies with
+    the version that will be used - either the one offered if
+    supported, or its own (lower) version otherwise.
+
+The request value of each Protocol Version Operation shall be 0x01,
+and the response value for this Operation shall be 0x81.
+
+For example, the corresponding Operation within the Greybus GPIO
+Protocol is named the Greybus GPIO Protocol Version Operation. Its
+request and response values are respectively 0x01 and 0x81.
+
+For this operation, the request specifies the greatest version of the
+Protocol supported by the requestor.  The response contains the
+version that shall be used for further communication -- either the one
+offered if supported, or a lower version otherwise.
+
+The following sections define the contents and semantics of this
+Operation's Request and Response messages.
+
+Common Greybus Protocol Version Request
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Table :num:`table-common-greybus-protocol-version-request` defines the
+request payload for each Protocol's Protocol Version Operation. The
+request supplies the greatest major and minor version of the
+Connection Protocol supported by the sender.
+
+The Common Greybus Protocol Version Request shall be sent only by the
+AP for all Protocols except the SVC Protocol. In the case of the SVC
+protocol, the request shall be sent only by the SVC.
+
+.. figtable::
+    :nofig:
+    :label: table-common-greybus-protocol-version-request
+    :caption: Common Greybus Protocol Version Request
+    :spec: l l c c l
+
+    =======  ==============  ======  =================  ==============================
+    Offset   Field           Size    Value              Description
+    =======  ==============  ======  =================  ==============================
+    0        version_major   1       protocol-specific  Offered Protocol major version
+    1        version_minor   1       protocol-specific  Offered Protocol minor version
+    =======  ==============  ======  =================  ==============================
+
+..
+
+The values of the version_major and version_minor fields shall be
+specified on a per-protocol basis; the subsequent sections of this
+document which define individual Connection Protocols specify the
+values of these fields for this Operation according to the particular
+Protocol defined in each section.
+
+Common Greybus Protocol Version Response
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Table :num:`table-common-greybus-protocol-version-response` defines
+the response payload for each Protocol's Protocol Version
+Operation. The response supplies the version of the protocol that
+shall be used for any subsequent communication via the Connection.
+
+.. figtable::
+   :nofig:
+   :label: table-common-greybus-protocol-version-response
+   :caption: Common Greybus Protocol Version Request
+   :spec: l l c c l
+
+   =======  ==============  ======  =================  ==============================
+   Offset   Field           Size    Value              Description
+   =======  ==============  ======  =================  ==============================
+   0        version_major   1       protocol-specific  Offered Protocol major version
+   1        version_minor   1       protocol-specific  Offered Protocol minor version
+   =======  ==============  ======  =================  ==============================
+
+..
+
+The values of the version_major and version_minor fields shall be
+specified on a per-protocol basis; the subsequent sections of this
+document which define individual Connection Protocols specify the
+values of these fields for this Operation according to the particular
+Protocol defined in each section.
