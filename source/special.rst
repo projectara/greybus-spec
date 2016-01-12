@@ -46,13 +46,7 @@ Conceptually, the Operations in the Greybus Control Protocol are:
 
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Negotiates the major and minor version of the Protocol used for
-    communication over the connection.  The AP offers the
-    version of the Protocol it supports.  The Interface replies with
-    the version that will be used--either the one offered if
-    supported or its own (lower) version otherwise.  Protocol
-    handling code adhering to the Protocol specified herein supports
-    major version |gb-major|, minor version |gb-minor|.
+    Refer to :ref:`greybus-protocol-version-operation`.
 
 .. c:function:: int get_manifest_size(u16 *size);
 
@@ -148,55 +142,13 @@ type and response type values are shown.
 Greybus Control Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus Control Protocol version operation allows the Protocol
-handling software on both ends of a connection to negotiate the version
-of the Control Protocol to use.
+The Greybus Control Protocol Version Operation is the
+:ref:`greybus-protocol-version-operation` for the Control Protocol.
 
-Greybus Control Protocol Version Request
-""""""""""""""""""""""""""""""""""""""""
-
-Table :num:`table-control-version-request` defines the Greybus Control
-version request payload. The request supplies the greatest major and
-minor version of the Control Protocol supported by the sender.
-
-.. figtable::
-    :nofig:
-    :label: table-control-version-request
-    :caption: Control Protocol Version Request
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Offered Control Protocol major version
-    1        version_minor   1       |gb-minor|      Offered Control Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
-
-Greybus Control Protocol Version Response
-"""""""""""""""""""""""""""""""""""""""""
-
-The Greybus Control Protocol version response payload contains two
-one-byte values, as defined in table
-:num:`table-control-protocol-version-response`.
-A Greybus Control controller adhering to the Protocol specified herein
-shall report major version |gb-major|, minor version |gb-minor|.
-
-.. figtable::
-    :nofig:
-    :label: table-control-protocol-version-response
-    :caption: Control Protocol Version Response
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Control Protocol major version
-    1        version_minor   1       |gb-minor|      Control Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
+Greybus implementations adhering to the Protocol specified herein
+shall specify the value |gb-major| for the version_major and
+|gb-minor| for the version_minor fields found in this Operation's
+request and response messages.
 
 Greybus Control Get Manifest Size Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -505,13 +457,7 @@ Conceptually, the operations in the Greybus SVC Protocol are:
 
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Negotiates the major and minor version of the Protocol used for
-    communication over the connection.  The SVC offers the
-    version of the Protocol it supports.  The AP replies with
-    the version that will be used--either the one offered if
-    supported or its own (lower) version otherwise.  Protocol
-    handling code adhering to the Protocol specified herein supports
-    major version |gb-major|, minor version |gb-minor|.
+    Refer to :ref:`greybus-protocol-version-operation`.
 
 .. c:function:: int svc_hello(u16 endo_generation, u16 frame_variant, u8 intf_id);
 
@@ -650,56 +596,13 @@ response type values are shown.
 Greybus SVC Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus SVC Protocol version operation allows the Protocol
-handling software on both ends of a connection to negotiate the version
-of the SVC Protocol to use. It is sent by the SVC at initial
-power-on.
+The Greybus SVC Protocol Version Operation is the
+:ref:`greybus-protocol-version-operation` for the SVC Protocol.
 
-Greybus SVC Protocol Version Request
-""""""""""""""""""""""""""""""""""""
-
-Table :num:`table-svc-version-request` defines the Greybus SVC
-Protocol version request payload. The request supplies the greatest
-major and minor version of the SVC Protocol supported by the SVC.
-
-.. figtable::
-    :nofig:
-    :label: table-svc-version-request
-    :caption: SVC Protocol Version Request
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Offered SVC Protocol major version
-    1        version_minor   1       |gb-minor|      Offered SVC Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
-
-Greybus SVC Protocol Version Response
-"""""""""""""""""""""""""""""""""""""
-
-The Greybus SVC Protocol version response payload contains two
-one-byte values, as defined in table
-:num:`table-svc-protocol-version-response`. A Greybus SVC
-controller adhering to the Protocol specified herein shall report
-major version |gb-major|, minor version |gb-minor|.
-
-.. figtable::
-    :nofig:
-    :label: table-svc-protocol-version-response
-    :caption: SVC Protocol Version Response
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      SVC Protocol major version
-    1        version_minor   1       |gb-minor|      SVC Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
+Greybus implementations adhering to the Protocol specified herein
+shall specify the value |gb-major| for the version_major and
+|gb-minor| for the version_minor fields found in this Operation's
+request and response messages.
 
 Greybus SVC Hello Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1639,12 +1542,7 @@ The operations in the Greybus Firmware Protocol are:
 
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Negotiates the major and minor version of the Protocol used for
-    communication over the connection.  The AP sends the request offering the
-    version of the Protocol it supports.  The module responds with the version
-    that shall be used--either the one offered if supported, or its own lower
-    version.  Protocol handling code adhering to the Protocol specified here
-    supports major version |gb-major|, minor version |gb-minor|.
+    Refer to :ref:`greybus-protocol-version-operation`.
 
 .. c:function:: int ap_ready(void);
 
@@ -1711,53 +1609,14 @@ response.
 Greybus Firmware Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus firmware Protocol version operation allows the Protocol handling
-software on both ends of a connection to negotiate the version of the firmware
-Protocol to use.
+The Greybus Firmware Protocol Version Operation is the
+:ref:`greybus-protocol-version-operation` for the Firmware Protocol.
 
-Greybus Firmware Protocol Version Request
-"""""""""""""""""""""""""""""""""""""""""
+Greybus implementations adhering to the Protocol specified herein
+shall specify the value |gb-major| for the version_major and
+|gb-minor| for the version_minor fields found in this Operation's
+request and response messages.
 
-Table :num:`table-firmware-version-request` defines the Greybus firmware version
-request payload.  The request supplies the greatest major and minor version of
-firmware Protocol supported by the sender (the AP).
-
-.. figtable::
-    :nofig:
-    :label: table-firmware-version-request
-    :caption: Firmware Protocol Version Request
-    :spec: l l c c l
-
-    ======  =====   ====    ==========  =======================================
-    Offset  Field   Size    Value       Description
-    ======  =====   ====    ==========  =======================================
-    0       major   1       |gb-major|  Offered firmware Protocol major version
-    1       minor   1       |gb-minor|  Offered firmware Protocol minor version
-    ======  =====   ====    ==========  =======================================
-
-..
-
-Greybus Firmware Protocol Version Response
-""""""""""""""""""""""""""""""""""""""""""
-
-Table :num:`table-firmware-version-response` defines the Greybus firmware
-version response payload.  A Greybus module implementing the Protocol described
-herein shall report major version |gb-major|, minor version |gb-minor|.
-
-.. figtable::
-    :nofig:
-    :label: table-firmware-version-response
-    :caption: Firmware Protocol Version Response
-    :spec: l l c c l
-
-    ======  =====   ====    ==========  ===============================
-    Offset  Field   Size    Value       Description
-    ======  =====   ====    ==========  ===============================
-    0       major   1       |gb-major|  Firmware Protocol major version
-    1       minor   1       |gb-minor|  Firmware Protocol minor version
-    ======  =====   ====    ==========  ===============================
-
-..
 
 Greybus Firmware Protocol AP Ready Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
