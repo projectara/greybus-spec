@@ -30,13 +30,7 @@ Conceptually, the GPIO Protocol operations are:
 
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Negotiates the major and minor version of the Protocol used for
-    communication over the connection.  The sender offers the
-    version of the Protocol it supports.  The receiver replies with
-    the version that will be used--either the one offered if
-    supported or its own (lower) version otherwise.  Protocol
-    handling code adhering to the Protocol specified herein supports
-    major version |gb-major|, minor version |gb-minor|.
+    Refer to :ref:`greybus-protocol-version-operation`.
 
 .. c:function:: int line_count(u8 *count);
 
@@ -146,55 +140,14 @@ response type values are shown.
 Greybus GPIO Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus GPIO Protocol version operation allows the Protocol
-handling software on both ends of a connection to negotiate the
-version of the GPIO Protocol to use.
+The Greybus GPIO Protocol Version Operation is the
+:ref:`greybus-protocol-version-operation` for the GPIO Protocol.
 
-Greybus GPIO Protocol Version Request
-"""""""""""""""""""""""""""""""""""""
+Greybus implementations adhering to the Protocol specified herein
+shall specify the value |gb-major| for the version_major and
+|gb-minor| for the version_minor fields found in this Operation's
+request and response messages.
 
-Table :num:`table-gpio-version-request` defines the Greybus GPIO
-version request payload. The request supplies the greatest major and
-minor version of the GPIO Protocol supported by the sender.
-
-.. figtable::
-    :nofig:
-    :label: table-gpio-version-request
-    :caption: GPIO Protocol Version Request
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Offered GPIO Protocol major version
-    1        version_minor   1       |gb-minor|      Offered GPIO Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
-
-Greybus GPIO Protocol Version Response
-""""""""""""""""""""""""""""""""""""""
-
-The Greybus GPIO Protocol version response payload contains two
-one-byte values, as defined in table
-:num:`table-gpio-protocol-version-response`.
-A Greybus GPIO controller adhering to the Protocol specified herein
-shall report major version |gb-major|, minor version |gb-minor|.
-
-.. figtable::
-    :nofig:
-    :label: table-gpio-protocol-version-response
-    :caption: GPIO Protocol Version Response
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      GPIO Protocol major version
-    1        version_minor   1       |gb-minor|      GPIO Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
 
 Greybus GPIO Line Count Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -700,13 +653,7 @@ Conceptually, the operations in the Greybus SPI Protocol are:
 
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Negotiates the major and minor version of the Protocol used for
-    communication over the connection.  The sender offers the
-    version of the Protocol it supports.  The receiver replies with
-    the version that will be used--either the one offered if
-    supported or its own (lower) version otherwise.  Protocol
-    handling code adhering to the Protocol specified herein supports
-    major version |gb-major|, minor version |gb-minor|.
+    Refer to :ref:`greybus-protocol-version-operation`.
 
 .. c:function:: int master_config(u16 *mode, u16 *flags, u32 *bpw_mask, u16 *num_chipselect, u32 *min_speed_hz, u32 *max_speed_hz);
 
@@ -756,55 +703,14 @@ operation is a request or a response.
 Greybus SPI Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus SPI Protocol version operation allows the Protocol
-handling software on both ends of a connection to negotiate the
-version of the SPI Protocol to use.
+The Greybus SPI Protocol Version Operation is the
+:ref:`greybus-protocol-version-operation` for the SPI Protocol.
 
-Greybus SPI Protocol Version Request
-""""""""""""""""""""""""""""""""""""
+Greybus implementations adhering to the Protocol specified herein
+shall specify the value |gb-major| for the version_major and
+|gb-minor| for the version_minor fields found in this Operation's
+request and response messages.
 
-Table :num:`table-spi-version-request` defines the Greybus SPI
-version request payload. The request supplies the greatest major and
-minor version of the SPI Protocol supported by the sender.
-
-.. figtable::
-    :nofig:
-    :label: table-spi-version-request
-    :caption: SPI Protocol Version Request
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Offered SPI Protocol major version
-    1        version_minor   1       |gb-minor|      Offered SPI Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
-
-Greybus SPI Protocol Version Response
-"""""""""""""""""""""""""""""""""""""
-
-The Greybus SPI Protocol version response payload contains two
-one-byte values, as defined in table
-:num:`table-spi-protocol-version-response`.
-A Greybus SPI controller adhering to the Protocol specified herein
-shall report major version |gb-major|, minor version |gb-minor|.
-
-.. figtable::
-    :nofig:
-    :label: table-spi-protocol-version-response
-    :caption: SPI Protocol Version Response
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      SPI Protocol major version
-    1        version_minor   1       |gb-minor|      SPI Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
 
 Greybus SPI Protocol Master Config Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1078,13 +984,7 @@ conceptually:
 
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Negotiates the major and minor version of the Protocol used for
-    communication over the connection.  The sender offers the
-    version of the Protocol it supports.  The receiver replies with
-    the version that will be used--either the one offered if
-    supported or its own (lower) version otherwise.  Protocol
-    handling code adhering to the Protocol specified herein supports
-    major version |gb-major|, minor version |gb-minor|.
+    Refer to :ref:`greybus-protocol-version-operation`.
 
 .. c:function:: int send_data(u16 size, u8 *data);
 
@@ -1154,55 +1054,14 @@ operation is a request or a response.
 Greybus UART Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus UART Protocol version operation allows the Protocol
-handling software on both ends of a connection to negotiate the
-version of the UART Protocol to use.
+The Greybus UART Protocol Version Operation is the
+:ref:`greybus-protocol-version-operation` for the UART Protocol.
 
-Greybus UART Protocol Version Request
-"""""""""""""""""""""""""""""""""""""
+Greybus implementations adhering to the Protocol specified herein
+shall specify the value |gb-major| for the version_major and
+|gb-minor| for the version_minor fields found in this Operation's
+request and response messages.
 
-Table :num:`table-uart-version-request` defines the Greybus UART
-version request payload. The request supplies the greatest major and
-minor version of the UART Protocol supported by the sender.
-
-.. figtable::
-    :nofig:
-    :label: table-uart-version-request
-    :caption: UART Protocol Version Request
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Offered UART Protocol major version
-    1        version_minor   1       |gb-minor|      Offered UART Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
-
-Greybus UART Protocol Version Response
-""""""""""""""""""""""""""""""""""""""
-
-The Greybus UART Protocol version response payload contains two
-one-byte values, as defined in table
-:num:`table-uart-protocol-version-response`.
-A Greybus UART controller adhering to the Protocol specified herein
-shall report major version |gb-major|, minor version |gb-minor|.
-
-.. figtable::
-    :nofig:
-    :label: table-uart-protocol-version-response
-    :caption: UART Protocol Version Response
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      UART Protocol major version
-    1        version_minor   1       |gb-minor|      UART Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
 
 Greybus UART Send Data Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1546,13 +1405,7 @@ Conceptually, the PWM Protocol operations are:
 
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Negotiates the major and minor version of the Protocol used for
-    communication over the connection.  The sender offers the
-    version of the Protocol it supports.  The receiver replies with
-    the version that will be used--either the one offered if
-    supported or its own (lower) version otherwise.  Protocol
-    handling code adhering to the Protocol specified herein supports
-    major version |gb-major|, minor version |gb-minor|.
+    Refer to :ref:`greybus-protocol-version-operation`.
 
 .. c:function:: int pwm_count(u8 *count);
 
@@ -1629,56 +1482,13 @@ are shown.
 Greybus PWM Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus PWM Protocol version operation allows the Protocol
-handling software on both ends of a connection to negotiate the
-version of the PWM Protocol to use.
+The Greybus PWM Protocol Version Operation is the
+:ref:`greybus-protocol-version-operation` for the PWM Protocol.
 
-Greybus PWM Protocol Version Request
-""""""""""""""""""""""""""""""""""""
-
-Table :num:`table-pwm-version-request` defines the Greybus PWM
-version request payload. The request supplies the greatest major and
-minor version of the PWM Protocol supported by the sender.
-
-.. figtable::
-    :nofig:
-    :label: table-pwm-version-request
-    :caption: PWM Protocol Version Request
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Offered PWM Protocol major version
-    1        version_minor   1       |gb-minor|      Offered PWM Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
-
-
-Greybus PWM Protocol Version Response
-"""""""""""""""""""""""""""""""""""""
-
-The Greybus PWM Protocol version response payload contains two
-one-byte values, as defined in table
-:num:`table-pwm-protocol-version-response`.
-A Greybus PWM controller adhering to the Protocol specified herein
-shall report major version |gb-major|, minor version |gb-minor|.
-
-.. figtable::
-    :nofig:
-    :label: table-pwm-protocol-version-response
-    :caption: PWM Protocol Version Response
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      PWM Protocol major version
-    1        version_minor   1       |gb-minor|      PWM Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
+Greybus implementations adhering to the Protocol specified herein
+shall specify the value |gb-major| for the version_major and
+|gb-minor| for the version_minor fields found in this Operation's
+request and response messages.
 
 Greybus PWM Count Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1927,13 +1737,7 @@ Conceptually, the five operations in the Greybus I2C Protocol are:
 
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Negotiates the major and minor version of the Protocol used for
-    communication over the connection.  The sender offers the
-    version of the Protocol it supports.  The receiver replies with
-    the version that will be used--either the one offered if
-    supported or its own (lower) version otherwise.  Protocol
-    handling code adhering to the Protocol specified herein supports
-    major version |gb-major|, minor version |gb-minor|.
+    Refer to :ref:`greybus-protocol-version-operation`.
 
 .. c:function:: int get_functionality(u32 *functionality);
 
@@ -1992,55 +1796,14 @@ operation is a request or a response.
 Greybus I2C Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus I2C Protocol version operation allows the Protocol
-handling software on both ends of a connection to negotiate the
-version of the I2C Protocol to use.
+The Greybus I2C Protocol Version Operation is the
+:ref:`greybus-protocol-version-operation` for the I2C Protocol.
 
-Greybus I2C Protocol Version Request
-""""""""""""""""""""""""""""""""""""
+Greybus implementations adhering to the Protocol specified herein
+shall specify the value |gb-major| for the version_major and
+|gb-minor| for the version_minor fields found in this Operation's
+request and response messages.
 
-Table :num:`table-i2c-version-request` defines the Greybus I2C
-version request payload. The request supplies the greatest major and
-minor version of the I2C Protocol supported by the sender.
-
-.. figtable::
-    :nofig:
-    :label: table-i2c-version-request
-    :caption: I2C Protocol Version Request
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Offered I2C Protocol major version
-    1        version_minor   1       |gb-minor|      Offered I2C Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
-
-Greybus I2C Protocol Version Response
-"""""""""""""""""""""""""""""""""""""
-
-The Greybus I2C Protocol version response payload contains two
-one-byte values, as defined in table
-:num:`table-i2c-protocol-version-response`.
-A Greybus I2C controller adhering to the Protocol specified herein
-shall report major version |gb-major|, minor version |gb-minor|.
-
-.. figtable::
-    :nofig:
-    :label: table-i2c-protocol-version-response
-    :caption: I2C Protocol Version Response
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      I2C Protocol major version
-    1        version_minor   1       |gb-minor|      I2C Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
 
 Greybus I2C Functionality Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2316,13 +2079,7 @@ Conceptually, the operations in the Greybus SDIO Protocol are:
 
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
-    Negotiates the major and minor version of the Protocol used
-    for communication over the connection.  The sender offers the
-    version of the Protocol it supports.  The receiver replies
-    with the version that will be used--either the one offered if
-    supported or its own (lower) version otherwise.  Protocol
-    handling code adhering to the Protocol specified herein
-    supports major version |gb-major|, minor version |gb-minor|.
+    Refer to :ref:`greybus-protocol-version-operation`.
 
 .. c:function:: int get_capabilities(u32 *caps, u32 *ocr, u16 *max_blk_count, u16 *max_blk_size);
 
@@ -2388,55 +2145,13 @@ and response type values are shown.
 Greybus SDIO Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus SDIO Protocol version operation allows the Protocol
-handling software on both ends of a connection to negotiate the
-version of the SDIO Protocol to use.
+The Greybus SDIO Protocol Version Operation is the
+:ref:`greybus-protocol-version-operation` for the SDIO Protocol.
 
-Greybus SDIO Protocol Version Request
-"""""""""""""""""""""""""""""""""""""
-
-Table :num:`table-sdio-version-request` defines the Greybus SDIO
-version request payload. The request supplies the greatest major
-and minor version of the SDIO Protocol supported by the sender.
-
-.. figtable::
-    :nofig:
-    :label: table-sdio-version-request
-    :caption: SDIO Protocol Version Request
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      Offered SDIO Protocol major version
-    1        version_minor   1       |gb-minor|      Offered SDIO Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
-
-Greybus SDIO Protocol Version Response
-""""""""""""""""""""""""""""""""""""""
-
-The Greybus SDIO Protocol version response payload contains two
-one-byte values, as defined in table
-:num:`table-sdio-protocol-version-response`.  A Greybus SDIO
-controller adhering to the Protocol specified herein shall report
-major version |gb-major|, minor version |gb-minor|.
-
-.. figtable::
-    :nofig:
-    :caption: SDIO Protocol Version Response
-    :label: table-sdio-protocol-version-response
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        version_major   1       |gb-major|      SDIO Protocol major version
-    1        version_minor   1       |gb-minor|      SDIO Protocol minor version
-    =======  ==============  ======  ==========      ===========================
-
-..
+Greybus implementations adhering to the Protocol specified herein
+shall specify the value |gb-major| for the version_major and
+|gb-minor| for the version_minor fields found in this Operation's
+request and response messages.
 
 Greybus SDIO Get Capabilities Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
