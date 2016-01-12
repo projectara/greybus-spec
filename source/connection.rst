@@ -56,7 +56,7 @@ Values marked *Reserved for Protocol use* are to be used by the
 individual Protocols as defined in the :ref:`device-class-protocols` and
 :ref:`bridged-phy-protocols` sections below.
 
-Note that *GB_OP_INTERNAL* should never be used in a response message. It
+Note that *GB_OP_INTERNAL* shall not be used in a response message. It
 is reserved for internal use by the Greybus application stack only.
 
 All Protocols defined herein are subject to the
