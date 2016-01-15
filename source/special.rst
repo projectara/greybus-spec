@@ -570,7 +570,7 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     an error on the link, for example.
 
 .. XXX This is nebulous at this point; my intention is to handle the
-.. XXX case where a UniPro "link down" indicates that a link *was*
+.. XXX case where a |unipro| "link down" indicates that a link *was*
 .. XXX down at some point--since we have no way to discover this
 .. XXX immediately.
 
@@ -907,13 +907,13 @@ The Greybus SVC Protocol Route Destroy response contains no payload.
 Greybus SVC Interface Device ID Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus SVC Interface Device ID Operation is used by the AP
-Module to request the SVC associate a device id with an Interface.
-The device id is used by the |unipro| switch to determine how
-packets should be routed through the network.  The AP Module is
-responsible for managing the mapping between Interfaces and UniPro
-device ids.  Note that the SVC always uses device ID 0, and the AP
-Module always uses device ID 1.
+The Greybus SVC Interface Device ID Operation is used by the AP Module
+to request the SVC associate a device id with an Interface.  The
+device id is used by the |unipro| switch to determine how packets
+should be routed through the network.  The AP Module is responsible
+for managing the mapping between Interfaces and |unipro| device ids.
+Note that the SVC always uses device ID 0, and the AP Module always
+uses device ID 1.
 
 Greybus SVC Interface Device ID Request
 """""""""""""""""""""""""""""""""""""""
