@@ -574,6 +574,11 @@ Conceptually, the operations in the Greybus SVC Protocol are:
 .. XXX down at some point--since we have no way to discover this
 .. XXX immediately.
 
+.. c:function:: int intf_set_power_mode(u8 intf_id, struct unipro_link_cfg *cfg);
+
+    The AP sends this to the SVC to request that a |unipro| power mode
+    change be applied to an Interface.
+
 .. c:function:: int connection_create(u8 intf1_id, u16 cport1_id, u8 intf2_id, u16 cport2_id, u8 tc, u8 flags);
 
     The AP Module uses this operation to request the SVC set up a
@@ -636,7 +641,8 @@ response type values are shown.
     TimeSync enable              0x0d           0x8d
     TimeSync disable             0x0e           0x8e
     TimeSync authoritative       0x0f           0x8f
-    (all other values reserved)  0x10..0x7f     0x90..0xff
+    Interface set power mode     0x10           0x90
+    (all other values reserved)  0x11..0x7f     0x91..0xff
     ===========================  =============  ==============
 
 ..
@@ -1082,6 +1088,341 @@ Greybus SVC Interface Reset Response
 """"""""""""""""""""""""""""""""""""
 
 The Greybus SVC Interface Reset response message contains no payload.
+
+Greybus SVC Interface Set Power Mode Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The AP sends this to the SVC to request that it change the |unipro|
+power mode for the |unipro| link on an Interface.
+
+.. _svc-interface-set-power-mode-request:
+
+Greybus SVC Interface Set Power Mode Request
+""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-interface-set-power-mode-request` defines the
+Greybus SVC Interface Set Power Mode Request payload.
+
+The request message payload contains the interface ID for which the AP
+requests the power mode change, fields specifying the power mode
+change to apply, and a structure containing implementation-specific
+configuration information associated with the power mode change.
+
+.. figtable::
+   :nofig:
+   :label: table-svc-interface-set-power-mode-request
+   :caption: SVC Protocol Interface Set Power Mode Request
+   :spec: l l c c l
+
+   =======  ==================    =========   ======================   =============================================
+   Offset   Field                 Size        Value                    Description
+   =======  ==================    =========   ======================   =============================================
+   0        intf_id               1           Interface ID             Interface whose power mode to change
+   1        hs_series             1           1 or 2                   Frequency series in high speed mode; see Table :num:`table-svc-unipro-hs-series`
+   2        tx_mode               1           |unipro| Power Mode      Power mode for TX; see Table :num:`table-svc-unipro-pwrmode`
+   3        tx_gear               1           Number                   Gear for TX lanes
+   4        tx_nlanes             1           Number                   Number of active TX lanes
+   5        tx_amplitude          1           Number                   TX signal amplitude; see Table :num:`table-svc-pwrm-tx-ampl`
+   6        tx_hs_equalizer       1           Number                   HS TX signal de-emphasis; see Table :num:`table-svc-unipro-pwrm-tx-hs-equal`
+   7        rx_mode               1           |unipro| Power Mode      Power mode for RX; see Table :num:`table-svc-unipro-pwrmode`
+   8        rx_gear               1           Number                   Gear for RX lanes
+   9        rx_nlanes             1           Number                   Number of active RX lanes
+   10       flags                 1           Bit mask                 See Table :num:`table-svc-pwrm-flags`
+   11       quirks                4           Bit mask                 See Table :num:`table-svc-pwrm-quirks`
+   15       local_l2timerdata     24          |unipro| L2 timer data   L2 timer configuration data for power mode change (local peer)
+   39       remote_l2timerdata    24          |unipro| L2 timer data   L2 timer configuration data for power mode change (remote peer)
+   =======  ==================    =========   ======================   =============================================
+
+..
+
+The hs_series field in the request payload allows the AP to control
+which rate series is used when either direction of the link is in high
+speed mode. The values of the hs_series field are defined in Table
+:num:`table-svc-unipro-hs-series`.
+
+.. figtable::
+   :nofig:
+   :label: table-svc-unipro-hs-series
+   :caption: High Speed Frequency Series
+   :spec: l l l
+
+   ============================    ==============  =========================
+   Frequency Series                         Value  Description
+   ============================    ==============  =========================
+   (Reserved)                      0               (Reserved for future use)
+   A                               1               High speed series A
+   B                               2               High speed series B
+   (All other values reserved)     3-255           (Reserved for future use)
+   ============================    ==============  =========================
+
+..
+
+The tx_mode and rx_mode fields in the request payload allow the AP to
+specify a |unipro| power mode for each direction of the link. The
+values of these fields, along with the corresponding modes, are
+specified in Table :num:`table-svc-unipro-pwrmode`.
+
+.. figtable::
+   :nofig:
+   :label: table-svc-unipro-pwrmode
+   :caption: |unipro| power modes
+   :spec: l r l
+
+   =====================   =========    ===========================
+   Mode                    Value        Description
+   =====================   =========    ===========================
+   (Reserved)              0x00         (Reserved for future use)
+   UNIPRO_FAST_MODE        0x01         Fast (HS) mode
+   UNIPRO_SLOW_MODE        0x02         Slow (PWM) mode
+   (Reserved)              0x03         (Reserved for future use)
+   UNIPRO_FAST_AUTO_MODE   0x04         Fast auto mode
+   UNIPRO_SLOW_AUTO_MODE   0x05         Slow auto mode
+   (Reserved)              0x06         (Reserved for future use)
+   UNIPRO_MODE_UNCHANGED   0x07         Leave mode unchanged
+   (Reserved)              0x08-0x10    (Reserved for future use)
+   UNIPRO_HIBERNATE_MODE   0x11         Hibernate mode
+   UNIPRO_OFF_MODE         0x12         Link is off
+   (Reserved)              0x13-0xFF    (Reserved for future use)
+   =====================   =========    ===========================
+
+..
+
+The tx_amplitude field in the request payload allows the AP to
+specify the TX path signal amplitude of a |unipro| link. It applies to
+both local and remote peers.
+The values of this field, along with the corresponding modes, are
+specified in Table :num:`table-svc-pwrm-tx-ampl`.
+
+.. figtable::
+   :nofig:
+   :label: table-svc-pwrm-tx-ampl
+   :caption: TX path signal amplitudes
+   :spec: l r l
+
+   =========================== =========    ================================
+   Mode                        Value        Description
+   =========================== =========    ================================
+   (Reserved)                  0x0          (Reserved for future use)
+   SMALL_AMPLITUDE             0x01         Select small TX signal amplitude
+   LARGE_AMPLITUDE             0x02         Select large TX signal amplitude
+   (all other values reserved) 0x03-0xFF    (Reserved for future use)
+   =========================== =========    ================================
+
+..
+
+The tx_hs_equalizer field in the request payload allows the AP to
+specify a de-emphasis value for the TX path of a |unipro| link. It applies to
+both local and remote peers. It is only relevant in high speed (HS) mode, and
+ignored in slow (PWM) mode.
+The values of this field, along with the corresponding modes, are
+specified in Table :num:`table-svc-unipro-pwrm-tx-hs-equal`.
+
+.. figtable::
+   :nofig:
+   :label: table-svc-unipro-pwrm-tx-hs-equal
+   :caption: HS TX signal de-emphasis modes
+   :spec: l r l
+
+   =========================== =========    ======================================
+   Mode                        Value        Description
+   =========================== =========    ======================================
+   NO_DE_EMPHASIS              0x0          Disable de-emphasis on HS TX path
+   SMALL_DE_EMPHASIS           0x01         Enable 3.5dB de-emphasis on HS TX path
+   LARGE_DE_EMPHASIS           0x02         Enable 6dB de-emphasis on HS TX path
+   (all other values reserved) 0x03-0xFF    (Reserved for future use)
+   =========================== =========    ======================================
+
+..
+
+The flags field in the request payload is a bit mask which allows the
+AP to request the SVC to update extra |unipro| power mode settings.
+The mask values for the flags field are defined in
+Table :num:`table-svc-pwrm-flags`.
+
+.. figtable::
+   :nofig:
+   :label: table-svc-pwrm-flags
+   :caption: Flags for SVC Interface Set Power Mode Request
+   :spec: l r l
+
+   =========================== =========    ===============================
+   Mode                        Value        Description
+   =========================== =========    ===============================
+   RX_TERMINATION              0x01         Enable RX-direction termination
+   TX_TERMINATION              0x02         Enable TX-direction termination
+   LINE_RESET                  0x04         Request Line Reset
+   (Reserved)                  0x08         (Reserved for future use)
+   (Reserved)                  0x10         (Reserved for future use)
+   SCRAMBLING                  0x20         Always set HS series
+   (all other values reserved) 0x40-0x80    (Reserved for future use)
+   =========================== =========    ===============================
+
+..
+
+The quirks field in the request payload is a bit mask which allows the
+AP to request behavior from the SVC which may deviate in some way from
+the |unipro| specification. The mask values for the quirks field are
+defined in Table :num:`table-svc-pwrm-quirks`.
+
+.. figtable::
+   :nofig:
+   :label: table-svc-pwrm-quirks
+   :caption: Quirks for SVC Interface Set Power Mode Request
+   :spec: l r l
+
+   =========================== =====================    =========================
+   Mode                        Value                    Description
+   =========================== =====================    =========================
+   SVC_PWRM_QUIRK_HSSER        0x00000001               Always set HS series
+   (all other values reserved) 0x00000002-0x80000000    (Reserved for future use)
+   =========================== =====================    =========================
+
+..
+
+The local_l2timerdata and remote_l2timerdata fields in the request payload
+allow the AP to configure L2 timer values of the |unipro| link.
+local_l2timerdata and remote_l2timerdata fields apply respectively to the local
+and remote peers of the |unipro| link. The content of this structure is defined
+in the |unipro| specification version 1.6, Table 102.
+All integer values in Table 102 are stored as 16-bit little-endian values.
+
+If one or more of the following list of conditions holds, the SVC
+shall transmit a Greybus SVC Interface Set Power Mode Response message
+with status byte GB_OP_INVALID. The SVC shall make no changes to the
+link's power mode in any of these cases.
+
+1. The request's hs_series field does not lie within the table of
+   values given in Table :num:`table-svc-unipro-hs-series`.
+
+2. The request's tx_mode or rx_mode field is not one of the values
+   given in Table :num:`table-svc-unipro-pwrmode`.
+
+3. The request's tx_mode, rx_mode, tx_gear, rx_gear, tx_nlanes, rx_nlanes,
+   tx_amplitude and tx_hs_equalizer do not collectively lie within the ranges
+   defined by the |unipro| specification.
+
+4. The request's quirks field contains bits set which are reserved for
+   future use or not supported by the SVC.
+
+Upon receipt of a Greybus SVC Interface Set Power Mode Request, the
+SVC shall determine if the intf_id field in the request payload is
+valid, by determining if there is a |unipro| link associated with the
+Interface given by intf_id, and whether that |unipro| link is up. If
+so, the SVC shall attempt to change the power mode of the |unipro|
+link at the given interface. If not, the SVC shall transmit a Greybus
+SVC Interface Set Power Mode Response message with status byte
+GB_OP_INVALID. The SVC shall make no changes to the link's power mode
+in this case.
+
+The tx_mode and rx_mode fields in the Greybus SVC Interface Set Power
+Mode Request determine the |unipro| Power Modes of the link's transmit
+and receive directions, respectively. The transmit and receive
+directions are defined with respect to the UniPort attached to the
+|unipro| switch. For example, tx_mode determines the |unipro| power
+mode of the transmitter which is attached to the |unipro| switch at
+the Interface given by intf_id; tx_mode does not refer to the
+transmitter within the switch itself.
+
+When reconfiguring the link power mode as a result of receiving a
+Greybus SVC Interface Set Power Mode Request, the SVC shall set the
+|unipro| PA_HSSeries attribute for the link according to the hs_series
+field in the request payload, as defined by Table
+:num:`table-svc-unipro-hs-series`.
+
+If the SVC_PWRM_QUIRK_HSSER bit is set in the quirks field of the
+request payload, the SVC shall perform this setting regardless of
+whether either tx_mode or rx_mode is UNIPRO_FAST_MODE or
+UNIPRO_FAST_AUTO_MODE. If SVC_PWRM_QUIRK_HSSER is unset, the SVC shall
+set PA_HSSeries if and only if one of tx_mode or rx_mode is
+UNIPRO_FAST_MODE or UNIPRO_FAST_AUTO_MODE.
+
+The tx_gear and rx_gear attributes specify the gear settings for the
+transmit and receive directions in the new power mode
+configuration. The valid values for the tx_gear and rx_gear fields
+depend respectively on the values of tx_mode and rx_mode.
+
+If tx_mode or rx_mode is UNIPRO_FAST_MODE or UNIPRO_FAST_AUTO_MODE,
+then the valid values for tx_gear or rx_gear, respectively, are one,
+two, and three.
+
+If tx_mode or rx_mode is UNIPRO_SLOW_MODE or UNIPRO_SLOW_AUTO_MODE,
+then the valid values for tx_gear or rx_gear, respectively, are the
+range of integers between one and seven.
+
+If tx_mode or rx_mode is UNIPRO_MODE_UNCHANGED, direction-specific
+parameters (tx_gear, tx_nlanes, SVC_PWRM_TXTERMINATION or
+rx_gear, rx_nlanes, SVC_PWRM_RXTERMINATION, respectively) will be ignored.
+
+When reconfiguring the link power mode as a result of receiving a
+Greybus SVC Interface Set Power Mode Request, the link's transmitter and/or
+receiver power mode shall be set to the given configuration.
+The status field of the response to a Greybus SVC Interface Set Power Mode
+Request shall not be used to check the result of the power mode change
+operation. It shall only be used to indicate the result of the Greybus
+communication only. If the response to a Greybus SVC Interface Set Power Mode
+Request has status different than GB_OP_SUCCESS, it shall indicate that a
+Greybus communication error occurred and that the power mode change could not be
+initiated; the targeted link shall be in the same state as before the request
+was issued. If the response to a Greybus SVC Interface Set Power Mode Request
+has status GB_OP_SUCCESS, it shall indicate that there was no Greybus
+communication error detected (request and response were successfully exchanged).
+However, it shall not also be considered as a successful power mode change.
+The pwr_change_result_code field in the response, as described in
+Table :num:`table-svc-interface-set-power-mode-response-pwr-change-result-code`
+shall be used for that unique purpose. In other words, if and only if response
+status field is GB_OP_SUCCESS and pwr_change_result_code field in the response
+is PWR_OK then the power mode change request shall be considered as successful.
+Operation shall otherwise be considered as failed in any other
+combination of these two fields.
+
+Greybus SVC Interface Set Power Mode Response
+"""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-interface-set-power-mode-response` defines the
+Greybus SVC Interface Set Power Mode Response payload.
+
+.. figtable::
+   :nofig:
+   :label: table-svc-interface-set-power-mode-response
+   :caption: SVC Protocol Interface Set Power Mode Response
+   :spec: l l c c l
+
+   =======  ======================     =========   =====================   ==============================
+   Offset   Field                      Size        Value                   Description
+   =======  ======================     =========   =====================   ==============================
+   0        pwr_change_result_code     1           PowerChangeResultCode   |unipro| PowerChangeResultCode
+   =======  ======================     =========   =====================   ==============================
+
+..
+
+The Greybus Interface Set Power Mode response message contains a field
+which may contain a PowerChangeResultCode as defined by the |unipro|
+specification, version 1.6, Table 9.
+The pwr_change_result_code field in the response payload indicates a successful
+operation or describes the reason for the operation failure. The values of the
+pwr_change_result_code field are defined in
+Table :num:`table-svc-interface-set-power-mode-response-pwr-change-result-code`.
+
+.. figtable::
+   :nofig:
+   :label: table-svc-interface-set-power-mode-response-pwr-change-result-code
+   :caption: PowerChangeResultCode Values
+   :spec: l l l
+
+   ============================    ==============  =========================
+   PowerChangeResultCode           Value           Description
+   ============================    ==============  =========================
+   PWR_OK                          0               The request was accepted.
+   PWR_LOCAL                       1               The local request was successfully applied.
+   PWR_REMOTE                      2               The remote request was successfully applied.
+   PWR_BUSY                        3               The request was aborted due to concurrent requests.
+   PWR_ERROR_CAP                   4               The request was rejected because the requested configuration exceeded the Link’s capabilities.
+   PWR_FATAL_ERROR                 5               The request was aborted due to a communication problem. The Link may be inoperable.
+   (All other values reserved)     6-255           (Reserved for future use)
+   ============================    ==============  =========================
+
+..
+
 
 Greybus SVC Connection Create Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
