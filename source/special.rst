@@ -561,6 +561,11 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     The SVC sends this to inform the AP that a key with a specific code has
     generated an event.
 
+.. c:function:: int ping(void);
+
+    The AP Module uses this operation to "ping" the SVC to see if it is still
+    alive and receiving messages properly.
+
 Greybus SVC Operations
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -601,7 +606,8 @@ response type values are shown.
     Interface set power mode     0x10           0x90
     Interface Eject              0x11           0x91
     Key Event                    0x12           N/A
-    (all other values reserved)  0x13..0x7f     0x93..0xff
+    Ping                         0x13           0x93
+    (all other values reserved)  0x14..0x7f     0x94..0xff
     ===========================  =============  ==============
 
 ..
@@ -1540,6 +1546,23 @@ response shall contain zero.
     48       time_sync6    8       Frame-Time  Authoritative frame-time at TIME_SYNC6
     56       time_sync7    8       Frame-Time  Authoritative frame-time at TIME_SYNC7
     =======  ============  ======  ==========  ======================================
+
+Greybus SVC Ping Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+The AP Module uses this operation to request determine if the SVC, and by virtue
+of the response, the greybus fabric, is still operating properly.  If the ping
+operation fails, the AP Module will take measures to restart the greybus network
+operations by possibly resetting different hardware devices.
+
+Greybus SVC Ping Request
+""""""""""""""""""""""""
+
+The Greybus SVC Ping Request contains no payload.
+
+Greybus SVC Ping Response
+"""""""""""""""""""""""""
+
+The Greybus SVC Ping Response contains no payload.
 
 ..
 
