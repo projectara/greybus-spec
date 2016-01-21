@@ -556,6 +556,11 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     necessary action to eject an interface associated with the given
     interface id.
 
+.. c:function:: int key_event(u16 key_code, u8 key_event);
+
+    The SVC sends this to inform the AP that a key with a specific code has
+    generated an event.
+
 Greybus SVC Operations
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -595,7 +600,8 @@ response type values are shown.
     TimeSync authoritative       0x0f           0x8f
     Interface set power mode     0x10           0x90
     Interface Eject              0x11           0x91
-    (all other values reserved)  0x12..0x7f     0x92..0xff
+    Key Event                    0x12           N/A
+    (all other values reserved)  0x13..0x7f     0x93..0xff
     ===========================  =============  ==============
 
 ..
@@ -1569,6 +1575,81 @@ Greybus SVC Interface Eject Response
 
 The Greybus SVC Interface Eject response message contains no payload.
 
+Greybus SVC Key Event Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The SVC uses this operation to indicate that a key connected to the SVC
+generated an event.
+
+Greybus SVC Key Event Request
+"""""""""""""""""""""""""""""
+
+The Greybus SVC Protocol Key Event Request signals to the recipient that an
+event has occurred on a Key attached to SVC.
+Table :num:`table-svc-key-event-request` defines the request, in which it
+supplies a key code and an event type.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-key-event-request
+    :caption: SVC Protocol Key Event Request
+    :spec: l l c c l
+
+    =======  ============  ======  ==========  ======================================
+    Offset   Field         Size    Value       Description
+    =======  ============  ======  ==========  ======================================
+    0        key_code      2       Number      :ref:`svc_key_code`
+    2        key_event     1       Number      :ref:`svc_key_events`
+    =======  ============  ======  ==========  ======================================
+
+..
+
+.. _svc_key_code:
+
+Greybus SVC Key Codes
+"""""""""""""""""""""
+
+Table :num:`table-svc-key-codes` defines the values of allowed key codes to be
+included in Key Event Request.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-key-codes
+    :caption: SVC key codes
+    :spec: l l l
+
+    ====================  ====================================  ============
+    Key Codes             Brief Description                     Value
+    ====================  ====================================  ============
+    GB_KEYCODE_ARA        Key code for Ara specific key         0x00
+    |_|                   (all other values reserved)           0x01..0xFF
+    ====================  ====================================  ============
+
+..
+
+.. _svc_key_events:
+
+Greybus SVC Key Events
+""""""""""""""""""""""
+
+Table :num:`table-svc-key-events` defines the values of allowed key events to be
+included in Key Event Request.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-key-events
+    :caption: SVC key events
+    :spec: l l l
+
+    ====================  ====================================  ============
+    Key Events            Brief Description                     Value
+    ====================  ====================================  ============
+    GB_SVC_KEY_RELEASED   Key event representing key release    0x00
+    GB_SVC_KEY_PRESSED    Key event representing key pressed    0x01
+    |_|                   (all other values reserved)           0x02..0xFF
+    ====================  ====================================  ============
+
+..
 .. _firmware-protocol:
 
 Firmware Protocol
