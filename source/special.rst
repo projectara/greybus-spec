@@ -550,6 +550,12 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     The AP Module uses this operation to request the SVC to send the
     authoritative frame-time at each TIME_SYNC strobe.
 
+.. c:function:: int interface_eject(u8 intf_id);
+
+    The AP Module uses this operation to request the SVC to perform the
+    necessary action to eject an interface associated with the given
+    interface id.
+
 Greybus SVC Operations
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -588,7 +594,8 @@ response type values are shown.
     TimeSync disable             0x0e           0x8e
     TimeSync authoritative       0x0f           0x8f
     Interface set power mode     0x10           0x90
-    (all other values reserved)  0x11..0x7f     0x91..0xff
+    Interface Eject              0x11           0x91
+    (all other values reserved)  0x12..0x7f     0x92..0xff
     ===========================  =============  ==============
 
 ..
@@ -1529,6 +1536,39 @@ response shall contain zero.
     =======  ============  ======  ==========  ======================================
 
 ..
+
+Greybus SVC Interface Eject Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The requester uses this operation to indicate to the SVC that it should execute
+the necessary actions to release and eject an interface.
+
+Greybus SVC Interface Eject Request
+"""""""""""""""""""""""""""""""""""
+
+The Greybus SVC Interface Eject Request is defined in Table
+:num:`table-svc-interface-eject-request`, the Interface ID informs the SVC which
+Interface shall be ejected.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-interface-eject-request
+    :caption: SVC Protocol Interface Eject Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ============    ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ============    ===========================
+    0        intf_id         1       Interface ID    Interface that shall be ejected
+    =======  ==============  ======  ============    ===========================
+
+..
+
+Greybus SVC Interface Eject Response
+""""""""""""""""""""""""""""""""""""
+
+The Greybus SVC Interface Eject response message contains no payload.
+
 .. _firmware-protocol:
 
 Firmware Protocol
