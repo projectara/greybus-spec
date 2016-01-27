@@ -316,8 +316,8 @@ it. Class types are defined in Table :num:`table-bundle-class`.
     Lights                          0x0f
     Vibrator                        0x10
     Loopback                        0x11
-    Audio Management                0x12
-    Audio Data                      0x13
+    Audio                           0x12
+    Reserved                        0x13
     SVC                             0x14
     Firmware                        0x15
     (All other values reserved)     0x16..0xfd
