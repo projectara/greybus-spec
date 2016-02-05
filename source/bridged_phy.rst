@@ -659,7 +659,7 @@ Conceptually, the operations in the Greybus SPI Protocol are:
 
     Returns a set of configuration parameters related to SPI master.
 
-.. c:function:: int device_config(u16 cs, u16 *mode, u8 *bpw, u32 *max_speed_hz, u8 *name[32]);
+.. c:function:: int device_config(u16 cs, u16 *mode, u8 *bpw, u32 *max_speed_hz, u8 *device_type, u8 *name[32]);
 
     Returns a set of configuration parameters related to SPI device in a chipselect.
 
@@ -852,6 +852,8 @@ identifier between 0 and num_chipselect.
 
 ..
 
+.. _spi-dev-config-response:
+
 Greybus SPI Protocol Device Config Response
 """""""""""""""""""""""""""""""""""""""""""
 
@@ -871,8 +873,35 @@ limits and default values of certain configurations of a device.
     0        mode            2       Bit Mask        :ref:`spi-mode-bits`
     2        bpw             1       Number          bits per word supported by device
     3        max_speed_hz    4       Number          Higher limit for transfer speed
-    7        name            32      Characters      Name and/or Device driver alias
+    7        device_type     1       Number          :ref:`spi-device-type`
+    8        name            32      Characters      Name and/or Device driver alias
     =======  ==============  ======  ==========      ===========================
+
+..
+
+.. _spi-device-type:
+
+Greybus SPI Protocol Device Type
+""""""""""""""""""""""""""""""""
+
+Table :num:`table-spi-device-type` defines the types of device associated with
+asked chip-select for Greybus SPI devices. The name field in :ref:`spi-dev-config-response`
+shall be ignore if the Device Type is not equal to GB_SPI_SPI_MODALIAS.
+
+.. figtable::
+    :nofig:
+    :label: table-spi-device-type
+    :caption: SPI Protocol Device Type Values
+    :spec: l l l
+
+    ===============================  ======================================================  ========================
+    Symbol                           Brief Description                                       Value
+    ===============================  ======================================================  ========================
+    GB_SPI_SPI_DEV                   SPI device is a generic bit bang SPI device             0x00
+    GB_SPI_SPI_NOR                   SPI device is a SPI NOR device that supports JEDEC id   0x01
+    GB_SPI_SPI_MODALIAS              SPI device driver can be represented by the name field  0x02
+    |_|                              (All other values reserved)                             0x03..0xFF
+    ===============================  ======================================================  ========================
 
 ..
 
