@@ -22,6 +22,9 @@ endif
 PAPEROPT_a4     = -D latex_paper_size=a4
 PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
+DOT_GRAPH_DIR   = source/img/dot
+DOT_GRAPHS      = $(wildcard $(DOT_GRAPH_DIR)/*.dot)
+GEN_PNG_GRAPHS  = $(DOT_GRAPHS:.dot=.png)
 
 .PHONY: help clean all html latexpdf
 
@@ -33,15 +36,20 @@ help:
 clean:
 	rm -rf $(BUILDDIR)/*
 	rm -f source/extensions/*.pyc
+	rm -f $(DOT_GRAPH_DIR)/*.png
+
+$(DOT_GRAPH_DIR)/%.png: $(DOT_GRAPH_DIR)/%.dot
+	@dot -Tpng -Gsize=4,5\! $< -o $@
+	@echo DOT: $<
 
 all:	html latexpdf
 
-html:
+html: $(GEN_PNG_GRAPHS)
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
 
-latexpdf:
+latexpdf: $(GEN_PNG_GRAPHS)
 	$(SPHINXBUILD) -b latex $(ALLSPHINXOPTS) $(BUILDDIR)/latex
 	@echo "Running LaTeX files through pdflatex..."
 	$(MAKE) -C $(BUILDDIR)/latex all-pdf

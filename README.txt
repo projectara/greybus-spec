@@ -4,10 +4,11 @@ Requirements:
 
 - Sphinx: http://sphinx-doc.org/contents.html
 - LaTeX (and pdflatex, and various LaTeX packages)
+- Graphviz (in particular, "dot"): http://www.graphviz.org/
 
 On Ubuntu:
 
-# apt-get install python-sphinx texlive texlive-latex-extra texlive-humanities
+# apt-get install python-sphinx texlive texlive-latex-extra texlive-humanities graphviz
 
 Then:
 
