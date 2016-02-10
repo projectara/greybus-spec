@@ -2081,7 +2081,10 @@ Greybus Loopback Transfer Operation
 
 The Greybus Loopback transfer operation sends data and then the same
 data is returned.  This is used to determine the time required to
-transfer different size messages.
+transfer different size messages. To facilitate analysis, the messages
+used for both the Loopback Transfer Operation request and response
+message have identical formats.
+
 
 Greybus Loopback Transfer Request
 """""""""""""""""""""""""""""""""
@@ -2100,7 +2103,9 @@ the device, and the data itself.
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
     0        len             4       Number          length in bytes of the data field
-    4        data            X       Data            array of data bytes
+    4        reserved0       4       Number          Not used - same size as response
+    8        reserved1       4       Number          Not used - same size as response
+    12       data            X       Data            array of data bytes
     =======  ==============  ======  ==========      ===========================
 
 ..
