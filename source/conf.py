@@ -18,7 +18,7 @@ import os
 
 CURDIR = os.path.abspath(os.path.dirname(__file__))
 # add custom extensions directory to python path
-sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'extensions'))
+sys.path.insert(0, os.path.join(os.path.abspath(os.path.dirname(__file__)), 'extensions'))
 
 
 # import the custom html and latex builders/translators/writers
