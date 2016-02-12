@@ -344,8 +344,70 @@ transitions, are as follows.
   point, the interface is considered to contain either a damaged Greybus
   implementation, or it is simply a "blank" or "spacer" interface.
 
+Module Enumeration
+------------------
 
-It is informative only from the perspective of the Greybus
-specification itself.
+Once an interface is in the BOOTED state, the system attempts to
+establish sufficient Greybus connections to be usable by
+applications. When this succeeds, the interface is in the ENUMERATED
+state.
 
-(TBD).
+Enumeration State Machine
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. note::
+
+   This is just a transcription of the whiteboard image -- more
+   thought is needed to flesh out any needed inner transitions /
+   back-edges.
+
+.. image:: /img/dot/hotplug-boot2enum.png
+   :align: center
+
+Enumeration States
+~~~~~~~~~~~~~~~~~~
+
+TODO.
+
+Enumeration State Transitions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+TODO.
+
+Module Unplug
+-------------
+
+Unplug State Machine
+~~~~~~~~~~~~~~~~~~~~
+
+.. image:: /img/dot/hotplug-unplug.png
+   :align: center
+
+Unplug States
+~~~~~~~~~~~~~
+
+TODO.
+
+Unplug State Transitions
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+TODO.
+
+Module Forcible Removal
+-----------------------
+
+Forcible Removal State Machine
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. image:: /img/dot/hotplug-forcibleremoval.png
+   :align: center
+
+Forcible Removal State Machine
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+TODO.
+
+Forcible Removal State Transitions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+TODO.
