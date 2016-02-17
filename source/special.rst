@@ -1369,8 +1369,6 @@ Interface ID and CPort ID define the other end.
 
 CPort flags can be specified as a bitwise-or of flags in *flags*,
 and are defined in table :num:`table-svc-connection-create-request-flags`.
-When set, the corresponding feature is enabled. For example,
-specifying CSD enables |unipro| Controlled Segment Dropping.
 
 .. figtable::
     :nofig:
@@ -1397,13 +1395,13 @@ specifying CSD enables |unipro| Controlled Segment Dropping.
     :caption: SVC Protocol Connection Create Request Flags
     :spec: l l l
 
-    =======  ==============  =====================================
+    =======  ==============  ============================================
     Value    Flag            Description
-    =======  ==============  =====================================
-    0x01     E2EFC           |unipro| L4 End-to-End Flow Control
-    0x02     CSD             |unipro| Controlled Segment Dropping
-    0x04     CSV             |unipro| CPort Safety Valve
-    =======  ==============  =====================================
+    =======  ==============  ============================================
+    0x01     E2EFC           Enable |unipro| End-to-End Flow Control
+    0x02     CSD_N           Disable |unipro| Controlled Segment Dropping
+    0x04     CSV_N           Disable |unipro| CPort Safety Valve
+    =======  ==============  ============================================
 
 ..
 
