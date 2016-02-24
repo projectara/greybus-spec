@@ -399,7 +399,7 @@ typically should not be used.)
     I2S Management                  0x0a
     SPI                             0x0b
     Display                         0x0c
-    Camera                          0x0d
+    Camera Management               0x0d
     Sensor                          0x0e
     Lights                          0x0f
     Vibrator                        0x10
@@ -408,7 +408,8 @@ typically should not be used.)
     Audio Data                      0x13
     SVC                             0x14
     Firmware                        0x15
-    (All other values reserved)     0x16..0xfd
+    Camera Data                     0x16
+    (All other values reserved)     0x17..0xfd
     Raw                             0xfe
     Vendor Specific                 0xff
     ============================    ==========
