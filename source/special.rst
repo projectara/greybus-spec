@@ -6,22 +6,23 @@ Special Protocols
 This section defines three Protocols, each of which serves a special
 purpose in a Greybus system.
 
-The first is the Control Protocol.  Every Interface shall provide a
-CPort that uses the Control Protocol. It is used by the AP Module to
+The first is the :ref:`control-protocol`.  Every Interface shall provide
+a CPort that uses the Control Protocol. It is used by the AP Module to
 notify Interfaces when connections are available for them to use.
 
-The second is the SVC Protocol, which is used only between the SVC
-and AP Module.  The SVC provides low-level control of the |unipro|
+The second is the :ref:`svc-protocol`, which is used only between the
+SVC and AP Module.  The SVC provides low-level control of the |unipro|
 network.  The SVC performs almost all of its activities under
 direction of the AP Module, and the SVC Protocol is used by the AP
 Module to exert this control.  The SVC also uses this protocol to
 notify the AP Module of events, such as the insertion or removal of
 a Module.
 
-The third is the Firmware Protocol, which is used between the AP Module and any
-other module's bootloader to download firmware executables to the module.  When
-a module's manifest includes a CPort using the Firmware Protocol, the AP can
-connect to that CPort and download a firmware executable to the module.
+The third is the :ref:`firmware-protocol`, which is used between the AP
+Module and any other module's bootloader to download firmware
+executables to the module.  When a module's manifest includes a CPort
+using the Firmware Protocol, the AP can connect to that CPort and
+download a firmware executable to the module.
 
 .. _control-protocol:
 
