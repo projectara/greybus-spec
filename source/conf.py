@@ -67,7 +67,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Greybus Specification'
-copyright = u'2015, Google, Inc.'
+copyright = u'2015-2016, Google, Inc.'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
