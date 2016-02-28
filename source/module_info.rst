@@ -299,16 +299,16 @@ it. Class types are defined in Table :num:`table-bundle-class`.
     Class type                      Value
     ============================    ==========
     Control                         0x00
-    SVC                             0x01
-    GPIO                            0x02
-    I2C                             0x03
-    UART                            0x04
+    AP                              0x01
+    Reserved                        0x02
+    Reserved                        0x03
+    Reserved                        0x04
     HID                             0x05
-    USB                             0x06
-    SDIO                            0x07
+    Reserved                        0x06
+    Reserved                        0x07
     Power Supply                    0x08
-    PWM                             0x09
-    Unused                          0x0a
+    Reserved                        0x09
+    Bridged PHY                     0x0a
     SPI                             0x0b
     Display                         0x0c
     Camera                          0x0d
