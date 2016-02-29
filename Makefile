@@ -44,6 +44,11 @@ $(DOT_GRAPH_DIR)/%.png: $(DOT_GRAPH_DIR)/%.dot
 
 all:	html latexpdf
 
+singlehtml: $(GEN_PNG_GRAPHS)
+	$(SPHINXBUILD) -b singlehtml $(ALLSPHINXOPTS) $(BUILDDIR)/singlehtml
+	@echo
+	@echo "Build finished. The single HTML page is in $(BUILDDIR)/singlehtml."
+
 html: $(GEN_PNG_GRAPHS)
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
