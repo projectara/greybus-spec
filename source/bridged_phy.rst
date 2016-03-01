@@ -1778,11 +1778,6 @@ Conceptually, the five operations in the Greybus I2C Protocol are:
    Sets the timeout (in milliseconds) the I2C adapter should allow
    before giving up on an addressed client.
 
-.. c:function:: int set_retries(u8 retries);
-
-   Sets the number of times an adapter should retry an I2C op before
-   giving up.
-
 .. c:function:: int transfer(u8 op_count, struct i2c_op *ops);
 
    Performs an I2C transaction made up of one or more "steps" defined
@@ -1815,7 +1810,7 @@ operation is a request or a response.
     Protocol Version             0x01           0x81
     Functionality                0x02           0x82
     Timeout                      0x03           0x83
-    Retries                      0x04           0x84
+    Reserved                     0x04           0x84
     Transfer                     0x05           0x85
     (all other values reserved)  0x06..0x7f     0x86..0xff
     ===========================  =============  ==============
@@ -1945,38 +1940,6 @@ Greybus I2C Set Timeout Response
 """"""""""""""""""""""""""""""""
 
 The Greybus I2C set timeout response message has no payload.
-
-Greybus I2C Set Retries Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The Greybus I2C set retries operation allows the requestor to set the
-number of times the I2C adapter retries I2C messages.
-
-Greybus I2C Set Retries Request
-"""""""""""""""""""""""""""""""
-
-Table :num:`table-i2c-set-retries-request` defines theq Greybus I2C
-set timeout request. The request contains an eight-bit value
-representing the number of retries to be used by an I2C adapter.
-
-.. figtable::
-    :nofig:
-    :label: table-i2c-set-retries-request
-    :caption: I2C Protocol Set Retries Request
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        count           1       Number          Retry count
-    =======  ==============  ======  ==========      ===========================
-
-..
-
-Greybus I2C Set Retries Response
-""""""""""""""""""""""""""""""""
-
-The Greybus I2C set retries response message has no payload.
 
 Greybus I2C Transfer Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
