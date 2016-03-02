@@ -1546,6 +1546,8 @@ response shall contain zero.
     56       time_sync7    8       Frame-Time  Authoritative frame-time at TIME_SYNC7
     =======  ============  ======  ==========  ======================================
 
+..
+
 Greybus SVC Ping Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 The AP Module uses this operation to request determine if the SVC, and by virtue
