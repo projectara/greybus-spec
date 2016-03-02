@@ -567,6 +567,21 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     The AP Module uses this operation to "ping" the SVC to see if it is still
     alive and receiving messages properly.
 
+.. c:function:: int pwrmon_rail_count_get(u8 *rail_count);
+
+    The AP uses this operation to retrieve the number of power rails
+    for which power measurements are available.
+
+.. c:function:: int pwrmon_rail_names_get(u8 **rails_buf);
+
+    The AP uses this operation to retrieve the list of names of all
+    supported power rails.
+
+.. c:function:: int pwrmon_sample_get(u8 rail_id, u8 type, u32 *value);
+
+    The AP uses this operation to retrieve a single measurement
+    (current, voltage or power) for a single rail.
+
 Greybus SVC Operations
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -585,31 +600,34 @@ response type values are shown.
     :caption: SVC Operation Types
     :spec: l l l
 
-    ===========================  =============  ==============
-    SVC Operation Type           Request Value  Response Value
-    ===========================  =============  ==============
-    Invalid                      0x00           0x80
-    Protocol Version             0x01           0x81
-    SVC Hello                    0x02           0x82
-    Interface device ID          0x03           0x83
-    Interface hotplug            0x04           0x84
-    Interface hot unplug         0x05           0x85
-    Interface reset              0x06           0x86
-    Connection create            0x07           0x87
-    Connection destroy           0x08           0x88
-    DME peer get                 0x09           0x89
-    DME peer set                 0x0a           0x8a
-    Route create                 0x0b           0x8b
-    Route destroy                0x0c           0x8c
-    TimeSync enable              0x0d           0x8d
-    TimeSync disable             0x0e           0x8e
-    TimeSync authoritative       0x0f           0x8f
-    Interface set power mode     0x10           0x90
-    Interface Eject              0x11           0x91
-    Key Event                    0x12           N/A
-    Ping                         0x13           0x93
-    (all other values reserved)  0x14..0x7f     0x94..0xff
-    ===========================  =============  ==============
+    ===============================  =============  ==============
+    SVC Operation Type               Request Value  Response Value
+    ===============================  =============  ==============
+    Invalid                          0x00           0x80
+    Protocol Version                 0x01           0x81
+    SVC Hello                        0x02           0x82
+    Interface device ID              0x03           0x83
+    Interface hotplug                0x04           0x84
+    Interface hot unplug             0x05           0x85
+    Interface reset                  0x06           0x86
+    Connection create                0x07           0x87
+    Connection destroy               0x08           0x88
+    DME peer get                     0x09           0x89
+    DME peer set                     0x0a           0x8a
+    Route create                     0x0b           0x8b
+    Route destroy                    0x0c           0x8c
+    TimeSync enable                  0x0d           0x8d
+    TimeSync disable                 0x0e           0x8e
+    TimeSync authoritative           0x0f           0x8f
+    Interface set power mode         0x10           0x90
+    Interface Eject                  0x11           0x91
+    Key Event                        0x12           N/A
+    Ping                             0x13           0x93
+    Power Monitor get rail count     0x14           0x94
+    Power Monitor get rail names     0x15           0x95
+    Power Monitor get sample         0x16           0x96
+    (all other values reserved)      0x17..0x7f     0x97..0xff
+    ===============================  =============  ==============
 
 ..
 
@@ -1673,7 +1691,164 @@ included in Key Event Request.
     |_|                   (all other values reserved)           0x02..0xFF
     ====================  ====================================  ============
 
+Greybus SVC Power Monitor Get Rail Count Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SVC Power Monitor Get Rail Count operation retrieves the
+number of power rails for which power measurement is supported.
+
+Greybus SVC Power Monitor Get Rail Count Request
+""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus SVC Power Monitor Get Rail Count request is sent from
+the AP only. It has no payload.
+
+Greybus SVC Power Monitor Get Rail Count Response
+"""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus SVC Power Monitor Get Rail Count response contains
+a 1-byte field 'rail_count'. The maximum supported number of rails
+is 254, 255 (0xff) is an invalid value. The rail count can equal 0
+in which case no rail can be measured by the SVC.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-powermon-get-rail-count-response
+    :caption: SVC Power Monitor Get Rail Count Response
+    :spec: l l l l l
+
+    =======  ==============  ===========  ==========      ===========================
+    Offset   Field           Size         Value           Description
+    =======  ==============  ===========  ==========      ===========================
+    0        rail_count      1            Number          Number of power rails
+    =======  ==============  ===========  ==========      ===========================
+
 ..
+
+Greybus SVC Power Monitor Get Rail Names Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SVC Power Monitor Get Rail Names operation requests
+the names of all power rails for which power measurement is supported.
+
+Greybus SVC Power Monitor Get Rail Names Request
+""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus SVC Power Monitor Get Rail Names request is sent from
+the AP only. It has no payload.
+
+Greybus SVC Power Monitor Get Rail Names Response
+"""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus SVC Power Monitor Get Rail Names response is comprised of
+human-readable names for rails that support voltage, current and power
+measurement. Each name consists of a fixed 32-byte sub-buffer
+containing a rail name padded with zero bytes. A rail name is
+comprised of a subset of [US-ASCII]_ characters: lower- and upper-case
+alphanumerics and the character '_'. A rail name is from 1-32 bytes
+long; a 32-byte name has no pad bytes.
+
+The number of these buffers shall be exactly the number returned by
+a prior Greybus SVC Power Monitor Get Rail Name Count operation.
+
+If there are no measurable power rails on the platform,
+the GB_OP_INVALID Greybus error shall be returned in response to this
+request.
+
+Each rail has an implicit 'Rail ID' which is equal to its position in
+the array of rail names returned by this response. The rail whose name
+is first in the array shall have Rail ID 0, the second shall have Rail
+ID 1, and so on.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-powermon-get-rail-names-response
+    :caption: SVC Power Monitor Get Rail Names Response
+    :spec: l l l l l
+
+    =======  ==============  ===========  ==========      ===========================
+    Offset   Field           Size         Value           Description
+    =======  ==============  ===========  ==========      ===========================
+    0        rail_1_name     32           String          Rail #1 name
+    32       rail_2_name     32           String          Rail #2 name
+    (...)
+    =======  ==============  ===========  ==========      ===========================
+
+..
+
+Greybus SVC Power Monitor Get Sample Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SVC Power Monitor Get Sample operation shall be used by
+the AP to retrieve a single measurement.
+
+Greybus SVC Power Monitor Get Sample Request
+""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus SVC Power Monitor Get Sample request is sent from the AP
+only. It contains the ID of the rail and the measurement type
+(current, voltage, power).
+
+.. figtable::
+    :nofig:
+    :label: table-svc-powermon-get-sample-request
+    :caption: SVC Power Monitor Get Sample Request
+    :spec: l l l l l
+
+    =======  ==============  ===========  ==========      ===========================
+    Offset   Field           Size         Value           Description
+    =======  ==============  ===========  ==========      ===========================
+    0        rail_id         1            Number          ID of the rail that shall be measured
+    1        type            1            Number          Measurement type indicator (:ref:`svc_pwrmon_measurement_types`)
+    =======  ==============  ===========  ==========      ===========================
+
+..
+
+.. _svc_pwrmon_measurement_types:
+
+Greybus SVC Power Monitor Set Sample Type Indicators
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. figtable::
+    :nofig:
+    :label: table-svc-pwrmon-measurement-types
+    :caption: SVC Power Monitor measurement types
+    :spec: l l l
+
+    ============================  ========================================  ============
+    Measurement type              Brief Description                         Value
+    ============================  ========================================  ============
+    GB_SVC_PWRMON_TYPE_INVALID    Invalid request value                     0x00
+    GB_SVC_PWRMON_TYPE_CURR       Current measurement in microamps (uA)     0x01
+    GB_SVC_PWRMON_TYPE_VOL        Voltage measurement in microvolts (uV)    0x02
+    GB_SVC_PWRMON_TYPE_PWR        Power measurement in microwatts (uW)      0x03
+    |_|                           (all other values reserved)               0x04..0xFF
+    ============================  ========================================  ============
+
+..
+
+Greybus SVC Power Monitor Get Sample Response
+"""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus SVC Power Monitor Get Sample response contains
+the measured value in a 4-byte unsigned integer. Units in which
+the retrieved values are represented are as follows: microvolts
+for voltage, microamps for current and microwatts for power.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-powermon-get-sample-response
+    :caption: SVC Power Monitor Get Sample Response
+    :spec: l l l l l
+
+    =======  ==============  ===========  ==========      ===========================
+    Offset   Field           Size         Value           Description
+    =======  ==============  ===========  ==========      ===========================
+    0        measurement     4            Number          Measured value
+    =======  ==============  ===========  ==========      ===========================
+
+..
+
 .. _firmware-protocol:
 
 Firmware Protocol
