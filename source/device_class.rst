@@ -296,9 +296,9 @@ power supply.
     =======  ================  ======  ==========      ===========================
     Offset   Field             Size    Value           Description
     =======  ================  ======  ==========      ===========================
-    0        manufacturer      32      Characters      Manufacturer name
-    32       model             32      Characters      Model name
-    64       serial_number     32      Characters      Serial Number
+    0        manufacturer      32      UTF-8           Manufacturer name
+    32       model             32      UTF-8           Model name
+    64       serial_number     32      UTF-8           Serial Number
     96       type              2       Number          :ref:`power-supply-type`
     98       properties_count  1       Number          Number of properties
     =======  ================  ======  ==========      ===========================
@@ -382,7 +382,7 @@ contains the number and the properties descriptors in this response.
     Offset   Field             Size    Value           Description
     =======  ================  ======  ==========      ===========================
     0        properties_count  1       Number          Number of properties descriptors
-    1        props[N]          (2*N)   prop_desc       N Property Descriptors :ref:`power-supply-property-descriptor`
+    1        props[N]          (2*N)   Structure       N Property Descriptors :ref:`power-supply-property-descriptor`
     =======  ================  ======  ==========      ===========================
 
 ..
@@ -1006,8 +1006,8 @@ the Greybus Audio Protocol supported by the sender.
     ====== ============== ==== ========== ============================================
     Offset Field          Size Value      Description
     ====== ============== ==== ========== ============================================
-    0      version_major  1    |gb-major| Offered Greybus Audio Protocol major version
-    1      version_minor  1    |gb-minor| Offered Greybus Audio Protocol minor version
+    0      version_major  1    Number     |gb-major| Offered Greybus Audio Protocol major version
+    1      version_minor  1    Number     |gb-minor| Offered Greybus Audio Protocol minor version
     ====== ============== ==== ========== ============================================
 
 ..
@@ -1029,8 +1029,8 @@ version |gb-major|, minor version |gb-minor|.
     ====== ============= ====  ========== ====================================
     Offset Field         Size  Value      Description
     ====== ============= ====  ========== ====================================
-    0      version_major 1     |gb-major| Greybus Audio Protocol major version
-    1      version_minor 1     |gb-minor| Greybus Audio Protocol minor version
+    0      version_major 1     Number     |gb-major| Greybus Audio Protocol major version
+    1      version_minor 1     Number     |gb-minor| Greybus Audio Protocol minor version
     ====== ============= ====  ========== ====================================
 
 ..
@@ -1143,7 +1143,7 @@ DAI information for Audio Modules.
     Offset Field    Size Value     Description
     ====== ======== ==== ========= =============================
     0      name     32   UTF-8     DAI Name
-    32     cport    2    CPort ID  CPort for DAI Data Connection
+    32     cport    2    Number    CPort for DAI Data Connection
     34     capture  43   Structure :ref:`audio-pcm-struct`
     77     playback 43   Structure :ref:`audio-pcm-struct`
     ====== ======== ==== ========= =============================
@@ -1264,7 +1264,7 @@ control information for Audio Modules.
     0      name          32   UTF-8     Control Name
     32     id            1    Number    Control ID
     33     iface         1    Number    :ref:`audio-control-iface-type`
-    34     dai_cport     2    CPort ID  DAI CPort
+    34     dai_cport     2    Number    DAI CPort
     36     access        1    Bit Mask  :ref:`audio-control-access-rights-flags`
     37     count         1    Number    Number of elements of this type
     38     info          XX   Structure :ref:`audio-ctl-elem-info`
@@ -1397,7 +1397,7 @@ element type.
     GB_AUDIO_CTL_ELEM_TYPE_BOOLEAN    Boolean                   0x01
     GB_AUDIO_CTL_ELEM_TYPE_INTEGER    32-bit Integer            0x02
     GB_AUDIO_CTL_ELEM_TYPE_ENUMERATED Enumerated type           0x03
-    GB_AUDIO_CTL_ELEM_TYPE_INTEGER64  64-but Integer            0x06
+    GB_AUDIO_CTL_ELEM_TYPE_INTEGER64  64-bit Integer            0x06
     ================================= ========================= ==========
 
 ..
@@ -1791,7 +1791,7 @@ is being queried.
     ====== ========= ==== ======== ================================
     Offset Field     Size Value    Description
     ====== ========= ==== ======== ================================
-    0      dai_cport 2    CPort ID DAI's CPort
+    0      dai_cport 2    Number   DAI's CPort
     ====== ========= ==== ======== ================================
 
 ..
@@ -1846,7 +1846,7 @@ is being set.
     =======  =========  ====  ======== ==================================
     Offset   Field      Size  Value    Description
     =======  =========  ====  ======== ==================================
-    0        dai_cport  2     CPort ID DAI's CPort
+    0        dai_cport  2     Number   DAI's CPort
     2        format     4     Bit mask :ref:`audio-pcm-format-flags`
     6        rate       4     Bit mask :ref:`audio-pcm-rate-flags`
     10       channels   1     Number   Number of audio channels
@@ -1889,7 +1889,7 @@ number of channels).
     =======  =========  ====  ======== ================================
     Offset   Field      Size  Value    Description
     =======  =========  ====  ======== ================================
-    0        dai_cport  2     CPort ID DAI's CPort
+    0        dai_cport  2     Number   DAI's CPort
     2        size       2     Number   Number of audio data bytes
     =======  =========  ====  ======== ================================
 
@@ -1924,7 +1924,7 @@ DAI CPort which uniquely identifies the DAI.
     ====== ========= ==== ======== ================================
     Offset Field     Size Value    Description
     ====== ========= ==== ======== ================================
-    0      dai_cport 2    CPort ID DAI's CPort
+    0      dai_cport 2    Number   DAI's CPort
     ====== ========= ==== ======== ================================
 
 ..
@@ -1978,7 +1978,7 @@ DAI CPort which uniquely identifies the DAI.
     =======  =========  ====  ======== ================================
     Offset   Field      Size  Value    Description
     =======  =========  ====  ======== ================================
-    0        dai_cport  2     CPort ID DAI's CPort
+    0        dai_cport  2     Number   DAI's CPort
     =======  =========  ====  ======== ================================
 
 ..
@@ -2013,7 +2013,7 @@ DAI CPort which uniquely identifies the DAI.
     =======  =========  ====  ======== ================================
     Offset   Field      Size  Value    Description
     =======  =========  ====  ======== ================================
-    0        dai_cport  2     CPort ID DAI's CPort
+    0        dai_cport  2     Number   DAI's CPort
     =======  =========  ====  ======== ================================
 
 ..
@@ -2052,7 +2052,7 @@ number of channels).
     =======  =========  ====  ======== ================================
     Offset   Field      Size  Value    Description
     =======  =========  ====  ======== ================================
-    0        dai_cport  2     CPort ID DAI's CPort
+    0        dai_cport  2     Number   DAI's CPort
     2        size       2     Number   Number of audio data bytes
     =======  =========  ====  ======== ================================
 
@@ -2087,7 +2087,7 @@ DAI CPort which uniquely identifies the DAI.
     ====== ========= ==== ======== ================================
     Offset Field     Size Value    Description
     ====== ========= ==== ======== ================================
-    0      dai_cport 2    CPort ID DAI's CPort
+    0      dai_cport 2    Number   DAI's CPort
     ====== ========= ==== ======== ================================
 
 ..
@@ -2141,7 +2141,7 @@ DAI CPort which uniquely identifies the DAI.
     =======  =========  ====  ======== ================================
     Offset   Field      Size  Value    Description
     =======  =========  ====  ======== ================================
-    0        dai_cport  2     CPort ID DAI's CPort
+    0        dai_cport  2     Number   DAI's CPort
     =======  =========  ====  ======== ================================
 
 ..
@@ -2175,7 +2175,7 @@ DAI CPort which uniquely identifies the DAI.
     =======  =========  ====  ======== ================================
     Offset   Field      Size  Value    Description
     =======  =========  ====  ======== ================================
-    0        dai_cport  2     CPort ID DAI's CPort
+    0        dai_cport  2     Number   DAI's CPort
     =======  =========  ====  ======== ================================
 
 ..
@@ -2321,7 +2321,7 @@ identifies the DAI, and the one-byte event being reported.
     =======  =========  ====  ========= ================================
     Offset   Field      Size  Value     Description
     =======  =========  ====  ========= ================================
-    0        dai_cport  2     CPort ID  DAI's CPort
+    0        dai_cport  2     Number    DAI's CPort
     2        event      1     Number    :ref:`audio-streaming-events`
     =======  =========  ====  ========= ================================
 
@@ -2394,7 +2394,7 @@ this message without first setting the data size.
     =======  ==============  ======  ==========      ===========================
     0        timestamp       8       Number          Time that audio sample
                                                      is to be output
-    8        data            ...     *size*          Audio data
+    8        data            *size*  Data            Audio data
     =======  ==============  ======  ==========      ===========================
 
 ..
@@ -3016,7 +3016,7 @@ Controller.
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ==========      ===========================
     0        channel_count   1       Number          Number of Channels
-    1        name            32      Characters      Light Controller name
+    1        name            32      UTF-8           Light Controller name
     =======  ==============  ======  ==========      ===========================
 
 ..
@@ -3075,9 +3075,9 @@ channel.
     0        max_brightness  1       Number          Maximum Supported Value for Brightness
     1        flags           4       Bit Mask        :ref:`lights-channel-flags`
     5        color           4       Number          Color code value
-    9        color_name      32      Characters      Color name
+    9        color_name      32      UTF-8           Color name
     41       mode            4       Bit Mask        :ref:`lights-channel-mode`
-    45       mode_name       32      Characters      Mode name
+    45       mode_name       32      UTF-8           Mode name
     =======  ==============  ======  ==========      ===========================
 
 ..
