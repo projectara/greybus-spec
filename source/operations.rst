@@ -135,7 +135,7 @@ operation message header.
     Offset    Field           Size    Value           Description
     ========  ==============  ======  ==========      ===========================
     0         size            2       Number          Size of this operation message
-    2         id              2       ID              Requestor-supplied unique request identifier
+    2         id              2       Number          Requestor-supplied unique request identifier
     4         type            1       Number          Type of Greybus operation (Protocol-specific)
     5         status          1       Number          Operation result (response message only)
     6         (pad)           2       0               Reserved (pad to 8 bytes)
