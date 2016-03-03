@@ -242,11 +242,11 @@ receiving Interface that has been connected.
     :caption: Control Protocol Connected Request
     :spec: l l c c l
 
-    =======  ==============  ======  ============    ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ============    ===========================
-    0        cport_id        2       CPort ID        CPort that is now connected
-    =======  ==============  ======  ============    ===========================
+    =======  ==============  ======  =======    ===========================
+    Offset   Field           Size    Value      Description
+    =======  ==============  ======  =======    ===========================
+    0        cport_id        2       Number     CPort that is now connected
+    =======  ==============  ======  =======    ===========================
 
 ..
 
@@ -276,11 +276,11 @@ receiving Interface that is no longer connected.
     :caption: Control Protocol Disconnected Request
     :spec: l l c c l
 
-    =======  ==============  ======  ============    ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ============    ===========================
-    0        cport_id        2       CPort ID        CPort that is now disconnected
-    =======  ==============  ======  ============    ===========================
+    =======  ==============  ======  =======    ===========================
+    Offset   Field           Size    Value      Description
+    =======  ==============  ======  =======    ===========================
+    0        cport_id        2       Number     CPort that is now disconnected
+    =======  ==============  ======  =======    ===========================
 
 ..
 
@@ -371,14 +371,14 @@ Unused slots in the response shall contain zero.
     Offset   Field           Size    Value       Description
     =======  ==============  ======  ==========  ===================================================================
     0        maximum_jitter  4       Number      Maximum jitter to accept when calculating frame-time in nanoseconds
-    4        time_sync0      8       Frame-Time  Authoritative frame-time at TIME_SYNC0
-    12       time_sync1      8       Frame-Time  Authoritative frame-time at TIME_SYNC1
-    20       time_sync2      8       Frame-Time  Authoritative frame-time at TIME_SYNC2
-    28       time_sync3      8       Frame-Time  Authoritative frame-time at TIME_SYNC3
-    36       time_sync4      8       Frame-Time  Authoritative frame-time at TIME_SYNC4
-    44       time_sync5      8       Frame-Time  Authoritative frame-time at TIME_SYNC5
-    52       time_sync6      8       Frame-Time  Authoritative frame-time at TIME_SYNC6
-    60       time_sync7      8       Frame-Time  Authoritative frame-time at TIME_SYNC7
+    4        time_sync0      8       Number      Authoritative frame-time at TIME_SYNC0
+    12       time_sync1      8       Number      Authoritative frame-time at TIME_SYNC1
+    20       time_sync2      8       Number      Authoritative frame-time at TIME_SYNC2
+    28       time_sync3      8       Number      Authoritative frame-time at TIME_SYNC3
+    36       time_sync4      8       Number      Authoritative frame-time at TIME_SYNC4
+    44       time_sync5      8       Number      Authoritative frame-time at TIME_SYNC5
+    52       time_sync6      8       Number      Authoritative frame-time at TIME_SYNC6
+    60       time_sync7      8       Number      Authoritative frame-time at TIME_SYNC7
     =======  ==============  ======  ==========  ===================================================================
 
 Greybus Control TimeSync Authoritative Response
@@ -399,7 +399,7 @@ propogration offset calculated by the Interface.
     Offset   Field         Size    Value       Description
     =======  ============  ======  ==========  ======================================================
     0        prop_offset   4       Number      Calculated TIME_SYNC propogation offset in nanoseconds
-    4        time_sync     8       Frame-Time  Authoritative frame-time at the last TIME_SYNC
+    4        time_sync     8       Number      Authoritative frame-time at the last TIME_SYNC
     =======  ============  ======  ==========  ======================================================
 ..
 
@@ -667,9 +667,9 @@ environment and location of the AP interface.
     =======  ================  ===========  ===============  ===========================
     Offset   Field             Size         Value            Description
     =======  ================  ===========  ===============  ===========================
-    0        endo_generation   2            Endo Generation  Endo Generation ID
-    2        frame_variant     2            Frame Variant    Endo Frame Variant within the Generation
-    4        intf_id           1            AP Interface ID  AP Interface ID
+    0        endo_generation   2            Number           Endo Generation ID
+    2        frame_variant     2            Number           Endo Frame Variant within the Generation
+    4        intf_id           1            Number           AP Interface ID
     =======  ================  ===========  ===============  ===========================
 
 ..
@@ -702,9 +702,9 @@ SVC returns the value of the DME attribute requested.
     =======  ==============  ===========  ===============  ===========================
     Offset   Field           Size         Value            Description
     =======  ==============  ===========  ===============  ===========================
-    0        intf_id         1            Interface ID     Interface ID
-    1        attr            2            DME Attribute    |unipro| DME Attribute
-    3        selector        2            Selector index   |unipro| DME selector
+    0        intf_id         1            Number           Interface ID
+    1        attr            2            Number           |unipro| DME Attribute
+    3        selector        2            Number           |unipro| DME selector
     =======  ==============  ===========  ===============  ===========================
 
 ..
@@ -726,8 +726,8 @@ as the value of the attribute, if applicable.
     =======  ==============  ===========  ================  =========================================
     Offset   Field           Size         Value             Description
     =======  ==============  ===========  ================  =========================================
-    0        result_code     2            ConfigResultCode  |unipro| DME Peer Get ConfigResultCode
-    2        attr_value      4            Attribute value   |unipro| DME Peer Get DME Attribute value
+    0        result_code     2            Number            |unipro| DME Peer Get ConfigResultCode
+    2        attr_value      4            Number            |unipro| DME Peer Get DME Attribute value
     =======  ==============  ===========  ================  =========================================
 
 ..
@@ -754,10 +754,10 @@ specific attributes located in the |unipro| stack of an Interface.
     =======  ==============  ===========  ===============  ===================================
     Offset   Field           Size         Value            Description
     =======  ==============  ===========  ===============  ===================================
-    0        intf_id         1            Interface ID     Interface ID
-    1        attr            2            DME Attribute    |unipro| DME Attribute
-    3        selector        2            Selector index   |unipro| DME selector
-    5        value           4            Attribute value  |unipro| DME Attribute value to set
+    0        intf_id         1            Number           Interface ID
+    1        attr            2            Number           |unipro| DME Attribute
+    3        selector        2            Number           |unipro| DME selector
+    5        value           4            Number           |unipro| DME Attribute value to set
     =======  ==============  ===========  ===============  ===================================
 
 ..
@@ -778,7 +778,7 @@ the ConfigResultCode as defined in the |unipro| specification.
     =======  ==============  ===========  ================  =========================================
     Offset   Field           Size         Value             Description
     =======  ==============  ===========  ================  =========================================
-    0        result_code     2            ConfigResultCode  |unipro| DME Peer Set ConfigResultCode
+    0        result_code     2            Number            |unipro| DME Peer Set ConfigResultCode
     =======  ==============  ===========  ================  =========================================
 
 ..
@@ -806,8 +806,8 @@ of two Interfaces to be connected.
     =======  ==============  ======  ==========  ===========================
     Offset   Field           Size    Value       Description
     =======  ==============  ======  ==========  ===========================
-    0        intf1_id        1       intf1_id    First Interface
-    1        intf2_id        1       intf2_id    Second Interface
+    0        intf1_id        1       Number      First Interface
+    1        intf2_id        1       Number      Second Interface
     =======  ==============  ======  ==========  ===========================
 
 ..
@@ -840,8 +840,8 @@ of two Interfaces to be disconnected.
     =======  ==============  ======  ==========  ===========================
     Offset   Field           Size    Value       Description
     =======  ==============  ======  ==========  ===========================
-    0        intf1_id        1       intf1_id    First Interface
-    1        intf2_id        1       intf2_id    Second Interface
+    0        intf1_id        1       Number      First Interface
+    1        intf2_id        1       Number      Second Interface
     =======  ==============  ======  ==========  ===========================
 
 ..
@@ -892,8 +892,8 @@ destroyed.
     =======  ==============  ======  ============    ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ============    ===========================
-    0        intf_id         1       Interface ID    Interface ID whose device ID is being assigned
-    1        device_id       1       Device ID       |unipro| device ID for Interface
+    0        intf_id         1       Number          Interface ID whose device ID is being assigned
+    1        device_id       1       Number          |unipro| device ID for Interface
     =======  ==============  ======  ============    ===========================
 
 ..
@@ -938,12 +938,12 @@ power-on).
     ======  ==============  ====  ==============  =======================================
     Offset  Field           Size  Value           Description
     ======  ==============  ====  ==============  =======================================
-    0       intf_id         1     Interface ID    Interface that now has a module present
-    1       ddbl1_mfr_id    4     |unipro| VID    |unipro| DDB Level 1 Manufacturer ID
-    5       ddbl1_prod_id   4     |unipro| PID    |unipro| DDB Level 1 Product ID
-    9       ara_vend_id     4     Ara VID         Ara Vendor ID
-    13      ara_prod_id     4     Ara PID         Ara Product ID
-    17      serial_number   8     Serial number   Module serial number that uniquely identifies modules with same ARA VID/PIDs
+    0       intf_id         1     Number          Interface that now has a module present
+    1       ddbl1_mfr_id    4     Number          |unipro| DDB Level 1 Manufacturer ID
+    5       ddbl1_prod_id   4     Number          |unipro| DDB Level 1 Product ID
+    9       ara_vend_id     4     Number          Ara Vendor ID
+    13      ara_prod_id     4     Number          Ara Product ID
+    17      serial_number   8     Number          Module serial number that uniquely identifies modules with same ARA VID/PIDs
     ======  ==============  ====  ==============  =======================================
 
 ..
@@ -985,7 +985,7 @@ before sending a hot unplug.
     =======  ==============  ======  ============    ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ============    ===========================
-    0        intf_id         1       Interface ID    Interface that no longer has an attached module
+    0        intf_id         1       Number          Interface that no longer has an attached module
     =======  ==============  ======  ============    ===========================
 
 ..
@@ -1020,7 +1020,7 @@ Interface needs to be reset.
     =======  ==============  ======  ============    ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ============    ===========================
-    0        intf_id         1       Interface ID    Interface to reset
+    0        intf_id         1       Number          Interface to reset
     =======  ==============  ======  ============    ===========================
 
 ..
@@ -1058,20 +1058,20 @@ configuration information associated with the power mode change.
    =======  ==================    =========   ======================   =============================================
    Offset   Field                 Size        Value                    Description
    =======  ==================    =========   ======================   =============================================
-   0        intf_id               1           Interface ID             Interface whose power mode to change
-   1        hs_series             1           1 or 2                   Frequency series in high speed mode; see Table :num:`table-svc-unipro-hs-series`
-   2        tx_mode               1           |unipro| Power Mode      Power mode for TX; see Table :num:`table-svc-unipro-pwrmode`
+   0        intf_id               1           Number                   Interface whose power mode to change
+   1        hs_series             1           Number                   Frequency series in high speed mode; see Table :num:`table-svc-unipro-hs-series`
+   2        tx_mode               1           Number                   Power mode for TX; see Table :num:`table-svc-unipro-pwrmode`
    3        tx_gear               1           Number                   Gear for TX lanes
    4        tx_nlanes             1           Number                   Number of active TX lanes
    5        tx_amplitude          1           Number                   TX signal amplitude; see Table :num:`table-svc-pwrm-tx-ampl`
    6        tx_hs_equalizer       1           Number                   HS TX signal de-emphasis; see Table :num:`table-svc-unipro-pwrm-tx-hs-equal`
-   7        rx_mode               1           |unipro| Power Mode      Power mode for RX; see Table :num:`table-svc-unipro-pwrmode`
+   7        rx_mode               1           Number                   Power mode for RX; see Table :num:`table-svc-unipro-pwrmode`
    8        rx_gear               1           Number                   Gear for RX lanes
    9        rx_nlanes             1           Number                   Number of active RX lanes
    10       flags                 1           Bit mask                 See Table :num:`table-svc-pwrm-flags`
    11       quirks                4           Bit mask                 See Table :num:`table-svc-pwrm-quirks`
-   15       local_l2timerdata     24          |unipro| L2 timer data   L2 timer configuration data for power mode change (local peer)
-   39       remote_l2timerdata    24          |unipro| L2 timer data   L2 timer configuration data for power mode change (remote peer)
+   15       local_l2timerdata     24          Number                   L2 timer configuration data for power mode change (local peer)
+   39       remote_l2timerdata    24          Number                   L2 timer configuration data for power mode change (remote peer)
    =======  ==================    =========   ======================   =============================================
 
 ..
@@ -1328,11 +1328,11 @@ Greybus SVC Interface Set Power Mode Response payload.
    :caption: SVC Protocol Interface Set Power Mode Response
    :spec: l l c c l
 
-   =======  ======================     =========   =====================   ==============================
-   Offset   Field                      Size        Value                   Description
-   =======  ======================     =========   =====================   ==============================
-   0        pwr_change_result_code     1           PowerChangeResultCode   |unipro| PowerChangeResultCode
-   =======  ======================     =========   =====================   ==============================
+   =======  ======================     =========   ========   ==============================
+   Offset   Field                      Size        Value      Description
+   =======  ======================     =========   ========   ==============================
+   0        pwr_change_result_code     1           Number     |unipro| PowerChangeResultCode
+   =======  ======================     =========   ========   ==============================
 
 ..
 
@@ -1398,10 +1398,10 @@ and are defined in table :num:`table-svc-connection-create-request-flags`.
     =======  ==============  ======  ==================  ===========================
     Offset   Field           Size    Value               Description
     =======  ==============  ======  ==================  ===========================
-    0        intf1_id        1       Interface ID        First Interface
-    1        cport1_id       2       CPort ID            CPort on first Interface
-    3        intf2_id        1       Interface ID        Second Interface
-    4        cport2_id       2       CPort ID            CPort on second Interface
+    0        intf1_id        1       Number              First Interface
+    1        cport1_id       2       Number              CPort on first Interface
+    3        intf2_id        1       Number              Second Interface
+    4        cport2_id       2       Number              CPort on second Interface
     6        tc              1       Traffic class       |unipro| traffic class
     7        flags           1       Connection flags    |unipro| connection flags
     =======  ==============  ======  ==================  ===========================
@@ -1457,10 +1457,10 @@ the connection to be destroyed.
     =======  ==============  ======  ==================  ===========================
     Offset   Field           Size    Value               Description
     =======  ==============  ======  ==================  ===========================
-    0        intf1_id        1       Interface ID        First Interface
-    1        cport1_id       2       CPort ID            CPort on first Interface
-    3        intf2_id        1       Interface ID        Second Interface
-    4        cport2_id       2       CPort ID            CPort on second Interface
+    0        intf1_id        1       Number              First Interface
+    1        cport1_id       2       Number              CPort on first Interface
+    3        intf2_id        1       Number              Second Interface
+    4        cport2_id       2       Number              CPort on second Interface
     =======  ==============  ======  ==================  ===========================
 
 ..
@@ -1554,14 +1554,14 @@ response shall contain zero.
     =======  ============  ======  ==========  ======================================
     Offset   Field         Size    Value       Description
     =======  ============  ======  ==========  ======================================
-    0        time_sync0    8       Frame-Time  Authoritative frame-time at TIME_SYNC0
-    8        time_sync1    8       Frame-Time  Authoritative frame-time at TIME_SYNC1
-    16       time_sync2    8       Frame-Time  Authoritative frame-time at TIME_SYNC2
-    24       time_sync3    8       Frame-Time  Authoritative frame-time at TIME_SYNC3
-    32       time_sync4    8       Frame-Time  Authoritative frame-time at TIME_SYNC4
-    40       time_sync5    8       Frame-Time  Authoritative frame-time at TIME_SYNC5
-    48       time_sync6    8       Frame-Time  Authoritative frame-time at TIME_SYNC6
-    56       time_sync7    8       Frame-Time  Authoritative frame-time at TIME_SYNC7
+    0        time_sync0    8       Number      Authoritative frame-time at TIME_SYNC0
+    8        time_sync1    8       Number      Authoritative frame-time at TIME_SYNC1
+    16       time_sync2    8       Number      Authoritative frame-time at TIME_SYNC2
+    24       time_sync3    8       Number      Authoritative frame-time at TIME_SYNC3
+    32       time_sync4    8       Number      Authoritative frame-time at TIME_SYNC4
+    40       time_sync5    8       Number      Authoritative frame-time at TIME_SYNC5
+    48       time_sync6    8       Number      Authoritative frame-time at TIME_SYNC6
+    56       time_sync7    8       Number      Authoritative frame-time at TIME_SYNC7
     =======  ============  ======  ==========  ======================================
 
 ..
@@ -1607,7 +1607,7 @@ Interface shall be ejected.
     =======  ==============  ======  ============    ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ============    ===========================
-    0        intf_id         1       Interface ID    Interface that shall be ejected
+    0        intf_id         1       Number          Interface that shall be ejected
     =======  ==============  ======  ============    ===========================
 
 ..
