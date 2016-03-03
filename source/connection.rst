@@ -149,12 +149,12 @@ protocol, the request shall be sent only by the SVC.
     :caption: Common Greybus Protocol Version Request
     :spec: l l c c l
 
-    =======  ==============  ======  =================  ==============================
-    Offset   Field           Size    Value              Description
-    =======  ==============  ======  =================  ==============================
-    0        version_major   1       protocol-specific  Offered Protocol major version
-    1        version_minor   1       protocol-specific  Offered Protocol minor version
-    =======  ==============  ======  =================  ==============================
+    =======  ==============  ======  ========  ==============================
+    Offset   Field           Size    Value     Description
+    =======  ==============  ======  ========  ==============================
+    0        version_major   1       Number    Offered Protocol major version
+    1        version_minor   1       Number    Offered Protocol minor version
+    =======  ==============  ======  ========  ==============================
 
 ..
 
@@ -178,12 +178,12 @@ shall be used for any subsequent communication via the Connection.
    :caption: Common Greybus Protocol Version Request
    :spec: l l c c l
 
-   =======  ==============  ======  =================  ==============================
-   Offset   Field           Size    Value              Description
-   =======  ==============  ======  =================  ==============================
-   0        version_major   1       protocol-specific  Offered Protocol major version
-   1        version_minor   1       protocol-specific  Offered Protocol minor version
-   =======  ==============  ======  =================  ==============================
+   =======  ==============  ======  ========  ==============================
+   Offset   Field           Size    Value     Description
+   =======  ==============  ======  ========  ==============================
+   0        version_major   1       Number    Offered Protocol major version
+   1        version_minor   1       Number    Offered Protocol minor version
+   =======  ==============  ======  ========  ==============================
 
 ..
 
