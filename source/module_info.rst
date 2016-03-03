@@ -309,7 +309,7 @@ it. Class types are defined in Table :num:`table-bundle-class`.
     Power Supply                    0x08
     Reserved                        0x09
     Bridged PHY                     0x0a
-    SPI                             0x0b
+    Reserved                        0x0b
     Display                         0x0c
     Camera                          0x0d
     Sensor                          0x0e
