@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 import os
 
 from docutils.io import FileOutput
@@ -30,7 +31,7 @@ class DocTranslator(BaseTranslator):
         else:
             look_node = node.parent
 
-        short_caption = unicode(look_node.get('alt', '')).translate(tex_escape_map)
+        short_caption = look_node.get('alt', '').translate(tex_escape_map)
         if short_caption != "":
             short_caption = '[%s]' % short_caption
 
