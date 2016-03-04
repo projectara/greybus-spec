@@ -93,11 +93,11 @@ release = '0.12'
 exclude_patterns = ['epilog.rst', 'prolog.rst']
 
 # Included at the end of every source file that is read.
-with open('epilog.rst', 'r') as ep:
+with open('epilog.rst', 'rb') as ep:
     rst_epilog = ep.read().decode('utf-8')
 
 # Included at the beginning of every source file that is read.
-with open('prolog.rst', 'r') as pr:
+with open('prolog.rst', 'rb') as pr:
     rst_prolog = pr.read().decode('utf-8')
 
 # The reST default role (used for this markup: `text`) to use for all
