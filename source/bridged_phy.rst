@@ -964,10 +964,10 @@ transfer request.
     0              chip-select     1         Number             chip-select pin for the slave device
     1              mode            1         Number             :ref:`spi-mode-bits`
     2              count           2         Number             Number of :ref:`gb_spi_transfer <gb_spi_transfer>` descriptors
-    4              op[1]           12        Structure          First SPI :ref:`gb_spi_transfer <gb_spi_transfer>` descriptor in the transfer
-    ...            ...             12        Structure          ...
-    4+12*(N-1)     op[N]           12        Structure          Last SPI :ref:`gb_spi_transfer <gb_spi_transfer>` descriptor
-    4+12*N         data            ...       Data               Data for all the write transfers
+    4              op[1]           13        Structure          First SPI :ref:`gb_spi_transfer <gb_spi_transfer>` descriptor in the transfer
+    ...            ...             13        Structure          ...
+    4+13*(N-1)     op[N]           13        Structure          Last SPI :ref:`gb_spi_transfer <gb_spi_transfer>` descriptor
+    4+13*N         data            ...       Data               Data for all the write transfers
     ==========     ==============  ======    ===============    ===========================
 
 Any data to be written follows the last :ref:`gb_spi_transfer <gb_spi_transfer>`
