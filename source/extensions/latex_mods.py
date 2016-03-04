@@ -16,11 +16,12 @@ import sphinx.writers.latex
 
 # remove usepackage for sphinx here, we add it later in the preamble in conf.py
 sphinx.writers.latex.HEADER = sphinx.writers.latex.HEADER.replace('\\usepackage{sphinx}', '')
+sphinx.writers.latex.HEADER = sphinx.writers.latex.HEADER.replace('%(numfig_format)s', '')
 
 BaseTranslator = sphinx.writers.latex.LaTeXTranslator
 
 class DocTranslator(BaseTranslator):
-    
+
     def __init__(self, *args, **kwargs):
         BaseTranslator.__init__(self, *args, **kwargs)
         self.verbatim = None
