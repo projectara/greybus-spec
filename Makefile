@@ -42,7 +42,7 @@ $(DOT_GRAPH_DIR)/%.png: $(DOT_GRAPH_DIR)/%.dot
 	@dot -Tpng -Gsize=4,5\! $< -o $@
 	@echo DOT: $<
 
-all:	html latexpdf
+all:	html latexpdf singlehtml
 
 singlehtml: $(GEN_PNG_GRAPHS)
 	$(SPHINXBUILD) -b singlehtml $(ALLSPHINXOPTS) $(BUILDDIR)/singlehtml
