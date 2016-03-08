@@ -404,7 +404,7 @@ typically should not be used.)
     Lights                          0x0f
     Vibrator                        0x10
     Loopback                        0x11
-    Audio Managemnt                 0x12
+    Audio Management                0x12
     Audio Data                      0x13
     SVC                             0x14
     Firmware                        0x15
