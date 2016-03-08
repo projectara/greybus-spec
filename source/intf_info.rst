@@ -396,7 +396,7 @@ typically should not be used.)
     SDIO                            0x07
     Power Supply                    0x08
     PWM                             0x09
-    I2S Management                  0x0a
+    Unused                          0x0a
     SPI                             0x0b
     Display                         0x0c
     Camera Management               0x0d
