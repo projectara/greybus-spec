@@ -53,7 +53,7 @@
    contributors
    introduction
    hardware_model
-   module_info
+   intf_info
    operations
    connection
    special
