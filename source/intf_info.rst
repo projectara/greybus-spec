@@ -299,7 +299,7 @@ it. Class types are defined in Table :num:`table-bundle-class`.
     Class type                      Value
     ============================    ==========
     Control                         0x00
-    AP                              0x01
+    Unused                          0x01
     Reserved                        0x02
     Reserved                        0x03
     Reserved                        0x04
@@ -387,7 +387,7 @@ typically should not be used.)
     Protocol                        Value
     ============================    ==========
     Control                         0x00
-    AP                              0x01
+    Unused                          0x01
     GPIO                            0x02
     I2C                             0x03
     UART                            0x04
