@@ -318,7 +318,7 @@ it. Class types are defined in Table :num:`table-bundle-class`.
     Loopback                        0x11
     Audio                           0x12
     Reserved                        0x13
-    SVC                             0x14
+    Unused                          0x14
     Firmware                        0x15
     (All other values reserved)     0x16..0xfd
     Raw                             0xfe
