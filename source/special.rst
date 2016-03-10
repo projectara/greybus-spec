@@ -1806,7 +1806,7 @@ only. It contains the ID of the rail and the measurement type
 
 .. _svc_pwrmon_measurement_types:
 
-Greybus SVC Power Monitor Set Sample Type Indicators
+Greybus SVC Power Monitor Get Sample Type Indicators
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 
 .. figtable::
