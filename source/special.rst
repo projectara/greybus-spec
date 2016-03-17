@@ -577,7 +577,7 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     The AP uses this operation to retrieve the list of names of all
     supported power rails.
 
-.. c:function:: int pwrmon_sample_get(u8 rail_id, u8 type, u32 *value);
+.. c:function:: int pwrmon_sample_get(u8 rail_id, u8 type, u8 *result, u32 *measurement);
 
     The AP uses this operation to retrieve a single measurement
     (current, voltage or power) for a single rail.
@@ -1830,10 +1830,11 @@ Greybus SVC Power Monitor Get Sample Type Indicators
 Greybus SVC Power Monitor Get Sample Response
 """""""""""""""""""""""""""""""""""""""""""""
 
-The Greybus SVC Power Monitor Get Sample response contains
-the measured value in a 4-byte unsigned integer. Units in which
-the retrieved values are represented are as follows: microvolts
-for voltage, microamps for current and microwatts for power.
+The Greybus SVC Power Monitor Get Sample response contains a 1-byte
+result code and the measured value in a 4-byte unsigned integer. Units
+in which the retrieved values are represented are as follows:
+microvolts for voltage, microamps for current and microwatts for
+power.
 
 .. figtable::
     :nofig:
@@ -1844,8 +1845,32 @@ for voltage, microamps for current and microwatts for power.
     =======  ==============  ===========  ==========      ===========================
     Offset   Field           Size         Value           Description
     =======  ==============  ===========  ==========      ===========================
-    0        measurement     4            Number          Measured value
+    0        result          1            Number          Result code (:ref:`svc_pwrmon_get_sample_results`)
+    1        measurement     4            Number          Measured value
     =======  ==============  ===========  ==========      ===========================
+
+..
+
+.. _svc_pwrmon_get_sample_results:
+
+Greybus SVC Power Monitor Get Sample Result Codes
+"""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. figtable::
+    :nofig:
+    :label: table-svc-pwrmon-get-sample-results
+    :caption: SVC Power Monitor Get Sample result codes
+    :spec: l l l
+
+    ==================================  ========================================  ============
+    Result code                         Brief Description                         Value
+    ==================================  ========================================  ============
+    GB_SVC_PWRMON_GET_SAMPLE_OK         Measurement OK                            0x00
+    GB_SVC_PWRMON_GET_SAMPLE_INVAL      Invalid ID provided in request            0x01
+    GB_SVC_PWRMON_GET_SAMPLE_NOSUPP     Measurement not supported for this ID     0x02
+    GB_SVC_PWRMON_GET_SAMPLE_HWERR      Internal hardware error                   0x03
+    |_|                                 (all other values reserved)               0x04..0xFF
+    ==================================  ========================================  ============
 
 ..
 
