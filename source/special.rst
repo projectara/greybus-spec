@@ -583,6 +583,11 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     The AP uses this operation to retrieve a single measurement
     (current, voltage or power) for a single rail.
 
+.. c:function:: int pwrmon_intf_sample_get(u8 intf_id, u8 type, u8 *result, u32 *measurement);
+
+    The AP uses this operation to retrieve a single measurement
+    (current, voltage or power) for the specified interface.
+
 Greybus SVC Operations
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -601,34 +606,35 @@ response type values are shown.
     :caption: SVC Operation Types
     :spec: l l l
 
-    ===============================  =============  ==============
-    SVC Operation Type               Request Value  Response Value
-    ===============================  =============  ==============
-    Invalid                          0x00           0x80
-    Protocol Version                 0x01           0x81
-    SVC Hello                        0x02           0x82
-    Interface device ID              0x03           0x83
-    Interface hotplug                0x04           0x84
-    Interface hot unplug             0x05           0x85
-    Interface reset                  0x06           0x86
-    Connection create                0x07           0x87
-    Connection destroy               0x08           0x88
-    DME peer get                     0x09           0x89
-    DME peer set                     0x0a           0x8a
-    Route create                     0x0b           0x8b
-    Route destroy                    0x0c           0x8c
-    TimeSync enable                  0x0d           0x8d
-    TimeSync disable                 0x0e           0x8e
-    TimeSync authoritative           0x0f           0x8f
-    Interface set power mode         0x10           0x90
-    Interface Eject                  0x11           0x91
-    Key Event                        0x12           N/A
-    Ping                             0x13           0x93
-    Power Monitor get rail count     0x14           0x94
-    Power Monitor get rail names     0x15           0x95
-    Power Monitor get sample         0x16           0x96
-    (all other values reserved)      0x17..0x7f     0x97..0xff
-    ===============================  =============  ==============
+    ==================================  =============  ==============
+    SVC Operation Type                  Request Value  Response Value
+    ==================================  =============  ==============
+    Invalid                             0x00           0x80
+    Protocol Version                    0x01           0x81
+    SVC Hello                           0x02           0x82
+    Interface device ID                 0x03           0x83
+    Interface hotplug                   0x04           0x84
+    Interface hot unplug                0x05           0x85
+    Interface reset                     0x06           0x86
+    Connection create                   0x07           0x87
+    Connection destroy                  0x08           0x88
+    DME peer get                        0x09           0x89
+    DME peer set                        0x0a           0x8a
+    Route create                        0x0b           0x8b
+    Route destroy                       0x0c           0x8c
+    TimeSync enable                     0x0d           0x8d
+    TimeSync disable                    0x0e           0x8e
+    TimeSync authoritative              0x0f           0x8f
+    Interface set power mode            0x10           0x90
+    Interface Eject                     0x11           0x91
+    Key Event                           0x12           N/A
+    Ping                                0x13           0x93
+    Power Monitor get rail count        0x14           0x94
+    Power Monitor get rail names        0x15           0x95
+    Power Monitor get sample            0x16           0x96
+    Power Monitor interface get sample  0x17           0x97
+    (all other values reserved)         0x18..0x7f     0x98..0xff
+    ==================================  =============  ==============
 
 ..
 
@@ -1872,6 +1878,64 @@ Greybus SVC Power Monitor Get Sample Result Codes
     GB_SVC_PWRMON_GET_SAMPLE_HWERR      Internal hardware error                   0x03
     |_|                                 (all other values reserved)               0x04..0xFF
     ==================================  ========================================  ============
+
+..
+
+Greybus SVC Power Monitor Interface Get Sample Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SVC Power Monitor Interface Get Sample operation shall be
+used by the AP to retrieve a single measurement for the given
+interface.
+
+Unlike the Greybus SVC Power Monitor Get Sample operation it does not
+require any preceding data exchange nor any prior knowledge about the
+power rails layout. It retrieves a single power supply measurement of
+the interface.
+
+Greybus SVC Power Monitor Interface Get Sample Request
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus SVC Power Monitor Interface Get Sample Request can only be
+sent from the AP. It contains a 1-byte interface ID and 1-byte
+measurement type (voltage, current, power).
+
+.. figtable::
+    :nofig:
+    :label: table-svc-powermon-intf-get-sample-request
+    :caption: SVC Power Monitor Interface Get Sample Request
+    :spec: l l l l l
+
+    =======  ==============  ===========  ==========      ===========================
+    Offset   Field           Size         Value           Description
+    =======  ==============  ===========  ==========      ===========================
+    0        intf_id         1            Number          ID of the interface
+    1        type            1            Number          Measurement type indicator (:ref:`svc_pwrmon_measurement_types`)
+    =======  ==============  ===========  ==========      ===========================
+
+..
+
+Greybus SVC Power Monitor Interface Get Sample Response
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus SVC Power Monitor Interface Get Sample response contains
+a 1-byte operation result code and the measured value in a 4-byte
+unsigned integer. Units in which the retrieved values are represented
+are as follows: microvolts for voltage, microamps for current and
+microwatts for power.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-powermon-intf-get-sample-response
+    :caption: SVC Power Monitor Interface Get Sample Response
+    :spec: l l l l l
+
+    =======  ==============  ===========  ==========      ===========================
+    Offset   Field           Size         Value           Description
+    =======  ==============  ===========  ==========      ===========================
+    0        result          1            Number          Result code (:ref:`svc_pwrmon_get_sample_results`)
+    0        measurement     4            Number          Measured value
+    =======  ==============  ===========  ==========      ===========================
 
 ..
 
