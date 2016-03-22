@@ -446,13 +446,14 @@ reserved Control CPort ID. At initial power-on, the SVC sets up a
 |unipro| connection from one of its CPorts to the AP Module
 Interface's SVC CPort.
 
-The SVC has direct control over and responsibility for the Endo,
-including detecting when modules are present, configuring the
-|unipro| switch, powering module Interfaces, providing the frame-time
-and attaching and detaching modules.  The AP Module controls the Endo
-through operations sent over the SVC connection.  And the SVC informs
-the AP Module about Endo events (such as the presence of a new module,
-or notification of changing power conditions).
+The SVC has direct control over and responsibility for the :ref:`Frame
+<glossary-frame>`, including detecting when modules are present,
+configuring the |unipro| switch, powering module Interfaces, providing
+the frame-time and attaching and detaching modules.  The AP Module
+controls the Frame through operations sent over the SVC connection.
+And the SVC informs the AP Module about Frame events (such as the
+presence of a new module, or notification of changing power
+conditions).
 
 Conceptually, the operations in the Greybus SVC Protocol are:
 
@@ -460,12 +461,12 @@ Conceptually, the operations in the Greybus SVC Protocol are:
 
     Refer to :ref:`greybus-protocol-version-operation`.
 
-.. c:function:: int svc_hello(u16 endo_generation, u16 frame_variant, u8 intf_id);
+.. c:function:: int svc_hello(u16 frame_generation, u16 frame_variant, u8 intf_id);
 
     This Operation is used at initial power-on, sent by the SVC to
     inform the AP of its environment. After version negotiation,
     it is the next operation initiated by the SVC sent at
-    initialization. The descriptor describes details of the endo
+    initialization. The descriptor describes details of the Frame's
     environment such as number, placement, and features of interface
     blocks, etc.
 
@@ -655,8 +656,8 @@ Table :num:`table-svc-hello-request` defines the Greybus SVC Hello
 Request payload. This Operation is used at initial power-on, sent by
 the SVC to inform the AP of its environment. After version
 negotiation, it is the next Operation sent by the SVC sent at
-initialization. The descriptor describes details of the endo
-environment and location of the AP interface.
+initialization. The descriptor describes details of the :ref:`Frame
+<glossary-frame>` environment and location of the AP interface.
 
 .. figtable::
     :nofig:
@@ -667,8 +668,8 @@ environment and location of the AP interface.
     =======  ================  ===========  ===============  ===========================
     Offset   Field             Size         Value            Description
     =======  ================  ===========  ===============  ===========================
-    0        endo_generation   2            Number           Endo Generation ID
-    2        frame_variant     2            Number           Endo Frame Variant within the Generation
+    0        frame_generation  2            Number           Frame Generation ID
+    2        frame_variant     2            Number           Frame Variant within the Generation
     4        intf_id           1            Number           AP Interface ID
     =======  ================  ===========  ===============  ===========================
 

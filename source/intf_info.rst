@@ -163,7 +163,8 @@ Interface Descriptor
 Interface descriptor describes an access point for a Module to the
 |unipro| network. Each interface represents a single physical port
 through which |unipro| packets are transferred. Every Module shall have
-at least one interface. Each interface has a unique ID within the Endo.
+at least one interface. Each interface has a unique ID within the
+:ref:`Frame <glossary-frame>`.
 
 This descriptor describes Interface-specific values as set by the vendor who
 created the Interface. Every Manifest shall have exactly one Interface
