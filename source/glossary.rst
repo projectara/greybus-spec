@@ -11,33 +11,36 @@ Application Processor Module
     :ref:`Greybus System <glossary-greybus-system>`.
 
     An AP Module administers a Greybus System by exchanging :ref:`SVC
-    Protocol <svc-protocol>` and :ref:`Control Protocol
-    <control-protocol>` :ref:`Operations <glossary-operation>` with
-    the :ref:`SVC <glossary-svc>`.
+    Protocol <svc-protocol>` :ref:`Operations <glossary-operation>`
+    with the :ref:`SVC <glossary-svc>`, and :ref:`Control Protocol
+    <control-protocol>` Operations with Modules connected to
+    :ref:`Interfaces <glossary-interface>` on the :ref:`Frame
+    <glossary-frame>`.
 
 .. _glossary-bridged-phy-protocol:
 
 Bridged PHY Protocol
-  A :ref:`Protocol <glossary-protocol>` which allows Modules to expose
-  functionality to the Greybus System which is provided by chipsets
-  using alternative physical interfaces than |unipro|\ , or which do
-  not comply with an existing :ref:`Device Class Protocol
-  <glossary-device-class-protocol>`.
+    One of the designated set of :ref:`Protocols <glossary-protocol>`
+    which allow Modules to expose functionality to the Greybus System
+    which is provided by chipsets using alternative physical
+    interfaces than |unipro|\ , or which do not comply with an
+    existing :ref:`Device Class Protocol
+    <glossary-device-class-protocol>`.
 
 .. _glossary-connection:
 
 Connection
     A bidirectional communication path between exactly two
-    :ref:`Modules <glossary-module>`, or between a Module and the
+    :ref:`Modules <glossary-module>`, or between the AP Module and the
     :ref:`SVC <glossary-svc>`.
 
-    There is a |unipro| CPort at each end of a Connection. Each of the
-    two CPorts associated with a Connection corresponds to an
-    :ref:`Interface <glossary-interface>` on a distinct Module
-    associated with the connection. Modules exchange data on a
-    Connection through transmission and reception of |unipro|
-    Messages, according to one of the :ref:`Protocols
-    <glossary-protocol>` defined by the Greybus Specification.
+    There is a |unipro| CPort at each end of a Connection; each such
+    CPort is part of a Module or is associated with the SVC. Modules
+    may exchange data on a Connection through transmission and
+    reception of |unipro| Messages, according to one of the
+    :ref:`Protocols <glossary-protocol>` defined by the Greybus
+    Specification. The AP Module also exchanges data on a Connection
+    to the SVC.
 
 .. _glossary-connection-protocol:
 
@@ -47,24 +50,23 @@ Connection Protocol
 .. _glossary-device-class-protocol:
 
 Device Class Protocol
-   A :ref:`Protocol <glossary-protocol>` which allow Modules to expose
-   functionality commonly found on mobile handsets to the Greybus
-   System, in a manner that abstracts various hardware-specific
-   aspects by which that functionality is implemented.
+    One of the designated set of :ref:`Protocol <glossary-protocol>`
+    which allow Modules to expose functionality commonly found on
+    mobile handsets to the Greybus System, in a manner that abstracts
+    various hardware-specific aspects by which that functionality is
+    implemented.
 
-.. _glossary-endo:
+.. _glossary-frame:
 
-Endo
-    Endoskeleton.
-
-Endoskeleton
+Frame
     A physical entity within a :ref:`Greybus System
-    <glossary-greybus-system>`, containing one or more |unipro|
-    Switches, exactly one :ref:`SVC <glossary-svc>`, and a collection
-    of :ref:`Interfaces <glossary-interface>`. Every :ref:`Module
-    <glossary-module>` exchanges |unipro| Messages with other
-    elements of a Greybus System by physical connection to one or more
-    Interfaces.
+    <glossary-greybus-system>`, containing a |unipro|
+    switch, exactly one :ref:`SVC <glossary-svc>`, and a collection
+    of :ref:`Interfaces <glossary-interface>`. Each Interface may be
+    occupied by a :ref:`Module <glossary-module>`. A Module may occupy
+    multiple Interfaces. Every Module exchanges |unipro| Messages with
+    other elements of a Greybus System by physical connection to one
+    or more Interfaces.
 
 .. _glossary-greybus-system:
 
@@ -72,24 +74,20 @@ Greybus System
     An implementation of the Project Ara platform which complies with
     the Greybus Specification.
 
-    A Greybus System is composed of one or more :ref:`Modules
-    <glossary-module>`, connected to one another and to exactly one
-    SVC by one or more |unipro| Switches contained within an
-    Endoskeleton.
-
 .. _glossary-interface:
 
 Interface
-    An abstract representation of the services provided by a
-    :ref:`Module <glossary-module>` at one of its :ref:`Interface
+    An abstract representation of the services provided by the
+    :ref:`Frame <glossary-module>` at one of its :ref:`Interface
     Blocks <glossary-interface-block>`.
 
 .. _glossary-interface-block:
 
 Interface Block
-    The physical connections between a :ref:`Module <glossary-module>`
-    and an :ref:`Endoskeleton <glossary-endo>` as defined by the
-    Project Ara :ref:`MDK <glossary-mdk>`.
+    The physical connectors exposed by the :ref:`Frame
+    <glossary-frame>` for connection to :ref:`Modules
+    <glossary-module>` as defined by the Project Ara :ref:`MDK
+    <glossary-mdk>`.
 
 .. _glossary-message-header:
 
@@ -106,10 +104,11 @@ Message Header
 
 Module
     A physical entity within a Greybus System, which is inserted into
-    exactly one slot in an :ref:`Endoskeleton <glossary-endo>`.
-    Modules exchange information one another and with the :ref:`SVC
-    <glossary-svc>` via |unipro| Messages as defined by [MIPI01]_ and
-    in accordance with the Greybus Specification.
+    exactly one :ref:`Slot <glossary-slot>` in a :ref:`Frame
+    <glossary-frame>`.  Modules exchange information with one another
+    and with the :ref:`SVC <glossary-svc>` via |unipro| Messages as
+    defined by [MIPI01]_ and in accordance with the Greybus
+    Specification.
 
 .. _glossary-mdk:
 
@@ -119,7 +118,6 @@ MDK
 Module Developers' Kit
     Project Ara Module Developer's Kit. This comprises various
     documents which collectively define the Ara platform.
-    documents which collectively define the Project Ara platform.
 
 .. _glossary-operation:
 
@@ -204,14 +202,28 @@ Respondent
 .. _glossary-special-protocol:
 
 Special Protocol
-  A Greybus :ref:`Protocol <glossary-protocol>` which permits
-  discovery and enumeration of :ref:`Modules <glossary-module>` by the
-  :ref:`SVC <glossary-svc>`, and for other special-purpose tasks, such
-  as network and power bus management.
+    One of the designated set of Greybus :ref:`Protocols
+    <glossary-protocol>` which permits discovery and enumeration of
+    :ref:`Modules <glossary-module>` by the :ref:`SVC <glossary-svc>`,
+    and for other special-purpose tasks, such as network and power bus
+    management.
 
 .. _glossary-svc:
 
 Supervisory Controller (SVC)
-    An entity within the :ref:`Endoskeleton <glossary-endo>` that
-    configures and controls each |unipro| Switch, as well as its power
-    bus and wake/detect signals.
+    An entity within the :ref:`Frame <glossary-frame>` that configures
+    and controls the |unipro| network, and controls other elements of
+    each :ref:`Interface <glossary-interface>`.
+
+.. _glossary-slot:
+
+Slot
+    The :ref:`Interfaces <glossary-interface>` in a :ref:`Frame
+    <glossary-frame>` are physically partitioned into groups of one or
+    more Interfaces. Each such group is called a Slot.
+
+    While each Interface in a Slot may be physically connected to at
+    most one :ref:`Module <glossary-module>` at any given time, a Slot
+    with multiple Interfaces may be connected to multiple
+    Modules. Additionally, a Module may be connected to multiple
+    Interfaces, depending upon its size.
