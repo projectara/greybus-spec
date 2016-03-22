@@ -188,6 +188,8 @@ descriptor as described in Table :num:`table-interface-descriptor`.
     6        (pad)              2       0           Reserved (pad to 4 byte boundlary)
     =======  =================  ======  ==========  ==================================
 
+..
+
 *vendor_string_id* is a reference to a specific string descriptor ID
 that provides a description of the vendor who created the Module.  If
 there is no string present for this value in the Manifest, this
@@ -220,6 +222,8 @@ set of features supported by an Interface.
     |_|                    (All other values are reserved)                    0x02..0x80
     ====================== ================================================== ==========
 
+..
+
 .. _string-descriptor:
 
 String Descriptor
@@ -250,6 +254,7 @@ descriptor can be found in Table :num:`table-string-descriptor`.
     6             string          *length*  UTF-8       Characters for the string
     6+\ *length*  (pad)           0-3       0           Reserved (pad to 4 byte boundary)
     ============  ==============  ========  ==========  ===========================
+..
 
 The *id* field shall not be 0x00, as that is an invalid String ID value.
 
@@ -278,6 +283,8 @@ the network via one or more |unipro| CPorts.
     5             class           1         Number      See Table :num:`table-bundle-class`
     6             (pad)           2         0           Reserved (pad to 8 bytes)
     ============  ==============  ========  ==========  ===========================
+
+..
 
 The *id* field uniquely identifies a Bundle within the Interface.  The first
 Bundle shall have ID 0, the second (if present) shall have value 1, and so on.
@@ -358,6 +365,7 @@ defined in the sections :ref:`device-class-protocols` and
     6         bundle          1       ID          Bundle ID this CPort is associated with
     7         protocol        1       Number      See Table :num:`table-cport-protocol`
     ========  ==============  ======  ==========  ===========================
+..
 
 .. todo::
     The details of how the CPort identifier is determined will be
@@ -415,3 +423,4 @@ typically should not be used.)
     Vendor Specific                 0xff
     ============================    ==========
 
+..

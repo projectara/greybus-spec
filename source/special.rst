@@ -380,6 +380,7 @@ Unused slots in the response shall contain zero.
     52       time_sync6      8       Number      Authoritative frame-time at TIME_SYNC6
     60       time_sync7      8       Number      Authoritative frame-time at TIME_SYNC7
     =======  ==============  ======  ==========  ===================================================================
+..
 
 Greybus Control TimeSync Authoritative Response
 """""""""""""""""""""""""""""""""""""""""""""""
@@ -1697,6 +1698,7 @@ included in Key Event Request.
     GB_SVC_KEY_PRESSED    Key event representing key pressed    0x01
     |_|                   (all other values reserved)           0x02..0xFF
     ====================  ====================================  ============
+..
 
 Greybus SVC Power Monitor Get Rail Count Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
