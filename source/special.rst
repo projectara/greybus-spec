@@ -482,7 +482,7 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     This Operation is used by the AP to direct the SVC to perform a
     |unipro| DME peer set on its behalf.
 
-.. c:function:: int route_create(u8 intf1_id, u8 intf2_id);
+.. c:function:: int route_create(u8 intf1_id, u8 dev1_id, u8 intf2_id, u8 dev2_id);
 
     This Operation is used by the AP to direct the SVC to create
     a route for |unipro| traffic between two interfaces.
@@ -802,8 +802,8 @@ Greybus SVC Route Create Request
 """"""""""""""""""""""""""""""""
 
 Table :num:`table-svc-route-create-request` defines the Greybus SVC
-Route Create request payload. The request supplies the Interface IDs
-of two Interfaces to be connected.
+Route Create request payload. The request supplies the Interface IDs and device
+IDs of two Interfaces to be connected.
 
 .. figtable::
     :nofig:
@@ -815,7 +815,9 @@ of two Interfaces to be connected.
     Offset   Field           Size    Value       Description
     =======  ==============  ======  ==========  ===========================
     0        intf1_id        1       Number      First Interface
-    1        intf2_id        1       Number      Second Interface
+    1        dev1_id         1       Number      First Interface device ID
+    2        intf2_id        1       Number      Second Interface
+    3        dev2_id         1       Number      Second Interface device ID
     =======  ==============  ======  ==========  ===========================
 
 ..
