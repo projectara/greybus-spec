@@ -650,6 +650,11 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     The AP uses this operation to retrieve a single measurement
     (current, voltage or power) for the specified interface.
 
+.. c:function:: int power_down(void);
+
+    The AP uses this operation to power down the SVC and all the devices it
+    controls.
+
 Greybus SVC Operations
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -695,7 +700,8 @@ response type values are shown.
     Power Monitor get rail names        0x15           0x95
     Power Monitor get sample            0x16           0x96
     Power Monitor interface get sample  0x17           0x97
-    (all other values reserved)         0x18..0x7f     0x98..0xff
+    Power Down                          0x1d           0x9d
+    (all other values reserved)         0x1e..0x7f     0x9e..0xff
     ==================================  =============  ==============
 
 ..
@@ -2001,6 +2007,28 @@ microwatts for power.
     0        result          1            Number          Result code (:ref:`svc_pwrmon_get_sample_results`)
     0        measurement     4            Number          Measured value
     =======  ==============  ===========  ==========      ===========================
+
+..
+
+Greybus SVC Power Down Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SVC Power Down operation shall be used by the AP to request the SVC
+to forcibly power down all the devices under its control and then put itself in power down mode.
+Prior to issuing such operation, the AP shall close all Greybus communication
+with all interfaces and then power all interfaces down.
+When the SVC Power Down operation completes, the Greybus subsystem is no more operational: hotplug detection is unavailable, no Greybus communication with any interface is possible, and SVC is unable to process any new Greybus operation or event.
+The SVC shall be reset to recover from this state.
+
+Greybus SVC Power Down Request
+""""""""""""""""""""""""""""""
+
+The Greybus SVC Power Down request message contains no payload.
+
+Greybus SVC Power Down Response
+"""""""""""""""""""""""""""""""
+
+The Greybus SVC Power Down response message contains no payload.
 
 ..
 
