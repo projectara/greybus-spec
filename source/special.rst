@@ -103,6 +103,11 @@ Conceptually, the Operations in the Greybus Control Protocol are:
     This Operation is used by the AP to get the current version of the
     interface.
 
+.. c:function:: int bundle_version(u8 bundle_id, u8 *major, u8 *minor);
+
+    This Operation is used by the AP to get the version of the Bundle Class
+    implemented by a Bundle.
+
 Greybus Control Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -135,7 +140,8 @@ type and response type values are shown.
     TimeSync disable             0x08           0x88
     TimeSync authoritative       0x09           0x89
     Interface Version            0x0a           0x8a
-    (all other values reserved)  0x0b..0x7f     0x8b..0xff
+    Bundle Version               0x0b           0x8b
+    (all other values reserved)  0x0c..0x7f     0x8c..0xff
     ===========================  =============  ==============
 
 ..
@@ -434,6 +440,61 @@ contains two 2-byte numbers, major and minor.
     2        minor         2       Number      Minor number of the version
     =======  ============  ======  ==========  ===========================
 ..
+
+Greybus Control Bundle Version Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The AP uses this operation to retrieve the version of the Bundle Class
+implemented by a Bundle. The version is represented by two 1-byte numbers,
+major and minor.
+
+The version of a particular Bundle Class advertised by an Interface
+is the same as the version of the document that defines the
+Bundle Class and its subprotocols (so for Bundle Classes defined herein, the
+version is |gb-major|.\ |gb-minor|). In the future, if the Bundle Class
+specifications are removed from this document, the versions will become
+independent of the overall Greybus Specification document.
+
+Greybus Control Bundle Version Request
+""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-control-bundle-version-request` defines the
+Greybus Control Bundle Version Request payload. The request contains the ID of
+the Bundle whose Bundle Class version is to be returned.
+
+.. figtable::
+    :nofig:
+    :label: table-control-bundle-version-request
+    :caption: Control Protocol Bundle Version request
+    :spec: l l c c l
+
+    =======  ============  ======  ==========  ===========================
+    Offset   Field         Size    Value       Description
+    =======  ============  ======  ==========  ===========================
+    0        bundle_id     1       Number      Bundle ID
+    =======  ============  ======  ==========  ===========================
+..
+
+Greybus Control Bundle Version Response
+"""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-control-bundle-version-response` defines the
+Greybus Control Bundle Version Response payload. The response
+contains two 1-byte numbers, major and minor.
+
+.. figtable::
+    :nofig:
+    :label: table-control-bundle-version-response
+    :caption: Control Protocol Bundle Version Response
+    :spec: l l c c l
+
+    =======  ============  ======  ==========  ===========================
+    Offset   Field         Size    Value       Description
+    =======  ============  ======  ==========  ===========================
+    0        major         1       Number      Major number of the version
+    1        minor         1       Number      Minor number of the version
+    =======  ============  ======  ==========  ===========================
+..
+
 
 .. _svc-protocol:
 
