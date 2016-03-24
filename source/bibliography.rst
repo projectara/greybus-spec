@@ -14,3 +14,6 @@
                Inc., 6 August 2013.
 
 .. [US-ASCII]  ANSI_X3.4-1968 encoding standard.
+
+.. [JEDEC-UFS] JESD220B, Universal Flash Storage (UFS), JEDEC Solid
+               State Technology Association, September 2013.
