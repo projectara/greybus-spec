@@ -60,16 +60,3 @@
    device_class
    bridged_phy
    bibliography
-
-.. raw:: latex
-
-   % Set up the appendix mode and modify the LaTex toc behavior
-   \appendix
-   \noappendicestocpagenum
-   \addappheadtotoc
-
-.. toctree::
-   :maxdepth: 2
-   :numbered:
-
-   appendix/hotplug
