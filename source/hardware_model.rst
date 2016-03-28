@@ -342,7 +342,7 @@ The value of the RELEASE sub-state is set by the SVC.
 The Frame may physically eject any attached Modules through
 implementation-defined means. Any attached Module has exactly one
 primary interface, and may contain secondary interfaces, as described
-in :ref:`hardware-model-order.` The SVC may set the RELEASE sub-state
+in :ref:`hardware-model-order`. The SVC may set the RELEASE sub-state
 of an Interface Block which is the primary interface to an attached
 module to RELEASE_ON for an implementation-defined duration, then set
 RELEASE to RELEASE_OFF, in order to attempt to eject the attached
