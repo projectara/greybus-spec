@@ -2013,11 +2013,17 @@ microwatts for power.
 Greybus SVC Power Down Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus SVC Power Down operation shall be used by the AP to request the SVC
-to forcibly power down all the devices under its control and then put itself in power down mode.
-Prior to issuing such operation, the AP shall close all Greybus communication
-with all interfaces and then power all interfaces down.
-When the SVC Power Down operation completes, the Greybus subsystem is no more operational: hotplug detection is unavailable, no Greybus communication with any interface is possible, and SVC is unable to process any new Greybus operation or event.
+The Greybus SVC Power Down operation shall be used by the AP to request
+the SVC to forcibly power down all the devices under its control and
+then put itself in power down mode.  Prior to issuing such operation,
+the AP shall close all Greybus communication with all interfaces and
+then power all interfaces down.
+
+When the SVC Power Down operation completes, the Greybus subsystem is no
+more operational: hotplug detection is unavailable, no Greybus
+communication with any interface is possible, and SVC is unable to
+process any new Greybus operation or event.
+
 The SVC shall be reset to recover from this state.
 
 Greybus SVC Power Down Request
