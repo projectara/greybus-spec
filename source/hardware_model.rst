@@ -257,8 +257,8 @@ The values of the UNIPRO sub-state are given in Table
    UPRO_OFF       |unipro| port is powered off
    UPRO_DOWN      |unipro| port is powered on, and the link is down
    UPRO_LSS       |unipro| link startup sequence is ongoing between Module and Frame
-   UPRO_LOST      |unipro| link loss was detected
    UPRO_UP        |unipro| link is established
+   UPRO_RELINK    |unipro| peer is attempting to re-initiate linkup
    =============  ================================================
 ..
 
@@ -284,10 +284,11 @@ Other UNIPRO sub-state values are used primarily during communication
 between the SVC and AP during Module initialization, teardown, power
 management, and error handling, as described in later sections.
 
-A Module must be attached to an Interface Block its UNIPRO state to be
-UPRO_LSS, UPRO_LOST, or UPRO_UP. When no Module is attached, UNIPRO is
-either UPRO_OFF or UPRO_DOWN. The SVC can set the UNIPRO sub-state to
-either UPRO_OFF or UPRO_DOWN at any time.
+A Module must be attached to an Interface Block for its UNIPRO state
+to become UPRO_LSS, UPRO_UP, or UPRO_RELINK. Before a Module is first
+attached to an Interface Block, UNIPRO is either UPRO_OFF or
+UPRO_DOWN. The SVC can set the UNIPRO sub-state to either UPRO_OFF or
+UPRO_DOWN at any time.
 
 .. XXX those later sections don't have those descriptions yet. But
    they will need these definitions to exist in order to be written.
