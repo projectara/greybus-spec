@@ -307,7 +307,7 @@ The values of the REFCLK sub-state are given in Table
    Value          Description
    =============  ================================================
    REFCLK_ON      The Frame is supplying a reference clock signal to the Interface Block
-   REFCLK_OFF     The Framae is not supplying a reference clock signal to the Interface Block
+   REFCLK_OFF     The Frame is not supplying a reference clock signal to the Interface Block
    =============  ================================================
 ..
 
