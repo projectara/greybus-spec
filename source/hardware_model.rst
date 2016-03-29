@@ -77,13 +77,13 @@ along with an overview of their meaning within a Greybus System.
    WAKE sub-state and the operation definitions that rely on it under
    the hood.
 
+- DETECT: whether the SVC has sensed that a Module is attached to the
+  Interface Block.
 - V_SYS: whether system power is supplied from the Frame to the
   Interface Block.
 - V_CHG: whether the Interface Block can supply power to the Frame.
 - WAKE: whether the Frame is "activating" the Interface Block for
   communication via Greybus.
-- DETECT: whether the SVC has sensed that a Module is attached to the
-  Interface Block.
 - UNIPRO: a simplified representation of the state of the |unipro|
   port within the Frame connected to the Interface Block.
 - REFCLK: whether the Frame is providing a reference clock signal to
@@ -101,17 +101,42 @@ along with an overview of their meaning within a Greybus System.
 
 An Interface State is written as a tuple as follows::
 
-  (V_SYS=<v_sys>, V_CHG=<v_chg>, WAKE=<wake>,
-   DETECT=<detect>, UNIPRO=<unipro>, REFCLK=<refclk>,
+  (DETECT=<detect>, V_SYS=<v_sys>, V_CHG=<v_chg>,
+   WAKE=<wake>, UNIPRO=<unipro>, REFCLK=<refclk>,
    RELEASE=<release>, INTF_TYPE=<type>, ORDER=<ord>,
    MAILBOX=<mbox>)
 
-Where in each case <v_sys>, <v_chg>, etc. are the values of the
+Where in each case <detect>, <v_sys>, etc. are the values of the
 corresponding sub-states.
 
-For brevity, the phrase "an Interface State's V_SYS" is used to denote
-the value of the V_SYS sub-state of that Interface State, and
+For brevity, the phrase "an Interface State's DETECT" is used to
+denote the value of the DETECT sub-state of that Interface State, and
 similarly for the other sub-states.
+
+DETECT
+""""""
+
+The values of the DETECT sub-state are given in Table
+:num:`table-interface-state-detect`.
+
+.. figtable::
+   :nofig:
+   :label: table-interface-state-detect
+   :caption: DETECT sub-state values
+
+   ========================  ================================================
+   Value                     Description
+   ========================  ================================================
+   DETECT_UNKNOWN            Whether a Module is attached to the Interface Block is unknown
+   DETECT_INACTIVE           No Module is currently attached to the Interface Block
+   DETECT_ACTIVE             A Module is attached to the Interface Block
+   ========================  ================================================
+..
+
+The DETECT sub-state of an Interface State represents the state of
+signals used to determine whether the Interface Block currently has a
+Module attached to it. This determination shall be performed by the
+SVC. The means by which the SVC does so are implementation-defined.
 
 V_SYS
 """""
@@ -214,31 +239,6 @@ re-initiate) Greybus communication, as described in later sections.
 .. XXX this "as described" descriptions are currently not described
    anywhere; later updates will need to fix that once Interface States
    are in the spec as mechanism to do so.
-
-DETECT
-""""""
-
-The values of the DETECT sub-state are given in Table
-:num:`table-interface-state-detect`.
-
-.. figtable::
-   :nofig:
-   :label: table-interface-state-detect
-   :caption: DETECT sub-state values
-
-   ========================  ================================================
-   Value                     Description
-   ========================  ================================================
-   DETECT_UNKNOWN            Whether a Module is attached to the Interface Block is unknown
-   DETECT_INACTIVE           No Module is currently attached to the Interface Block
-   DETECT_ACTIVE             A Module is attached to the Interface Block
-   ========================  ================================================
-..
-
-The DETECT sub-state of an Interface State represents the state of
-signals used to determine whether the Interface Block currently has a
-Module attached to it. This determination shall be performed by the
-SVC. The means by which the SVC does so are implementation-defined.
 
 UNIPRO
 """"""
@@ -474,7 +474,7 @@ Initial States
 At the power-on reset of a Greybus System, the initial value of each
 Interface State is::
 
-  (V_SYS=V_SYS_OFF, V_CHG=V_CHG_OFF, WAKE=WAKE_UNDEFINED,
-   DETECT=DETECT_UNKNOWN, UNIPRO=UPRO_OFF, REFCLK=REFCLK_OFF,
+  (DETECT=DETECT_UNKNOWN, V_SYS=V_SYS_OFF, V_CHG=V_CHG_OFF,
+   WAKE=WAKE_UNDEFINED, UNIPRO=UPRO_OFF, REFCLK=REFCLK_OFF,
    RELEASE=RELEASE_OFF, INTF_TYPE=IFT_UNKNOWN, ORDER=ORDER_UNKNOWN,
    MAILBOX=NULL)
