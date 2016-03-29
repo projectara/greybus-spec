@@ -220,9 +220,9 @@ The values of the WAKE sub-state are given in Table
 ..
 
 The WAKE sub-state of an Interface State represents the state of a
-signal used to initialize and power manage an attached Module. The
-value of the WAKE sub-state is controlled by the SVC and any Module
-attached to the Interface Block.
+signal used to initialize and manage power consumed by an attached
+Module. The value of the WAKE sub-state is controlled by the SVC and
+any Module attached to the Interface Block.
 
 The WAKE sub-state is only meaningful when an Interface State's V_SYS
 is V_SYS_ON and REFCLK is REFCLK_ON. The value of the WAKE sub-state
