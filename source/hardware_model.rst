@@ -442,10 +442,10 @@ The values of the INTF_TYPE sub-state are given in Table
    =============  ================================================
    Value          Description
    =============  ================================================
-   IFT_UNKNOWN    Interface Block is not attached to Module, type not yet determined, or error occurred
-   IFT_DUMMY      Interface Block is attached to Module; |unipro| communication is not possible
-   IFT_UNIPRO     Interface Block is attached to Module; |unipro| communication is possible, but Greybus protocols are unsupported
-   IFT_GREYBUS    Interface Block is attached to Module and supports Greybus Protocols
+   IFT_UNKNOWN    Interface Block not attached to Module, type is undetermined, or error occurred
+   IFT_DUMMY      Module attached to Interface Block does not support |unipro| communication
+   IFT_UNIPRO     Module attached to Interface Block supports |unipro|, but not Greybus Protocols
+   IFT_GREYBUS    Module attached to Interface Block supports Greybus Protocols
    =============  ================================================
 
 ..
@@ -490,9 +490,9 @@ The values of the ORDER sub-state are given in Table
    ===============  ================================================
    Value            Description
    ===============  ================================================
-   ORDER_UNKNOWN    No Module is attached to the interface, or SVC cannot determine Primary versus Secondary Interface status
-   ORDER_PRIMARY    Interface is the Primary Interface to an inserted Module
-   ORDER_SECONDARY  Interface is a Secondary Interface to an inserted Module
+   ORDER_UNKNOWN    No Module is attached, or Primary vs. Secondary status unknown
+   ORDER_PRIMARY    Interface is the Primary Interface to an attached Module
+   ORDER_SECONDARY  Interface is a Secondary Interface to an attached Module
    ===============  ================================================
 ..
 
