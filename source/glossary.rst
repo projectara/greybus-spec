@@ -152,6 +152,22 @@ Operation Type
     For example, an Operation Type with value 0x03 has Request Value
     0x03, and Response Value 0x83.
 
+.. _glossary-primary-interface:
+
+Primary Interface
+    When a :ref:`Module <glossary-module>` is attached to one or more
+    :ref:`Interface Blocks <glossary-interface-block>` in a :ref:`Slot
+    <glossary-slot>`, exactly one such Interface Block is the *Primary
+    Interface* to the Module.
+
+    This Interface Block shall have an Interface ID which is the
+    lowest in value of all of the Interface Blocks attached to the
+    Module.
+
+    An attached Module can only be ejected from a :ref:`Greybus System
+    <glossary-greybus-system>` via its Primary Interface. The means of
+    ejection are implementation-defined.
+
 .. _glossary-protocol:
 
 Protocol
@@ -198,6 +214,26 @@ Respondent
    Within the context of an :ref:`Operation <glossary-operation>`, the
    :ref:`Module <glossary-module>` which sends or sent the Operation's
    :ref:`Response <glossary-request>`.
+
+.. _glossary-secondary-interface:
+
+Secondary Interface
+    When a :ref:`Module <glossary-module>` is attached to one or more
+    :ref:`Interface Blocks <glossary-interface-block>` in a :ref:`Slot
+    <glossary-slot>`, only one such Interface Block is the
+    :ref:`Primary Interface <glossary-primary-interface>` to the
+    Module. All other such Interface Blocks are Secondary Interfaces
+    to the Module.
+
+    These Interface Blocks, if any, have Interface IDs which are
+    consecutive integers following the Interface ID of the Primary
+    Interface to the Module.
+
+    Modules may communicate via Greybus via Secondary Interfaces, but
+    the Module as a whole is generally identified by the Interface ID
+    of its Primary Interface. Additionally, the Module can only be
+    physically ejected from the Greybus System via its Primary
+    Interface, through implementation-defined means.
 
 .. _glossary-special-protocol:
 

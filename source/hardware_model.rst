@@ -93,8 +93,9 @@ along with an overview of their meaning within a Greybus System.
 - INTF_TYPE: an indicator of what communication is supported by a
   Module connected to the Interface Block, if any.
 - ORDER: If the Interface Block is attached to a Module, an indicator
-  of whether this is the "primary interface" or a "secondary
-  interface" to the Module.
+  of whether this is the ":ref:`Primary Interface
+  <glossary-primary-interface>`" or a ":ref:`Secondary Interface
+  <glossary-secondary-interface>`" to the Module.
 - MAILBOX: the value of a special-purpose and Greybus
   implementation-specific |unipro| DME attribute used by Modules as a
   non-CPort based means of communication with the Frame.
@@ -342,15 +343,15 @@ The value of the RELEASE sub-state is set by the SVC.
 
 The Frame may physically eject any attached Modules through
 implementation-defined means. Any attached Module has exactly one
-primary interface, and may contain secondary interfaces, as described
+Primary Interface, and may contain Secondary Interfaces, as described
 in :ref:`hardware-model-order`. The SVC may set the RELEASE sub-state
-of an Interface Block which is the primary interface to an attached
+of an Interface Block which is the Primary Interface to an attached
 module to RELEASE_ON for an implementation-defined duration, then set
 RELEASE to RELEASE_OFF, in order to attempt to eject the attached
 module from the Frame.
 
 The consequences of setting an Interface State's RELEASE sub-state for
-a secondary interface to a Module, or when the Interface State's
+a Secondary Interface to a Module, or when the Interface State's
 DETECT state is not DETECT_ACTIVE, are not defined by the Greybus
 Specification.
 
@@ -416,9 +417,9 @@ The values of the ORDER sub-state are given in Table
    ===============  ================================================
    Value            Description
    ===============  ================================================
-   ORDER_UNKNOWN    No Module is attached to the interface, or SVC cannot determine primary versus secondary interface status
-   ORDER_PRIMARY    Interface is the primary interface to an inserted Module
-   ORDER_SECONDARY  Interface is a secondary interface to an inserted Module
+   ORDER_UNKNOWN    No Module is attached to the interface, or SVC cannot determine Primary versus Secondary Interface status
+   ORDER_PRIMARY    Interface is the Primary Interface to an inserted Module
+   ORDER_SECONDARY  Interface is a Secondary Interface to an inserted Module
    ===============  ================================================
 ..
 
@@ -426,20 +427,21 @@ The value of the ORDER sub-state is set by the SVC.
 
 A :ref:`Module <glossary-module>` may attach to one or more Interface
 Blocks on a Slot in the Frame. Exactly one of these Interface Blocks
-is the "primary interface" to the Module; signalling on this interface
+is the "Primary Interface" to the Module; signalling on this interface
 may be used to physically eject the Module from the Frame. All other
-Interface Blocks attached to the Module, if any, are "secondary
-interfaces": they may communicate via Greybus to the AP and the SVC,
+Interface Blocks attached to the Module, if any, are "Secondary
+Interfaces": they may communicate via Greybus to the AP and the SVC,
 but the Frame cannot eject the Module through these Interface Blocks.
 
-Whether an Interface Block is the primary or a secondary interface to
+Whether an Interface Block is the Primary or a Secondary Interface to
 a Module is mirrored in the Interface State abstraction using the
 ORDER sub-state. The correspondence between the physical and abstract
 states is given in Table :num:`table-interface-state-order`.
 
 After a Module is attached to a Greybus System, the SVC determines
-which of the Interface Blocks it is attached to is primary, and which
-are secondary, through implementation-defined means.
+which of the Interface Blocks it is attached to is the Primary
+Interface, and which are Secondary Interfaces, through
+implementation-defined means.
 
 .. CONNS
 .. """""
