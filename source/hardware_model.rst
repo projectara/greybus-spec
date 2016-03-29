@@ -114,6 +114,8 @@ For brevity, the phrase "an Interface State's DETECT" is used to
 denote the value of the DETECT sub-state of that Interface State, and
 similarly for the other sub-states.
 
+.. _hardware-model-detect:
+
 DETECT
 """"""
 
@@ -138,6 +140,21 @@ The DETECT sub-state of an Interface State represents the state of
 signals used to determine whether the Interface Block currently has a
 Module attached to it. This determination shall be performed by the
 SVC. The means by which the SVC does so are implementation-defined.
+
+Under normal operation, a Module shall be physically removed from a Greybus
+System as a consequence of Operations exchanged between the AP and SVC
+only. However, it is possible that a Module can be physically removed
+from the system without intervention from the AP and SVC. This condition
+is a *forcible removal* of the Module; alternatively, the Module is
+said to have been *forcibly removed*.
+
+If a Module attached to an Interface Block is forcibly removed, there
+may be an implementation-defined delay during which the DETECT
+sub-state of the corresponding Interface State remains DETECT_ACTIVE.
+Furthermore, the DETECT sub-state may become DETECT_UNKNOWN following
+a forcible removal. However, the SVC shall, potentially following such
+a delay and period during which DETECT is DETECT_UNKNOWN, determine
+that the DETECT sub-state is DETECT_INACTIVE.
 
 V_SYS
 """""
@@ -170,6 +187,14 @@ sub-state of the corresponding Interface State. A Module can only draw
 power from an Interface Block whose Interface State's V_SYS sub-state
 is V_SYS_ON.
 
+Note that the V_SYS sub-state only indicates whether the Frame is
+supplying system power to the corresponding Interface Block; it does
+*not* imply that a Module is attached to the Interface Block.
+
+The SVC shall set the V_SYS sub-state of any Interface States
+associated with a :ref:`forcibly removed <hardware-model-detect>`
+Module to V_SYS_OFF after an implementation-defined delay.
+
 V_CHG
 """""
 
@@ -200,6 +225,14 @@ V_CHG sub-state of the corresponding Interface State. The Frame can
 only draw power from an Interface Block whose Interface State's V_CHG
 sub-state is V_CHG_ON.
 
+Note that the V_CHG sub-state only indicates whether the Frame may
+draw power from the corresponding Interface Block; it does *not* imply
+that a Module is attached to the Interface Block.
+
+The SVC shall set the V_CHG sub-state of any Interface States
+associated with a :ref:`forcibly removed <hardware-model-detect>`
+Module to V_CHG_OFF after an implementation-defined delay.
+
 WAKE
 """"
 
@@ -214,9 +247,9 @@ The values of the WAKE sub-state are given in Table
    ==============  ================================================
    Value           Description
    ==============  ================================================
-   WAKE_UNDEFINED  Module is not attached, or power and clock are not supplied
-   WAKE_ACTIVE     Wake signal is asserted to an attached, powered, and clocked Module
-   WAKE_INACTIVE   Wake signal is deasserted to an attached, powered, and clocked Module
+   WAKE_UNSET      Wake signal is neither asserted nor deasserted
+   WAKE_ACTIVE     Wake signal is asserted to an Interface Block
+   WAKE_INACTIVE   Wake signal is deasserted to an Interface Block
    ==============  ================================================
 ..
 
@@ -225,21 +258,29 @@ signal used to initialize and manage power consumed by an attached
 Module. The value of the WAKE sub-state is controlled by the SVC and
 any Module attached to the Interface Block.
 
-The WAKE sub-state is only meaningful when an Interface State's V_SYS
-is V_SYS_ON and REFCLK is REFCLK_ON. The value of the WAKE sub-state
-for other combinations of V_SYS and REFCLK values is always
-WAKE_UNDEFINED.
+During the initialization of a Greybus System, all Interface States
+have WAKE equal to WAKE_UNSET. The SVC shall only set WAKE to a value
+other than WAKE_UNSET for an Interface State whose DETECT sub-state is
+DETECT_ACTIVE and V_SYS is V_SYS_ON.
 
-If WAKE is not WAKE_UNDEFINED, the SVC may assert and deassert the
+Subject to the above restrictions, the SVC may assert and deassert the
 WAKE sub-state by setting its value to WAKE_ACTIVE, then setting it to
 WAKE_INACTIVE after some duration. This is called a "WAKE pulse". When
 the duration of the WAKE pulse exceeds an implementation-defined
-threshold, this is a signal to the attached Module to initiate (or
+threshold, this is a signal to any attached Module to initiate (or
 re-initiate) Greybus communication, as described in later sections.
 
 .. XXX this "as described" descriptions are currently not described
    anywhere; later updates will need to fix that once Interface States
    are in the spec as mechanism to do so.
+
+Note that the WAKE sub-state only indicates whether the wake signal is
+asserted, deasserted, or neither to corresponding Interface Block; it
+does *not* imply that a Module is attached to the Interface Block.
+
+The SVC shall set the WAKE sub-state of any Interface States
+associated with a :ref:`forcibly removed <hardware-model-detect>`
+Module to WAKE_UNSET after an implementation-defined delay.
 
 UNIPRO
 """"""
@@ -294,6 +335,21 @@ UPRO_DOWN at any time.
 .. XXX those later sections don't have those descriptions yet. But
    they will need these definitions to exist in order to be written.
 
+Note that the UNIPRO sub-state is a Frame-centric view of the state of
+the corresponding |unipro| link. Following a :ref:`forcible removal
+<hardware-model-detect>` of a Module which had established a |unipro|
+link to the Frame via the corresponding Interface Block, the UNIPRO
+sub-state may retain its previous value or change values. This may
+depend upon its current value and any ongoing activity on the link.
+
+The SVC may set the UNIPRO sub-state of any Interface States
+associated with a :ref:`forcibly removed <hardware-model-detect>`
+Module to UPRO_OFF.
+
+.. NOTE: "may set the UNIPRO [...]" is on purpose. We want to allow
+   current and future implementations some latitude to perform
+   AP-driven cleanup of the network at their leisure.
+
 REFCLK
 """"""
 
@@ -319,6 +375,15 @@ The Frame may transmit a reference clock signal of an
 implementation-defined frequency to any attached Modules through the
 Interface Blocks the Modules are attached to. The REFCLK sub-state
 indicates whether this transmission is currently ongoing.
+
+Note that the REFCLK sub-state only indicates whether the Frame is
+supplying a reference clock signal to the corresponding Interface
+Block; it does *not* imply that a Module is attached to the Interface
+Block.
+
+The SVC shall set the REFCLK sub-state of any Interface States
+associated with a :ref:`forcibly removed <hardware-model-detect>`
+Module to REFCLK_OFF after an implementation-defined delay.
 
 RELEASE
 """""""
@@ -354,6 +419,14 @@ The consequences of setting an Interface State's RELEASE sub-state for
 a Secondary Interface to a Module, or when the Interface State's
 DETECT state is not DETECT_ACTIVE, are not defined by the Greybus
 Specification.
+
+Note that the RELEASE sub-state only indicates whether the Frame is
+supplying ejection signalling to the corresponding Interface Block; it
+does *not* imply that a Module is attached to the Interface Block.
+
+The SVC shall set the RELEASE sub-state of any Interface States
+associated with a :ref:`forcibly removed <hardware-model-detect>`
+Module to RELEASE_OFF after an implementation-defined delay.
 
 INTF_TYPE
 """""""""
@@ -442,6 +515,14 @@ After a Module is attached to a Greybus System, the SVC determines
 which of the Interface Blocks it is attached to is the Primary
 Interface, and which are Secondary Interfaces, through
 implementation-defined means.
+
+Note that the ORDER sub-state only indicates the most recent value set
+by the SVC, if any. It does *not* imply that a Module is attached to
+the Interface Block.
+
+The SVC shall set the ORDER sub-state of any Interface States
+associated with a :ref:`forcibly removed <hardware-model-detect>`
+Module to ORDER_UNKNOWN after an implementation-defined delay.
 
 .. CONNS
 .. """""
