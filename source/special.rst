@@ -79,6 +79,12 @@ Conceptually, the Operations in the Greybus Control Protocol are:
     to the connected request.  This operation is never used for
     control CPort.
 
+.. c:function:: int disconnecting(u16 cport_id);
+
+    This Operation is used by the AP Module to inform an Interface
+    that the process of disconnecting a previously-established Greybus
+    connection has begun.
+
 .. c:function:: int disconnected(u16 cport_id);
 
     This Operation is used to notify an Interface that a previously
@@ -145,7 +151,8 @@ type and response type values are shown.
     TimeSync authoritative       0x09           0x89
     Interface Version            0x0a           0x8a
     Bundle Version               0x0b           0x8b
-    (all other values reserved)  0x0c..0x7e     0x8c..0xfe
+    Disconnecting                0x0c           0x8c
+    (all other values reserved)  0x0d..0x7e     0x8d..0xfe
     Invalid                      0x7f           0xff
     ===========================  =============  ==============
 
@@ -273,6 +280,49 @@ Greybus Control Connected Response
 """"""""""""""""""""""""""""""""""
 
 The Greybus control connected response message contains no payload.
+
+Greybus Control Disconnecting Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Control Disconnecting Operation is used by the AP Module
+to inform an Interface that the disconnect process has begun for a
+CPort that was previously the subject of a Greybus Control Connected
+Operation.  After sending this request, the AP Module may issue
+responses to requests from the Interface, but it shall send no
+further requests on the CPort given in the Control Disconnecting
+Operation request.  The Interface may send responses to the AP to
+Operations whose requests it received before receiving the Control
+Disconnecting Operation Request, but shall otherwise cease
+transmission on the given CPort.  The AP Module may send a Control
+Disconnecting Operation with a cport_id field equal to zero (i.e.,
+when disconnecting the Control CPort itself), but only after all
+other connections on the interface have been disconnected as
+specified by the Control Protocol Disconnected Operation.
+
+Greybus Control Disconnecting Request
+"""""""""""""""""""""""""""""""""""""
+
+The Greybus Control Disconnecting request supplies the CPort ID on the
+receiving Interface that is being disconnected.
+
+.. figtable::
+    :nofig:
+    :label: table-control-disconnecting-request
+    :caption: Control Protocol Disconnecting Request
+    :spec: l l c c l
+
+    =======  ==============  ======  =======    ===========================
+    Offset   Field           Size    Value      Description
+    =======  ==============  ======  =======    ===========================
+    0        cport_id        2       Number     CPort that is being disconnected
+    =======  ==============  ======  =======    ===========================
+
+..
+
+Greybus Control Disconnecting Response
+""""""""""""""""""""""""""""""""""""""
+
+The Greybus Control Disconnecting response message contains no payload.
 
 Greybus Control Disconnected Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
