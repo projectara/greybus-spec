@@ -192,3 +192,27 @@ specified on a per-protocol basis; the subsequent sections of this
 document which define individual Connection Protocols specify the
 values of these fields for this Operation according to the particular
 Protocol defined in each section.
+
+.. _greybus-protocol-ping-operation:
+
+Common Greybus Protocol Ping Operation
+--------------------------------------
+
+Every Connection Protocol shall implement a simple "ping"
+operation.  This operation consists of the minimal request sent by
+the AP Module, followed by a response message from an Interface; the
+response always indicates a success status.  The operation
+implements a simple round-trip message exchange over a connection,
+and can be used to verify a link is still operational.  This
+operation is also used as part of a sequence that quiesces activity
+on a connection prior to disconnection.
+
+Common Greybus Protocol Ping Request
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The Greybus Ping request message contains no payload.
+
+Common Greybus Protocol Ping Response
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The Greybus Ping response message contains no payload.

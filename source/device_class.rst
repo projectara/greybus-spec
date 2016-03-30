@@ -26,6 +26,10 @@ and maps almost directly to the Android HAL vibrator interface.
 
 The operations in the Greybus vibrator Protocol are:
 
+.. c:function:: int ping(void);
+
+    See :ref:`greybus-protocol-ping-operation`.
+
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
     Refer to :ref:`greybus-protocol-version-operation`.
@@ -55,7 +59,7 @@ operation is a request or a response.
     ===========================  =============  ==============
     Vibrator Operation Type      Request Value  Response Value
     ===========================  =============  ==============
-    Reserved                     0x00           0x80
+    Ping                         0x00           0x80
     Protocol Version             0x01           0x81
     Vibrator On                  0x02           0x82
     Vibrator Off                 0x03           0x83
@@ -64,6 +68,14 @@ operation is a request or a response.
     ===========================  =============  ==============
 
 ..
+
+Greybus Vibrator Ping Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Vibrator Ping Operation is the
+:ref:`greybus-protocol-ping-operation` for the Vibrator Protocol.
+It consists of a request containing no payload, and a response
+with no payload that indicates a successful result.
 
 Greybus Vibrator Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -135,6 +147,10 @@ here.
 
 Conceptually, the operations in the Greybus Power Supply Protocol are:
 
+.. c:function:: int ping(void);
+
+    See :ref:`greybus-protocol-ping-operation`.
+
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
     Refer to :ref:`greybus-protocol-version-operation`.
@@ -190,7 +206,7 @@ operation is a request or a response.
     ===========================  =============  ==============
     Power Supply Operation Type  Request Value  Response Value
     ===========================  =============  ==============
-    Reserved                     0x00           0x80
+    Ping                         0x00           0x80
     Protocol Version             0x01           0x81
     Get Power Supplies           0x02           0x82
     Get Description              0x03           0x83
@@ -203,6 +219,14 @@ operation is a request or a response.
     ===========================  =============  ==============
 
 ..
+
+Greybus Power Supply Ping Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Power Supply Ping Operation is the
+:ref:`greybus-protocol-ping-operation` for the Power Supply Protocol.
+It consists of a request containing no payload, and a response
+with no payload that indicates a successful result.
 
 Greybus Power Supply Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -836,6 +860,10 @@ Audio Management Operations
 
 The operations in the Greybus Audio Protocol are:
 
+.. c:function:: int ping(void);
+
+    See :ref:`greybus-protocol-ping-operation`.
+
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
     Negotiates the major and minor version of the Protocol used for
@@ -958,7 +986,7 @@ operation is a request or a response.
     ===========================  =============  ==============
     Audio Operation Type         Request Value  Response Value
     ===========================  =============  ==============
-    Reserved                     0x00           0x80
+    Ping                         0x00           0x80
     Protocol Version             0x01           0x81
     Get Topology Size            0x02           0x82
     Get Topology                 0x03           0x83
@@ -985,6 +1013,14 @@ operation is a request or a response.
     ===========================  =============  ==============
 
 ..
+
+Greybus Audio Ping Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Audio Ping Operation is the
+:ref:`greybus-protocol-ping-operation` for the Audio Protocol.
+It consists of a request containing no payload, and a response
+with no payload that indicates a successful result.
 
 Greybus Audio Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2515,6 +2551,10 @@ message formats are defined here.
 
 Conceptually, the operations in the greybus HID Protocol are:
 
+.. c:function:: int ping(void);
+
+    See :ref:`greybus-protocol-ping-operation`.
+
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
     Refer to :ref:`greybus-protocol-version-operation`.
@@ -2563,7 +2603,7 @@ flag (0x80) indicating whether the operation is a request or a response.
     ===========================  =============  ==============
     HID Operation Type           Request Value  Response Value
     ===========================  =============  ==============
-    Reserved                     0x00           0x80
+    Ping                         0x00           0x80
     Protocol Version             0x01           0x81
     Get Descriptor               0x02           0x82
     Get Report Descriptor        0x03           0x83
@@ -2577,6 +2617,14 @@ flag (0x80) indicating whether the operation is a request or a response.
     ===========================  =============  ==============
 
 ..
+
+Greybus HID Ping Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus HID Ping Operation is the
+:ref:`greybus-protocol-ping-operation` for the HID Protocol.
+It consists of a request containing no payload, and a response
+with no payload that indicates a successful result.
 
 Greybus HID Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2819,6 +2867,10 @@ defined here.
 
 The operations in the Greybus Lights Protocol are:
 
+.. c:function:: int ping(void);
+
+    See :ref:`greybus-protocol-ping-operation`.
+
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
    Refer to :ref:`greybus-protocol-version-operation`.
@@ -2902,7 +2954,7 @@ operation is a request or a response.
     ===========================  =============  ==============
     Lights Operation Type        Request Value  Response Value
     ===========================  =============  ==============
-    Reserved                     0x00           0x80
+    Ping                         0x00           0x80
     Protocol Version             0x01           0x81
     Get Lights                   0x02           0x82
     Get Light Config             0x03           0x83
@@ -2922,6 +2974,14 @@ operation is a request or a response.
     ===========================  =============  ==============
 
 ..
+
+Greybus Lights Ping Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Lights Ping Operation is the
+:ref:`greybus-protocol-ping-operation` for the Lights Protocol.
+It consists of a request containing no payload, and a response
+with no payload that indicates a successful result.
 
 Greybus Lights Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -3622,6 +3682,10 @@ receiving data in a "loop".
 
 The operations in the Greybus loopback Protocol are:
 
+.. c:function:: int ping(void);
+
+    See :ref:`greybus-protocol-ping-operation`.
+
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
    Refer to :ref:`greybus-protocol-version-operation`.
@@ -3659,7 +3723,7 @@ operation is a request or a response.
     ===========================  =============  ==============
     Loopback Operation Type      Request Value  Response Value
     ===========================  =============  ==============
-    Reserved                     0x00           0x80
+    Ping                         0x00           0x80
     Protocol Version             0x01           0x81
     Ping                         0x02           0x82
     Transfer                     0x03           0x83
@@ -3669,6 +3733,14 @@ operation is a request or a response.
     ===========================  =============  ==============
 
 ..
+
+Greybus Loopback Ping Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Loopback Ping Operation is the
+:ref:`greybus-protocol-ping-operation` for the Loopback Protocol.
+It consists of a request containing no payload, and a response
+with no payload that indicates a successful result.
 
 Greybus Loopback Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -3787,6 +3859,10 @@ will vary by device.
 
 The operations in the Greybus Raw Protocol are:
 
+.. c:function:: int ping(void);
+
+    See :ref:`greybus-protocol-ping-operation`.
+
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
    Refer to :ref:`greybus-protocol-version-operation`.
@@ -3812,7 +3888,7 @@ operation is a request or a response.
     ===========================  =============  ==============
     Raw Operation Type           Request Value  Response Value
     ===========================  =============  ==============
-    Reserved                     0x00           0x80
+    Ping                         0x00           0x80
     Protocol Version             0x01           0x81
     Send                         0x02           0x82
     (all other values reserved)  0x04..0x7e     0x84..0xfe
@@ -3820,6 +3896,14 @@ operation is a request or a response.
     ===========================  =============  ==============
 
 ..
+
+Greybus Raw Ping Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Raw Ping Operation is the
+:ref:`greybus-protocol-ping-operation` for the Raw Protocol.
+It consists of a request containing no payload, and a response
+with no payload that indicates a successful result.
 
 Greybus Raw Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

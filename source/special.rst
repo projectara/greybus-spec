@@ -45,6 +45,10 @@ only be sent in reply to a request received on its control CPort.
 
 Conceptually, the Operations in the Greybus Control Protocol are:
 
+.. c:function:: int ping(void);
+
+    See :ref:`greybus-protocol-ping-operation`.
+
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
     Refer to :ref:`greybus-protocol-version-operation`.
@@ -129,7 +133,7 @@ type and response type values are shown.
     ===========================  =============  ==============
     Control Operation Type       Request Value  Response Value
     ===========================  =============  ==============
-    Reserved                     0x00           0x80
+    Ping                         0x00           0x80
     Protocol Version             0x01           0x81
     Reserved                     0x02           0x82
     Get Manifest Size            0x03           0x83
@@ -146,6 +150,14 @@ type and response type values are shown.
     ===========================  =============  ==============
 
 ..
+
+Greybus Control Ping Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Control Ping Operation is the
+:ref:`greybus-protocol-ping-operation` for the Control Protocol.
+It consists of a request containing no payload, and a response
+with no payload that indicates a successful result.
 
 Greybus Control Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -520,6 +532,10 @@ conditions).
 
 Conceptually, the operations in the Greybus SVC Protocol are:
 
+.. c:function:: int ping(void);
+
+    See :ref:`greybus-protocol-ping-operation`.
+
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
     Refer to :ref:`greybus-protocol-version-operation`.
@@ -626,11 +642,6 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     The SVC sends this to inform the AP that a key with a specific code has
     generated an event.
 
-.. c:function:: int ping(void);
-
-    The AP Module uses this operation to "ping" the SVC to see if it is still
-    alive and receiving messages properly.
-
 .. c:function:: int pwrmon_rail_count_get(u8 *rail_count);
 
     The AP uses this operation to retrieve the number of power rails
@@ -677,7 +688,7 @@ response type values are shown.
     ==================================  =============  ==============
     SVC Operation Type                  Request Value  Response Value
     ==================================  =============  ==============
-    Reserved                            0x00           0x80
+    Ping                                0x00           0x80
     Protocol Version                    0x01           0x81
     SVC Hello                           0x02           0x82
     Interface device ID                 0x03           0x83
@@ -696,7 +707,7 @@ response type values are shown.
     Interface set power mode            0x10           0x90
     Interface Eject                     0x11           0x91
     Key Event                           0x12           N/A
-    Ping                                0x13           0x93
+    Reserved                            0x13           0x93
     Power Monitor get rail count        0x14           0x94
     Power Monitor get rail names        0x15           0x95
     Power Monitor get sample            0x16           0x96
@@ -707,6 +718,14 @@ response type values are shown.
     ==================================  =============  ==============
 
 ..
+
+Greybus SVC Ping Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SVC Ping Operation is the
+:ref:`greybus-protocol-ping-operation` for the SVC Protocol.
+It consists of a request containing no payload, and a response
+with no payload that indicates a successful result.
 
 Greybus SVC Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1646,25 +1665,6 @@ response shall contain zero.
 
 ..
 
-Greybus SVC Ping Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-The AP Module uses this operation to request determine if the SVC, and by virtue
-of the response, the greybus fabric, is still operating properly.  If the ping
-operation fails, the AP Module will take measures to restart the greybus network
-operations by possibly resetting different hardware devices.
-
-Greybus SVC Ping Request
-""""""""""""""""""""""""
-
-The Greybus SVC Ping Request contains no payload.
-
-Greybus SVC Ping Response
-"""""""""""""""""""""""""
-
-The Greybus SVC Ping Response contains no payload.
-
-..
-
 Greybus SVC Interface Eject Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -2053,6 +2053,10 @@ not have its own firmware pre-loaded.
 
 The operations in the Greybus Firmware Protocol are:
 
+.. c:function:: int ping(void);
+
+    See :ref:`greybus-protocol-ping-operation`.
+
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
     Refer to :ref:`greybus-protocol-version-operation`.
@@ -2108,7 +2112,7 @@ response.
     ===========================  =============  ==============
     Firmware Operation Type      Request Value  Response Value
     ===========================  =============  ==============
-    Reserved                     0x00           0x80
+    Ping                         0x00           0x80
     Protocol Version             0x01           0x81
     Firmware Size                0x02           0x82
     Get Firmware                 0x03           0x83
@@ -2119,6 +2123,14 @@ response.
     ===========================  =============  ==============
 
 ..
+
+Greybus Firmware Ping Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Firmware Ping Operation is the
+:ref:`greybus-protocol-ping-operation` for the Firmware Protocol.
+It consists of a request containing no payload, and a response
+with no payload that indicates a successful result.
 
 Greybus Firmware Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
