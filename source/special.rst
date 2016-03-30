@@ -1823,8 +1823,8 @@ human-readable names for rails that support voltage, current and power
 measurement. Each name consists of a fixed 32-byte sub-buffer
 containing a rail name padded with zero bytes. A rail name is
 comprised of a subset of [US-ASCII]_ characters: lower- and upper-case
-alphanumerics and the character '_'. A rail name is from 1-32 bytes
-long; a 32-byte name has no pad bytes.
+alphanumerics and the character '_'. A rail name is 1-32 bytes long;
+a 32-byte name has no pad bytes.
 
 The number of these buffers shall be exactly the number returned by
 a prior Greybus SVC Power Monitor Get Rail Name Count operation.
