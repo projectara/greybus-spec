@@ -260,6 +260,8 @@ The *id* field shall not be 0x00, as that is an invalid String ID value.
 
 The *length* field excludes any trailing padding bytes in the descriptor.
 
+.. _bundle-descriptor:
+
 Bundle Descriptor
 ^^^^^^^^^^^^^^^^^
 
@@ -334,6 +336,8 @@ it. Class types are defined in Table :num:`table-bundle-class`.
     ============================    ==========
 
 ..
+
+.. _cport-descriptor:
 
 CPort Descriptor
 ^^^^^^^^^^^^^^^^

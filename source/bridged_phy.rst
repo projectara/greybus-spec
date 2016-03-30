@@ -641,6 +641,8 @@ an event.
 ..
 
 
+.. _spi-protocol:
+
 SPI Protocol
 ------------
 
