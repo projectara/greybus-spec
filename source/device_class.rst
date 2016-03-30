@@ -55,11 +55,12 @@ operation is a request or a response.
     ===========================  =============  ==============
     Vibrator Operation Type      Request Value  Response Value
     ===========================  =============  ==============
-    Invalid                      0x00           0x80
+    Reserved                     0x00           0x80
     Protocol Version             0x01           0x81
     Vibrator On                  0x02           0x82
     Vibrator Off                 0x03           0x83
-    (all other values reserved)  0x04..0x7f     0x84..0xff
+    (all other values reserved)  0x04..0x7e     0x84..0xfe
+    Invalid                      0x7f           0xff
     ===========================  =============  ==============
 
 ..
@@ -189,7 +190,7 @@ operation is a request or a response.
     ===========================  =============  ==============
     Power Supply Operation Type  Request Value  Response Value
     ===========================  =============  ==============
-    Invalid                      0x00           0x80
+    Reserved                     0x00           0x80
     Protocol Version             0x01           0x81
     Get Power Supplies           0x02           0x82
     Get Description              0x03           0x83
@@ -197,7 +198,8 @@ operation is a request or a response.
     Get Property                 0x05           0x85
     Set Property                 0x06           0x86
     Event                        0x07           N/A
-    (all other values reserved)  0x08..0x7f     0x87..0xff
+    (all other values reserved)  0x08..0x7e     0x88..0xfe
+    Invalid                      0x7f           0xff
     ===========================  =============  ==============
 
 ..
@@ -956,7 +958,7 @@ operation is a request or a response.
     ===========================  =============  ==============
     Audio Operation Type         Request Value  Response Value
     ===========================  =============  ==============
-    Invalid                      0x00           0x80
+    Reserved                     0x00           0x80
     Protocol Version             0x01           0x81
     Get Topology Size            0x02           0x82
     Get Topology                 0x03           0x83
@@ -978,7 +980,8 @@ operation is a request or a response.
     Button Event                 0x13           0x93
     Streaming Event              0x14           0x94
     Send Data                    0x15           0x95
-    (all other values reserved)  0x16..0x7f     0x96..0xff
+    (all other values reserved)  0x16..0x7e     0x96..0xfe
+    Invalid                      0x7f           0xff
     ===========================  =============  ==============
 
 ..
@@ -2560,7 +2563,7 @@ flag (0x80) indicating whether the operation is a request or a response.
     ===========================  =============  ==============
     HID Operation Type           Request Value  Response Value
     ===========================  =============  ==============
-    Invalid                      0x00           0x80
+    Reserved                     0x00           0x80
     Protocol Version             0x01           0x81
     Get Descriptor               0x02           0x82
     Get Report Descriptor        0x03           0x83
@@ -2569,7 +2572,8 @@ flag (0x80) indicating whether the operation is a request or a response.
     Get Report                   0x06           0x86
     Set Report                   0x07           0x87
     IRQ Event                    0x08           0x88
-    (all other values reserved)  0x09..0x7f     0x89..0xff
+    (all other values reserved)  0x09..0x7e     0x89..0xfe
+    Invalid                      0x7f           0xff
     ===========================  =============  ==============
 
 ..
@@ -2898,7 +2902,7 @@ operation is a request or a response.
     ===========================  =============  ==============
     Lights Operation Type        Request Value  Response Value
     ===========================  =============  ==============
-    Invalid                      0x00           0x80
+    Reserved                     0x00           0x80
     Protocol Version             0x01           0x81
     Get Lights                   0x02           0x82
     Get Light Config             0x03           0x83
@@ -2913,7 +2917,8 @@ operation is a request or a response.
     Set Flash Strobe             0x0c           0x8c
     Set Flash Timeout            0x0d           0x8d
     Get Flash Fault              0x0e           0x8e
-    (all other values reserved)  0x0f..0x7f     0x8f..0xff
+    (all other values reserved)  0x0f..0x7e     0x8f..0xfe
+    Invalid                      0x7f           0xff
     ===========================  =============  ==============
 
 ..
@@ -3654,12 +3659,13 @@ operation is a request or a response.
     ===========================  =============  ==============
     Loopback Operation Type      Request Value  Response Value
     ===========================  =============  ==============
-    Invalid                      0x00           0x80
+    Reserved                     0x00           0x80
     Protocol Version             0x01           0x81
     Ping                         0x02           0x82
     Transfer                     0x03           0x83
     Sink                         0x04           0x84
-    (all other values reserved)  0x05..0x7f     0x85..0xff
+    (all other values reserved)  0x05..0x7e     0x85..0xfe
+    Invalid                      0x7f           0xff
     ===========================  =============  ==============
 
 ..
@@ -3806,10 +3812,11 @@ operation is a request or a response.
     ===========================  =============  ==============
     Raw Operation Type           Request Value  Response Value
     ===========================  =============  ==============
-    Invalid                      0x00           0x80
+    Reserved                     0x00           0x80
     Protocol Version             0x01           0x81
     Send                         0x02           0x82
-    (all other values reserved)  0x04..0x7f     0x84..0xff
+    (all other values reserved)  0x04..0x7e     0x84..0xfe
+    Invalid                      0x7f           0xff
     ===========================  =============  ==============
 
 ..

@@ -129,7 +129,7 @@ type and response type values are shown.
     ===========================  =============  ==============
     Control Operation Type       Request Value  Response Value
     ===========================  =============  ==============
-    Invalid                      0x00           0x80
+    Reserved                     0x00           0x80
     Protocol Version             0x01           0x81
     Reserved                     0x02           0x82
     Get Manifest Size            0x03           0x83
@@ -141,7 +141,8 @@ type and response type values are shown.
     TimeSync authoritative       0x09           0x89
     Interface Version            0x0a           0x8a
     Bundle Version               0x0b           0x8b
-    (all other values reserved)  0x0c..0x7f     0x8c..0xff
+    (all other values reserved)  0x0c..0x7e     0x8c..0xfe
+    Invalid                      0x7f           0xff
     ===========================  =============  ==============
 
 ..
@@ -676,7 +677,7 @@ response type values are shown.
     ==================================  =============  ==============
     SVC Operation Type                  Request Value  Response Value
     ==================================  =============  ==============
-    Invalid                             0x00           0x80
+    Reserved                            0x00           0x80
     Protocol Version                    0x01           0x81
     SVC Hello                           0x02           0x82
     Interface device ID                 0x03           0x83
@@ -701,7 +702,8 @@ response type values are shown.
     Power Monitor get sample            0x16           0x96
     Power Monitor interface get sample  0x17           0x97
     Power Down                          0x1d           0x9d
-    (all other values reserved)         0x1e..0x7f     0x9e..0xff
+    (all other values reserved)         0x1e..0x7e     0x9e..0xfe
+    Invalid                             0x7f           0xff
     ==================================  =============  ==============
 
 ..
@@ -2106,13 +2108,14 @@ response.
     ===========================  =============  ==============
     Firmware Operation Type      Request Value  Response Value
     ===========================  =============  ==============
-    Invalid                      0x00           0x80
+    Reserved                     0x00           0x80
     Protocol Version             0x01           0x81
     Firmware Size                0x02           0x82
     Get Firmware                 0x03           0x83
     Ready to Boot                0x04           0x84
     AP Ready                     0x05           0x85
-    (all other values reserved)  0x06..0x7f     0x86..0xff
+    (all other values reserved)  0x06..0x7e     0x86..0xfe
+    Invalid                      0x7f           0xff
     ===========================  =============  ==============
 
 ..

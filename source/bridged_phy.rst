@@ -117,7 +117,7 @@ response type values are shown.
     ===========================  =============  ==============
     GPIO Operation Type          Request Value  Response Value
     ===========================  =============  ==============
-    Invalid                      0x00           0x80
+    Reserved                     0x00           0x80
     Protocol Version             0x01           0x81
     Line Count                   0x02           0x82
     Activate                     0x03           0x83
@@ -132,7 +132,8 @@ response type values are shown.
     IRQ Mask                     0x0c           0x8c
     IRQ Unmask                   0x0d           0x8d
     IRQ Event                    0x0e           N/A
-    (all other values reserved)  0x0f..0x7f     0x1f..0xff
+    (all other values reserved)  0x0f..0x7e     0x8f..0xfe
+    Invalid                      0x7f           0xff
     ===========================  =============  ==============
 
 ..
@@ -692,12 +693,13 @@ operation is a request or a response.
     ===========================  =============  ==============
     SPI Operation Type           Request Value  Response Value
     ===========================  =============  ==============
-    Invalid                      0x00           0x80
+    Reserved                     0x00           0x80
     Protocol Version             0x01           0x81
     Master Config                0x02           0x82
     Device Config                0x03           0x83
     Transfer                     0x04           0x84
-    (all other values reserved)  0x05..0x7f     0x85..0xff
+    (all other values reserved)  0x05..0x7e     0x85..0xfe
+    Invalid                      0x7f           0xff
     ===========================  =============  ==============
 
 ..
@@ -1069,7 +1071,7 @@ operation is a request or a response.
     ===========================  =============  ==============
     UART Operation Type          Request Value  Response Value
     ===========================  =============  ==============
-    Invalid                      0x00           0x80
+    Reserved                     0x00           0x80
     Protocol Version             0x01           0x81
     Send Data                    0x02           0x82
     Receive Data                 0x03           0x83
@@ -1077,7 +1079,8 @@ operation is a request or a response.
     Set Control Line State       0x05           0x85
     Send Break                   0x06           0x86
     Serial State                 0x07           0x87
-    (all other values reserved)  0x08..0x7f     0x88..0xff
+    (all other values reserved)  0x08..0x7e     0x88..0xfe
+    Invalid                      0x7f           0xff
     ===========================  =============  ==============
 
 ..
@@ -1496,7 +1499,7 @@ are shown.
     ===========================  =============  ==============
     PWM Operation Type           Request Value  Response Value
     ===========================  =============  ==============
-    Invalid                      0x00           0x80
+    Reserved                     0x00           0x80
     Protocol Version             0x01           0x81
     PWM count                    0x02           0x82
     Activate                     0x03           0x83
@@ -1505,7 +1508,8 @@ are shown.
     Set Polarity                 0x06           0x86
     Enable                       0x07           0x87
     Disable                      0x08           0x88
-    (all other values reserved)  0x09..0x7f     0x89..0xff
+    (all other values reserved)  0x09..0x7e     0x89..0xfe
+    Invalid                      0x7f           0xff
     ===========================  =============  ==============
 
 ..
@@ -1803,13 +1807,14 @@ operation is a request or a response.
     ===========================  =============  ==============
     I2C Operation Type           Request Value  Response Value
     ===========================  =============  ==============
-    Invalid                      0x00           0x80
+    Reserved                     0x00           0x80
     Protocol Version             0x01           0x81
     Functionality                0x02           0x82
     Reserved                     0x03           0x83
     Reserved                     0x04           0x84
     Transfer                     0x05           0x85
-    (all other values reserved)  0x06..0x7f     0x86..0xff
+    (all other values reserved)  0x06..0x7e     0x86..0xfe
+    Invalid                      0x7f           0xff
     ===========================  =============  ==============
 
 ..
@@ -2084,14 +2089,15 @@ and response type values are shown.
     ===========================  =============  ==============
     SDIO Operation Type          Request Value  Response Value
     ===========================  =============  ==============
-    Invalid                      0x00           0x80
+    Reserved                     0x00           0x80
     Protocol Version             0x01           0x81
     Get Capabilities             0x02           0x82
     Set Ios                      0x03           0x83
     Command                      0x04           0x84
     Transfer                     0x05           0x85
     Event                        0x06           N/A
-    (all other values reserved)  0x07..0x7f     0x87..0xff
+    (all other values reserved)  0x07..0x7e     0x87..0xfe
+    Invalid                      0x7f           0xff
     ===========================  =============  ==============
 
 ..
