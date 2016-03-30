@@ -536,7 +536,7 @@ Module to ORDER_UNKNOWN after an implementation-defined delay.
 MAILBOX
 """""""
 
-The MAILBOX sub-state is either the value NULL or a positive integer.
+The MAILBOX sub-state is either the value NULL or a non-negative integer.
 
 The MAILBOX sub-state represents the value of an
 implementation-defined DME attribute, named the "mailbox", which is
