@@ -717,6 +717,11 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     The AP uses this operation to power down the SVC and all the devices it
     controls.
 
+.. c:function:: int connection_quiescing(u8 intf_id, u16 cport_id);
+
+    The AP uses this operation to notify the SVC that a connection
+    being torn down is quiescing.
+
 Greybus SVC Operations
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -763,7 +768,8 @@ response type values are shown.
     Power Monitor get sample            0x16           0x96
     Power Monitor interface get sample  0x17           0x97
     Power Down                          0x1d           0x9d
-    (all other values reserved)         0x1e..0x7e     0x9e..0xfe
+    Connection Quiescing                0x1e           0x9e
+    (all other values reserved)         0x1f..0x7e     0x9f..0xfe
     Invalid                             0x7f           0xff
     ==================================  =============  ==============
 
@@ -1577,6 +1583,45 @@ Greybus SVC Connection Create Response
 """"""""""""""""""""""""""""""""""""""
 
 The Greybus SVC connection create response message contains no payload.
+
+Greybus SVC Connection Quiescing Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The AP Module sends this to the SVC to indicate that a connection
+being torn down has entered its quiescing stage before being
+disconnected.  The AP shall have received a response to a Control
+Disconnecting request from the Interface prior to this call.
+This operation allows the SVC to prepare the underlying |unipro|
+connection for an orderly shutdown before it is finally disconnected.
+
+Greybus SVC Connection Quiescing Request
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Table :num:`table-svc-connection-quiescing-request` defines the Greybus
+SVC Connection Quiescing Request payload.  The Greybus SVC
+Connection Quiescing request is sent only by the AP Module to the
+SVC.  The (Interface ID, CPort ID) pair defines the Connection being
+quiesced.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-connection-quiescing-request
+    :caption: SVC Protocol Connection Quiescing Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==================  ===========================
+    Offset   Field           Size    Value               Description
+    =======  ==============  ======  ==================  ===========================
+    0        intf_id         1       Number              Interface
+    1        cport_id        2       Number              CPort on Interface
+    =======  ==============  ======  ==================  ===========================
+
+..
+
+Greybus SVC Connection Quiescing Response
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SVC Connection Quiescing response message contains no payload.
 
 Greybus SVC Connection Destroy Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
