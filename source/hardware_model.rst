@@ -550,6 +550,9 @@ write to this DME attribute using a |unipro| peer write. In a Greybus
 System, the SVC is able to detect this write and subsequently read the
 value of the mailbox attribute.
 
+One non-NULL MAILBOX value has particular significance: READY_MODULE,
+which has value two.
+
 .. _hardware-model-initial-states:
 
 Initial States
