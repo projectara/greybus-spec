@@ -722,6 +722,19 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     The AP uses this operation to notify the SVC that a connection
     being torn down is quiescing.
 
+.. c:function:: int module_inserted(u8 primary_intf_id, u8 intf_count);
+
+    The SVC uses this operation to notify the AP Module of the
+    presence of a newly-inserted Module.  It sends the request after
+    it has determined the size and position of the Module in the
+    Frame.
+
+.. c:function:: int module_removed(u8 primary_intf_id);
+
+    The SVC uses this operation to notify the AP Module that a
+    Module that was previously the subject of a Greybus SVC Module
+    Inserted operation is no longer present in the Frame.
+
 Greybus SVC Operations
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -769,7 +782,9 @@ response type values are shown.
     Power Monitor interface get sample  0x17           0x97
     Power Down                          0x1d           0x9d
     Connection Quiescing                0x1e           0x9e
-    (all other values reserved)         0x1f..0x7e     0x9f..0xfe
+    Module Inserted                     0x1f           0x9f
+    Module Removed                      0x20           0xa0
+    (all other values reserved)         0x21..0x7e     0xa1..0xfe
     Invalid                             0x7f           0xff
     ==================================  =============  ==============
 
@@ -2136,6 +2151,86 @@ Greybus SVC Power Down Response
 The Greybus SVC Power Down response message contains no payload.
 
 ..
+
+.. _greybus-svc-module-inserted-operation:
+
+Greybus SVC Module Inserted Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SVC Module Inserted request is sent by the SVC
+to the AP Module to indicate that a new Module has been inserted
+into the Frame.
+
+Greybus SVC Module Inserted Request
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Table :num:`table-svc-module-inserted-request` defines the Greybus SVC
+Module Inserted request payload.  The request specifies the location
+of the Primary Interface on the Frame for the inserted Module.  It
+also specifies the number of Interfaces covered by the Module.
+
+The location of each Interface ID on a Frame is well-defined:
+Interface ID 1 represents the Interface Block at the top left of the
+back (non-display) side of the Frame.  The next Interface ID is 2,
+and it represents the Interface Block below (toward the bottom of
+the Frame) Interface ID 1.  Interface IDs increase consecutively,
+moving counter-clockwise around the Frame.  The size of a Module
+(its interface count) is always 1 or more.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-module-inserted-request
+    :caption: SVC Protocol Module Inserted Request
+    :spec: l l c c l
+
+    =======  ===============  ====  ======  ====================
+    Offset   Field            Size  Value   Description
+    =======  ===============  ====  ======  ====================
+    0        primary_intf_id  1     Number  Module location
+    1        intf_count       1     Number  Number of Interfaces covered by Module
+    =======  ===============  ====  ======  ====================
+
+..
+
+Greybus SVC Module Inserted Response
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SVC Module Inserted response message contains no payload.
+
+Greybus SVC Module Removed Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SVC Module Removed request is sent by the SVC
+to the AP Module.  It supplies the Interface ID for the Primary
+Interface to the Module that is no longer present.  The Interface
+ID shall have been the subject of a previous
+:ref:`greybus-svc-module-inserted-operation`.
+
+Greybus SVC Module Removed Request
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Table :num:`table-svc-module-removed-request` defines the Greybus SVC
+Module Removed request payload.  The request specifies the Primary
+Interface ID for the Module that is no longer present.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-module-removed-request
+    :caption: SVC Protocol Module Removed Request
+    :spec: l l c c l
+
+    =======  ===============  ====  ======  ====================
+    Offset   Field            Size  Value   Description
+    =======  ===============  ====  ======  ====================
+    0        primary_intf_id  1     Number  Module location
+    =======  ===============  ====  ======  ====================
+
+..
+
+Greybus SVC Module Removed Response
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SVC Module Removed response message contains no payload.
 
 .. _firmware-protocol:
 
