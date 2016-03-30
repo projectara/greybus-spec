@@ -82,7 +82,7 @@ Conceptually, the Operations in the Greybus Control Protocol are:
 .. c:function:: int disconnecting(u16 cport_id);
 
     This Operation is used by the AP Module to inform an Interface
-    that the process of disconnecting a previously-established Greybus
+    that the process of disconnecting a previously established Greybus
     connection has begun.
 
 .. c:function:: int disconnected(u16 cport_id);
@@ -725,7 +725,7 @@ Conceptually, the operations in the Greybus SVC Protocol are:
 .. c:function:: int module_inserted(u8 primary_intf_id, u8 intf_count);
 
     The SVC uses this operation to notify the AP Module of the
-    presence of a newly-inserted Module.  It sends the request after
+    presence of a newly inserted Module.  It sends the request after
     it has determined the size and position of the Module in the
     Frame.
 
@@ -2500,7 +2500,7 @@ Greybus Firmware Ready to Boot Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus Firmware ready to boot operation lets the requesting module notify
-the AP that it has successfully loaded the connection's currently-associated
+the AP that it has successfully loaded the connection's currently associated
 firmware blob and is able to hand over control of the processor to that blob,
 indicating the status of its firmware blob.  The AP shall then send a response
 empty of payload, indicating via the header's status byte whether or not it
