@@ -299,15 +299,16 @@ The values of the UNIPRO sub-state are given in Table
    :label: table-interface-state-unipro
    :caption: UNIPRO sub-state values
 
-   =============  ================================================
-   Value          Description
-   =============  ================================================
-   UPRO_OFF       |unipro| port is powered off
-   UPRO_DOWN      |unipro| port is powered on, and the link is down
-   UPRO_LSS       |unipro| link startup sequence is ongoing between Module and Frame
-   UPRO_UP        |unipro| link is established
-   UPRO_RELINK    |unipro| peer is attempting to re-initiate linkup
-   =============  ================================================
+   ==============  ================================================
+   Value           Description
+   ==============  ================================================
+   UPRO_OFF        |unipro| port is powered off
+   UPRO_DOWN       |unipro| port is powered on, and the link is down
+   UPRO_LSS        |unipro| link startup sequence is ongoing between Module and Frame
+   UPRO_UP         |unipro| link is established
+   UPRO_HIBERNATE  |unipro| link is in low-power hibernate state
+   UPRO_RELINK     |unipro| peer is attempting to re-initiate linkup
+   ==============  ================================================
 ..
 
 The value of the UNIPRO sub-state changes due to |unipro| protocol
