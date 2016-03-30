@@ -40,7 +40,7 @@ clean:
 	rm -f $(DOT_GRAPH_DIR)/*.png
 
 $(DOT_GRAPH_DIR)/%.png: $(DOT_GRAPH_DIR)/%.dot
-	@dot -Tpng -Gsize=4,5\! $< -o $@
+	@dot -Tpng $< -o $@
 	@echo DOT: $<
 
 all:	html latexpdf singlehtml
