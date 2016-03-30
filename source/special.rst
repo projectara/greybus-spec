@@ -1836,7 +1836,8 @@ request.
 Each rail has an implicit 'Rail ID' which is equal to its position in
 the array of rail names returned by this response. The rail whose name
 is first in the array shall have Rail ID 0, the second shall have Rail
-ID 1, and so on.
+ID 1, and so on. Despite using numeric IDs, the rail names returned by
+this operation are guaranteed to be unique.
 
 .. figtable::
     :nofig:
