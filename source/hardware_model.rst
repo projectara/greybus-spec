@@ -43,9 +43,15 @@ present in a Greybus System for use within the Greybus Specification.
 - The subsequent section, :ref:`hardware-model-initial-states`,
   defines the initial values of each Interface State.
 
+- Certain groups of Interface States have special meaning within the
+  Greybus Specification. These groups of Interface States, named
+  *Lifecycle States*, along with transitions between them managed by
+  the Greybus System, are given in
+  :ref:`hardware-model-lifecycle-states`.
+
 Subsequent definitions within the Greybus Specification define how
 certain Greybus :ref:`Operations <glossary-operation>` affect
-Interface States in a Greybus System.
+Interface States and Lifecycle States in a Greybus System.
 
 .. _hardware-model-interface-states:
 
@@ -565,3 +571,108 @@ Interface State is::
    WAKE=WAKE_UNDEFINED, UNIPRO=UPRO_OFF, REFCLK=REFCLK_OFF,
    RELEASE=RELEASE_OFF, INTF_TYPE=IFT_UNKNOWN, ORDER=ORDER_UNKNOWN,
    MAILBOX=NULL)
+
+As a consequence of the power-on reset sequence of a Greybus System,
+the SVC determines a value of DETECT for each Interface State in the
+system. This is explained in more detail in later sections, and forms
+the basis of the state machine described in
+:ref:`hardware-model-lifecycle-states`.
+
+.. _hardware-model-lifecycle-states:
+
+The Interface Lifecycle
+^^^^^^^^^^^^^^^^^^^^^^^
+
+The following state machine diagram is the *Interface Lifecycle*. Each
+of the states is a *Lifecycle State*. Lifecycle States are groups of
+Interface States with a special meaning within the Greybus
+Specification.
+
+.. image:: /img/dot/interface-lifecycle.png
+   :align: center
+
+For example, the DETECTED Lifecycle State is the Interface State for
+an Interface Block which the SVC has determined a Module is attached
+to, but no other action has been taken by the Greybus System to
+communicate with it. Similarly, the ABSENT Lifecycle State is the
+Interface State for an Interface Block with no module attached.
+
+Certain Lifecycle States refer to multiple possible Interface
+States. For example, the ACTIVATED Lifecycle State refers to a group
+of related Interface States, all of which have an INTF_TYPE other than
+IFT_UNKNOWN. Multiple permitted values for the sub-states of the
+Interface States within each Lifecycle State are shown between angle
+brackets (<>).
+
+The square node labeled "Any State" denotes that the transition is
+allowed from any Interface State whatsoever, and models the
+consequences of a :ref:`forcible removal <hardware-model-detect>`.
+
+Using the above notation, the Lifecycle States are defined as follows:
+
+DETECTED::
+
+  (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_OFF, V_CHG=V_CHG_OFF,
+   WAKE=WAKE_UNSET, UNIPRO=UPRO_OFF, REFCLK=REFCLK_OFF,
+   RELEASE=RELEASE_OFF, INTF_TYPE=IFT_UNKNOWN,
+   ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
+   MAILBOX=NULL)
+
+ACTIVATED::
+
+  (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_ON, V_CHG=V_CHG_OFF,
+   WAKE=WAKE_UNSET,
+   UNIPRO=<UPRO_DOWN, UPRO_UP>,
+   REFCLK=REFCLK_ON,
+   RELEASE=RELEASE_OFF,
+   INTF_TYPE=<IFT_DUMMY, IFT_UNIPRO, or IFT_GREYBUS>,
+   ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
+   MAILBOX=<0 or READY_MODULE>)
+
+ENUMERATED::
+
+  (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_ON,
+   V_CHG=<V_CHG_OFF or V_CHG_ON>,
+   WAKE=WAKE_UNSET, UNIPRO=UPRO_UP,
+   REFCLK=<REFCLK_ON or REFCLK_OFF>,
+   RELEASE=RELEASE_OFF,
+   INTF_TYPE=IFT_GREYBUS,
+   ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
+   MAILBOX=READY_MODULE)
+
+MODE_SWITCHING::
+
+  (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_ON, V_CHG=V_CHG_OFF,
+   WAKE=WAKE_UNSET, UNIPRO=UPRO_UP,
+   REFCLK=REFCLK_ON, RELEASE=RELEASE_OFF, INTF_TYPE=IFT_GREYBUS,
+   ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
+   MAILBOX=READY_MODULE)
+
+SUSPENDED::
+
+  (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_ON,
+   V_CHG=<V_CHG_OFF or V_CHG_ON>,
+   WAKE=WAKE_UNSET, UNIPRO=UPRO_HIBERNATE,
+   REFCLK=REFCLK_OFF, RELEASE=RELEASE_OFF, INTF_TYPE=IFT_GREYBUS,
+   ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
+   MAILBOX=READY_MODULE)
+
+OFF::
+
+  (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_OFF, V_CHG=V_CHG_OFF,
+   WAKE=WAKE_UNSET, UNIPRO=UPRO_OFF, REFCLK=REFCLK_OFF,
+   RELEASE=RELEASE_OFF,
+   INTF_TYPE=<IFT_DUMMY, IFT_UNIPRO, or IFT_GREYBUS>,
+   ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
+   MAILBOX=NULL)
+
+ABSENT::
+
+  (DETECT=DETECT_INACTIVE, V_SYS=V_SYS_OFF, V_CHG=V_CHG_OFF,
+   WAKE=WAKE_UNSET, UNIPRO=UPRO_OFF, REFCLK=REFCLK_OFF,
+   RELEASE=RELEASE_OFF, INTF_TYPE=IFT_UNKNOWN,
+   ORDER=ORDER_UNKNOWN, MAILBOX=NULL)
+
+Subsequent chapters in the Greybus Specification will define the
+mechanisms which cause Interfaces States to transition between
+Lifecycle States.

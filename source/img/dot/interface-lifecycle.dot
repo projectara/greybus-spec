@@ -1,0 +1,23 @@
+digraph {
+    node [group=trunk];
+    DETECTED -> ACTIVATED [label="boot  "];
+    ACTIVATED -> ENUMERATED [label="enumerate  "];
+    ENUMERATED -> OFF [label="power_down  "];
+    OFF -> ABSENT [label="eject"];
+    DETECTED -> ABSENT [label=" early_eject"];
+
+    subgraph alive {
+        MODE_SWITCHING -> ENUMERATED [label="ms_exit"];
+        ENUMERATED -> MODE_SWITCHING [label="ms_enter"];
+        ENUMERATED -> SUSPENDED [label="suspend  "];
+        SUSPENDED -> ENUMERATED [label="resume  "];
+    }
+    MODE_SWITCHING -> ACTIVATED [label="ms_fail"];
+
+    OFF -> ACTIVATED [label="reboot  "];
+    ACTIVATED -> OFF [label="early_power_down"];
+    subgraph oops {
+        ANY [label="Any State",shape=box];
+        ANY -> ABSENT [label="forcible_removal"];
+    }
+}
