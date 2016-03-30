@@ -681,10 +681,10 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     The AP Module uses this operation to request the SVC to send the
     authoritative frame-time at each TIME_SYNC strobe.
 
-.. c:function:: int interface_eject(u8 intf_id);
+.. c:function:: int module_eject(u8 primary_intf_id);
 
-    The AP Module uses this operation to request the SVC to perform the
-    necessary action to eject an interface associated with the given
+    The AP Module uses this operation to request the SVC to perform
+    the necessary action to eject a Module having the given primary
     interface id.
 
 .. c:function:: int key_event(u16 key_code, u8 key_event);
@@ -773,7 +773,7 @@ response type values are shown.
     TimeSync disable                    0x0e           0x8e
     TimeSync authoritative              0x0f           0x8f
     Interface set power mode            0x10           0x90
-    Interface Eject                     0x11           0x91
+    Module Eject                        0x11           0x91
     Key Event                           0x12           N/A
     Reserved                            0x13           0x93
     Power Monitor get rail count        0x14           0x94
@@ -1775,37 +1775,39 @@ response shall contain zero.
 
 ..
 
-Greybus SVC Interface Eject Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus SVC Module Eject Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The requester uses this operation to indicate to the SVC that it should execute
-the necessary actions to release and eject an interface.
+The Greybus SVC Module Eject operation is sent by the AP Module
+to request the SVC to execute the necessary actions to eject a
+Module from the Frame.
 
-Greybus SVC Interface Eject Request
-"""""""""""""""""""""""""""""""""""
+Greybus SVC Module Eject Request
+""""""""""""""""""""""""""""""""
 
-The Greybus SVC Interface Eject Request is defined in Table
-:num:`table-svc-interface-eject-request`, the Interface ID informs the SVC which
-Interface shall be ejected.
+The Greybus SVC Module Eject Request is defined in Table
+:num:`table-svc-module-eject-request`.  The primary_intf_id field in
+the request payload contains the Interface ID of the Primary
+Interface to the Module which the SVC shall eject from the Frame.
 
 .. figtable::
     :nofig:
-    :label: table-svc-interface-eject-request
-    :caption: SVC Protocol Interface Eject Request
+    :label: table-svc-module-eject-request
+    :caption: SVC Protocol Module Eject Request
     :spec: l l c c l
 
-    =======  ==============  ======  ============    ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ============    ===========================
-    0        intf_id         1       Number          Interface that shall be ejected
-    =======  ==============  ======  ============    ===========================
+    =======  ===============  ====  ========    ===========================
+    Offset   Field            Size  Value       Description
+    =======  ===============  ====  ========    ===========================
+    0        primary_intf_id  1     Number      Module location
+    =======  ===============  ====  ========    ===========================
 
 ..
 
-Greybus SVC Interface Eject Response
-""""""""""""""""""""""""""""""""""""
+Greybus SVC Module Eject Response
+"""""""""""""""""""""""""""""""""
 
-The Greybus SVC Interface Eject response message contains no payload.
+The Greybus SVC Module Eject response message contains no payload.
 
 Greybus SVC Key Event Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
