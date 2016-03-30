@@ -1757,7 +1757,7 @@ response shall contain zero.
 .. figtable::
     :nofig:
     :label: table-svc-timesync-authoritative-response
-    :caption: SVC Protocol TimeSync Enable Request
+    :caption: SVC Protocol TimeSync Enable Response
     :spec: l l c c l
 
     =======  ============  ======  ==========  ======================================
