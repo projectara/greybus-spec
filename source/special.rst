@@ -710,6 +710,14 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     The AP Module uses this operation to request the SVC to release
     any wake-detect lines currently reserved for time-sync operations.
 
+.. c:function:: int timesync_ping(u64 *frame_time);
+
+    The AP Module uses this operation to request the SVC to generate a single
+    pulse on a bit-mask of wake-detect lines communicated to SVC by a prior
+    timesync_wd_pins_init() operation. SVC will return the authoritative
+    frame-time of the timesync_ping() to the AP Module in the response phase of
+    the operation.
+
 .. c:function:: int module_eject(u8 primary_intf_id);
 
     The AP Module uses this operation to request the SVC to perform
@@ -811,6 +819,7 @@ response type values are shown.
     Power Monitor interface get sample  0x17           0x97
     TimeSync wake-detect pins init      0x18           0x98
     TimeSync wake-detect pins fini      0x19           0x99
+    TimeSync ping                       0x1a           0x9a
     Power Down                          0x1d           0x9d
     Connection Quiescing                0x1e           0x9e
     Module Inserted                     0x1f           0x9f
@@ -1858,6 +1867,42 @@ Greybus SVC TimeSync Wake-Detect Pins Fini Response
 """""""""""""""""""""""""""""""""""""""""""""""""""
 
 The Greybus SVC Protocol TimeSync Wake-Detect Pins Fini response contains no payload.
+
+Greybus SVC TimeSync Ping Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The AP Module uses this operation to request the SVC to send a single timesync
+event on a bitmask of wake-detect pins which must have previously been allocated
+via Greybus SVC TimeSync Wake-Detect Pins Init.
+
+On receipt of this request the SVC will immediately generate a single pulse and
+capture the authoritative frame-time; this frame-time will then be returned in
+the response phase of the TimeSync Ping Operation.
+
+Greybus SVC TimeSync Ping Request
+"""""""""""""""""""""""""""""""""
+
+The Greybus SVC Protocol TimeSync Ping Request contains no payload.
+
+Greybus SVC TimeSync Ping Response
+""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-timesync-ping-response` defines the Greybus SVC
+TimeSync Ping Response payload. The response specifies the
+authoritative frame-time at the ping event generated.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-timesync-ping-response
+    :caption: SVC Protocol TimeSync Ping Response
+    :spec: l l c c l
+
+    =======  ============  ======  ==========  ======================================
+    Offset   Field         Size    Value       Description
+    =======  ============  ======  ==========  ======================================
+    0        frame-time    8       Number      Authoritative frame-time at ping event
+    =======  ============  ======  ==========  ======================================
+
+..
 
 Greybus SVC Module Eject Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
