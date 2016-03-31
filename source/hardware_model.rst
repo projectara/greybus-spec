@@ -274,7 +274,7 @@ WAKE sub-state by setting its value to WAKE_ACTIVE, then setting it to
 WAKE_INACTIVE after some duration. This is called a "WAKE pulse". When
 the duration of the WAKE pulse exceeds an implementation-defined
 threshold, this is a signal to any attached Module to initiate (or
-re-initiate) Greybus communication, as described in later sections.
+reinitiate) Greybus communication, as described in later sections.
 
 .. XXX this "as described" descriptions are currently not described
    anywhere; later updates will need to fix that once Interface States
