@@ -107,6 +107,13 @@ Conceptually, the Operations in the Greybus Control Protocol are:
     The AP Module uses this operation to inform an Interface of the
     authoritative frame-time reported by the SVC for each TIME_SYNC strobe.
 
+.. c:function:: int timesync_get_last_event(u64 *frame_time);
+
+    The AP Module uses this operation to get the frame-time at the last
+    pulse on the wake-detect pin of a relevant Interface. This operation
+    is used in conjunction with an SVC timesync-ping operation to verify
+    the local time at a given Interface.
+
 .. c:function:: int interface_version(u16 *major, u16 *minor);
 
     This Operation is used by the AP to get the current version of the
@@ -151,7 +158,8 @@ type and response type values are shown.
     Interface Version            0x0a           0x8a
     Bundle Version               0x0b           0x8b
     Disconnecting                0x0c           0x8c
-    (all other values reserved)  0x0d..0x7e     0x8d..0xfe
+    TimeSync get last event      0x0d           0x8d
+    (all other values reserved)  0x0e..0x7e     0x8e..0xfe
     Invalid                      0x7f           0xff
     ===========================  =============  ==============
 
@@ -452,6 +460,35 @@ Greybus Control TimeSync Authoritative Response
 """""""""""""""""""""""""""""""""""""""""""""""
 
 The Greybus Control Protocol TimeSync Authoritative Response contains no payload.
+
+Greybus Control TimeSync Get Last Event Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The AP Module uses this operation to extract the last frame-time from an Interface
+associated with a wake-detect event.
+
+Greybus Control TimeSync Get Last Event Request
+"""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus Control Protocol TimeSync Get Last Event Request contains no payload.
+
+Greybus Control TimeSync Get Last Event Response
+""""""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-control-timesync-get-last-event-response` defines the Greybus
+Control TimeSync Get Last Event Response payload. The frame-time at the last
+wake-detect event is returned.
+
+.. figtable::
+    :nofig:
+    :label: table-control-timesync-get-last-event-response
+    :caption: Control Protocol TimeSync Get Last Event Response
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========  ===================================================================
+    Offset   Field           Size    Value       Description
+    =======  ==============  ======  ==========  ===================================================================
+    0        frame-time      8       Number      frame-time at the last wake-detect event.
+    =======  ==============  ======  ==========  ===================================================================
 
 Greybus Control Interface Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
