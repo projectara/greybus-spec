@@ -329,7 +329,7 @@ it. Class types are defined in Table :num:`table-bundle-class`.
     Audio                           0x12
     Reserved                        0x13
     Unused                          0x14
-    Firmware                        0x15
+    Bootrom                         0x15
     (All other values reserved)     0x16..0xfd
     Raw                             0xfe
     Vendor Specific                 0xff
@@ -420,7 +420,7 @@ typically should not be used.)
     Audio Management                0x12
     Audio Data                      0x13
     SVC                             0x14
-    Firmware                        0x15
+    Bootrom                         0x15
     Camera Data                     0x16
     (All other values reserved)     0x17..0xfd
     Raw                             0xfe

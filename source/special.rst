@@ -18,11 +18,12 @@ Module to exert this control.  The SVC also uses this protocol to
 notify the AP Module of events, such as the insertion or removal of
 a Module.
 
-The third is the :ref:`firmware-protocol`, which is used between the AP
+The third is the :ref:`bootrom-protocol`, which is used between the AP
 Module and any other module's bootloader to download firmware
 executables to the module.  When a module's manifest includes a CPort
-using the Firmware Protocol, the AP can connect to that CPort and
-download a firmware executable to the module.
+using the Bootrom Protocol, the AP can connect to that CPort and
+download a firmware executable to the module.  Bootrom protocol is
+deprecated for new designs requiring Firmware download to the Module.
 
 .. _control-protocol:
 
@@ -2234,16 +2235,25 @@ Greybus SVC Module Removed Response
 
 The Greybus SVC Module Removed response message contains no payload.
 
-.. _firmware-protocol:
+.. _bootrom-protocol:
 
-Firmware Protocol
------------------
+Bootrom Protocol
+----------------
 
-The Greybus Firmware Protocol is used by a module's bootloader to communicate
+.. note:: Bootrom Protocol is deprecated for new designs requiring
+          Firmware download to the Module.  It doesn't support
+          downloading device processor firmware images and updating them
+          on the Module.  Also, it doesn't include proper sequence of
+          closing the CPorts, while switching from one Firmware stage to
+          another.  It is already part of chips that went into
+          production, and so its support can't be dropped from Greybus
+          Specifications.
+
+The Greybus Bootrom Protocol is used by a module's bootloader to communicate
 with the AP and download firmware executables via |unipro| when a module does
 not have its own firmware pre-loaded.
 
-The operations in the Greybus Firmware Protocol are:
+The operations in the Greybus Bootrom Protocol are:
 
 .. c:function:: int ping(void);
 
@@ -2256,10 +2266,10 @@ The operations in the Greybus Firmware Protocol are:
 .. c:function:: int ap_ready(void);
 
     The AP sends a request to the module in order to confirm that the AP
-    is now ready to receive requests over its firmware cport and the
+    is now ready to receive requests over its bootrom cport and the
     module can start firmware download process.  Until this request is
     received by the module, it shall not send any requests on the
-    firmware cport.
+    bootrom cport.
 
 .. c:function:: int firmware_size(u8 stage, u32 *size);
 
@@ -2288,21 +2298,21 @@ The operations in the Greybus Firmware Protocol are:
     response's status byte, otherwise it sends an error code in its response's
     status byte.
 
-Greybus Firmware Operations
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Table :num:`table-firmware-operation-type` describes the Greybus firmware
+Greybus Bootrom Operations
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Table :num:`table-bootrom-operation-type` describes the Greybus Bootrom
 operation types and their values.  A message type consists of an operation type
 combined with a flag (0x80) indicating whether the operation is a request or a
 response.
 
 .. figtable::
     :nofig:
-    :label: table-firmware-operation-type
-    :caption: Firmware Operation Types
+    :label: table-bootrom-operation-type
+    :caption: Bootrom Operation Types
     :spec: l l l
 
     ===========================  =============  ==============
-    Firmware Operation Type      Request Value  Response Value
+    Bootrom Operation Type       Request Value  Response Value
     ===========================  =============  ==============
     Ping                         0x00           0x80
     Protocol Version             0x01           0x81
@@ -2316,19 +2326,19 @@ response.
 
 ..
 
-Greybus Firmware Ping Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus Bootrom Ping Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus Firmware Ping Operation is the
-:ref:`greybus-protocol-ping-operation` for the Firmware Protocol.
-It consists of a request containing no payload, and a response
-with no payload that indicates a successful result.
+The Greybus Bootrom Ping Operation is the
+:ref:`greybus-protocol-ping-operation` for the Bootrom Protocol.  It
+consists of a request containing no payload, and a response with no
+payload that indicates a successful result.
 
-Greybus Firmware Protocol Version Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus Bootrom Protocol Version Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus Firmware Protocol Version Operation is the
-:ref:`greybus-protocol-version-operation` for the Firmware Protocol.
+The Greybus Bootrom Protocol Version Operation is the
+:ref:`greybus-protocol-version-operation` for the Bootrom Protocol.
 
 Greybus implementations adhering to the Protocol specified herein
 shall specify the value |gb-major| for the version_major and
@@ -2336,28 +2346,28 @@ shall specify the value |gb-major| for the version_major and
 request and response messages.
 
 
-Greybus Firmware Protocol AP Ready Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus Bootrom Protocol AP Ready Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus Firmware Protocol AP Ready operation allows the AP to
+The Greybus Bootrom Protocol AP Ready operation allows the AP to
 indicate that it is ready to receive requests from the module over the
-firmware cport. Only after the module has received this request may it
-start sending requests on the firmware cport.
+bootrom cport. Only after the module has received this request may it
+start sending requests on the bootrom cport.
 
-Greybus Firmware Protocol AP Ready Request
+Greybus Bootrom Protocol AP Ready Request
+"""""""""""""""""""""""""""""""""""""""""
+
+The Greybus Bootrom AP Ready request message has no payload.
+
+Greybus Bootrom Protocol AP Ready Response
 """"""""""""""""""""""""""""""""""""""""""
 
-The Greybus Firmware AP Ready request message has no payload.
+The Greybus Bootrom AP Ready response message has no payload.
 
-Greybus Firmware Protocol AP Ready Response
-"""""""""""""""""""""""""""""""""""""""""""
+Greybus Bootrom Firmware Size Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus Firmware AP Ready response message has no payload.
-
-Greybus Firmware Firmware Size Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The Greybus Firmware firmware size operation allows the requestor to submit a
+The Greybus Bootrom firmware size operation allows the requestor to submit a
 boot stage to the AP, so that the AP can associate a firmware blob with that
 boot stage and respond with its size.  The AP keeps the firmware blob associated
 with the boot stage until it receives another Firmware Size Request on the same
@@ -2366,17 +2376,17 @@ different requests with identical boot stages, even to the same module.
 
 .. _firmware-size-request:
 
-Greybus Firmware Firmware Size Request
-""""""""""""""""""""""""""""""""""""""
+Greybus Bootrom Firmware Size Request
+"""""""""""""""""""""""""""""""""""""
 
-Table :num:`table-firmware-size-request` defines the Greybus firmware size
+Table :num:`table-firmware-size-request` defines the Greybus Bootrom Firmware Size
 request payload.  The request supplies the boot stage of the module implementing
 the Protocol.
 
 .. figtable::
     :nofig:
     :label: table-firmware-size-request
-    :caption: Firmware Protocol Firmware Size Request
+    :caption: Bootrom Protocol Firmware Size Request
     :spec: l l c c l
 
     ======  =========  ====  ======  ===============================================
@@ -2389,8 +2399,8 @@ the Protocol.
 
 .. _firmware-boot-stages:
 
-Greybus Firmware Boot Stages
-""""""""""""""""""""""""""""
+Greybus Bootrom Firmware Boot Stages
+""""""""""""""""""""""""""""""""""""
 
 Table :num:`table-firmware-boot-stages` defines the boot stages whose firmware
 can be requested from the AP via the Protocol.
@@ -2398,7 +2408,7 @@ can be requested from the AP via the Protocol.
 .. figtable::
     :nofig:
     :label: table-firmware-boot-stages
-    :caption: Firmware Protocol Boot Stages
+    :caption: Bootrom Protocol Firmware Boot Stages
     :spec: l l l
 
     ================  ======================================================  ==========
@@ -2414,8 +2424,8 @@ can be requested from the AP via the Protocol.
 
 .. _firmware-size-response:
 
-Greybus Firmware Firmware Size Response
-"""""""""""""""""""""""""""""""""""""""
+Greybus Bootrom Firmware Size Response
+""""""""""""""""""""""""""""""""""""""
 
 Table :num:`table-firmware-size-response` defines the Greybus firmware size
 response payload.  The response supplies the size of the AP's firmware blob for
@@ -2424,7 +2434,7 @@ the module implementing the Protocol.
 .. figtable::
     :nofig:
     :label: table-firmware-size-response
-    :caption: Firmware Protocol Firmware Size Response
+    :caption: Bootrom Protocol Firmware Size Response
     :spec: l l c c l
 
     ======  =====  ====  ======  =========================
@@ -2435,10 +2445,10 @@ the module implementing the Protocol.
 
 ..
 
-Greybus Firmware Get Firmware Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus Bootrom Get Firmware Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus Firmware get firmware operation allows the requestor to retrieve a
+The Greybus Bootrom get firmware operation allows the requester to retrieve a
 stream of bytes at an offset within the firmware blob from the AP.  The AP
 responds with the requested number of bytes from the connection's associated
 firmware blob at the requested offset, or with an error status without payload
@@ -2446,10 +2456,10 @@ if no firmware blob has yet been associated with this connection or if the
 requested stream size exceeds the firmware blob's size minus the requested
 offset.
 
-Greybus Firmware Get Firmware Request
-"""""""""""""""""""""""""""""""""""""
+Greybus Bootrom Get Firmware Request
+""""""""""""""""""""""""""""""""""""
 
-Table :num:`table-firmware-get-firmware-request` defines the Greybus Firmware
+Table :num:`table-bootrom-get-firmware-request` defines the Greybus Bootrom
 get firmware request payload.  The request specifies an offset into the firmware
 blob, and the size of the stream of bytes requested.  The stream size requested
 must be less than or equal to the size given by the most recent firmware size
@@ -2459,8 +2469,8 @@ tracking its offset into the firmware blob as needed.
 
 .. figtable::
     :nofig:
-    :label: table-firmware-get-firmware-request
-    :caption: Firmware Protocol Get Firmware Request
+    :label: table-bootrom-get-firmware-request
+    :caption: Bootrom Protocol Get Firmware Request
     :spec: l l c c l
 
     ======  ====== ====  ======  =================================
@@ -2472,10 +2482,10 @@ tracking its offset into the firmware blob as needed.
 
 ..
 
-Greybus Firmware Get Firmware Response
-""""""""""""""""""""""""""""""""""""""
+Greybus Bootrom Get Firmware Response
+"""""""""""""""""""""""""""""""""""""
 
-Table :num:`table-firmware-get-firmware-response` defines the Greybus Firmware
+Table :num:`table-bootrom-get-firmware-response` defines the Greybus Bootrom
 get firmware response payload.  The response includes the stream of bytes
 requested by the module.  In the case that the AP cannot fulfill the request,
 such as when the requested stream size was greater than the total size of the
@@ -2484,8 +2494,8 @@ header.
 
 .. figtable::
     :nofig:
-    :label: table-firmware-get-firmware-response
-    :caption: Firmware Protocol Get Firmware Response
+    :label: table-bootrom-get-firmware-response
+    :caption: Bootrom Protocol Get Firmware Response
     :spec: l l c c l
 
     ======  =====  ====== ======  =================================
@@ -2496,10 +2506,10 @@ header.
 
 ..
 
-Greybus Firmware Ready to Boot Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus Bootrom Ready to Boot Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus Firmware ready to boot operation lets the requesting module notify
+The Greybus Bootrom ready to boot operation lets the requesting module notify
 the AP that it has successfully loaded the connection's currently associated
 firmware blob and is able to hand over control of the processor to that blob,
 indicating the status of its firmware blob.  The AP shall then send a response
@@ -2509,17 +2519,17 @@ permits the module to continue booting.
 The module shall send a ready to boot request only when it has successfully
 loaded a firmware blob and can execute that firmware.
 
-Greybus Firmware Ready to Boot Request
-""""""""""""""""""""""""""""""""""""""
+Greybus Bootrom Ready to Boot Request
+"""""""""""""""""""""""""""""""""""""
 
-Table :num:`table-firmware-ready-to-boot-request` defines the Greybus Firmware
+Table :num:`table-bootrom-ready-to-boot-request` defines the Greybus Bootrom
 ready to boot request payload.  The request gives the security status of its
 firmware blob.
 
 .. figtable::
     :nofig:
-    :label: table-firmware-ready-to-boot-request
-    :caption: Firmware Protocol Ready to Boot Request
+    :label: table-bootrom-ready-to-boot-request
+    :caption: Bootrom Protocol Ready to Boot Request
     :spec: l l c c l
 
     ======  ======  ====  ======  ===========================
@@ -2532,17 +2542,17 @@ firmware blob.
 
 .. _firmware-blob-status:
 
-Greybus Firmware Ready to Boot Firmware Blob Status
-"""""""""""""""""""""""""""""""""""""""""""""""""""
+Greybus Bootrom Ready to Boot Firmware Blob Status
+""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Table :num:`table-firmware-blob-status` defines the constants by which the
 module can indicate the status of its firmware blob to the AP in a Greybus
-Firmware Ready to Boot Request.
+Bootrom Ready to Boot Request.
 
 .. figtable::
     :nofig:
     :label: table-firmware-blob-status
-    :caption: Firmware Ready to Boot Firmware Blob Statuses
+    :caption: Bootrom Ready to Boot Firmware Blob Statuses
     :spec: l l l
 
     ====================  ====================================  ============
@@ -2556,10 +2566,10 @@ Firmware Ready to Boot Request.
 
 ..
 
-Greybus Firmware Ready to Boot Response
-"""""""""""""""""""""""""""""""""""""""
+Greybus Bootrom Ready to Boot Response
+""""""""""""""""""""""""""""""""""""""
 
-If the AP permits the module to boot in its current status, the Greybus Firmware
+If the AP permits the module to boot in its current status, the Greybus Bootrom
 Ready to Boot response message shall have no payload.  In the case that the AP
 forbids the module from booting, it shall signal an error in the status byte of
 the response message's header.
