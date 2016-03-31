@@ -646,7 +646,7 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     The AP Module uses this operation to request the SVC tear down a
     previously created connection.
 
-.. c:function:: int timesync_enable(u8 count, u32 strobe_delay, u32 strobe_mask);
+.. c:function:: int timesync_enable(u8 count, u64 frame_time, u32 strobe_delay, u32 refclk);
 
     The AP Module uses this operation to request the SVC to enable frame-time
     tracking.
@@ -1664,18 +1664,22 @@ Greybus SVC TimeSync Enable Operation
 The AP Module uses this operation to request the SVC to enable frame-time
 tracking. After a successful timesync_enable operation the SVC will
 generate a pulse-train of 'count' logical TIME_SYNC strobes to the bitmask
-of WAKE_DETECT lines indicated by 'strobe_mask'. A delay of 'strobe_delay'
-milliseconds will be applied between each TIME_SYNC strobe. The range of
-the count variable is from 0..7 with an implied +1 yielding an effective
-range of 1-8 TIME_SYNC strobes.
+of WAKE_DETECT lines indicated by a previously communicated set of
+Interfaces. A delay of 'strobe_delay' microseconds will be applied between
+each TIME_SYNC strobe. The range of the count variable is from 1..4.
+The 'frame_time' parameter informs the Interface to immediately seeds its
+frame-time to a value given by the AP. 'frame-time. The 'refclk' parameter
+informs the SVC of the required clock rate to run its frame-time tracking
+counter at.
 
 Greybus SVC TimeSync Enable Request
 """""""""""""""""""""""""""""""""""
 
 Table :num:`table-svc-timesync-enable-request` defines the Greybus SVC
 TimeSync Enable Request payload. The request supplies the number of
-TIME_SYNC strobes to perform (count), the delay between each strobe
-(strobe_delay) and the bit-mask of lines to strobe (strobe_mask).
+TIME_SYNC strobes to perform (count), the initial frame-time (frame_time),
+the delay between each strobe (strobe_delay) and the required clock-rate
+for frame-time (refclk).
 
 .. figtable::
     :nofig:
@@ -1683,13 +1687,14 @@ TIME_SYNC strobes to perform (count), the delay between each strobe
     :caption: SVC Protocol TimeSync Enable Request
     :spec: l l c c l
 
-    =======  ============  ======  ==========  ======================================
+    =======  ============  ======  ==========  ========================================
     Offset   Field         Size    Value       Description
-    =======  ============  ======  ==========  ======================================
+    =======  ============  ======  ==========  ========================================
     0        count         1       Number      Number of TIME_SYNC pulses
-    1        strobe_delay  4       Number      Inter-strobe delay in milliseconds
-    5        strobe_mask   4       Number      Bitmask of WAKE_DETECT lines to strobe
-    =======  ============  ======  ==========  ======================================
+    1        frame_time    8       Number      The initial frame-time to intiailze to
+    9        strobe_delay  4       Number      Inter-strobe delay in milliseconds
+    13       refclk        4       Number      The clock rate of the frame-time counter
+    =======  ============  ======  ==========  ========================================
 
 ..
 
@@ -1747,10 +1752,6 @@ response shall contain zero.
     8        time_sync1    8       Number      Authoritative frame-time at TIME_SYNC1
     16       time_sync2    8       Number      Authoritative frame-time at TIME_SYNC2
     24       time_sync3    8       Number      Authoritative frame-time at TIME_SYNC3
-    32       time_sync4    8       Number      Authoritative frame-time at TIME_SYNC4
-    40       time_sync5    8       Number      Authoritative frame-time at TIME_SYNC5
-    48       time_sync6    8       Number      Authoritative frame-time at TIME_SYNC6
-    56       time_sync7    8       Number      Authoritative frame-time at TIME_SYNC7
     =======  ============  ======  ==========  ======================================
 
 ..
