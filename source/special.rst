@@ -770,7 +770,11 @@ Conceptually, the operations in the Greybus SVC Protocol are:
 
     The SVC uses this operation to notify the AP Module that a
     Module that was previously the subject of a Greybus SVC Module
-    Inserted operation is no longer present in the Frame.
+
+.. c:function:: int intf_power_state_set(u8 intf_id, u8 enable, u8 *result);
+
+   The AP uses this operation to request the SVC to power ON or power
+   OFF the Interface associated with the Interface ID.
 
 Greybus SVC Operations
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -824,7 +828,8 @@ response type values are shown.
     Connection Quiescing                0x1e           0x9e
     Module Inserted                     0x1f           0x9f
     Module Removed                      0x20           0xa0
-    (all other values reserved)         0x21..0x7e     0xa1..0xfe
+    Interface Power State Set           0x21           0xa1
+    (all other values reserved)         0x22..0x7e     0xa2..0xfe
     Invalid                             0x7f           0xff
     ==================================  =============  ==============
 
@@ -2362,6 +2367,131 @@ Greybus SVC Module Removed Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus SVC Module Removed response message contains no payload.
+
+Greybus SVC Interface Power State Set Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The AP uses this operation to request the SVC to enable or disable power
+to the Interface specified by the Interface ID. The SVC, on receiving
+this operation, shall unconditionally perform the necessary actions to
+power ON or power OFF the Interface.
+
+Greybus SVC Interface Power State Set Request
+"""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-interface-power-state-set-request` defines the
+Greybus SVC Interface Power State Set Request payload. The request
+contains one-byte Interface ID and one-byte specifying the target
+power state.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-interface-power-state-set-request
+    :caption: SVC Protocol Interface Power State Set Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ============    ============
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ============    ============
+    0        intf_id         1       Interface ID    Interface ID
+    1        state           1       Number          Power State
+    =======  ==============  ======  ============    ============
+..
+
+The state field in the request payload allows the AP to specify whether
+the SVC shall power ON or power down the Interface.  Table
+:num:`table-svc-interface-power-state-set-request-state` defines the
+possible values for the state field.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-interface-power-state-set-request-state
+    :caption: SVC Protocol Interface Power States
+    :spec: l c l
+
+    ===========  =====  ==============================
+    POWER STATE  Value  Description
+    ===========  =====  ==============================
+    PWR_DISABLE  0      Disable Interface power
+    PWR_ENABLE   1      Enable Interface power
+    (Reserved)   2-255  Reserved
+    ===========  =====  ==============================
+..
+
+A Greybus SVC Interface Power State Set Request with the "state" field
+set to PWR_ENABLE means that the AP is requesting the SVC to power ON
+the targeted Interface. The SVC, on receiving this request with
+PWR_ENABLE state, shall unconditionally attempt to power ON the
+Interface. The AP shall transition the Interface to PWR_ENABLE state
+prior to initiating any new Greybus Operations on the Interface.
+
+Similarly, a Greybus SVC Interface Power State Set Request with the
+"state" field set to PWR_DISABLE means that the AP is requesting the
+SVC to power OFF the targeted Interface. The SVC, on receiving this
+request with PWR_DISABLE state, shall unconditionally attempt to power
+OFF the Interface. The AP shall ensure that the Greybus connections
+already established in the Interface are destroyed before issuing this
+operation.
+
+Greybus SVC Interface Power State Set Response
+""""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-interface-power-state-set-response` defines the
+Greybus SVC Interface Power State Set Response payload. The response
+contains a one-byte result code specifying the status.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-interface-power-state-set-response
+    :caption: SVC Protocol Interface Power State Set Response
+    :spec: l l c c l
+
+    =======  ===========  ======  ==========  ===========
+    Offset   Field        Size    Value       Description
+    =======  ===========  ======  ==========  ===========
+    0        result_code  1       Number      Result Code
+    =======  ===========  ======  ==========  ===========
+..
+
+The status field of the response to a Greybus SVC Interface Power State
+Set Request shall not be used to check the result of the operation. It
+shall only be used to indicate the result of the Greybus communication.
+If the response to a Greybus SVC Interface Power State Set Request has
+status different than GB_OP_SUCCESS, it shall indicate that a Greybus
+communication error occurred and that the targeted Interface could not
+be powered ON or powered OFF; the targeted Interface shall be in the
+same state as before the request was issued. If the response to a
+Greybus SVC Interface Power State Set Request has status GB_OP_SUCCESS,
+it shall indicate that there was no Greybus communication error detected
+(request and response were successfully exchanged).  However, it shall
+not also be considered as a successful power enable/disable.
+
+The result_code field in the response, as described in Table
+:num:`table-svc-interface-power-state-set-response` shall be used for
+that unique purpose. In other words, if and only if the response status
+field is GB_OP_SUCCESS and the result_code field in the response is
+PWR_OK then the request shall be considered as successful. The operation
+shall otherwise be considered as failed in any other combination of
+these two fields.
+
+The values of the result_code are defined in Table
+:num:`table-interface-power-state-set-result-code`.
+
+.. figtable::
+    :nofig:
+    :label: table-interface-power-state-set-result-code
+    :caption: Interface Power State Set Result Code
+    :spec: l l l
+
+    ================  ========  =======================================================================================
+    Result Code       Value     Description
+    ================  ========  =======================================================================================
+    PWR_OK            0         Power enable/disable operation was successful.
+    PWR_BUSY          1         Power enable/disable operation cannot be attempted as the SVC is busy.
+    PWR_FAIL          2         Power enable/disable was attempted and failed.
+    (Reserved)        3-255     (Reserved for future use)
+    ================  ========  =======================================================================================
+..
 
 .. _bootrom-protocol:
 
