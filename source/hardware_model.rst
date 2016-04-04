@@ -409,12 +409,12 @@ The values of the RELEASE sub-state are given in Table
    :label: table-interface-state-release
    :caption: RELEASE sub-state values
 
-   =============  ================================================
-   Value          Description
-   =============  ================================================
-   RELEASE_ON     The Frame is supplying ejection signalling to the Interface Block
-   RELEASE_OFF    The Frame is not supplying ejection signalling to the Interface Block
-   =============  ================================================
+   ==================  ================================================
+   Value               Description
+   ==================  ================================================
+   RELEASE_ASSERTED    Frame is asserting ejection signal to the Interface Block
+   RELEASE_DEASSERTED  Frame is not asserting ejection signal to the Interface Block
+   ==================  ================================================
 ..
 
 The value of the RELEASE sub-state is set by the SVC.
@@ -424,8 +424,8 @@ implementation-defined means. Any attached Module has exactly one
 Primary Interface, and may contain Secondary Interfaces, as described
 in :ref:`hardware-model-order`. The SVC may set the RELEASE sub-state
 of an Interface Block which is the Primary Interface to an attached
-module to RELEASE_ON for an implementation-defined duration, then set
-RELEASE to RELEASE_OFF, in order to attempt to eject the attached
+module to RELEASE_ASSERTED for an implementation-defined duration, then set
+RELEASE to RELEASE_DEASSERTED, in order to attempt to eject the attached
 module from the Frame.
 
 The consequences of setting an Interface State's RELEASE sub-state for
@@ -439,7 +439,7 @@ does *not* imply that a Module is attached to the Interface Block.
 
 The SVC shall set the RELEASE sub-state of any Interface States
 associated with a :ref:`forcibly removed <hardware-model-detect>`
-Module to RELEASE_OFF after an implementation-defined delay.
+Module to RELEASE_DEASSERTED after an implementation-defined delay.
 
 INTF_TYPE
 """""""""
@@ -576,7 +576,7 @@ Interface State is::
 
   (DETECT=DETECT_UNKNOWN, V_SYS=V_SYS_OFF, V_CHG=V_CHG_OFF,
    WAKE=WAKE_UNSET, UNIPRO=UPRO_OFF, REFCLK=REFCLK_OFF,
-   RELEASE=RELEASE_OFF, INTF_TYPE=IFT_UNKNOWN, ORDER=ORDER_UNKNOWN,
+   RELEASE=RELEASE_DEASSERTED, INTF_TYPE=IFT_UNKNOWN, ORDER=ORDER_UNKNOWN,
    MAILBOX=NULL)
 
 As a consequence of the power-on reset sequence of a Greybus System,
@@ -621,7 +621,7 @@ DETECTED::
 
   (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_OFF, V_CHG=V_CHG_OFF,
    WAKE=WAKE_UNSET, UNIPRO=UPRO_OFF, REFCLK=REFCLK_OFF,
-   RELEASE=RELEASE_OFF, INTF_TYPE=IFT_UNKNOWN,
+   RELEASE=RELEASE_DEASSERTED, INTF_TYPE=IFT_UNKNOWN,
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
    MAILBOX=NULL)
 
@@ -631,7 +631,7 @@ ACTIVATED::
    WAKE=WAKE_UNSET,
    UNIPRO=<UPRO_DOWN, UPRO_UP>,
    REFCLK=REFCLK_ON,
-   RELEASE=RELEASE_OFF,
+   RELEASE=RELEASE_DEASSERTED,
    INTF_TYPE=<IFT_DUMMY, IFT_UNIPRO, or IFT_GREYBUS>,
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
    MAILBOX=<0 or READY_MODULE>)
@@ -642,7 +642,7 @@ ENUMERATED::
    V_CHG=<V_CHG_OFF or V_CHG_ON>,
    WAKE=WAKE_UNSET, UNIPRO=UPRO_UP,
    REFCLK=<REFCLK_ON or REFCLK_OFF>,
-   RELEASE=RELEASE_OFF,
+   RELEASE=RELEASE_DEASSERTED,
    INTF_TYPE=IFT_GREYBUS,
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
    MAILBOX=READY_MODULE)
@@ -651,7 +651,7 @@ MODE_SWITCHING::
 
   (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_ON, V_CHG=V_CHG_OFF,
    WAKE=WAKE_UNSET, UNIPRO=UPRO_UP,
-   REFCLK=REFCLK_ON, RELEASE=RELEASE_OFF, INTF_TYPE=IFT_GREYBUS,
+   REFCLK=REFCLK_ON, RELEASE=RELEASE_DEASSERTED, INTF_TYPE=IFT_GREYBUS,
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
    MAILBOX=READY_MODULE)
 
@@ -660,7 +660,7 @@ SUSPENDED::
   (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_ON,
    V_CHG=<V_CHG_OFF or V_CHG_ON>,
    WAKE=WAKE_UNSET, UNIPRO=UPRO_HIBERNATE,
-   REFCLK=REFCLK_OFF, RELEASE=RELEASE_OFF, INTF_TYPE=IFT_GREYBUS,
+   REFCLK=REFCLK_OFF, RELEASE=RELEASE_DEASSERTED, INTF_TYPE=IFT_GREYBUS,
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
    MAILBOX=READY_MODULE)
 
@@ -668,7 +668,7 @@ OFF::
 
   (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_OFF, V_CHG=V_CHG_OFF,
    WAKE=WAKE_UNSET, UNIPRO=UPRO_OFF, REFCLK=REFCLK_OFF,
-   RELEASE=RELEASE_OFF,
+   RELEASE=RELEASE_DEASSERTED,
    INTF_TYPE=<IFT_DUMMY, IFT_UNIPRO, or IFT_GREYBUS>,
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
    MAILBOX=NULL)
@@ -677,7 +677,7 @@ ABSENT::
 
   (DETECT=DETECT_INACTIVE, V_SYS=V_SYS_OFF, V_CHG=V_CHG_OFF,
    WAKE=WAKE_UNSET, UNIPRO=UPRO_OFF, REFCLK=REFCLK_OFF,
-   RELEASE=RELEASE_OFF, INTF_TYPE=IFT_UNKNOWN,
+   RELEASE=RELEASE_DEASSERTED, INTF_TYPE=IFT_UNKNOWN,
    ORDER=ORDER_UNKNOWN, MAILBOX=NULL)
 
 Subsequent chapters in the Greybus Specification will define the
