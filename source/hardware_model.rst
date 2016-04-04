@@ -571,16 +571,16 @@ which has value two.
 Initial States
 ^^^^^^^^^^^^^^
 
-At the power-on reset of a Greybus System, the initial value of each
-Interface State is::
+During the initialization of a Greybus System, the initial value of
+each Interface State is::
 
   (DETECT=DETECT_UNKNOWN, V_SYS=V_SYS_OFF, V_CHG=V_CHG_OFF,
    WAKE=WAKE_UNSET, UNIPRO=UPRO_OFF, REFCLK=REFCLK_OFF,
    RELEASE=RELEASE_DEASSERTED, INTF_TYPE=IFT_UNKNOWN, ORDER=ORDER_UNKNOWN,
    MAILBOX=NULL)
 
-As a consequence of the power-on reset sequence of a Greybus System,
-the SVC determines a value of DETECT for each Interface State in the
+As a consequence of the reset sequence of a Greybus System, the SVC
+determines a value of DETECT for each Interface State in the
 system. This is explained in more detail in later sections, and forms
 the basis of the state machine described in
 :ref:`hardware-model-lifecycle-states`.
