@@ -699,6 +699,27 @@ Module may signal readiness for communication via Greybus
 either remains its initial value, MAILBOX_NONE, or is set by the
 Module to MAILBOX_GREYBUS.
 
+The SVC also sets INTF_TYPE then the Interface is ACTIVATED, based on
+a combination of the UNIPRO and MAILBOX sub-states. The correspondence
+between UNIPRO, MAILBOX, and INTF_TYPE is given in Table
+:num:`table-lifecycle-state-intf-type`.
+
+.. figtable::
+   :nofig:
+   :label: table-lifecycle-state-intf-type
+   :caption: INTF_TYPE relationship to UNIPRO and MAILBOX in ACTIVATED
+   :spec: l l l
+
+   ===============  ===============  ===============
+   UNIPRO           MAILBOX          INTF_TYPE
+   ===============  ===============  ===============
+   UPRO_DOWN        MAILBOX_NONE     IFT_DUMMY
+   UPRO_UP          MAILBOX_NONE     IFT_UNIPRO
+   UPRO_UP          MAILBOX_GREYBUS  IFT_GREYBUS
+   ===============  ===============  ===============
+
+..
+
 ACTIVATED is the following group of Interface States::
 
   (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_ON, V_CHG=V_CHG_OFF,
