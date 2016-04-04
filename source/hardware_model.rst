@@ -616,8 +616,8 @@ the basis of the state machine described in
 
 .. _hardware-model-lifecycle-states:
 
-The Interface Lifecycle
-^^^^^^^^^^^^^^^^^^^^^^^
+Interface Lifecycle States
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The following state machine diagram is the *Interface Lifecycle*. Each
 of the states is a *Lifecycle State*. Lifecycle States are groups of
