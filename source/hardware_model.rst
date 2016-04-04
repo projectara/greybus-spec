@@ -443,7 +443,7 @@ DETECT state is not DETECT_ACTIVE, are not defined by the Greybus
 Specification.
 
 Note that the RELEASE sub-state only indicates whether the Frame is
-supplying ejection signalling to the corresponding Interface Block; it
+supplying ejection signaling to the corresponding Interface Block; it
 does *not* imply that a Module is attached to the Interface Block.
 
 The SVC shall set the RELEASE sub-state of any Interface States
@@ -524,7 +524,7 @@ The value of the ORDER sub-state is set by the SVC.
 
 A :ref:`Module <glossary-module>` may attach to one or more Interface
 Blocks on a Slot in the Frame. Exactly one of these Interface Blocks
-is the "Primary Interface" to the Module; signalling on this interface
+is the "Primary Interface" to the Module; signaling on this interface
 may be used to physically eject the Module from the Frame. All other
 Interface Blocks attached to the Module, if any, are "Secondary
 Interfaces": they may communicate via Greybus to the AP and the SVC,
