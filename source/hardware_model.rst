@@ -250,13 +250,13 @@ The values of the WAKE sub-state are given in Table
    :label: table-interface-state-wake
    :caption: WAKE sub-state values
 
-   ==============  ================================================
-   Value           Description
-   ==============  ================================================
-   WAKE_UNSET      Wake signal is neither asserted nor deasserted
-   WAKE_ACTIVE     Wake signal is asserted to an Interface Block
-   WAKE_INACTIVE   Wake signal is deasserted to an Interface Block
-   ==============  ================================================
+   ===============  ================================================
+   Value            Description
+   ===============  ================================================
+   WAKE_UNSET       Wake signal is neither asserted nor deasserted
+   WAKE_ASSERTED    Wake signal is asserted to an Interface Block
+   WAKE_DEASSERTED  Wake signal is deasserted to an Interface Block
+   ===============  ================================================
 ..
 
 The WAKE sub-state of an Interface State represents the state of a
@@ -270,11 +270,17 @@ other than WAKE_UNSET for an Interface State whose DETECT sub-state is
 DETECT_ACTIVE and V_SYS is V_SYS_ON.
 
 Subject to the above restrictions, the SVC may assert and deassert the
-WAKE sub-state by setting its value to WAKE_ACTIVE, then setting it to
-WAKE_INACTIVE after some duration. This is called a "WAKE pulse". When
-the duration of the WAKE pulse exceeds an implementation-defined
-threshold, this is a signal to any attached Module to initiate (or
-reinitiate) Greybus communication, as described in later sections.
+WAKE sub-state by following this sequence, assuming WAKE is WAKE_UNSET.
+
+1. Set WAKE to WAKE_ASSERTED
+2. Delay for some duration
+3. Set WAKE to WAKE_DEASSERTED
+4. Set WAKE to WAKE_UNSET
+
+This is called a "WAKE pulse". When the duration of the WAKE pulse
+exceeds an implementation-defined threshold, this is a signal to any
+attached Module to initiate (or reinitiate) Greybus communication, as
+described in later sections.
 
 .. XXX this "as described" descriptions are currently not described
    anywhere; later updates will need to fix that once Interface States
@@ -569,7 +575,7 @@ At the power-on reset of a Greybus System, the initial value of each
 Interface State is::
 
   (DETECT=DETECT_UNKNOWN, V_SYS=V_SYS_OFF, V_CHG=V_CHG_OFF,
-   WAKE=WAKE_UNDEFINED, UNIPRO=UPRO_OFF, REFCLK=REFCLK_OFF,
+   WAKE=WAKE_UNSET, UNIPRO=UPRO_OFF, REFCLK=REFCLK_OFF,
    RELEASE=RELEASE_OFF, INTF_TYPE=IFT_UNKNOWN, ORDER=ORDER_UNKNOWN,
    MAILBOX=NULL)
 
