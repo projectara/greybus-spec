@@ -89,6 +89,23 @@ Interface Block
     <glossary-module>` as defined by the Project Ara :ref:`MDK
     <glossary-mdk>`.
 
+.. _glossary-interface-lifecycle:
+
+Interface Lifecycle
+    A :ref:`state machine <hardware-model-lifecycle-states>` which
+    defines the changes occurring on each :ref:`Interface Block's
+    <glossary-interface-block>` :ref:`Interface State
+    <hardware-model-interface-states>` from the time a :ref:`Module
+    <glossary-module>` is attached to the Interface Block until it is
+    removed.
+
+.. _glossary-interface-state:
+
+Interface State
+    An abstract representation of the state of each :ref:`Interface
+    Block <glossary-interface-block>` in a :ref:`Greybus System
+    <glossary-greybus-system>`.
+
 .. _glossary-message-header:
 
 Message Header
