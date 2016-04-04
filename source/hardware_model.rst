@@ -598,10 +598,10 @@ Specification.
 .. image:: /img/dot/interface-lifecycle.png
    :align: center
 
-For example, the DETECTED Lifecycle State is the Interface State for
+For example, the ATTACHED Lifecycle State is the Interface State for
 an Interface Block which the SVC has determined a Module is attached
 to, but no other action has been taken by the Greybus System to
-communicate with it. Similarly, the ABSENT Lifecycle State is the
+communicate with it. Similarly, the DETACHED Lifecycle State is the
 Interface State for an Interface Block with no module attached.
 
 Certain Lifecycle States refer to multiple possible Interface
@@ -617,7 +617,7 @@ consequences of a :ref:`forcible removal <hardware-model-detect>`.
 
 Using the above notation, the Lifecycle States are defined as follows:
 
-DETECTED::
+ATTACHED::
 
   (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_OFF, V_CHG=V_CHG_OFF,
    WAKE=WAKE_UNSET, UNIPRO=UPRO_OFF, REFCLK=REFCLK_OFF,
@@ -673,7 +673,7 @@ OFF::
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
    MAILBOX=NULL)
 
-ABSENT::
+DETACHED::
 
   (DETECT=DETECT_INACTIVE, V_SYS=V_SYS_OFF, V_CHG=V_CHG_OFF,
    WAKE=WAKE_UNSET, UNIPRO=UPRO_OFF, REFCLK=REFCLK_OFF,

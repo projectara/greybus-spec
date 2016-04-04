@@ -1,10 +1,10 @@
 digraph {
     node [group=trunk];
-    DETECTED -> ACTIVATED [label="boot  "];
+    ATTACHED -> ACTIVATED [label="boot  "];
     ACTIVATED -> ENUMERATED [label="enumerate  "];
     ENUMERATED -> OFF [label="power_down  "];
-    OFF -> ABSENT [label="eject"];
-    DETECTED -> ABSENT [label=" early_eject"];
+    OFF -> DETACHED [label="eject"];
+    ATTACHED -> DETACHED [label=" early_eject"];
 
     subgraph alive {
         MODE_SWITCHING -> ENUMERATED [label="ms_exit"];
@@ -18,6 +18,6 @@ digraph {
     ACTIVATED -> OFF [label="early_power_down"];
     subgraph oops {
         ANY [label="Any State",shape=box];
-        ANY -> ABSENT [label="forcible_removal"];
+        ANY -> DETACHED [label="forcible_removal"];
     }
 }
