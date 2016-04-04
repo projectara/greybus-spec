@@ -644,9 +644,40 @@ The square node labeled "Any State" denotes that the transition is
 allowed from any Interface State whatsoever, and models the
 consequences of a :ref:`forcible removal <hardware-model-detect>`.
 
-Using the above notation, the Lifecycle States are defined as follows:
+For brevity, the phrase "an Interface is in the ATTACHED Lifecycle
+State" or "an Interface is ATTACHED" is used to mean "the Interface
+State corresponding to the Interface Block is in the ATTACHED
+Lifecycle State", and similarly for the other Lifecycle States.
 
-ATTACHED::
+Using the above notation, the Lifecycle States are defined in the
+following sections.
+
+Subsequent chapters define Greybus :ref:`Protocols
+<glossary-protocol>`, of which the :ref:`control-protocol` and
+:ref:`svc-protocol` are especially significant in terms of their
+impact on an Interface's Lifecycle State. Following those chapters, a
+detailed description of the actions taken by the AP, SVC, and each
+Interface is given describing how transitions between Lifecycle States
+are managed.
+
+ATTACHED
+""""""""
+
+In the ATTACHED Lifecycle State, the SVC has:
+
+- determined that a Module is attached to the Interface Block, setting
+  DETECT to DETECT_ACTIVE
+- determined whether this is the :ref:`Primary
+  <glossary-primary-interface>` or a :ref:`Secondary
+  <glossary-secondary-interface>` Interface to the Module, setting
+  ORDER.
+
+No actions have been taken to boot the module, communicate with it via
+|unipro|, etc. That is, ATTACHED is otherwise identical to the
+:ref:`initial state <hardware-model-initial-states>` of each Interface
+State.
+
+ATTACHED is the following group of Interface States::
 
   (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_OFF, V_CHG=V_CHG_OFF,
    WAKE=WAKE_UNSET, UNIPRO=UPRO_OFF, REFCLK=REFCLK_OFF,
@@ -654,7 +685,21 @@ ATTACHED::
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
    MAILBOX=MAILBOX_NULL)
 
-ACTIVATED::
+ACTIVATED
+"""""""""
+
+In the ACTIVATED Lifecycle State, system power and clock have been
+applied to the Interface Block, and an attempt to establish a |unipro|
+link between Frame and Module has been made.
+
+As a consequence, it is known whether the module supports |unipro|, so
+UNIPRO is either UPRO_DOWN or UPRO_UP. If UNIPRO is UPRO_UP, then the
+Module may signal readiness for communication via Greybus
+:ref:`Protocols <glossary-protocol>` by setting MAILBOX. Thus, MAILBOX
+either remains its initial value, MAILBOX_NONE, or is set by the
+Module to MAILBOX_GREYBUS.
+
+ACTIVATED is the following group of Interface States::
 
   (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_ON, V_CHG=V_CHG_OFF,
    WAKE=WAKE_UNSET,
@@ -665,7 +710,30 @@ ACTIVATED::
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
    MAILBOX=<MAILBOX_NONE or MAILBOX_GREYBUS>)
 
-ENUMERATED::
+ENUMERATED
+""""""""""
+
+The ENUMERATED Lifecycle State can only be reached when readiness for
+Greybus :ref:`Protocol <glossary-protocol>` communication was
+signaled during the transition to ACTIVATED. Thus, INTF_TYPE is
+IFT_GREYBUS, and MAILBOX is MAILBOX_GREYBUS.
+
+When an Interface is ENUMERATED, a Greybus :ref:`control-protocol`
+Connection has been established to the Module via that Interface
+Block, and its :ref:`manifest-description` has been read by the AP and
+successfully parsed. (This process is referred to as *enumeration*).
+
+While an Interface is ENUMERATED, the AP may determine through
+application- or Protocol-specific means that the Frame's reference
+clock is not required for the Module attached to the Interface Block
+to function correctly. Thus, REFCLK may be set to REFCLK_OFF.
+
+Similarly, when the Interface is ENUMERATED, the AP may determine
+through application- or Protocol-specific means that the Module can
+supply power to the Frame via the Interface Block. Thus, V_CHG may be
+set to V_CHG_ON.
+
+ENUMERATED is the following group of Interface States::
 
   (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_ON,
    V_CHG=<V_CHG_OFF or V_CHG_ON>,
@@ -676,7 +744,29 @@ ENUMERATED::
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
    MAILBOX=MAILBOX_GREYBUS)
 
-MODE_SWITCHING::
+MODE_SWITCHING
+""""""""""""""
+
+The MODE_SWITCHING Lifecycle State is a special case which is used to
+allow for re-enumeration of an Interface without physically removing
+it from, and attaching it to, a Greybus System.
+
+As part of entering the MODE_SWITCHING Lifecycle State, all Greybus
+:ref:`Connections <glossary-connection>` involving the Interface are
+closed. The Module attached to the Interface Block may then perform
+internal re-initialization, and subsequently signal to the Frame by
+setting MAILBOX when this is completed. The Frame will then attempt to
+re-enumerate the Interface, including retrieving its (possibly
+different) :ref:`manifest-description` again.
+
+Before an Interface enters the MODE_SWITCHING Lifecycle State, REFCLK
+shall be set to REFCLK_ON if it is REFCLK_OFF, and V_CHG shall be set
+to V_CHG_OFF if it is V_CHG_ON.
+
+An Interface State may enter and exit the MODE_SWITCHING Lifecycle
+State an arbitrary number of times.
+
+MODE_SWITCHING is the following group of Interface States::
 
   (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_ON, V_CHG=V_CHG_OFF,
    WAKE=WAKE_UNSET, UNIPRO=UPRO_UP,
@@ -684,7 +774,19 @@ MODE_SWITCHING::
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
    MAILBOX=MAILBOX_GREYBUS)
 
-SUSPENDED::
+SUSPENDED
+"""""""""
+
+The SUSPENDED Lifecycle State is a low-power state during which some
+internal state within the Module is maintained, and system power is
+still applied. No Greybus Protocol communication with the Module via
+that Interface Block is possible when the Interface is in the
+SUSPENDED state.
+
+An Interface shall not alter its :ref:`manifest-description` while it
+is entering, in, or exiting the SUSPENDED state.
+
+SUSPENDED is the following group of Interface States::
 
   (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_ON,
    V_CHG=<V_CHG_OFF or V_CHG_ON>,
@@ -693,7 +795,15 @@ SUSPENDED::
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
    MAILBOX=MAILBOX_GREYBUS)
 
-OFF::
+OFF
+"""
+
+The OFF Lifecycle State denotes an Interface Block which has power and
+communication signals disabled, but whose INTF_TYPE and ORDER are
+still known, having been determined during previous Lifecycle States
+in the Interface Lifecycle.
+
+OFF is the following group of Interface States::
 
   (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_OFF, V_CHG=V_CHG_OFF,
    WAKE=WAKE_UNSET, UNIPRO=UPRO_OFF, REFCLK=REFCLK_OFF,
@@ -702,7 +812,16 @@ OFF::
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
    MAILBOX=MAILBOX_NULL)
 
-DETACHED::
+DETACHED
+""""""""
+
+In the DETACHED Lifecycle State, no Module is attached to the
+Interface Block.
+
+The SVC and AP have otherwise coordinated to disable power and other
+signaling to the Interface Block, as in the OFF Lifecycle State.
+
+DETACHED is the following group of Interface States::
 
   (DETECT=DETECT_INACTIVE, V_SYS=V_SYS_OFF, V_CHG=V_CHG_OFF,
    WAKE=WAKE_UNSET, UNIPRO=UPRO_OFF, REFCLK=REFCLK_OFF,
