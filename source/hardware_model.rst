@@ -132,6 +132,7 @@ The values of the DETECT sub-state are given in Table
    :nofig:
    :label: table-interface-state-detect
    :caption: DETECT sub-state values
+   :spec: l l
 
    ========================  ================================================
    Value                     Description
@@ -172,6 +173,7 @@ The values of the V_SYS sub-state are given in Table
      :nofig:
      :label: table-interface-state-vsys
      :caption: V_SYS sub-state values
+     :spec: l l
 
      =========  =======================================================
      Value      Description
@@ -211,6 +213,7 @@ The values of the V_CHG sub-state are given in Table
    :nofig:
    :label: table-interface-state-vchg
    :caption: V_CHG sub-state values
+   :spec: l l
 
    =========  ================================================
    Value      Description
@@ -249,6 +252,7 @@ The values of the WAKE sub-state are given in Table
    :nofig:
    :label: table-interface-state-wake
    :caption: WAKE sub-state values
+   :spec: l l
 
    ===============  ================================================
    Value            Description
@@ -304,6 +308,7 @@ The values of the UNIPRO sub-state are given in Table
    :nofig:
    :label: table-interface-state-unipro
    :caption: UNIPRO sub-state values
+   :spec: l l
 
    ==============  ================================================
    Value           Description
@@ -373,6 +378,7 @@ The values of the REFCLK sub-state are given in Table
    :nofig:
    :label: table-interface-state-refclk
    :caption: REFCLK sub-state values
+   :spec: l l
 
    =============  ================================================
    Value          Description
@@ -408,6 +414,7 @@ The values of the RELEASE sub-state are given in Table
    :nofig:
    :label: table-interface-state-release
    :caption: RELEASE sub-state values
+   :spec: l l
 
    ==================  ================================================
    Value               Description
@@ -451,6 +458,7 @@ The values of the INTF_TYPE sub-state are given in Table
    :nofig:
    :label: table-interface-state-type
    :caption: INTF_TYPE sub-state values
+   :spec: l l
 
    =============  ================================================
    Value          Description
@@ -499,6 +507,7 @@ The values of the ORDER sub-state are given in Table
    :nofig:
    :label: table-interface-state-order
    :caption: ORDER sub-state values
+   :spec: l l
 
    ===============  ================================================
    Value            Description
