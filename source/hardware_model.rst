@@ -549,7 +549,8 @@ Module to ORDER_UNKNOWN after an implementation-defined delay.
 MAILBOX
 """""""
 
-The MAILBOX sub-state is either the value NULL or a non-negative integer.
+The MAILBOX sub-state is either the value MAILBOX_NULL or a
+non-negative integer.
 
 The MAILBOX sub-state represents the value of an
 implementation-defined DME attribute, named the "mailbox", which is
@@ -563,8 +564,25 @@ write to this DME attribute using a |unipro| peer write. In a Greybus
 System, the SVC is able to detect this write and subsequently read the
 value of the mailbox attribute.
 
-One non-NULL MAILBOX value has particular significance: READY_MODULE,
-which has value two.
+The values that a Module may write to the mailbox attribute are given
+in Table :num:`table-interface-state-mailbox`.
+
+.. figtable::
+   :nofig:
+   :label: table-interface-state-mailbox
+   :caption: MAILBOX sub-state values
+   :spec: l l l
+
+   =======================    ======  =========================
+   MAILBOX sub-state          Value   Description
+   =======================    ======  =========================
+   MAILBOX_NULL               (none)  UNIPRO is UPRO_OFF; DME attribute access is not possible
+   MAILBOX_NONE (Reserved)    0       Initial DME attribute value; reserved for internal use
+   (Reserved)                 1       Reserved for internal use
+   MAILBOX_GREYBUS            2       Module is ready for :ref:`control-protocol` Connection
+   =======================    ======  =========================
+
+..
 
 .. _hardware-model-initial-states:
 
@@ -577,7 +595,7 @@ each Interface State is::
   (DETECT=DETECT_UNKNOWN, V_SYS=V_SYS_OFF, V_CHG=V_CHG_OFF,
    WAKE=WAKE_UNSET, UNIPRO=UPRO_OFF, REFCLK=REFCLK_OFF,
    RELEASE=RELEASE_DEASSERTED, INTF_TYPE=IFT_UNKNOWN, ORDER=ORDER_UNKNOWN,
-   MAILBOX=NULL)
+   MAILBOX=MAILBOX_NULL)
 
 As a consequence of the reset sequence of a Greybus System, the SVC
 determines a value of DETECT for each Interface State in the
@@ -623,7 +641,7 @@ ATTACHED::
    WAKE=WAKE_UNSET, UNIPRO=UPRO_OFF, REFCLK=REFCLK_OFF,
    RELEASE=RELEASE_DEASSERTED, INTF_TYPE=IFT_UNKNOWN,
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
-   MAILBOX=NULL)
+   MAILBOX=MAILBOX_NULL)
 
 ACTIVATED::
 
@@ -634,7 +652,7 @@ ACTIVATED::
    RELEASE=RELEASE_DEASSERTED,
    INTF_TYPE=<IFT_DUMMY, IFT_UNIPRO, or IFT_GREYBUS>,
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
-   MAILBOX=<0 or READY_MODULE>)
+   MAILBOX=<MAILBOX_NONE or MAILBOX_GREYBUS>)
 
 ENUMERATED::
 
@@ -645,7 +663,7 @@ ENUMERATED::
    RELEASE=RELEASE_DEASSERTED,
    INTF_TYPE=IFT_GREYBUS,
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
-   MAILBOX=READY_MODULE)
+   MAILBOX=MAILBOX_GREYBUS)
 
 MODE_SWITCHING::
 
@@ -653,7 +671,7 @@ MODE_SWITCHING::
    WAKE=WAKE_UNSET, UNIPRO=UPRO_UP,
    REFCLK=REFCLK_ON, RELEASE=RELEASE_DEASSERTED, INTF_TYPE=IFT_GREYBUS,
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
-   MAILBOX=READY_MODULE)
+   MAILBOX=MAILBOX_GREYBUS)
 
 SUSPENDED::
 
@@ -662,7 +680,7 @@ SUSPENDED::
    WAKE=WAKE_UNSET, UNIPRO=UPRO_HIBERNATE,
    REFCLK=REFCLK_OFF, RELEASE=RELEASE_DEASSERTED, INTF_TYPE=IFT_GREYBUS,
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
-   MAILBOX=READY_MODULE)
+   MAILBOX=MAILBOX_GREYBUS)
 
 OFF::
 
@@ -671,14 +689,14 @@ OFF::
    RELEASE=RELEASE_DEASSERTED,
    INTF_TYPE=<IFT_DUMMY, IFT_UNIPRO, or IFT_GREYBUS>,
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
-   MAILBOX=NULL)
+   MAILBOX=MAILBOX_NULL)
 
 DETACHED::
 
   (DETECT=DETECT_INACTIVE, V_SYS=V_SYS_OFF, V_CHG=V_CHG_OFF,
    WAKE=WAKE_UNSET, UNIPRO=UPRO_OFF, REFCLK=REFCLK_OFF,
    RELEASE=RELEASE_DEASSERTED, INTF_TYPE=IFT_UNKNOWN,
-   ORDER=ORDER_UNKNOWN, MAILBOX=NULL)
+   ORDER=ORDER_UNKNOWN, MAILBOX=MAILBOX_NULL)
 
 Subsequent chapters in the Greybus Specification will define the
 mechanisms which cause Interfaces States to transition between
