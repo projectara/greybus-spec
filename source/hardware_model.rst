@@ -449,10 +449,10 @@ The values of the INTF_TYPE sub-state are given in Table
    =============  ================================================
    Value          Description
    =============  ================================================
-   IFT_UNKNOWN    Interface Block not attached to Module, type is undetermined, or error occurred
-   IFT_DUMMY      Module attached to Interface Block does not support |unipro| communication
-   IFT_UNIPRO     Module attached to Interface Block supports |unipro|, but not Greybus Protocols
-   IFT_GREYBUS    Module attached to Interface Block supports Greybus Protocols
+   IFT_UNKNOWN    Module not attached, type is undetermined, or error occurred
+   IFT_DUMMY      Module attached which does not support |unipro| communication
+   IFT_UNIPRO     Module attached which supports |unipro|, but not Greybus Protocols
+   IFT_GREYBUS    Module attached which supports Greybus Protocols
    =============  ================================================
 
 ..
