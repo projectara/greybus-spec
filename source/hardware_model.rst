@@ -1,5 +1,7 @@
 .. highlight:: text
 
+.. _hardware_model:
+
 Greybus Hardware Model
 ======================
 
