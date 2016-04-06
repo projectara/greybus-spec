@@ -2257,7 +2257,7 @@ microwatts for power.
     Offset   Field           Size         Value           Description
     =======  ==============  ===========  ==========      ===========================
     0        result          1            Number          Result code (:ref:`svc_pwrmon_get_sample_results`)
-    0        measurement     4            Number          Measured value
+    1        measurement     4            Number          Measured value
     =======  ==============  ===========  ==========      ===========================
 
 ..
