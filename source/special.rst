@@ -919,6 +919,11 @@ initialization. The descriptor describes details of the :ref:`Frame
 
 ..
 
+Before sending the SVC Hello Request, the SVC shall ensure that all
+:ref:`hardware-model-interface-states` in the Greybus System are
+either :ref:`hardware-model-lifecycle-attached` or
+:ref:`hardware-model-lifecycle-detached`.
+
 Greybus SVC Hello Response
 """"""""""""""""""""""""""
 
