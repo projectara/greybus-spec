@@ -19,12 +19,13 @@ endif
 # ' (this line works around an Emacs makefile-mode bug)
 
 # Internal variables.
-PAPEROPT_a4     = -D latex_paper_size=a4
-PAPEROPT_letter = -D latex_paper_size=letter
-ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
-DOT_GRAPH_DIR   = source/img/dot
-DOT_GRAPHS      = $(wildcard $(DOT_GRAPH_DIR)/*.dot)
-GEN_PNG_GRAPHS  = $(DOT_GRAPHS:.dot=.png)
+PAPEROPT_a4      = -D latex_paper_size=a4
+PAPEROPT_letter  = -D latex_paper_size=letter
+ALLSPHINXOPTS    = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
+# Directed graphs converted from .dot to .png
+DOT_GRAPH_DIR    = source/img/dot
+DOT_GRAPHS       = $(wildcard $(DOT_GRAPH_DIR)/*.dot)
+GEN_PNG_GRAPHS   = $(DOT_GRAPHS:.dot=.png)
 
 .PHONY: help clean all html latexpdf
 
