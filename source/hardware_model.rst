@@ -51,6 +51,13 @@ present in a Greybus System for use within the Greybus Specification.
   the Greybus System, are given in
   :ref:`hardware-model-lifecycle-states`.
 
+Each Interface State in a Greybus System is given a unique identifier,
+its Interface ID.  Interface IDs increase consecutively, moving
+counter-clockwise around the Frame.
+
+For convenience, the Interface Blocks in a Greybus System are also
+indexed by the Interface IDs for their corresponding Interface States.
+
 Subsequent definitions within the Greybus Specification define how
 certain Greybus :ref:`Operations <glossary-operation>` affect
 Interface States and Lifecycle States in a Greybus System.

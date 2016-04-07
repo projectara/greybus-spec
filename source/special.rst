@@ -887,6 +887,8 @@ shall specify the value |gb-major| for the version_major and
 |gb-minor| for the version_minor fields found in this Operation's
 request and response messages.
 
+.. _svc_hello:
+
 Greybus SVC Hello Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -928,6 +930,11 @@ Greybus SVC Hello Response
 """"""""""""""""""""""""""
 
 The Greybus SVC Hello response contains no payload.
+
+During the initialization of a Greybus System, after receiving a
+successful SVC Hello Response from the AP, the SVC shall attempt to
+exchange a sequence of :ref:`Module Inserted
+<greybus-svc-module-inserted-operation>` Operations with the AP.
 
 Greybus SVC DME Peer Get Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2331,9 +2338,10 @@ The Greybus SVC Power Down response message contains no payload.
 Greybus SVC Module Inserted Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus SVC Module Inserted request is sent by the SVC
-to the AP Module to indicate that a new Module has been inserted
-into the Frame.
+The Greybus SVC Module Inserted request is sent by the SVC to the AP
+Module to indicate that a new Module has been inserted into the Frame,
+as well as during initialization of a Greybus System, to inform the AP
+of Modules which were already attached to the Frame.
 
 Greybus SVC Module Inserted Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2345,11 +2353,8 @@ newly inserted Module in the primary_intf_id field.  It also specifies
 the number of Interfaces covered by the Module in the intf_count
 field; this includes the Primary Interface, plus the total number of
 :ref:`Secondary Interfaces <glossary-secondary-interface>` to the
-Module, if any.
-
-Interface IDs increase consecutively, moving counter-clockwise around
-the Frame.  The size of a Module (the value of the intf_count field in
-the Module Inserted request payload) is always one or more.
+Module, if any. The size of a Module (the value of the intf_count
+field in the Module Inserted request payload) is thus always one or more.
 
 .. figtable::
     :nofig:
@@ -2390,6 +2395,30 @@ The NO_PRIMARY_INTERFACE mask for the flags field allows the SVC to
 notify the AP when an error has occurred, and no Primary Interface to
 the Module was detected. If the NO_PRIMARY_INTERFACE flag is set, the
 intf_count field shall equal one.
+
+During the initialization of a Greybus System, following a successful
+:ref:`svc_hello`, the SVC shall attempt to exchange Module Inserted
+Operations with the AP for each attached Module.
+
+Unless an error occurs, there is a unique Primary Interface to each
+Module attached to the Frame. The number of Operations exchanged
+during initialization is thus at least the number of
+:ref:`hardware-model-interface-states` that are
+:ref:`hardware-model-lifecycle-attached` and whose
+:ref:`hardware-model-order` is ORDER_PRIMARY. The primary_intf_id
+fields in these requests shall be the Interface IDs of the Interface
+States whose ORDER is ORDER_PRIMARY.
+
+There may be additional Secondary Interfaces to each of these
+Modules. The intf_count field in each such request shall thus equal
+one plus the number of consecutive Interface States in the Greybus
+System whose ORDER is ORDER_SECONDARY, starting from the Primary
+Interfaces to each attached Module, up to the final Interface Block in
+the :ref:`Slot <glossary-slot>`. This follows from the definitions of
+the ORDER sub-state and the intf_count request field.
+
+The SVC may also send additional Module Inserted Requests with the
+NO_PRIMARY_INTERFACE flag set, as described above.
 
 Greybus SVC Module Inserted Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
