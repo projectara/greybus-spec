@@ -2357,9 +2357,34 @@ the Module Inserted request payload) is always one or more.
     =======  ===============  ====  ======  ====================
     0        primary_intf_id  1     Number  Module location
     1        intf_count       1     Number  Number of Interfaces covered by Module
+    2        flags            2     Number  See Table :num:`table-svc-module-inserted-flags`
     =======  ===============  ====  ======  ====================
 
 ..
+
+The flags field in the request payload is a bit mask which allows the
+SVC to notify the AP of additional conditions associated with the
+insertion event. The mask values for the flags field are defined in
+Table :num:`table-svc-module-inserted-flags`.
+
+.. figtable::
+   :nofig:
+   :label: table-svc-module-inserted-flags
+   :caption: Flags for SVC Module Inserted Request
+   :spec: l r l
+
+   =========================== =========    ===============================
+   Flag                        Value        Description
+   =========================== =========    ===============================
+   NO_PRIMARY_INTERFACE        0x1          No Primary Interface to Module detected
+   =========================== =========    ===============================
+
+..
+
+The NO_PRIMARY_INTERFACE mask for the flags field allows the SVC to
+notify the AP when an error has occurred, and no Primary Interface to
+the Module was detected. If the NO_PRIMARY_INTERFACE flag is set, the
+intf_count field shall equal one.
 
 Greybus SVC Module Inserted Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
