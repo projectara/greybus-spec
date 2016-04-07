@@ -1122,6 +1122,9 @@ for managing the mapping between Interfaces and |unipro| device ids.
 Greybus supports 5-bit |unipro| device IDs. Device ID 0 and 1 are reserved
 for the SVC and primary AP Interface respectively.
 
+The AP shall manage DeviceIDs of any attached Modules using this
+operation during :ref:`lifecycles_connection_management`.
+
 Greybus SVC Interface Device ID Request
 """""""""""""""""""""""""""""""""""""""
 
@@ -1158,10 +1161,42 @@ destroyed.
 
 ..
 
+Upon receiving the request, the SVC shall check that the
+:ref:`Interface State <hardware-model-interface-states>` with ID
+intf_id has DETECT equal to DETECT_ACTIVE, and UNIPRO equal to
+UPRO_UP.
+
+If these conditions do not hold, the SVC cannot satisfy the request,
+and shall send a response signalling an error as described below. The
+SVC shall take no further action related to such an unsatisfiable
+request beyond sending the response.
+
+Otherwise, the SVC shall attempt to set the |unipro| DeviceID of the
+UniPort connected to corresponding Interface Block to device_id, and
+to mark the |unipro| DeviceID as valid. This sequence may change the
+values of |unipro| DME attributes on the UniPort the Interface Block
+identified in the request.
+
 Greybus SVC Interface Device ID Response
 """"""""""""""""""""""""""""""""""""""""
 
 The Greybus SVC Interface Device ID response message contains no payload.
+
+The SVC shall return the following errors depending on the sub-state
+values of the :ref:`hardware-model-interface-states` with Interface ID
+given by intf_id in the request payload:
+
+- If DETECT is not DETECT_ACTIVE, the response shall have status
+  GB_SVC_INTF_NOT_DETECTED.
+
+- If UNIPRO is not UPRO_UP, the response shall have status
+  GB_SVC_INTF_NO_UPRO_LINK.
+
+If the SVC fails to set the DeviceID due to an I/O or protocol error
+on a |unipro| link, the response status value shall equal
+GB_OP_UNKNOWN_ERROR. When this occurs, the value of the DeviceID, as
+well as its validity, are unpredictable, as is the value of the UNIPRO
+sub-state for the Interface identified in the request.
 
 Greybus SVC Interface Hotplug Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
