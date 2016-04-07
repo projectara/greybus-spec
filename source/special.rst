@@ -1041,11 +1041,11 @@ to request a route be torn down for |unipro| traffic between two
 Interfaces.
 
 Greybus SVC Route Destroy Request
-""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""
 
 Table :num:`table-svc-route-destroy-request` defines the Greybus SVC
-Route Create request payload. The request supplies the Interface IDs
-of two Interfaces to be disconnected.
+Route Destroy request payload. The request supplies the Interface IDs
+of two Interfaces between which the route should be destroyed.
 
 .. figtable::
     :nofig:
