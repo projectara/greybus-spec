@@ -67,14 +67,20 @@ All Protocols defined herein are subject to the
 Protocol Versions
 -----------------
 
-Every Protocol has a version, which comprises two one-byte values,
-major and minor. A Protocol definition can evolve to add new
-capabilities, and as it does so, its version changes. If existing (or
-old) Protocol handling code which complies with this specification can
-function properly with the new feature in place, only the minor
-version of the Protocol shall change. Any time a Protocol changes in a
-way that requires the handling code be updated to function properly,
-the Protocol's major version shall change.
+.. note::
+
+    Greybus no longer supports a common Version Operation for Individual
+    Protocols, except for the :ref:`svc-protocol`, the
+    :ref:`control-protocol`, and the :ref:`bootrom-protocol`.
+
+The Protocol version comprises of two one-byte values, major and minor.
+A Protocol definition can evolve to add new capabilities, and as it does
+so, its version changes. If existing (or old) Protocol handling code
+which complies with this specification can function properly with the
+new feature in place, only the minor version of the Protocol shall
+change. Any time a Protocol changes in a way that requires the handling
+code be updated to function properly, the Protocol's major version shall
+change.
 
 Two Modules may implement different versions of a Protocol, and as a
 result they shall negotiate a common version of the Protocol to
@@ -102,7 +108,7 @@ request.
 Common Greybus Protocol Version Operation
 -----------------------------------------
 
-Every Connection Protocol shall specify an Operation which allows the
+Some Connection Protocols specify an Operation which allows the
 Protocol handling software on both ends of a connection to negotiate
 the version of the Protocol to use. This Operation shall be named the
 Protocol Version Operation. All Connection Protocol Operations with
@@ -121,9 +127,10 @@ Conceptually, this operation is:
 The request value of each Protocol Version Operation shall be 0x01,
 and the response value for this Operation shall be 0x81.
 
-For example, the corresponding Operation within the Greybus GPIO
-Protocol is named the Greybus GPIO Protocol Version Operation. Its
-request and response values are respectively 0x01 and 0x81.
+For example, the corresponding Operation within the Greybus
+:ref:`control-protocol` is named the Greybus Control Protocol Version
+Operation. Its request and response values are respectively 0x01 and
+0x81.
 
 For this operation, the request specifies the greatest version of the
 Protocol supported by the requestor.  The response contains the

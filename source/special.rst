@@ -521,6 +521,8 @@ contains two 2-byte numbers, major and minor.
     =======  ============  ======  ==========  ===========================
 ..
 
+.. _control_protocol_bundle_version:
+
 Greybus Control Bundle Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The AP uses this operation to retrieve the version of the Bundle Class

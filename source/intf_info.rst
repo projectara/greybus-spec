@@ -386,8 +386,8 @@ typically should not be used.)
 .. XXX cross-reference these with the below protocols.
 
    (It's probably worth allocating all of the protocols we ever plan
-   on implementing once, adding protocol version operations for each
-   of them, and numbering them with substitution definitions.)
+   on implementing once, and numbering them with substitution
+   definitions.)
 
 .. figtable::
     :nofig:

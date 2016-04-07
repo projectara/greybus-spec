@@ -50,7 +50,7 @@ operation 5 might mean "go to sleep" in another. When the AP Module
 establishes a connection with a CPort in another Module, that
 connection uses the CPort's advertised Protocol.
 
-Each Greybus Protocol shall support :ref:`greybus-protocol-version`.
+Greybus Protocols may support :ref:`greybus-protocol-version`.
 
 The Greybus Operations mechanism forms a base layer on which other
 Protocols are built. Protocols define the format of request messages,
