@@ -2393,8 +2393,36 @@ Table :num:`table-svc-module-inserted-flags`.
 
 The NO_PRIMARY_INTERFACE mask for the flags field allows the SVC to
 notify the AP when an error has occurred, and no Primary Interface to
-the Module was detected. If the NO_PRIMARY_INTERFACE flag is set, the
-intf_count field shall equal one.
+the Module was detected.
+
+If the NO_PRIMARY_INTERFACE flag is set in the Module Inserted
+Request, the intf_count field shall equal one. The Interface State
+with Interface ID primary_intf_id shall have
+:ref:`hardware-model-order` equal to ORDER_SECONDARY.
+
+If the NO_PRIMARY_INTERFACE flag is not set in the Module Inserted
+request, then the Interface State with Interface ID primary_intf_id
+has :ref:`hardware-model-order` equal to ORDER_PRIMARY. If intf_count
+is greater than one, all Interface States with IDs from
+(primary_intf_id + 1) through (primary_intf_id + intf_count - 1),
+inclusive, have ORDER equal to ORDER_SECONDARY.
+
+In all cases, regardless of the value of the flags field, every
+Interface State identified by the request is in the
+:ref:`hardware-model-lifecycle-attached` :ref:`Lifecycle State
+<hardware-model-lifecycle-states>`. After sending the response to this
+request, the AP may thus subsequently initialize any Interfaces
+identified by the request, attempt to retrieve their :ref:`Manifests
+<manifest-description>`, etc.
+
+This process is described in :ref:`lifecycles_boot_enumeration`.
+
+Additionally, the entire Module has transitioned to the
+MODULE_ATTACHED state, as described in
+:ref:`lifecycles_module_attach`.
+
+The consequences of boot and enumeration when the NO_PRIMARY_INTERFACE
+flag is set are unspecified.
 
 During the initialization of a Greybus System, following a successful
 :ref:`svc_hello`, the SVC shall attempt to exchange Module Inserted
