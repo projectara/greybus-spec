@@ -703,7 +703,7 @@ Module may signal readiness for communication via Greybus
 either remains its initial value, MAILBOX_NONE, or is set by the
 Module to MAILBOX_GREYBUS.
 
-The SVC also sets INTF_TYPE then the Interface is ACTIVATED, based on
+The SVC also sets INTF_TYPE when the Interface is ACTIVATED, based on
 a combination of the UNIPRO and MAILBOX sub-states. The correspondence
 between UNIPRO, MAILBOX, and INTF_TYPE is given in Table
 :num:`table-lifecycle-state-intf-type`.
