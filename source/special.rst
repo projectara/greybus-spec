@@ -700,14 +700,14 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     The AP Module uses this operation to request the SVC to send the
     authoritative frame-time at each TIME_SYNC strobe.
 
-.. c:function:: int timesync_wd_pins_init(u32 strobe_mask);
+.. c:function:: int timesync_wd_pins_acquire(u32 strobe_mask);
 
     The AP Module uses this operation to request the SVC to take control
     of a bit-mask of SVC device-id wake-detect lines. This done to establish
     an initial state on the relevant wake-detect lines prior to generating
     timesync releated events.
 
-.. c:function:: int timesync_wd_pins_fini(void);
+.. c:function:: int timesync_wd_pins_release(void);
 
     The AP Module uses this operation to request the SVC to release
     any wake-detect lines currently reserved for time-sync operations.
@@ -716,7 +716,7 @@ Conceptually, the operations in the Greybus SVC Protocol are:
 
     The AP Module uses this operation to request the SVC to generate a single
     pulse on a bit-mask of wake-detect lines communicated to SVC by a prior
-    timesync_wd_pins_init() operation. SVC will return the authoritative
+    timesync_wd_pins_acquire() operation. SVC will return the authoritative
     frame-time of the timesync_ping() to the AP Module in the response phase of
     the operation.
 
@@ -823,8 +823,8 @@ response type values are shown.
     Power Monitor get rail names        0x15           0x95
     Power Monitor get sample            0x16           0x96
     Power Monitor interface get sample  0x17           0x97
-    TimeSync wake-detect pins init      0x18           0x98
-    TimeSync wake-detect pins fini      0x19           0x99
+    TimeSync Wake-Detect Pins Acquire   0x18           0x98
+    TimeSync Wake-Detect Pins Release   0x19           0x99
     TimeSync ping                       0x1a           0x9a
     Power Down                          0x1d           0x9d
     Connection Quiescing                0x1e           0x9e
@@ -1823,8 +1823,8 @@ response shall contain zero.
 
 ..
 
-Greybus SVC TimeSync Wake-Detect Pins Init Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus SVC TimeSync Wake-Detect Pins Acquire Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The AP Module uses this operation to request the SVC to take ownership-of and
 establish-an initial state on a bit-mask of SVC device-ids specified by the
 strobe_mask parameter passed as part of the request phase of the operation.
@@ -1832,18 +1832,18 @@ strobe_mask parameter passed as part of the request phase of the operation.
 The SVC will take control of the wake-detect lines specified in the request and
 set the outputs to logical 0.
 
-Greybus SVC TimeSync Wake-Detect Pins Init Request
-""""""""""""""""""""""""""""""""""""""""""""""""""
+Greybus SVC TimeSync Wake-Detect Pins Acquire Request
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-Table :num:`table-svc-timesync-wd-pins-init-request` defines the Greybus SVC
-TimeSync Wake-Detect Pins Init Request payload. The request supplies the
+Table :num:`table-svc-timesync-wd-pins-acquire-request` defines the Greybus SVC
+TimeSync Wake-Detect Pins Acquire Request payload. The request supplies the
 bit-mask (strobe_mask) of SVC device-ids which should have their wake-detect
 pins set to output with logical state 0.
 
 .. figtable::
     :nofig:
-    :label: table-svc-timesync-wd-pins-init-request
-    :caption: SVC Protocol TimeSync Wake-Detect Pins Init Request
+    :label: table-svc-timesync-wd-pins-acquire-request
+    :caption: SVC Protocol TimeSync Wake-Detect Pins Acquire Request
     :spec: l l c c l
 
     =======  ============  ======  ==========  =================================================
@@ -1854,32 +1854,32 @@ pins set to output with logical state 0.
 
 ..
 
-Greybus SVC TimeSync Wake-Detect Pins Init Response
-"""""""""""""""""""""""""""""""""""""""""""""""""""
+Greybus SVC TimeSync Wake-Detect Pins Acquire Response
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-The Greybus SVC Protocol TimeSync Wake-Detect Pins Init response contains no payload.
+The Greybus SVC Protocol TimeSync Wake-Detect Pins Acquire response contains no payload.
 
-Greybus SVC TimeSync Wake-Detect Pins Fini Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus SVC TimeSync Wake-Detect Pins Release Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The AP Module uses this operation to request the SVC to release ownership of any
 previously allocated wake-detect pins. SVC will release all pins allocated for
-wake-detect purposes in a previous Greybus SVC TimeSync Wake-Detect Pins Init
+wake-detect purposes in a previous Greybus SVC TimeSync Wake-Detect Pins Acquire
 operation.
 
-Greybus SVC TimeSync Wake-Detect Pins Fini Request
-""""""""""""""""""""""""""""""""""""""""""""""""""
-The Greybus SVC Protocol TimeSync Wake-Detect Pins Fini request contains no payload.
+Greybus SVC TimeSync Wake-Detect Pins Release Request
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+The Greybus SVC Protocol TimeSync Wake-Detect Pins Release request contains no payload.
 
-Greybus SVC TimeSync Wake-Detect Pins Fini Response
-"""""""""""""""""""""""""""""""""""""""""""""""""""
+Greybus SVC TimeSync Wake-Detect Pins Release Response
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-The Greybus SVC Protocol TimeSync Wake-Detect Pins Fini response contains no payload.
+The Greybus SVC Protocol TimeSync Wake-Detect Pins Release response contains no payload.
 
 Greybus SVC TimeSync Ping Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The AP Module uses this operation to request the SVC to send a single timesync
 event on a bitmask of wake-detect pins which must have previously been allocated
-via Greybus SVC TimeSync Wake-Detect Pins Init.
+via Greybus SVC TimeSync Wake-Detect Pins Acquire.
 
 On receipt of this request the SVC will immediately generate a single pulse and
 capture the authoritative frame-time; this frame-time will then be returned in
