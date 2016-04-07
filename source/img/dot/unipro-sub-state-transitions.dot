@@ -1,0 +1,14 @@
+digraph {
+    rankdir = LR;
+
+    UPRO_OFF -> UPRO_DOWN;
+    UPRO_DOWN -> UPRO_LSS;
+    UPRO_LSS -> UPRO_DOWN;
+    UPRO_LSS -> UPRO_UP;
+    UPRO_UP -> UPRO_HIBERNATE;
+    UPRO_HIBERNATE -> UPRO_UP;
+    UPRO_UP -> UPRO_RELINK;
+
+    ANY [label="Any value other\nthan UPRO_OFF"];
+    ANY -> UPRO_OFF;
+}

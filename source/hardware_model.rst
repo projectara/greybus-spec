@@ -336,6 +336,12 @@ Frame.
 The UNIPRO sub-state is an intentionally simplified abstraction for
 the state of the |unipro| port inside the Frame.
 
+Transitions between successive values of the UNIPRO sub-state are
+shown in the following figure. All other transitions are illegal.
+
+.. image:: /img/dot/unipro-sub-state-transitions.png
+   :align: center
+
 Greybus communication between Modules (including the AP Module) is
 only possible through Interface Blocks whose Interface State's UNIPRO
 sub-state is UPRO_UP: it is only after the |unipro| link is
