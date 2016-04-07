@@ -62,6 +62,8 @@ is reserved for internal use by the Greybus application stack only.
 All Protocols defined herein are subject to the
 :ref:`message-data-requirements` listed above.
 
+.. _greybus-protocol-version:
+
 Protocol Versions
 -----------------
 
