@@ -639,13 +639,16 @@ the basis of the state machine described in
 Interface Lifecycle States
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following state machine diagram is the *Interface Lifecycle*. Each
-of the states is a *Lifecycle State*. Lifecycle States are groups of
-Interface States with a special meaning within the Greybus
-Specification.
+This section briefly introduces the *Interface Lifecycle* state
+machine, shown in the following figure. A detailed description of this
+state machine is provided in :ref:`lifecycles_interface_lifecycle`.
 
 .. image:: /img/dot/interface-lifecycle.png
    :align: center
+
+Each of the states is a *Lifecycle State*. Lifecycle States are groups
+of Interface States with a special meaning within the Greybus
+Specification.
 
 For example, the ATTACHED Lifecycle State is the Interface State for
 an Interface Block which the SVC has determined a Module is attached
@@ -699,13 +702,9 @@ No actions have been taken to boot the module, communicate with it via
 :ref:`initial state <hardware-model-initial-states>` of each Interface
 State.
 
-ATTACHED is the following group of Interface States::
+ATTACHED is the following group of Interface States:
 
-  (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_OFF, V_CHG=V_CHG_OFF,
-   WAKE=WAKE_UNSET, UNIPRO=UPRO_OFF, REFCLK=REFCLK_OFF,
-   RELEASE=RELEASE_DEASSERTED, INTF_TYPE=IFT_UNKNOWN,
-   ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
-   MAILBOX=MAILBOX_NULL)
+.. include:: lifecycle-states/attached.txt
 
 .. _hardware-model-lifecycle-activated:
 
@@ -744,16 +743,9 @@ between UNIPRO, MAILBOX, and INTF_TYPE is given in Table
 
 ..
 
-ACTIVATED is the following group of Interface States::
+ACTIVATED is the following group of Interface States:
 
-  (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_ON, V_CHG=V_CHG_OFF,
-   WAKE=WAKE_UNSET,
-   UNIPRO=<UPRO_DOWN or UPRO_UP>,
-   REFCLK=REFCLK_ON,
-   RELEASE=RELEASE_DEASSERTED,
-   INTF_TYPE=<IFT_DUMMY, IFT_UNIPRO, or IFT_GREYBUS>,
-   ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
-   MAILBOX=<MAILBOX_NONE or MAILBOX_GREYBUS>)
+.. include:: lifecycle-states/activated.txt
 
 .. _hardware-model-lifecycle-enumerated:
 
@@ -780,16 +772,9 @@ through application- or Protocol-specific means that the Module can
 supply power to the Frame via the Interface Block. Thus, V_CHG may be
 set to V_CHG_ON.
 
-ENUMERATED is the following group of Interface States::
+ENUMERATED is the following group of Interface States:
 
-  (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_ON,
-   V_CHG=<V_CHG_OFF or V_CHG_ON>,
-   WAKE=WAKE_UNSET, UNIPRO=UPRO_UP,
-   REFCLK=<REFCLK_ON or REFCLK_OFF>,
-   RELEASE=RELEASE_DEASSERTED,
-   INTF_TYPE=IFT_GREYBUS,
-   ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
-   MAILBOX=MAILBOX_GREYBUS)
+.. include:: lifecycle-states/enumerated.txt
 
 .. _hardware-model-lifecycle-mode-switching:
 
@@ -815,13 +800,9 @@ to V_CHG_OFF if it is V_CHG_ON.
 An Interface State may enter and exit the MODE_SWITCHING Lifecycle
 State an arbitrary number of times.
 
-MODE_SWITCHING is the following group of Interface States::
+MODE_SWITCHING is the following group of Interface States:
 
-  (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_ON, V_CHG=V_CHG_OFF,
-   WAKE=WAKE_UNSET, UNIPRO=UPRO_UP,
-   REFCLK=REFCLK_ON, RELEASE=RELEASE_DEASSERTED, INTF_TYPE=IFT_GREYBUS,
-   ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
-   MAILBOX=MAILBOX_GREYBUS)
+.. include:: lifecycle-states/mode-switching.txt
 
 .. _hardware-model-lifecycle-suspended:
 
@@ -837,14 +818,9 @@ SUSPENDED state.
 An Interface shall not alter its :ref:`manifest-description` while it
 is entering, in, or exiting the SUSPENDED state.
 
-SUSPENDED is the following group of Interface States::
+SUSPENDED is the following group of Interface States:
 
-  (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_ON,
-   V_CHG=<V_CHG_OFF or V_CHG_ON>,
-   WAKE=WAKE_UNSET, UNIPRO=UPRO_HIBERNATE,
-   REFCLK=REFCLK_OFF, RELEASE=RELEASE_DEASSERTED, INTF_TYPE=IFT_GREYBUS,
-   ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
-   MAILBOX=MAILBOX_GREYBUS)
+.. include:: lifecycle-states/suspended.txt
 
 .. _hardware-model-lifecycle-off:
 
@@ -856,14 +832,9 @@ communication signals disabled, but whose INTF_TYPE and ORDER are
 still known, having been determined during previous Lifecycle States
 in the Interface Lifecycle.
 
-OFF is the following group of Interface States::
+OFF is the following group of Interface States:
 
-  (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_OFF, V_CHG=V_CHG_OFF,
-   WAKE=WAKE_UNSET, UNIPRO=UPRO_OFF, REFCLK=REFCLK_OFF,
-   RELEASE=RELEASE_DEASSERTED,
-   INTF_TYPE=<IFT_DUMMY, IFT_UNIPRO, or IFT_GREYBUS>,
-   ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
-   MAILBOX=MAILBOX_NULL)
+.. include:: lifecycle-states/off.txt
 
 .. _hardware-model-lifecycle-detached:
 
@@ -876,13 +847,6 @@ Interface Block.
 The SVC and AP have otherwise coordinated to disable power and other
 signaling to the Interface Block, as in the OFF Lifecycle State.
 
-DETACHED is the following group of Interface States::
+DETACHED is the following group of Interface States:
 
-  (DETECT=DETECT_INACTIVE, V_SYS=V_SYS_OFF, V_CHG=V_CHG_OFF,
-   WAKE=WAKE_UNSET, UNIPRO=UPRO_OFF, REFCLK=REFCLK_OFF,
-   RELEASE=RELEASE_DEASSERTED, INTF_TYPE=IFT_UNKNOWN,
-   ORDER=ORDER_UNKNOWN, MAILBOX=MAILBOX_NULL)
-
-Subsequent chapters in the Greybus Specification will define the
-mechanisms which cause Interfaces States to transition between
-Lifecycle States.
+.. include:: lifecycle-states/detached.txt

@@ -59,4 +59,5 @@
    special
    device_class
    bridged_phy
+   module_interface_lifecycles
    bibliography

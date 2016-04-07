@@ -1,0 +1,4 @@
+digraph {
+        MODULE_ATTACHED -> MODULE_DETACHED [label="module_attach"];
+        MODULE_DETACHED -> MODULE_ATTACHED [label="module_detach"];
+}
