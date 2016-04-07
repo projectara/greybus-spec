@@ -32,10 +32,6 @@ Conceptually, the GPIO Protocol operations are:
 
     See :ref:`greybus-protocol-ping-operation`.
 
-.. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
-
-    Refer to :ref:`greybus-protocol-version-operation`.
-
 .. c:function:: int line_count(u8 *count);
 
     Returns one less than the number of lines managed by the Greybus
@@ -122,7 +118,7 @@ response type values are shown.
     GPIO Operation Type          Request Value  Response Value
     ===========================  =============  ==============
     Ping                         0x00           0x80
-    Protocol Version             0x01           0x81
+    Reserved                     0x01           0x81
     Line Count                   0x02           0x82
     Activate                     0x03           0x83
     Deactivate                   0x04           0x84
@@ -149,18 +145,6 @@ The Greybus GPIO Ping Operation is the
 :ref:`greybus-protocol-ping-operation` for the GPIO Protocol.
 It consists of a request containing no payload, and a response
 with no payload that indicates a successful result.
-
-Greybus GPIO Protocol Version Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The Greybus GPIO Protocol Version Operation is the
-:ref:`greybus-protocol-version-operation` for the GPIO Protocol.
-
-Greybus implementations adhering to the Protocol specified herein
-shall specify the value |gb-major| for the version_major and
-|gb-minor| for the version_minor fields found in this Operation's
-request and response messages.
-
 
 Greybus GPIO Line Count Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -670,10 +654,6 @@ Conceptually, the operations in the Greybus SPI Protocol are:
 
     See :ref:`greybus-protocol-ping-operation`.
 
-.. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
-
-    Refer to :ref:`greybus-protocol-version-operation`.
-
 .. c:function:: int master_config(u16 *mode, u16 *flags, u32 *bpw_mask, u16 *num_chipselect, u32 *min_speed_hz, u32 *max_speed_hz);
 
     Returns a set of configuration parameters related to SPI master.
@@ -710,7 +690,7 @@ operation is a request or a response.
     SPI Operation Type           Request Value  Response Value
     ===========================  =============  ==============
     Ping                         0x00           0x80
-    Protocol Version             0x01           0x81
+    Reserved                     0x01           0x81
     Master Config                0x02           0x82
     Device Config                0x03           0x83
     Transfer                     0x04           0x84
@@ -728,26 +708,13 @@ The Greybus SPI Ping Operation is the
 It consists of a request containing no payload, and a response
 with no payload that indicates a successful result.
 
-Greybus SPI Protocol Version Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The Greybus SPI Protocol Version Operation is the
-:ref:`greybus-protocol-version-operation` for the SPI Protocol.
-
-Greybus implementations adhering to the Protocol specified herein
-shall specify the value |gb-major| for the version_major and
-|gb-minor| for the version_minor fields found in this Operation's
-request and response messages.
-
-
 Greybus SPI Protocol Master Config Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus SPI Master Config operation allows the requestor to determine the
 details of the configuration parameters by the SPI master. This operation can be
-executed at any time, however it shall be executed after the negotiation of the
-protocol version. All other operations should be discarded until the successful
-execution of this one.
+executed at any time.  All other operations should be discarded until the
+successful execution of this one.
 
 Greybus SPI Protocol Master Config Request
 """"""""""""""""""""""""""""""""""""""""""
@@ -1043,10 +1010,6 @@ conceptually:
 
     See :ref:`greybus-protocol-ping-operation`.
 
-.. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
-
-    Refer to :ref:`greybus-protocol-version-operation`.
-
 .. c:function:: int send_data(u16 size, u8 *data);
 
     Requests that the UART device begins transmitting characters. One
@@ -1100,7 +1063,7 @@ operation is a request or a response.
     UART Operation Type          Request Value  Response Value
     ===========================  =============  ==============
     Ping                         0x00           0x80
-    Protocol Version             0x01           0x81
+    Reserved                     0x01           0x81
     Send Data                    0x02           0x82
     Receive Data                 0x03           0x83
     Set Line Coding              0x04           0x84
@@ -1120,18 +1083,6 @@ The Greybus UART Ping Operation is the
 :ref:`greybus-protocol-ping-operation` for the UART Protocol.
 It consists of a request containing no payload, and a response
 with no payload that indicates a successful result.
-
-Greybus UART Protocol Version Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The Greybus UART Protocol Version Operation is the
-:ref:`greybus-protocol-version-operation` for the UART Protocol.
-
-Greybus implementations adhering to the Protocol specified herein
-shall specify the value |gb-major| for the version_major and
-|gb-minor| for the version_minor fields found in this Operation's
-request and response messages.
-
 
 Greybus UART Send Data Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1477,10 +1428,6 @@ Conceptually, the PWM Protocol operations are:
 
     See :ref:`greybus-protocol-ping-operation`.
 
-.. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
-
-    Refer to :ref:`greybus-protocol-version-operation`.
-
 .. c:function:: int pwm_count(u8 *count);
 
     Returns one less than the number of instances managed by the
@@ -1540,7 +1487,7 @@ are shown.
     PWM Operation Type           Request Value  Response Value
     ===========================  =============  ==============
     Ping                         0x00           0x80
-    Protocol Version             0x01           0x81
+    Reserved                     0x01           0x81
     PWM count                    0x02           0x82
     Activate                     0x03           0x83
     Deactivate                   0x04           0x84
@@ -1561,17 +1508,6 @@ The Greybus PWM Ping Operation is the
 :ref:`greybus-protocol-ping-operation` for the PWM Protocol.
 It consists of a request containing no payload, and a response
 with no payload that indicates a successful result.
-
-Greybus PWM Protocol Version Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The Greybus PWM Protocol Version Operation is the
-:ref:`greybus-protocol-version-operation` for the PWM Protocol.
-
-Greybus implementations adhering to the Protocol specified herein
-shall specify the value |gb-major| for the version_major and
-|gb-minor| for the version_minor fields found in this Operation's
-request and response messages.
 
 Greybus PWM Count Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1822,10 +1758,6 @@ Conceptually, the five operations in the Greybus I2C Protocol are:
 
     See :ref:`greybus-protocol-ping-operation`.
 
-.. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
-
-    Refer to :ref:`greybus-protocol-version-operation`.
-
 .. c:function:: int get_functionality(u32 *functionality);
 
     Returns a bitmask indicating the features supported by the I2C
@@ -1860,7 +1792,7 @@ operation is a request or a response.
     I2C Operation Type           Request Value  Response Value
     ===========================  =============  ==============
     Ping                         0x00           0x80
-    Protocol Version             0x01           0x81
+    Reserved                     0x01           0x81
     Functionality                0x02           0x82
     Reserved                     0x03           0x83
     Reserved                     0x04           0x84
@@ -1878,18 +1810,6 @@ The Greybus I2C Ping Operation is the
 :ref:`greybus-protocol-ping-operation` for the I2C Protocol.
 It consists of a request containing no payload, and a response
 with no payload that indicates a successful result.
-
-Greybus I2C Protocol Version Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The Greybus I2C Protocol Version Operation is the
-:ref:`greybus-protocol-version-operation` for the I2C Protocol.
-
-Greybus implementations adhering to the Protocol specified herein
-shall specify the value |gb-major| for the version_major and
-|gb-minor| for the version_minor fields found in this Operation's
-request and response messages.
-
 
 Greybus I2C Functionality Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2100,10 +2020,6 @@ Conceptually, the operations in the Greybus SDIO Protocol are:
 
     See :ref:`greybus-protocol-ping-operation`.
 
-.. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
-
-    Refer to :ref:`greybus-protocol-version-operation`.
-
 .. c:function:: int get_capabilities(u32 *caps, u32 *ocr, u16 *max_blk_count, u16 *max_blk_size);
 
    Request the SDIO controller to return a set of capabilities
@@ -2154,7 +2070,7 @@ and response type values are shown.
     SDIO Operation Type          Request Value  Response Value
     ===========================  =============  ==============
     Ping                         0x00           0x80
-    Protocol Version             0x01           0x81
+    Reserved                     0x01           0x81
     Get Capabilities             0x02           0x82
     Set Ios                      0x03           0x83
     Command                      0x04           0x84
@@ -2173,17 +2089,6 @@ The Greybus SDIO Ping Operation is the
 :ref:`greybus-protocol-ping-operation` for the SDIO Protocol.
 It consists of a request containing no payload, and a response
 with no payload that indicates a successful result.
-
-Greybus SDIO Protocol Version Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The Greybus SDIO Protocol Version Operation is the
-:ref:`greybus-protocol-version-operation` for the SDIO Protocol.
-
-Greybus implementations adhering to the Protocol specified herein
-shall specify the value |gb-major| for the version_major and
-|gb-minor| for the version_minor fields found in this Operation's
-request and response messages.
 
 Greybus SDIO Get Capabilities Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
