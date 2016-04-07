@@ -26,8 +26,12 @@ ALLSPHINXOPTS    = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) so
 DOT_GRAPH_DIR    = source/img/dot
 DOT_GRAPHS       = $(wildcard $(DOT_GRAPH_DIR)/*.dot)
 GEN_PNG_GRAPHS   = $(DOT_GRAPHS:.dot=.png)
+# Message sequence charts converted from .msc to .png
+MSC_DIR          = source/img/msc
+MSC_DIAGRAMS     = $(wildcard $(MSC_DIR)/*.msc)
+GEN_MSC_DIAGRAMS = $(MSC_DIAGRAMS:.msc=.png)
 
-.PHONY: help clean all html latexpdf
+.PHONY: help clean all html latexpdf generated-images
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
@@ -39,24 +43,31 @@ clean:
 	rm -rf $(BUILDDIR)/*
 	rm -f source/extensions/*.pyc
 	rm -f $(DOT_GRAPH_DIR)/*.png
+	rm -f $(MSC_DIR)/*.png
 
 $(DOT_GRAPH_DIR)/%.png: $(DOT_GRAPH_DIR)/%.dot
 	@dot -Tpng $< -o $@
 	@echo DOT: $<
 
+$(MSC_DIR)/%.png: $(MSC_DIR)/%.msc
+	@mscgen -T png $<
+	@echo MSCGEN: $<
+
+generated-images: $(GEN_PNG_GRAPHS) $(GEN_MSC_DIAGRAMS)
+
 all:	html latexpdf singlehtml
 
-singlehtml: $(GEN_PNG_GRAPHS)
+singlehtml: generated-images
 	$(SPHINXBUILD) -b singlehtml $(ALLSPHINXOPTS) $(BUILDDIR)/singlehtml
 	@echo
 	@echo "Build finished. The single HTML page is in $(BUILDDIR)/singlehtml."
 
-html: $(GEN_PNG_GRAPHS)
+html: generated-images
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
 
-latexpdf: $(GEN_PNG_GRAPHS)
+latexpdf: generated-images
 	$(SPHINXBUILD) -b latex $(ALLSPHINXOPTS) $(BUILDDIR)/latex
 	@echo "Running LaTeX files through pdflatex..."
 	$(MAKE) -C $(BUILDDIR)/latex all-pdf

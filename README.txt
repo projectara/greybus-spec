@@ -5,10 +5,11 @@ Requirements:
 - Sphinx: http://sphinx-doc.org/contents.html
 - LaTeX (and pdflatex, and various LaTeX packages)
 - Graphviz (in particular, "dot"): http://www.graphviz.org/
+- Mscgen: http://www.mcternan.me.uk/mscgen/
 
 On Ubuntu:
 
-# apt-get install python-sphinx texlive texlive-latex-extra texlive-humanities graphviz
+# apt-get install python-sphinx texlive texlive-latex-extra texlive-humanities graphviz mscgen
 
 Then:
 
