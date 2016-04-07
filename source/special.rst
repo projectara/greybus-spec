@@ -802,30 +802,30 @@ response type values are shown.
     Ping                                0x00           0x80
     Protocol Version                    0x01           0x81
     SVC Hello                           0x02           0x82
-    Interface device ID                 0x03           0x83
-    Interface hotplug                   0x04           0x84
-    Interface hot unplug                0x05           0x85
-    Interface reset                     0x06           0x86
-    Connection create                   0x07           0x87
-    Connection destroy                  0x08           0x88
-    DME peer get                        0x09           0x89
-    DME peer set                        0x0a           0x8a
-    Route create                        0x0b           0x8b
-    Route destroy                       0x0c           0x8c
-    TimeSync enable                     0x0d           0x8d
-    TimeSync disable                    0x0e           0x8e
-    TimeSync authoritative              0x0f           0x8f
-    Interface set power mode            0x10           0x90
+    Interface Device ID                 0x03           0x83
+    Interface Hotplug                   0x04           0x84
+    Interface Hot Unplug                0x05           0x85
+    Interface Reset                     0x06           0x86
+    Connection Create                   0x07           0x87
+    Connection Destroy                  0x08           0x88
+    DME Peer Get                        0x09           0x89
+    DME Peer Set                        0x0a           0x8a
+    Route Create                        0x0b           0x8b
+    Route Destroy                       0x0c           0x8c
+    TimeSync Enable                     0x0d           0x8d
+    TimeSync Disable                    0x0e           0x8e
+    TimeSync Authoritative              0x0f           0x8f
+    Interface Set Power Mode            0x10           0x90
     Module Eject                        0x11           0x91
     Key Event                           0x12           N/A
     Reserved                            0x13           0x93
-    Power Monitor get rail count        0x14           0x94
-    Power Monitor get rail names        0x15           0x95
-    Power Monitor get sample            0x16           0x96
-    Power Monitor interface get sample  0x17           0x97
+    Power Monitor Get Rail Count        0x14           0x94
+    Power Monitor Get Rail Names        0x15           0x95
+    Power Monitor Get Sample            0x16           0x96
+    Power Monitor Interface Get Sample  0x17           0x97
     TimeSync Wake-Detect Pins Acquire   0x18           0x98
     TimeSync Wake-Detect Pins Release   0x19           0x99
-    TimeSync ping                       0x1a           0x9a
+    TimeSync Ping                       0x1a           0x9a
     Power Down                          0x1d           0x9d
     Connection Quiescing                0x1e           0x9e
     Module Inserted                     0x1f           0x9f
