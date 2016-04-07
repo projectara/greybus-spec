@@ -837,6 +837,37 @@ response type values are shown.
 
 ..
 
+.. _svc_connection_status_values:
+
+Greybus SVC Connection Status Values
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+As described in :ref:`greybus-protocol-error-codes`, the Connection
+Status Values from 0x80 to 0xfd may be defined by the Protocol in use.
+Table :num:`table-svc-connection-status-values` defines the Connection
+Status Values with specific meaning within the SVC Protocol.
+
+These status values are currently used to signal errors related to
+invalid :ref:`hardware-model-interface-states` during Operation
+handling which depends on those Interface States having particular
+values.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-connection-status-values
+    :caption: SVC Protocol Connection Status Values
+    :spec: l c l
+
+    ============================  ===============  =======================
+    Status                        Value            Meaning
+    ============================  ===============  =======================
+    GB_SVC_INTF_NOT_DETECTED      0x80             DETECT is not DETECT_ACTIVE
+    GB_SVC_INTF_NO_UPRO_LINK      0x81             UNIPRO is not UPRO_UP
+    Reserved                      0x82 to 0xfd     Reserved for future use
+    ============================  ===============  =======================
+
+..
+
 Greybus SVC Ping Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
