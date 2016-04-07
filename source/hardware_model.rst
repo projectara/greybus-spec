@@ -165,6 +165,8 @@ a forcible removal. However, the SVC shall, potentially following such
 a delay and period during which DETECT is DETECT_UNKNOWN, determine
 that the DETECT sub-state is DETECT_INACTIVE.
 
+.. _hardware-model-vsys:
+
 V_SYS
 """""
 
@@ -205,6 +207,8 @@ The SVC shall set the V_SYS sub-state of any Interface States
 associated with a :ref:`forcibly removed <hardware-model-detect>`
 Module to V_SYS_OFF after an implementation-defined delay.
 
+.. _hardware-model-vchg:
+
 V_CHG
 """""
 
@@ -243,6 +247,8 @@ that a Module is attached to the Interface Block.
 The SVC shall set the V_CHG sub-state of any Interface States
 associated with a :ref:`forcibly removed <hardware-model-detect>`
 Module to V_CHG_OFF after an implementation-defined delay.
+
+.. _hardware-model-wake:
 
 WAKE
 """"
@@ -299,6 +305,8 @@ does *not* imply that a Module is attached to the Interface Block.
 The SVC shall set the WAKE sub-state of any Interface States
 associated with a :ref:`forcibly removed <hardware-model-detect>`
 Module to WAKE_UNSET after an implementation-defined delay.
+
+.. _hardware-model-unipro:
 
 UNIPRO
 """"""
@@ -375,6 +383,8 @@ Module to UPRO_OFF.
 .. NOTE: "may set the UNIPRO [...]" is on purpose. We want to allow
    current and future implementations some latitude to perform
    AP-driven cleanup of the network at their leisure.
+
+.. _hardware-model-refclk:
 
 REFCLK
 """"""
@@ -455,6 +465,8 @@ does *not* imply that a Module is attached to the Interface Block.
 The SVC shall set the RELEASE sub-state of any Interface States
 associated with a :ref:`forcibly removed <hardware-model-detect>`
 Module to RELEASE_DEASSERTED after an implementation-defined delay.
+
+.. _hardware-model-intf-type:
 
 INTF_TYPE
 """""""""
@@ -562,6 +574,8 @@ Module to ORDER_UNKNOWN after an implementation-defined delay.
    teardown means in terms of Greybus -- and to explain why the way
    the bootrom works has some problems (it causes a CPort leak that
    has to be cleaned up). This section will contain that information.
+
+.. _hardware-model-mailbox:
 
 MAILBOX
 """""""
