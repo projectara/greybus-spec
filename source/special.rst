@@ -2335,16 +2335,16 @@ Greybus SVC Module Inserted Request
 
 Table :num:`table-svc-module-inserted-request` defines the Greybus SVC
 Module Inserted request payload.  The request specifies the location
-of the Primary Interface on the Frame for the inserted Module.  It
-also specifies the number of Interfaces covered by the Module.
+of the :ref:`Primary Interface <glossary-primary-interface>` to the
+newly inserted Module in the primary_intf_id field.  It also specifies
+the number of Interfaces covered by the Module in the intf_count
+field; this includes the Primary Interface, plus the total number of
+:ref:`Secondary Interfaces <glossary-secondary-interface>` to the
+Module, if any.
 
-The location of each Interface ID on a Frame is well-defined:
-Interface ID 1 represents the Interface Block at the top left of the
-back (non-display) side of the Frame.  The next Interface ID is 2,
-and it represents the Interface Block below (toward the bottom of
-the Frame) Interface ID 1.  Interface IDs increase consecutively,
-moving counter-clockwise around the Frame.  The size of a Module
-(its interface count) is always 1 or more.
+Interface IDs increase consecutively, moving counter-clockwise around
+the Frame.  The size of a Module (the value of the intf_count field in
+the Module Inserted request payload) is always one or more.
 
 .. figtable::
     :nofig:
