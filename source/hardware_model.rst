@@ -660,6 +660,8 @@ detailed description of the actions taken by the AP, SVC, and each
 Interface is given describing how transitions between Lifecycle States
 are managed.
 
+.. _hardware-model-lifecycle-attached:
+
 ATTACHED
 """"""""
 
@@ -684,6 +686,8 @@ ATTACHED is the following group of Interface States::
    RELEASE=RELEASE_DEASSERTED, INTF_TYPE=IFT_UNKNOWN,
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
    MAILBOX=MAILBOX_NULL)
+
+.. _hardware-model-lifecycle-activated:
 
 ACTIVATED
 """""""""
@@ -731,6 +735,8 @@ ACTIVATED is the following group of Interface States::
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
    MAILBOX=<MAILBOX_NONE or MAILBOX_GREYBUS>)
 
+.. _hardware-model-lifecycle-enumerated:
+
 ENUMERATED
 """"""""""
 
@@ -765,6 +771,8 @@ ENUMERATED is the following group of Interface States::
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
    MAILBOX=MAILBOX_GREYBUS)
 
+.. _hardware-model-lifecycle-mode-switching:
+
 MODE_SWITCHING
 """"""""""""""
 
@@ -795,6 +803,8 @@ MODE_SWITCHING is the following group of Interface States::
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
    MAILBOX=MAILBOX_GREYBUS)
 
+.. _hardware-model-lifecycle-suspended:
+
 SUSPENDED
 """""""""
 
@@ -816,6 +826,8 @@ SUSPENDED is the following group of Interface States::
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
    MAILBOX=MAILBOX_GREYBUS)
 
+.. _hardware-model-lifecycle-off:
+
 OFF
 """
 
@@ -832,6 +844,8 @@ OFF is the following group of Interface States::
    INTF_TYPE=<IFT_DUMMY, IFT_UNIPRO, or IFT_GREYBUS>,
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
    MAILBOX=MAILBOX_NULL)
+
+.. _hardware-model-lifecycle-detached:
 
 DETACHED
 """"""""
