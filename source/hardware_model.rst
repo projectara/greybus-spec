@@ -521,20 +521,23 @@ The values of the INTF_TYPE sub-state are given in Table
    :nofig:
    :label: table-interface-state-type
    :caption: INTF_TYPE sub-state values
-   :spec: l l
+   :spec: l l l
 
-   =============  ================================================
-   Value          Description
-   =============  ================================================
-   IFT_UNKNOWN    Module not attached, type is undetermined, or error occurred
-   IFT_DUMMY      Module attached which does not support |unipro| communication
-   IFT_UNIPRO     Module attached which supports |unipro|, but not Greybus Protocols
-   IFT_GREYBUS    Module attached which supports Greybus Protocols
-   =============  ================================================
+   =============  ======  ================================================
+   INTF_TYPE      Value   Description
+   =============  ======  ================================================
+   IFT_UNKNOWN    0       Module not attached, type is undetermined, or error occurred
+   IFT_DUMMY      1       Module attached does not support |unipro| communication
+   IFT_UNIPRO     2       Module attached supports |unipro|, but not Greybus Protocols
+   IFT_GREYBUS    3       Module attached supports Greybus Protocols
+   =============  ======  ================================================
 
 ..
 
-The value of the INTF_TYPE sub-state is set by the SVC.
+The value of the INTF_TYPE sub-state is set by the SVC. Because the
+INTF_TYPE sub-state is communicated to the AP via Greybus Operations,
+its symbolic names are also given numeric values as shown in the
+table.
 
 From the module perspective, the physical connections made to
 Interface Blocks may not always support Greybus
