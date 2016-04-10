@@ -74,7 +74,7 @@ Conceptually, the Operations in the Greybus Control Protocol are:
 
     Refer to :ref:`greybus-protocol-version-operation`.
 
-.. c:function:: int get_manifest_size(u16 *size);
+.. c:function:: int get_manifest_size(u16 *manifest_size);
 
     This Operation is used by the AP to discover the size of a module's
     Interface Manifest.  This is used after the SVC has discovered which
@@ -207,22 +207,48 @@ request and response messages.
 Greybus Control Get Manifest Size Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus control get manifest size Operation is used by the AP for
-all non-AP Interfaces (other than interface zero, which belongs to the
-SVC), on hotplug event, to determine the size of the manifest.
+The Greybus Control Get Manifest Size Operation is used by the AP to
+ensure an Interface's :ref:`Manifest <manifest-description>` is
+available for retrieval via Greybus. After this Operation is
+successfully exchanged, the AP may retrieve the Manifest using
+the :ref:`control_get_manifest`.
+
+Although the AP may send this request at any time, it should only do
+so during the "enumerate" transition from the
+:ref:`hardware-model-lifecycle-activated` Interface :ref:`Lifecycle
+State <hardware-model-lifecycle-states>` to
+:ref:`hardware-model-lifecycle-enumerated`, as defined in
+:ref:`lifecycles_interface_lifecycle`. This is described in
+:ref:`lifecycles_enumerate`. The effect of this Operation under other
+conditions is unspecified.
+
+For brevity, the following terminology is used: if an Interface State
+is :ref:`hardware-model-lifecycle-activated`, its INTF_TYPE is
+IFT_GREYBUS, and the procedure in :ref:`lifecycles_enumerate` is being
+followed, including use of these operations, then the Interface *is
+being enumerated*. The Interface Lifecycle State becomes ENUMERATED if
+this procedure completes successfully.
 
 Greybus Control Get Manifest Size Request
 """""""""""""""""""""""""""""""""""""""""
 
-The Greybus control get manifest size request is sent by the AP to all
-non-AP modules.  The Greybus control get manifest size request message
-has no payload.
+The Greybus Control Get Manifest Size Request has no payload.
+
+The Greybus Control Get Manifest Size Request is sent by the AP to the
+Interface in order to request that the Interface ensure its Manifest
+data structure is available for subsequent retrieval.
+
+If an Interface is being enumerated, the Interface shall ensure an
+Interface Manifest is available for later retrieval by the AP as a
+result of receiving this request. It shall then notify the AP of the
+size of this Manifest in the response, as described below.
 
 Greybus Control Get Manifest Size Response
 """"""""""""""""""""""""""""""""""""""""""
 
-The Greybus control get manifest size response contains a two byte field
-'size'.
+The Greybus Control Get Manifest Size Response contains a two byte
+field, manifest_size. If the response status is not GB_OP_SUCCESS, the
+value of manifest_size is undefined and shall be ignored.
 
 .. figtable::
     :nofig:
@@ -233,10 +259,18 @@ The Greybus control get manifest size response contains a two byte field
     =======  ==============  ===========  ==========      ===========================
     Offset   Field           Size         Value           Description
     =======  ==============  ===========  ==========      ===========================
-    0        size            2            Number          Size of the Manifest
+    0        manifest_size   2            Number          Size of the Manifest
     =======  ==============  ===========  ==========      ===========================
 
 ..
+
+The manifest_size field in the response payload shall contain the size
+in bytes of the Interface Manifest which may be subsequently retrieved
+by the AP. If an Interface is being enumerated when it sends this
+response, the Interface shall not alter the size of this Interface
+Manifest as long as it continues being enumerated.
+
+.. _control_get_manifest:
 
 Greybus Control Get Manifest Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
