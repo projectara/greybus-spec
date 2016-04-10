@@ -805,6 +805,11 @@ Conceptually, the operations in the Greybus SVC Protocol are:
    The AP uses this Operation to request the SVC to set Interface
    State intf_id's :ref:`hardware-model-unipro` to UPRO_OFF.
 
+.. c:function:: int intf_activate(u8 intf_id, u8 *intf_type);
+
+   The AP uses this Operation to request that the SVC attempt
+   to activate an Interface for communication via Greybus.
+
 Greybus SVC Operations
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -863,7 +868,8 @@ response type values are shown.
     Interface REFCLK Disable            0x24           0xa4
     Interface UNIPRO Enable             0x25           0xa5
     Interface UNIPRO Disable            0x26           0xa6
-    (all other values reserved)         0x27..0x7e     0xa7..0xfe
+    Interface Activate                  0x27           0xa7
+    (all other values reserved)         0x28..0x7e     0xa8..0xfe
     Invalid                             0x7f           0xff
     ==================================  =============  ==============
 
@@ -895,7 +901,16 @@ values.
     ===============================  ===============  ======================================
     GB_SVC_INTF_NOT_DETECTED         0x80             DETECT is not DETECT_ACTIVE
     GB_SVC_INTF_NO_UPRO_LINK         0x81             UNIPRO is not UPRO_UP
-    Reserved                         0x82 to 0xfd     Reserved for future use
+    GB_SVC_INTF_UPRO_NOT_DOWN        0x82             UNIPRO is not UPRO_DOWN
+    GB_SVC_INTF_NO_V_SYS             0x83             V_SYS is not V_SYS_ON
+    GB_SVC_INTF_V_CHG                0x84             V_CHG is V_CHG_ON
+    GB_SVC_INTF_WAKE_BUSY            0x85             WAKE is not WAKE_UNSET
+    GB_SVC_INTF_NO_REFCLK            0x86             REFCLK is not REFCLK_ON
+    GB_SVC_INTF_RELEASING            0x87             RELEASE is RELEASE_ASSERTED
+    GB_SVC_INTF_NO_ORDER             0x88             ORDER is ORDER_UNKNOWN
+    GB_SVC_INTF_MBOX_SET             0x89             MAILBOX is not MAILBOX_NONE
+    GB_SVC_INTF_BAD_MBOX             0x8a             Interface set MAILBOX to illegal value
+    Reserved                         0x8b to 0xfd     Reserved for future use
     ===============================  ===============  ======================================
 
 ..
@@ -3515,6 +3530,215 @@ response status is GB_OP_SUCCESS:
 - UNIPRO is UPRO_DOWN if result_code is UPRO_OK.
 - UNIPRO shall not have changed value if result_code is UPRO_BUSY.
 - UNIPRO is unpredictable if result_code is UPRO_FAIL.
+
+.. _svc_interface_activate:
+
+Greybus SVC Interface Activate Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SVC Interface Activate Operation allows the AP to request
+the SVC to "activate" an Interface by initializing it and
+determining if it is capable of communication via Greybus.
+
+More precisely, use of this Operation is the final step in a sequence
+of Greybus Operations which are used when transitioning an
+:ref:`Interface State <hardware-model-interface-states>` to the
+:ref:`hardware-model-lifecycle-activated` Interface :ref:`Lifecycle
+State <hardware-model-lifecycle-states>`, as defined in
+:ref:`lifecycles_interface_lifecycle`.
+
+Though the AP may send this request at any time, the AP should only do
+so during the "boot" and "reboot" transitions in the Interface
+Lifecycle state machine as defined in :ref:`lifecycles_boot` and
+:ref:`lifecycles_reboot`. The effect of sending this request under
+other conditions is unspecified.
+
+The SVC shall not send this Operation request.
+
+Greybus SVC Interface Activate Request
+""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-interface-activate-request` defines the Greybus
+SVC Interface Activate Request payload.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-interface-activate-request
+    :caption: SVC Protocol Interface Activate Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ============    =====================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ============    =====================
+    0        intf_id         1       Interface ID    Interface to activate
+    =======  ==============  ======  ============    =====================
+..
+
+Upon receiving this request, the SVC shall check the following
+sub-states of the :ref:`Interface State
+<hardware-model-interface-states>` with ID intf_id have these values:
+
+- :ref:`hardware-model-detect` is DETECT_ACTIVE
+- :ref:`hardware-model-vsys` is V_SYS_ON
+- :ref:`hardware-model-vchg` is V_CHG_OFF
+- :ref:`hardware-model-wake` is WAKE_UNSET
+- :ref:`hardware-model-unipro` is UPRO_DOWN
+- :ref:`hardware-model-refclk` is REFCLK_ON
+- :ref:`hardware-model-release` is RELEASE_DEASSERTED
+- :ref:`hardware-model-order` is ORDER_PRIMARY or ORDER_SECONDARY
+- :ref:`hardware-model-mailbox` is MAILBOX_NONE
+
+If any of these conditions does not hold, the SVC shall send a
+response to the AP signaling an error as described below. The SVC
+shall take no further action related to such a request beyond sending
+the response.
+
+Otherwise, the only Interface sub-state whose value is not constrained
+is :ref:`hardware-model-intf-type`.
+
+The SVC and Module shall now activate the Interface by following
+these steps in the order specified.
+
+If this sequence completes successfully, INTF_TYPE is one of
+IFT_DUMMY, IFT_UNIPRO, or IFT_GREYBUS, and the Interface State's
+:ref:`Interface Lifecycle State <hardware-model-lifecycle-states>` is
+consequently :ref:`hardware-model-lifecycle-activated`. If this
+sequence fails, INTF_TYPE is IFT_UNKNOWN, and the SVC shall signal an
+error to the AP in the response, as described below.
+
+This sequence is also depicted in :ref:`lifecycles_boot` and
+:ref:`lifecycles_reboot`.
+
+1. If the SVC is notified that UNIPRO is UPRO_LSS at any time,
+   immediately proceed to step 6.
+
+2. The SVC shall initiate a :ref:`WAKE pulse <hardware-model-wake>`
+   for a duration greater than or equal to the WAKE Pulse Cold Boot
+   Threshold.
+
+3. After the WAKE Pulse completes, the SVC shall start a timer, for an
+   implementation-defined duration.
+
+   If the SVC detects the timer has expired and UNIPRO is UPRO_DOWN,
+   the activation sequence is complete. The SVC shall set
+   :ref:`hardware-model-intf-type` to IFT_DUMMY. The Interface State
+   is ACTIVATED, as described above.  When this occurs, immediately
+   proceed to step 9.
+
+4. Since DETECT is DETECT_ACTIVE, a Module is attached to the
+   Interface Block. If the attached Module's Interface is capable of
+   communication via |unipro|, it shall detect when the WAKE Pulse
+   duration equals the WAKE Pulse Cold Boot Threshold, and perform an
+   internal reset sequence to its initial state.
+
+   Note that the Interface may draw power from the Frame, and make use
+   of the reference clock supplied by the Frame, during this
+   initialization, since V_SYS and REFCLK are respectively V_SYS_ON
+   and REFCLK_ON.
+
+5. If the Interface is capable of |unipro| communications, it shall
+   set UNIPRO to UPRO_LSS during its initialization sequence.
+
+   As stated in :ref:`hardware-model-unipro`, the SVC shall be
+   notified if UNIPRO is set to UPRO_LSS, and if UNIPRO remains
+   UPRO_LSS for too long, UNIPRO autonomously becomes UPRO_DOWN.
+
+   Note that the Interface cannot set MAILBOX unless UNIPRO is
+   UPRO_UP.
+
+6. If the SVC receives the notification that UNIPRO is UPRO_LSS
+   following any previous step, the SVC shall attempt to set UNIPRO to
+   UPRO_UP, and start another timer, for another implementation
+   defined duration.
+
+   If the SVC detects this timer has expired and
+   :ref:`hardware-model-mailbox` is MAILBOX_NONE, the activation
+   sequence is complete. The SVC shall set INTF_TYPE to
+   IFT_UNIPRO. The Interface State is ACTIVATED, as described above.
+   When this occurs, immediately proceed to step 9.
+
+7. If the Interface is notified that UNIPRO is UPRO_UP and supports
+   Greybus communications, it may set MAILBOX to MAILBOX_GREYBUS. The
+   Interface shall not set MAILBOX to any other value.
+
+   Before setting MAILBOX, the Interface shall ensure that the
+   :ref:`greybus-interface-attributes` are set to their correct values
+   and are available for retrieval, if they are supported.
+
+   If the Interface sets MAILBOX, it shall subsequently respond to
+   incoming :ref:`control-protocol` Operation Requests as defined in
+   that section if the appropriate CPort is connected and used for
+   Greybus communication.
+
+8. As stated in :ref:`hardware-model-mailbox`, the SVC can detect if
+   the MAILBOX value has changed, and if so, to what value.
+
+   If this occurs and MAILBOX is not MAILBOX_GREYBUS, the SVC shall
+   set INTF_TYPE to IFT_UNKNOWN, and signal an error to the AP as
+   described below.
+
+9. Regardless of the path to reach this step, the INTF_TYPE sub-state
+   is now set. The activation sequence is complete.
+
+   If the Interface State is ACTIVATED, the SVC shall now send a
+   successful response. Otherwise, it shall signal an error in the
+   response.
+
+Greybus SVC Interface Activate Response
+"""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-interface-activate-response` defines the Greybus
+SVC Interface Activate Response payload. If the Response status is not
+GB_OP_SUCCESS, the value of the intf_type field is undefined and shall
+be ignored.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-interface-activate-response
+    :caption: SVC Protocol Interface Activate Response
+    :spec: l l c c l
+
+    =======  ==============  ======  ============    ======================================================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ============    ======================================================
+    0        intf_type       1       INTF_TYPE       :ref:`hardware-model-intf-type` of activated Interface
+    =======  ==============  ======  ============    ======================================================
+..
+
+After receiving the request, the SVC first checked various sub-states
+before before starting the activation sequence. If any of these checks
+failed, the SVC shall signal errors to the AP in the response by
+setting the response status byte as follows.
+
+- If DETECT was not DETECT_ACTIVE, the status is
+  GB_SVC_INTF_NOT_DETECTED.
+- Otherwise, if V_SYS was not V_SYS_ON, the status is
+  GB_SVC_INTF_NO_V_SYS.
+- Otherwise, if V_CHG was not V_CHG_OFF, the status is
+  GB_SVC_INTF_V_CHG.
+- Otherwise, if WAKE was not WAKE_UNSET, the status is
+  GB_SVC_INTF_WAKE_BUSY.
+- Otherwise, if UNIPRO was not UPRO_DOWN, the status is
+  GB_SVC_INTF_UPRO_NOT_DOWN.
+- Otherwise, if REFCLK was not REFCLK_ON, the status is
+  GB_SVC_INTF_NO_REFCLK.
+- Otherwise, if RELEASE was not RELEASE_DEASSERTED, the status is
+  GB_SVC_INTF_RELEASING.
+- Otherwise, if ORDER was ORDER_UNKNOWN, the status is
+  GB_SVC_INTF_NO_ORDER.
+- Otherwise, if MAILBOX was not MAILBOX_NONE, the status is
+  GB_SVC_INTF_MBOX_SET.
+
+Also as described above, INTF_TYPE may be IFT_UNKNOWN due to the
+Interface having set MAILBOX to an illegal value. If this occurred,
+the SVC shall signal an error to the AP in the response by setting the
+status to GB_SVC_INTF_BAD_MBOX.
+
+If the Interface State is :ref:`hardware-model-lifecycle-activated`
+and no other errors occurred, the SVC shall set the response status to
+GB_OP_SUCCESS. In this case, the intf_type field in the response
+payload contains the numeric value of the INTF_TYPE as defined in
+:ref:`hardware-model-intf-type`.
 
 .. _bootrom-protocol:
 
