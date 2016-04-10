@@ -1719,10 +1719,52 @@ and are defined in table :num:`table-svc-connection-create-request-flags`.
 
 ..
 
+Upon receiving the request, the SVC shall check that the
+:ref:`hardware-model-interface-states` with IDs intf1_id and intf2_id
+both have DETECT equal to DETECT_ACTIVE, and UNIPRO equal to UPRO_UP.
+
+If these conditions do not hold, the SVC cannot satisfy the request,
+and shall send a response signaling an error as described below. The
+SVC shall take no further action related to such an unsatisfiable
+request beyond sending the response.
+
+Otherwise, the SVC shall attempt to establish a |unipro| connection
+between the CPort with ID cport1_id on Interface intf1_id, and CPort
+with ID cport2_id on Interface intf2_id. The SVC shall attempt to
+establish the connection using the Traffic Class and CPort features
+given by the tc and flags field in the request, respectively. This
+sequence may change the values of |unipro| DME attributes on the
+UniPorts attached to each Interface Block identified in the request.
+
+.. NB: the language "|unipro| DME attributes" is deliberately more
+   general than "layer 4 DME attributes with selector indexes given by
+   cport1_id, cport2_id [...]". We have to set other attributes
+   sometimes for backwards compatibility with some systems
+   (specifically, gen 1 bridge ASIC mailbox attributes, for boot ROM
+   compatibility).
+
 Greybus SVC Connection Create Response
 """"""""""""""""""""""""""""""""""""""
 
 The Greybus SVC connection create response message contains no payload.
+
+The SVC shall return the following errors depending on the sub-state
+values of the :ref:`hardware-model-interface-states` with Interface IDs
+given by intf1_id and intf2_id in the request payload:
+
+- If DETECT is not DETECT_ACTIVE in both Interface States, the
+  response shall have status GB_SVC_INTF_NOT_DETECTED.
+
+- If DETECT is DETECT_ACTIVE in both Interface States, and UNIPRO is
+  not UPRO_UP in both Interface States, the response shall have status
+  GB_SVC_INTF_NO_UPRO_LINK.
+
+If the SVC fails to establish a |unipro| connection between the two
+Interfaces due to an I/O or protocol error on the |unipro| links, the
+response status value shall equal GB_OP_UNKNOWN_ERROR. When this
+occurs, the values of the |unipro| DME attributes of one or both of
+the Interfaces is unpredictable, as are the values of the UNIPRO
+sub-states for the Interfaces identified in the request.
 
 Greybus SVC Connection Quiescing Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1802,10 +1844,43 @@ the connection to be destroyed.
 
 ..
 
+Upon receiving the request, the SVC shall check that the
+:ref:`hardware-model-interface-states` with IDs intf1_id and intf2_id
+both have DETECT equal to DETECT_ACTIVE, and UNIPRO equal to UPRO_UP.
+
+If these conditions do not hold, the SVC cannot satisfy the request,
+and shall send a response signaling an error as described below. The
+SVC shall take no further action related to such an unsatisfiable
+request beyond sending the response.
+
+Otherwise, the SVC shall attempt to disable the |unipro| connection
+between the CPort with ID cport1_id on Interface intf1_id, and CPort
+with ID cport2_id on Interface intf2_id. This sequence may change the
+values of |unipro| DME attributes on the UniPorts attached to each
+Interface Block identified in the request.
+
 Greybus SVC Connection Destroy Response
 """""""""""""""""""""""""""""""""""""""
 
 The Greybus SVC connection destroy response message contains no payload.
+
+The SVC shall return the following errors depending on the sub-state
+values of the :ref:`hardware-model-interface-states` with Interface IDs
+given by intf1_id and intf2_id in the request payload:
+
+- If DETECT is not DETECT_ACTIVE in both Interface State, the response
+  shall have status GB_SVC_INTF_NOT_DETECTED.
+
+- If DETECT is DETECT_ACTIVE for both Interface States, and UNIPRO is
+  not UPRO_UP in both Interface States, the response shall have status
+  GB_SVC_INTF_NO_UPRO_LINK.
+
+If the SVC fails to destroy the |unipro| connection between the two
+Interfaces due to an I/O or protocol error on the |unipro| links, the
+response status value shall equal GB_OP_UNKNOWN_ERROR. When this
+occurs, the values of the |unipro| DME attributes of one or both of
+the Interfaces is unpredictable, as are the values of the UNIPRO
+sub-states for the Interfaces identified in the request.
 
 Greybus SVC TimeSync Enable Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
