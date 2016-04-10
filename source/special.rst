@@ -785,6 +785,16 @@ Conceptually, the operations in the Greybus SVC Protocol are:
    The AP uses this Operation to request the SVC to set Interface
    State intf_id's :ref:`hardware-model-vsys` to V_SYS_OFF.
 
+.. c:function:: int intf_refclk_enable(u8 intf_id, u8 *result);
+
+   The AP uses this Operation to request the SVC to set Interface
+   State intf_id's :ref:`hardware-model-refclk` to REFCLK_ON.
+
+.. c:function:: int intf_refclk_disable(u8 intf_id, u8 *result);
+
+   The AP uses this Operation to request the SVC to set Interface
+   State intf_id's :ref:`hardware-model-refclk` to REFCLK_OFF.
+
 Greybus SVC Operations
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -839,7 +849,9 @@ response type values are shown.
     Module Removed                      0x20           0xa0
     Interface V_SYS Enable              0x21           0xa1
     Interface V_SYS Disable             0x22           0xa2
-    (all other values reserved)         0x23..0x7e     0xa3..0xfe
+    Interface REFCLK Enable             0x23           0xa3
+    Interface REFCLK Disable            0x24           0xa4
+    (all other values reserved)         0x25..0x7e     0xa5..0xfe
     Invalid                             0x7f           0xff
     ==================================  =============  ==============
 
@@ -3072,6 +3084,216 @@ result_code field in the response payload, as described in Table
 :num:`table-svc-interface-vsys-result-code`. In particular, V_SYS is
 V_SYS_OFF if the response status field is GB_OP_SUCCESS and the
 result_code field in the response is V_SYS_OK. V_SYS shall not have
+changed value as a result of processing the request in any other
+combination of these two fields.
+
+.. _svc_interface_refclk_enable:
+
+Greybus SVC Interface REFCLK Enable Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The AP uses this Operation to request the SVC to set an
+:ref:`Interface State's <hardware-model-interface-states>`
+:ref:`hardware-model-refclk` to REFCLK_ON.
+
+Though the AP may send this request at any time, the AP should only do
+so under one of the following conditions:
+
+- during the "boot" and "reboot" transitions in the :ref:`Interface
+  Lifecycle <hardware-model-lifecycle-states>` state machine, as
+  described in :ref:`lifecycles_boot` and :ref:`lifecycles_reboot`.
+
+- while the Interface State is
+  :ref:`hardware-model-lifecycle-enumerated`, if REFCLK is REFCLK_OFF and
+  the AP has determined using application-specific means that REFCLK
+  should be set to REFCLK_ON.
+
+- if the Interface State is :ref:`hardware-model-lifecycle-enumerated`
+  and REFCLK is REFCLK_OFF, during the "ms_enter" transition in the
+  Interface Lifecycle state machine, as described in
+  :ref:`lifecycles_ms_enter`.
+
+- during the "resume" transition in the Interface Lifecycle state
+  machine, as described in :ref:`lifecycles_resume`.
+
+The SVC shall not set REFCLK to REFCLK_ON except as a result of
+receiving a Greybus REFCLK Enable Request.
+
+Greybus SVC Interface REFCLK Enable Request
+"""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-interface-refclk-enable-request` defines the Greybus SVC
+Interface REFCLK Enable Request payload.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-interface-refclk-enable-request
+    :caption: SVC Protocol Interface REFCLK Enable Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ============    ============
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ============    ============
+    0        intf_id         1       Interface ID    Interface ID
+    =======  ==============  ======  ============    ============
+..
+
+The SVC, on receiving this request, shall attempt to set the REFCLK
+sub-state of the Interface State specified by the intf_id field to
+REFCLK_ON.
+
+.. _svc_interface_refclk_enable_response:
+
+Greybus SVC Interface REFCLK Enable Response
+""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-interface-refclk-enable-response` defines the
+Greybus SVC Interface REFCLK Enable Response payload. The response
+contains a one-byte result_code field.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-interface-refclk-enable-response
+    :caption: SVC Protocol Interface REFCLK Enable Response
+    :spec: l l c c l
+
+    =======  ===========  ======  ==========  ===========
+    Offset   Field        Size    Value       Description
+    =======  ===========  ======  ==========  ===========
+    0        result_code  1       Number      Result Code
+    =======  ===========  ======  ==========  ===========
+..
+
+The status of the response shall not be used to determine the value of
+REFCLK after the response is received. It shall only be used to
+indicate the result of the Greybus communication.  If a Greybus SVC
+Interface REFCLK Enable Response has status different than
+GB_OP_SUCCESS, a Greybus communication error has occurred; the REFCLK
+sub-state identified in the request shall not have changed as a result
+of processing the request. If the Greybus SVC Interface REFCLK Enable
+Response has status GB_OP_SUCCESS, it shall indicate that no Greybus
+communication error was detected.
+
+However, a response status equal to GB_OP_SUCCESS alone does not imply
+the intended REFCLK is now REFCLK_ON. When the response status is
+GB_OP_SUCCESS, the value of REFCLK may be determined given the
+result_code field in the response, as described in Table
+:num:`table-svc-interface-refclk-result-code`. In particular, REFCLK
+is REFCLK_ON if the response status is GB_OP_SUCCESS and result_code
+is REFCLK_OK. REFCLK shall not have changed value as a result of
+processing the request in any other combination of these two fields.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-interface-refclk-result-code
+    :caption: Interface REFCLK Enable and Interface REFCLK Disable result_code
+    :spec: l l l
+
+    ================  ========  ======================================================================
+    Result Code       Value     Description
+    ================  ========  ======================================================================
+    REFCLK_OK         0         REFCLK enable/disable operation was successful.
+    REFCLK_BUSY       1         REFCLK enable/disable operation cannot be attempted as the SVC is busy.
+    REFCLK_FAIL       2         REFCLK enable/disable was attempted and failed.
+    (Reserved)        3-255     (Reserved for future use)
+    ================  ========  ======================================================================
+..
+
+.. _svc_interface_refclk_disable:
+
+Greybus SVC Interface REFCLK Disable Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The AP uses this Operation to request the SVC to set an
+:ref:`Interface State's <hardware-model-interface-states>`
+:ref:`hardware-model-refclk` to REFCLK_OFF.
+
+Though the AP may send this request at any time, the AP should only do
+so under one of the following conditions:
+
+- during "early_power_down" transition in the :ref:`Interface
+  Lifecycle <hardware-model-lifecycle-states>` state machine, as
+  described in :ref:`lifecycles_early_power_down`.
+
+- while the Interface State is
+  :ref:`hardware-model-lifecycle-enumerated`, if REFCLK is REFCLK_ON and
+  the AP has determined using application-specific means that REFCLK
+  should be set to REFCLK_OFF.
+
+- if the Interface State is :ref:`hardware-model-lifecycle-enumerated`
+  and REFCLK is REFCLK_ON, during the "power_down" transition in the
+  Interface Lifecycle state machine, as described in
+  :ref:`lifecycles_power_down`.
+
+- if the Interface State is :ref:`hardware-model-lifecycle-enumerated`
+  and REFCLK is REFCLK_ON, during the "suspend" transition in the
+  Interface Lifecycle state machine, as described in
+  :ref:`lifecycles_suspend`.
+
+- during the "forcible_removal" transition in the Interface Lifecycle
+  state machine, as described in :ref:`lifecycles_forcible_removal`.
+
+The SVC shall set REFCLK to REFCLK_OFF without having received an
+Interface REFCLK Disable Request only under the conditions specified in
+:ref:`hardware-model-refclk`.
+
+Greybus SVC Interface REFCLK Disable Request
+""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-interface-refclk-disable-request` defines the Greybus SVC
+Interface REFCLK Disable Request payload.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-interface-refclk-disable-request
+    :caption: SVC Protocol Interface REFCLK Disable Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ============    ============
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ============    ============
+    0        intf_id         1       Interface ID    Interface ID
+    =======  ==============  ======  ============    ============
+..
+
+The SVC, on receiving this request, shall attempt to set the REFCLK
+sub-state of the Interface State specified by the intf_id field to
+REFCLK_OFF.
+
+Greybus SVC Interface REFCLK Disable Response
+"""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-interface-refclk-disable-response` defines the
+Greybus SVC Interface REFCLK Disable Response payload. The response
+contains a one-byte result_code field.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-interface-refclk-disable-response
+    :caption: SVC Protocol Interface REFCLK Disable Response
+    :spec: l l c c l
+
+    =======  ===========  ======  ==========  ===========
+    Offset   Field        Size    Value       Description
+    =======  ===========  ======  ==========  ===========
+    0        result_code  1       Number      Result Code
+    =======  ===========  ======  ==========  ===========
+..
+
+The meaning of the response status field and result_code response
+payload field are analogous to the corresponding status and
+result_code fields in the Interface REFCLK Enable Response.
+
+That is, the status of the response shall only be used to indicate the
+result of the Greybus communication, exactly as described in
+:ref:`svc_interface_refclk_enable_response`.
+
+Similarly, when the Interface REFCLK Disable response status is
+GB_OP_SUCCESS, the value of REFCLK may be determined given the
+result_code field in the response payload, as described in Table
+:num:`table-svc-interface-refclk-result-code`. In particular, REFCLK
+is REFCLK_OFF if the response status field is GB_OP_SUCCESS and the
+result_code field in the response is REFCLK_OK. REFCLK shall not have
 changed value as a result of processing the request in any other
 combination of these two fields.
 
