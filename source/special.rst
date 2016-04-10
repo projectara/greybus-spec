@@ -1120,6 +1120,21 @@ The Greybus SVC Protocol Route Create Operation allows the AP Module
 to request a route be established for |unipro| traffic between two
 Interfaces.
 
+.. NB: the language here uses "UniPro Message" instead of "Greybus
+   Operation" on purpose: we will still need routes for e.g. UFS.
+
+While handling this Operation request, the SVC may attempt to create a
+*route* within the Frame. This is a necessary condition for |unipro|
+Messages to subsequently be exchanged between the UniPorts attached to
+the Interface Blocks identified by the request.
+
+However, creation of a route is not a sufficient condition for Message
+exchange. In order to exchange |unipro| Messages between the two
+Interfaces, a successful :ref:`svc_connection_create`
+between the two interfaces is required as well. Additional Operations
+are required to establish a Greybus Connection, as described in
+:ref:`lifecycles_connection_management`.
+
 Greybus SVC Route Create Request
 """"""""""""""""""""""""""""""""
 
@@ -1144,10 +1159,37 @@ IDs of two Interfaces to be connected.
 
 ..
 
+Upon receiving the request, the SVC shall check that the
+:ref:`hardware-model-interface-states` with IDs intf1_id and intf2_id
+have DETECT equal to DETECT_ACTIVE, and UNIPRO equal to UPRO_UP.
+
+If these conditions do not hold, the SVC cannot satisfy the request,
+and shall send a response signaling an error as described below. The
+SVC shall take no further action related to such an unsatisfiable
+request beyond sending the response.
+
+Otherwise, the SVC shall attempt to create the specified route.
+
 Greybus SVC Route Create Response
 """""""""""""""""""""""""""""""""
 
 The Greybus SVC Protocol Route Create response contains no payload.
+
+The SVC shall return the following errors depending on the sub-state
+values of the :ref:`hardware-model-interface-states` with Interface IDs
+given by intf1_id and intf2_id in the request payload:
+
+- If DETECT is not DETECT_ACTIVE in both Interface States, the
+  response shall have status GB_SVC_INTF_NOT_DETECTED.
+
+- If DETECT is DETECT_ACTIVE in both Interface States, and UNIPRO is
+  not UPRO_UP in both Interface States, the response shall have status
+  GB_SVC_INTF_NO_UPRO_LINK.
+
+Regardless of the response status value, the Greybus SVC Route Create
+Operation shall have no effect on either the UNIPRO sub-state of
+either Interface identified by the request, or the value of any of the
+|unipro| DME attributes for the Interfaces identified by the request.
 
 Greybus SVC Route Destroy Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1155,6 +1197,14 @@ Greybus SVC Route Destroy Operation
 The Greybus SVC Protocol Route Destroy Operation allows the AP Module
 to request a route be torn down for |unipro| traffic between two
 Interfaces.
+
+While handling this Operation, the SVC may tear down a previously
+created *route* within the Frame. This is a sufficient condition for
+preventing subsequent |unipro| Messages from being exchanged between
+the UniPorts attached to the Interface Blocks identified by the
+request; however, additional Operations are required to completely
+release resources acquired during Greybus Connection establishment, as
+described in :ref:`lifecycles_connection_management`.
 
 Greybus SVC Route Destroy Request
 """""""""""""""""""""""""""""""""
@@ -1178,10 +1228,18 @@ of two Interfaces between which the route should be destroyed.
 
 ..
 
+Upon receiving the request, the SVC shall attempt to destroy the
+specified route.
+
 Greybus SVC Route Destroy Response
 """"""""""""""""""""""""""""""""""
 
 The Greybus SVC Protocol Route Destroy response contains no payload.
+
+Regardless of the response status value, the Greybus SVC Route Destroy
+Operation shall have no effect on either the UNIPRO sub-state of
+either Interface identified by the request, or the value of any of the
+|unipro| DME attributes for the Interfaces identified by the request.
 
 Greybus SVC Interface Device ID Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1732,6 +1790,7 @@ Table :num:`table-svc-interface-set-power-mode-response-pwr-change-result-code`.
 
 ..
 
+.. _svc_connection_create:
 
 Greybus SVC Connection Create Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
