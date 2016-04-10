@@ -858,13 +858,13 @@ values.
     :caption: SVC Protocol Connection Status Values
     :spec: l c l
 
-    ============================  ===============  =======================
-    Status                        Value            Meaning
-    ============================  ===============  =======================
-    GB_SVC_INTF_NOT_DETECTED      0x80             DETECT is not DETECT_ACTIVE
-    GB_SVC_INTF_NO_UPRO_LINK      0x81             UNIPRO is not UPRO_UP
-    Reserved                      0x82 to 0xfd     Reserved for future use
-    ============================  ===============  =======================
+    ===============================  ===============  ======================================
+    Status                           Value            Meaning
+    ===============================  ===============  ======================================
+    GB_SVC_INTF_NOT_DETECTED         0x80             DETECT is not DETECT_ACTIVE
+    GB_SVC_INTF_NO_UPRO_LINK         0x81             UNIPRO is not UPRO_UP
+    Reserved                         0x82 to 0xfd     Reserved for future use
+    ===============================  ===============  ======================================
 
 ..
 
