@@ -4,7 +4,10 @@ Glossary
 .. _glossary-ap-module:
 
 AP Module
-    Application Processor Module.
+    Application Processor Module. This is also written as "AP" for
+    brevity.
+
+.. XXX Though we really ought to pick one and be consistent.
 
 Application Processor Module
     A specially designated :ref:`Module <glossary-module>` within a
