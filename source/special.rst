@@ -512,17 +512,21 @@ requests after sending the Control Disconnecting Response.
 Greybus Control Disconnected Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus control disconnected Operation is sent to notify an
-Interface that a CPort (other than control CPort) that was formerly
-the subject of a Greybus Control Connected Operation shall no longer
-be used.  No more messages may be sent over this connection, and any
-messages received shall be discarded.
+The Greybus Control Disconnected Operation is sent to notify an
+Interface that a Greybus Connection has been closed. The users of the
+CPorts at each end of the Connection shall no longer transmit data on
+their respective CPorts unless a new Connection is established using
+those CPorts. Any messages received by the Interface on the CPort
+after the Control Disconnected Request is received shall be discarded,
+unless a Greybus Connection is later reestablished on that CPort.
 
 Greybus Control Disconnected Request
 """"""""""""""""""""""""""""""""""""
 
-The Greybus control disconnected request supplies the CPort ID on the
-receiving Interface that is no longer connected.
+The Greybus Control Disconnected Request supplies the CPort ID on the
+receiving Interface for the Greybus Connection which is now closed.
+The |unipro| CPort on the Interface which was at one end of the
+Connection may subsequently be disconnected by the SVC.
 
 .. figtable::
     :nofig:
@@ -538,10 +542,18 @@ receiving Interface that is no longer connected.
 
 ..
 
+After receiving the request, the Interface shall perform any
+implementation-defined procedures required to make the CPort usable if
+a Greybus Connection is later reestablished on that CPort. The
+Interface may set local |unipro| attributes related to that CPort to
+implementation-defined values as part of this process.  If such
+procedures are required by the Interface, it shall complete them
+before sending the response.
+
 Greybus Control Disconnected Response
 """""""""""""""""""""""""""""""""""""
 
-The Greybus control disconnected response message contains no payload.
+The Greybus Control Disconnected Response message contains no payload.
 
 Greybus Control TimeSync Enable Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
