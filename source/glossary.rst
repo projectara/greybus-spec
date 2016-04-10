@@ -280,3 +280,21 @@ Slot
     with multiple Interfaces may be connected to multiple
     Modules. Additionally, a Module may be connected to multiple
     Interfaces, depending upon its size.
+
+.. _glossary-wake-pulse:
+
+WAKE Pulse
+    An assertion and deassertion of the :ref:`hardware-model-wake`
+    sub-state of an :ref:`Interface State <glossary-interface-state>`.
+
+.. _glossary-wake-pulse-cold-boot:
+
+WAKE Pulse Cold Boot Threshold
+    An implementation-defined duration in time. If a :ref:`WAKE Pulse
+    <glossary-wake-pulse>` occurs on an :ref:`Interface State
+    <glossary-interface-state>` and exceeds this duration, then any
+    Module which is attached to the corresponding Interface Block
+    which is capable of Greybus communications shall initialize or
+    re-initialize itself.
+
+    Additional details are described in :ref:`hardware-model-wake`.

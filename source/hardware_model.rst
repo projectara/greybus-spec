@@ -299,10 +299,11 @@ WAKE sub-state by following this sequence, assuming WAKE is WAKE_UNSET.
 3. Set WAKE to WAKE_DEASSERTED
 4. Set WAKE to WAKE_UNSET
 
-This is called a "WAKE pulse". When the duration of the WAKE pulse
-exceeds an implementation-defined threshold, this is a signal to any
-attached Module to initiate (or reinitiate) Greybus communication, as
-described in later sections.
+This is called a *WAKE Pulse*. When the duration of the WAKE Pulse
+equals or exceeds an implementation-defined threshold, the *WAKE Pulse
+Cold Boot Threshold*, this is a signal to any attached Module to
+initiate (or reinitiate) |unipro|, and subsequently Greybus,
+communication, as described in later sections.
 
 .. XXX this "as described" descriptions are currently not described
    anywhere; later updates will need to fix that once Interface States
