@@ -624,7 +624,7 @@ MAILBOX
 """""""
 
 The MAILBOX sub-state is either the value MAILBOX_NULL or a
-non-negative integer.
+32-bit unsigned integer.
 
 The MAILBOX sub-state represents the value of an
 implementation-defined DME attribute, named the "mailbox", which is
@@ -647,14 +647,15 @@ in Table :num:`table-interface-state-mailbox`.
    :caption: MAILBOX sub-state values
    :spec: l l l
 
-   =======================    ======  =========================
-   MAILBOX sub-state          Value   Description
-   =======================    ======  =========================
-   MAILBOX_NULL               (none)  UNIPRO is UPRO_OFF; DME attribute access is not possible
-   MAILBOX_NONE (Reserved)    0       Initial DME attribute value; reserved for internal use
-   (Reserved)                 1       Reserved for internal use
-   MAILBOX_GREYBUS            2       Module is ready for :ref:`control-protocol` Connection
-   =======================    ======  =========================
+   =======================    ===============  ========================================================
+   MAILBOX sub-state          Value            Description
+   =======================    ===============  ========================================================
+   MAILBOX_NULL               (none)           UNIPRO is UPRO_OFF; DME attribute access is not possible
+   MAILBOX_NONE (Reserved)    0x0              Initial DME attribute value; reserved for internal use
+   (Reserved)                 0x1              Reserved for internal use
+   MAILBOX_GREYBUS            0x2              Module is ready for :ref:`control-protocol` Connection
+   (Reserved)                 0x3..0xFFFFFFFF  Reserved for future use
+   =======================    ===============  ========================================================
 
 ..
 
