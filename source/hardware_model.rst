@@ -51,6 +51,9 @@ present in a Greybus System for use within the Greybus Specification.
   the Greybus System, are given in
   :ref:`hardware-model-lifecycle-states`.
 
+- :ref:`hardware-model-ap-module-requirements` defines special
+  requirements related to the AP Module and SVC.
+
 Each Interface State in a Greybus System is given a unique identifier,
 its Interface ID.  Interface IDs increase consecutively, moving
 counter-clockwise around the Frame.
@@ -899,3 +902,42 @@ signaling to the Interface Block, as in the OFF Lifecycle State.
 DETACHED is the following group of Interface States:
 
 .. include:: lifecycle-states/detached.txt
+
+.. _hardware-model-ap-module-requirements:
+
+Special AP Module Requirements
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+As stated above, a Greybus System contains an AP Module and an SVC.
+This section defines special requirements related to these components.
+
+- The AP Module shall be connected to the Frame via Interface Blocks
+  whose Interface IDs are known to the SVC.
+
+  For convenience, the Interface States with these Interface IDs are
+  the *AP Interface States*, the corresponding Interface Blocks are
+  *AP Interface Blocks*, and the corresponding Interfaces are *AP
+  Interfaces*.
+
+- The Interface Blocks by which the AP Module connects to the Frame
+  may differ from those by which other Modules attach to the Frame,
+  but AP Interface Blocks nonetheless have an associated Interface
+  State as specified above.
+
+- The following sub-states for all AP Interface States may, according
+  to the implementation, be set by the AP, not the SVC:
+
+  - REFCLK
+
+- The following sub-states for all AP Interface States are defined as
+  these constant values:
+
+  - DETECT is DETECT_ACTIVE
+  - V_SYS is V_SYS_ON
+  - V_CHG is V_CHG_OFF
+  - RELEASE is RELEASE_DEASSERTED
+  - INTF_TYPE is IFT_GREYBUS
+  - ORDER is ORDER_UNKNOWN
+
+- The AP Module shall be able to restore the SVC to its reset state,
+  and to release it from reset.
