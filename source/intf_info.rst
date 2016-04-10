@@ -25,10 +25,21 @@ Interface.  Together, these Descriptors define the Interface's
 capabilities and means of communication via |unipro| from the
 perspective of the application layer and above.
 
+.. _manifest-description:
+
+Manifest
+--------
+
+The Manifest is a contiguous block of data that includes a Manifest
+Header and a set of Descriptors.  When read, a Manifest is transferred
+in its entirety.  This allows the Interface to be described to the AP
+Module all at once, alleviating the need for multiple communication
+messages during the enumeration phase of the Interface.
+
 .. _manifest-data-requirements:
 
-Data Requirements
------------------
+Manifest Data Requirements
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 All data found in Manifest structures defined below shall adhere to
 the following general requirements:
@@ -51,17 +62,6 @@ the following general requirements:
   Protocols (like that between the AP Module and SVC) shall be
   versioned, to allow future extensions (or fixes) to be added and
   recognized.
-
-.. _manifest-description:
-
-Manifest
---------
-
-The Manifest is a contiguous block of data that includes a Manifest
-Header and a set of Descriptors.  When read, a Manifest is transferred
-in its entirety.  This allows the Interface to be described to the AP
-Module all at once, alleviating the need for multiple communication
-messages during the enumeration phase of the Interface.
 
 Manifest Header
 ^^^^^^^^^^^^^^^
