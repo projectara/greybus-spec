@@ -810,6 +810,12 @@ Conceptually, the operations in the Greybus SVC Protocol are:
    The AP uses this Operation to request that the SVC attempt
    to activate an Interface for communication via Greybus.
 
+.. c:function:: int intf_resume(u8 intf_id);
+
+   The AP uses this Operation to request that the SVC attempt to
+   resume an Interface which is in a low power mode into a state where
+   it can again communicate via Greybus.
+
 Greybus SVC Operations
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -869,7 +875,8 @@ response type values are shown.
     Interface UNIPRO Enable             0x25           0xa5
     Interface UNIPRO Disable            0x26           0xa6
     Interface Activate                  0x27           0xa7
-    (all other values reserved)         0x28..0x7e     0xa8..0xfe
+    Interface Resume                    0x28           0xa8
+    (all other values reserved)         0x28..0x7e     0xa9..0xfe
     Invalid                             0x7f           0xff
     ==================================  =============  ==============
 
@@ -910,7 +917,8 @@ values.
     GB_SVC_INTF_NO_ORDER             0x88             ORDER is ORDER_UNKNOWN
     GB_SVC_INTF_MBOX_SET             0x89             MAILBOX is not MAILBOX_NONE
     GB_SVC_INTF_BAD_MBOX             0x8a             Interface set MAILBOX to illegal value
-    Reserved                         0x8b to 0xfd     Reserved for future use
+    GB_SVC_INTF_UPRO_NOT_HIBERNATED  0x8b             UNIPRO is not UPRO_HIBERNATE
+    Reserved                         0x8c to 0xfd     Reserved for future use
     ===============================  ===============  ======================================
 
 ..
@@ -3706,7 +3714,7 @@ be ignored.
 ..
 
 After receiving the request, the SVC first checked various sub-states
-before before starting the activation sequence. If any of these checks
+before starting the activation sequence. If any of these checks
 failed, the SVC shall signal errors to the AP in the response by
 setting the response status byte as follows.
 
@@ -3739,6 +3747,176 @@ and no other errors occurred, the SVC shall set the response status to
 GB_OP_SUCCESS. In this case, the intf_type field in the response
 payload contains the numeric value of the INTF_TYPE as defined in
 :ref:`hardware-model-intf-type`.
+
+.. _svc_interface_resume:
+
+Greybus SVC Interface Resume Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SVC Interface Resume Operation allows the AP to request
+the SVC to "resume" an Interface State which was previously
+:ref:`hardware-model-lifecycle-suspended`, allowing it to later be
+:ref:`hardware-model-lifecycle-enumerated`.
+
+More precisely, use of this Operation is one step in a sequence of
+Greybus Operations which are used when transitioning an
+:ref:`Interface State <hardware-model-interface-states>` to the
+:ref:`hardware-model-lifecycle-enumerated` Interface :ref:`Lifecycle
+State <hardware-model-lifecycle-states>` from the
+:ref:`hardware-model-lifecycle-suspended` Lifecycle State, as defined
+in :ref:`lifecycles_interface_lifecycle`.
+
+Though the AP may send this request at any time, the AP should only do
+so during the "resume" transition in the Interface Lifecycle state
+machine as defined in :ref:`lifecycles_resume`. The effect of sending
+this request under other conditions is unspecified.
+
+The SVC shall not send this Operation request.
+
+Greybus SVC Interface Resume Request
+""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-interface-resume-request` defines the Greybus
+SVC Interface Resume Request payload.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-interface-resume-request
+    :caption: SVC Protocol Interface Resume Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ============    =====================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ============    =====================
+    0        intf_id         1       Interface ID    Interface to resume
+    =======  ==============  ======  ============    =====================
+..
+
+Upon receiving this request, the SVC shall check the following
+sub-states of the :ref:`Interface State
+<hardware-model-interface-states>` with ID intf_id have these values:
+
+- :ref:`hardware-model-detect` is DETECT_ACTIVE
+- :ref:`hardware-model-vsys` is V_SYS_ON
+- :ref:`hardware-model-wake` is WAKE_UNSET
+- :ref:`hardware-model-unipro` is UPRO_HIBERNATE
+- :ref:`hardware-model-refclk` is REFCLK_ON
+- :ref:`hardware-model-release` is RELEASE_DEASSERTED
+- :ref:`hardware-model-intf-type` is IFT_GREYBUS
+- :ref:`hardware-model-order` is ORDER_PRIMARY or ORDER_SECONDARY
+- :ref:`hardware-model-mailbox` is MAILBOX_NONE
+
+If any of these conditions does not hold, the SVC shall send a
+response to the AP signaling an error as described below. The SVC
+shall take no further action related to such a request beyond sending
+the response.
+
+The SVC and Module shall now resume the Interface by following
+these steps in the order specified.
+
+This sequence is also depicted in :ref:`lifecycles_resume`.
+
+1. If the SVC detects at any time that :ref:`hardware-model-mailbox`
+   is MAILBOX_GREYBUS, the resume sequence has succeeded. Go
+   directly to step 6.
+
+2. The SVC shall initiate a :ref:`WAKE Pulse <hardware-model-wake>`
+   for a duration less than the WAKE Pulse Cold Boot Threshold.
+
+   After the WAKE Pulse, the SVC shall delay in this step for an
+   implementation-defined duration to allow the Interface to prepare
+   for the sequence to continue.
+
+3. Since INTF_TYPE is IFT_GREYBUS, the Interface is capable of
+   |unipro| and Greybus communication.
+
+   The Interface shall detect the WAKE Pulse, and that its duration
+   was less than the Wake Pulse Cold Boot Threshold. As a result, it
+   shall perform an implementation-specific resume sequence. This
+   sequence shall ensure that the Interface receives a notification if
+   the SVC attempts to set UNIPRO to UPRO_UP.
+
+   Note that the Interface may draw power from the Frame, and make use
+   of the reference clock supplied by the Frame, during this resume
+   sequence, since V_SYS and REFCLK are respectively V_SYS_ON and
+   REFCLK_ON.
+
+4. As described in :ref:`hardware-model-unipro`, the SVC can attempt
+   to set UNIPRO to UPRO_UP, and shall be notified if the attempt
+   succeeds or fails.
+
+   The SVC shall now attempt to set UNIPRO to UPRO_UP, and delay until
+   it is notified whether the attempt succeeds or fails.
+
+   If the attempt succeeds, the SVC sets a timer for an
+   implementation-defined duration. If the SVC detects this timer has
+   expired and :ref:`hardware-model-mailbox` is MAILBOX_NONE, the
+   resume sequence has failed. The SVC shall signal an error to the AP
+   as described below. Go directly to step 6.
+
+   If the attempt fails, the resume sequence has failed. The SVC shall
+   signal an error to the AP as described below. Go directly to
+   step 6.
+
+5. As described above, the Interface shall also be notified that
+   UNIPRO has successfully been set to UNIPRO_UP. When this occurs,
+   the Interface shall set MAILBOX to MAILBOX_GREYBUS. The Interface
+   shall not set MAILBOX to any other value.
+
+   After setting MAILBOX, the Interface shall subsequently respond to
+   incoming :ref:`control-protocol` Operation Requests as defined in
+   that section if the appropriate CPort is connected and used for
+   Greybus communication.
+
+   The SVC shall detect the new value of MAILBOX. The resume sequence
+   has succeeded. The SVC shall signal this success to the AP in the
+   response to this request as described below.
+
+6. The resume sequence is now complete, and has succeeded or failed.
+   The SVC shall signal completion and either success or failure to
+   the AP as described below.
+
+Greybus SVC Interface Resume Response
+"""""""""""""""""""""""""""""""""""""
+
+The Greybus SVC Interface Resume Response has no payload.
+
+After receiving the request, the SVC first checked various sub-states
+before before starting the resume sequence. If any of these checks
+failed, the SVC shall signal errors to the AP in the response by
+setting the response status byte as follows.
+
+- If DETECT was not DETECT_ACTIVE, the status is
+  GB_SVC_INTF_NOT_DETECTED.
+- Otherwise, if V_SYS was not V_SYS_ON, the status is
+  GB_SVC_INTF_NO_V_SYS.
+- Otherwise, if WAKE was not WAKE_UNSET, the status is
+  GB_SVC_INTF_WAKE_BUSY.
+- Otherwise, if UNIPRO was not UPRO_HIBERNATE, the status is
+  GB_SVC_INTF_UPRO_NOT_HIBERNATED.
+- Otherwise, if REFCLK was not REFCLK_ON, the status is
+  GB_SVC_INTF_NO_REFCLK.
+- Otherwise, if RELEASE was not RELEASE_DEASSERTED, the status is
+  GB_SVC_INTF_RELEASING.
+- Otherwise, if ORDER was ORDER_UNKNOWN, the status is
+  GB_SVC_INTF_NO_ORDER.
+- Otherwise, if MAILBOX was not MAILBOX_NONE, the status is
+  GB_SVC_INTF_MBOX_SET.
+
+If a protocol error occurs due to erroneous Interface behavior which
+writes a different value than MAILBOX_GREYBUS to MAILBOX, the SVC
+shall set the status to GB_SVC_INTF_BAD_MBOX.
+
+If the resume sequence failed because the SVC detected in step 4 that
+MAILBOX was MAILBOX_NONE, the SVC shall set the status to
+GB_OP_TIMEOUT.
+
+If the resume sequence failed because the SVC was notified in step 4
+that the attempt to set UPRO to UPRO_UP failed, the SVC shall set the
+status to GB_SVC_INTF_NO_UPRO_LINK.
+
+If the resume sequence succeeded and no other errors occurred, the SVC
+shall set the status to GB_OP_SUCCESS.
 
 .. _bootrom-protocol:
 
