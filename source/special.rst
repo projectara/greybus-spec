@@ -144,6 +144,33 @@ Conceptually, the Operations in the Greybus Control Protocol are:
     This Operation is used by the AP to get the version of the Bundle Class
     implemented by a Bundle.
 
+
+.. _control_connection_status_values:
+
+Greybus Control Connection Status Values
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+As described in :ref:`greybus-protocol-error-codes`, the Connection
+Status Values from 0x80 to 0xfd may be defined by the Protocol in use.
+Table :num:`table-control-connection-status-values` defines the
+Connection Status Values with specific meaning within the Control
+Protocol.
+
+.. figtable::
+    :nofig:
+    :label: table-control-connection-status-values
+    :caption: Control Protocol Connection Status Values
+    :spec: l c l
+
+    ===============================  ===============  ======================================
+    Status                           Value            Meaning
+    ===============================  ===============  ======================================
+    GB_CONTROL_BUNDLE_ERR            0x80             Bundle could not be initialized
+    Reserved                         0x81 to 0xfd     Reserved for future use
+    ===============================  ===============  ======================================
+
+..
+
 Greybus Control Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -203,6 +230,8 @@ Greybus implementations adhering to the Protocol specified herein
 shall specify the value |gb-major| for the version_major and
 |gb-minor| for the version_minor fields found in this Operation's
 request and response messages.
+
+.. _control_get_manifest_size:
 
 Greybus Control Get Manifest Size Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -275,23 +304,32 @@ Manifest as long as it continues being enumerated.
 Greybus Control Get Manifest Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus control get manifest Operation is used by the AP for all
-non-AP Interfaces (other than interface zero, which belongs to the SVC),
-on hotplug event, to determine the functionality provided by the
-module via that interface.
+The Greybus Control Get Manifest Operation is used by the AP to
+retrieve an Interface's :ref:`Manifest <manifest-description>` via its
+Control Connection.
+
+Though the AP may send this request at any time, it should only do so
+while the Interface is being enumerated, as defined in
+:ref:`control_get_manifest_size`. The effect of this Operation under
+other conditions is unspecified.
 
 Greybus Control Get Manifest Request
 """"""""""""""""""""""""""""""""""""
 
-The Greybus control get manifest request is sent by the AP to all non-AP
-modules.  The Greybus control get manifest request message has no payload.
+The Greybus Control Get Manifest Request has no payload.
+
+If the Interface is being enumerated, its Manifest is available for
+retrieval by the AP. The Interface shall send it in the response to
+this request.
 
 Greybus Control Get Manifest Response
 """""""""""""""""""""""""""""""""""""
 
-The Greybus control get manifest response contains a block of data, that
-describes the functionality provided by the module. This block of data is also
-known as :ref:`manifest-description`.
+The Greybus Control Get Manifest Response contains a block of data
+that describes the functionality provided by the Interface. The
+contents of this data are defined in :ref:`manifest-description`. If
+the response status is not GB_OP_SUCCESS, the response payload should
+be empty and shall be ignored.
 
 .. figtable::
     :nofig:
@@ -302,10 +340,48 @@ known as :ref:`manifest-description`.
     =======  ==============  ===========  ==========      ===========================
     Offset   Field           Size         Value           Description
     =======  ==============  ===========  ==========      ===========================
-    0        manifest        *size*       Data            Manifest
+    0        manifest        variable     Data            Manifest
     =======  ==============  ===========  ==========      ===========================
 
 ..
+
+If the Interface is being enumerated when it sends this response, the
+size of the Manifest returned by the Interface in this response shall
+equal the manifest_size field in the preceding Get Manifest Size
+Response payload. The size is otherwise not specified.
+
+The Interface shall ensure that if it is being enumerated and the
+response status is GB_OP_SUCCESS, the following shall hold:
+
+1. If the Interface provides CPort Descriptors in the Manifest, then it
+   shall respond to incoming Operation Requests on those CPorts after
+   the AP establishes Greybus Connections using those CPorts as
+   described in :ref:`lifecycles_connection_management`.
+
+2. The Greybus :ref:`Protocols <glossary-connection-protocol>`
+   implemented by the CPort users of any such CPorts shall be as
+   defined in the Manifest.
+
+The Interface State Lifecycle State is ENUMERATED when the AP receives
+such a successful response. The enumeration procedure guarantees that
+the Interface State is in one of two possible values, as follows::
+
+  (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_ON,
+   V_CHG=V_CHG_OFF,
+   WAKE=WAKE_UNSET, UNIPRO=UPRO_UP,
+   REFCLK=REFCLK_ON,
+   RELEASE=RELEASE_DEASSERTED,
+   INTF_TYPE=IFT_GREYBUS,
+   ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
+   MAILBOX=MAILBOX_GREYBUS)
+
+The Interface shall ensure that as long as its Interface State remains
+this value, that the above list of two conditions in this section
+shall continue to hold.
+
+The AP and Interface may subsequently, through Protocol-specific
+means, change the values of some of these sub-states without relaxing
+these requirements.
 
 Greybus Control Connected Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
