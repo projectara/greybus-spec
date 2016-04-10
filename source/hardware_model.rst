@@ -652,7 +652,7 @@ in Table :num:`table-interface-state-mailbox`.
    =======================    ===============  ========================================================
    MAILBOX_NULL               (none)           UNIPRO is UPRO_OFF; DME attribute access is not possible
    MAILBOX_NONE (Reserved)    0x0              Initial DME attribute value; reserved for internal use
-   (Reserved)                 0x1              Reserved for internal use
+   MAILBOX_AP                 0x1              AP Interface is ready for :ref:`svc-protocol` Connection
    MAILBOX_GREYBUS            0x2              Module is ready for :ref:`control-protocol` Connection
    (Reserved)                 0x3..0xFFFFFFFF  Reserved for future use
    =======================    ===============  ========================================================
