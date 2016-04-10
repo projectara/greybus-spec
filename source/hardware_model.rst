@@ -635,7 +635,7 @@ sub-state is NULL. Otherwise, it is a positive integer.
 
 When an Interface State's UNIPRO sub-state is UPRO_UP, a Module may
 write to this DME attribute using a |unipro| peer write. In a Greybus
-System, the SVC is able to detect this write and subsequently read the
+System, the SVC shall detect such a write and subsequently read the
 value of the mailbox attribute.
 
 The values that a Module may write to the mailbox attribute are given
