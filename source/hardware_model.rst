@@ -630,6 +630,8 @@ The MAILBOX sub-state represents the value of an
 implementation-defined DME attribute, named the "mailbox", which is
 present on each port in the |unipro| switch inside the Frame.
 
+The mailbox attribute ID is 0xA000, and its selector index is ignored.
+
 When an Interface State's UNIPRO sub-state is UPRO_OFF, its MAILBOX
 sub-state is NULL. Otherwise, it is a positive integer.
 
