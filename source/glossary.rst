@@ -32,18 +32,29 @@ Bridged PHY Protocol
 
 .. _glossary-connection:
 
-Connection
-    A bidirectional communication path between exactly two
-    :ref:`Modules <glossary-module>`, or between the AP Module and the
-    :ref:`SVC <glossary-svc>`.
+Connection (Greybus)
+    A Greybus Connection, or simply Connection, is a bidirectional
+    communication path between exactly two :ref:`Interfaces
+    <glossary-module>`.
 
     There is a |unipro| CPort at each end of a Connection; each such
     CPort is part of a Module or is associated with the SVC. Modules
     may exchange data on a Connection through transmission and
-    reception of |unipro| Messages, according to one of the
-    :ref:`Protocols <glossary-protocol>` defined by the Greybus
-    Specification. The AP Module also exchanges data on a Connection
-    to the SVC.
+    reception of |unipro| Messages.
+
+    The :ref:`AP <glossary-ap-module>` may establish Connections to
+    Interfaces during :ref:`lifecycles_interface_lifecycle`. When a
+    Connection is established, Greybus :ref:`Operations
+    <glossary-operation>` may be exchanged between the two users of
+    the CPorts at either end of the Connection. The semantics for
+    these Operations are defined by :ref:`Protocols
+    <glossary-protocol>` in the Greybus Specification.
+
+    The AP may also subsequently close Connections. When a Connection
+    is closed, Greybus Operations can no longer be exchanged between
+    the CPort Useres.
+
+    The AP also exchanges data on a Connection with the SVC.
 
 .. _glossary-connection-protocol:
 
