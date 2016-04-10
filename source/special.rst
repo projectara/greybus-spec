@@ -1167,7 +1167,7 @@ intf_id has DETECT equal to DETECT_ACTIVE, and UNIPRO equal to
 UPRO_UP.
 
 If these conditions do not hold, the SVC cannot satisfy the request,
-and shall send a response signalling an error as described below. The
+and shall send a response signaling an error as described below. The
 SVC shall take no further action related to such an unsatisfiable
 request beyond sending the response.
 
