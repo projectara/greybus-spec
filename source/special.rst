@@ -288,6 +288,8 @@ Greybus Control Connected Response
 
 The Greybus control connected response message contains no payload.
 
+.. _control-disconnecting:
+
 Greybus Control Disconnecting Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1869,6 +1871,8 @@ and are defined in table :num:`table-svc-connection-create-request-flags`.
 
 ..
 
+.. _svc_connection_create_flags:
+
 .. figtable::
     :nofig:
     :label: table-svc-connection-create-request-flags
@@ -1937,10 +1941,15 @@ Greybus SVC Connection Quiescing Operation
 
 The AP Module sends this to the SVC to indicate that a connection
 being torn down has entered its quiescing stage before being
-disconnected.  The AP shall have received a response to a Control
-Disconnecting request from the Interface prior to this call.
-This operation allows the SVC to prepare the underlying |unipro|
-connection for an orderly shutdown before it is finally disconnected.
+disconnected. The AP shall ensure that no Operations are in flight on
+the Connection before sending this request.
+
+The SVC Connection Quiescing Operation allows the SVC to prepare the
+underlying |unipro| connection for an orderly shutdown before it is
+finally disconnected. In particular, it allows the AP to later ensure
+that all |unipro| data flow associated with the connection has been
+completed, allowing both users of the connection to later release any
+resources consumed by that connection.
 
 Greybus SVC Connection Quiescing Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1969,10 +1978,66 @@ Interface ID intf2_id and CPort ID cport2_id define the other end.
 
 ..
 
+Before transmitting this request, the AP shall:
+
+- Send a :ref:`control-disconnecting` request on the the Control
+  Connection to intf1_id, unless intf1_id is an AP Interface ID, and
+  receive a successful response.
+
+- Send a :ref:`control-disconnecting` request on the the Control
+  Connection to intf2_id, unless intf2_id is an AP Interface ID, and
+  receive a successful response.
+
+- Ensure that a :ref:`greybus-protocol-ping-operation` is successfully
+  exchanged on the connection.
+
+  If either intf1_id or intf2_id is an AP interface ID, the AP may
+  ensure the Ping Operation is exchanged by sending the ping request
+  from its end of the connection, and receiving the response.
+
+This sequence is depicted in :ref:`lifecycles_connection_management`.
+
+Upon receiving a Connection Quiescing request, the SVC shall check
+that the :ref:`Interface State <hardware-model-interface-states>` with
+ID intf_id has DETECT equal to DETECT_ACTIVE, and UNIPRO equal to
+UPRO_UP.
+
+If these conditions do not hold, the SVC cannot satisfy the request,
+and shall send a response signaling an error as described below. The
+SVC shall take no further action related to such an unsatisfiable
+request beyond sending the response.
+
+Otherwise, the SVC shall perform the *connection-quiesce sequence* by
+temporarily disconnecting both ends of the Connection, then
+reconfiguring them as follows before reconnecting them:
+
+- ensuring :ref:`E2EFC, CSD, and CSV <svc_connection_create_flags>`
+  are all disabled, and
+
+- clearing estimates of local and peer buffer space, as well as credits
+  to send.
+
 Greybus SVC Connection Quiescing Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus SVC Connection Quiescing response message contains no payload.
+
+The SVC shall return the following errors depending on the sub-state
+values of the :ref:`hardware-model-interface-states` with Interface ID
+given by intf_id in the request payload:
+
+- If DETECT is not DETECT_ACTIVE, the response shall have status
+  GB_SVC_INTF_NOT_DETECTED.
+
+- If UNIPRO is not UPRO_UP, the response shall have status
+  GB_SVC_INTF_NO_UPRO_LINK.
+
+If during the handling of the request, the SVC is unable to perform
+the connection quiesce sequence due to fatal errors exchanging
+|unipro| traffic with either end of the Connection, the response
+status shall be GB_OP_UNKNOWN_ERROR. When this occurs, the value of
+the UNIPRO sub-state for the Interface identified in the request is
+unpredictable.
 
 Greybus SVC Connection Destroy Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
