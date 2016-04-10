@@ -2240,6 +2240,16 @@ The Greybus SVC Module Eject operation is sent by the AP Module
 to request the SVC to execute the necessary actions to eject a
 Module from the Frame.
 
+Although the AP may send this Operation's request at any time
+following a successful :ref:`svc_hello`, the AP should ensure that the
+:ref:`Lifecycle State <hardware-model-lifecycle-states>` of each of
+the Interface States associated with the attached Module is either
+:ref:`hardware-model-lifecycle-attached` or
+:ref:`hardware-model-lifecycle-off` before doing so. Otherwise, the
+effect on the Greybus System is equivalent to a
+:ref:`lifecycles_forcible_removal` of the Module, and may otherwise disrupt
+the operation of the System.
+
 Greybus SVC Module Eject Request
 """"""""""""""""""""""""""""""""
 
@@ -2262,10 +2272,30 @@ Interface to the Module which the SVC shall eject from the Frame.
 
 ..
 
+The SVC shall not perform any checking of the Interface State with ID
+given by the primary_intf_id field beyond ensuring it is a valid
+Interface ID.
+
+After receiving the request, the SVC shall set the
+:ref:`hardware-model-release` sub-state for that Interface State to
+RELEASE_ASSERTED before sending a response back to the AP. The SVC may
+send the result before setting RELEASE back to RELEASE_DEASSERTED;
+that is, the RELEASE pulse may end after the AP has already received the
+response.
+
 Greybus SVC Module Eject Response
 """""""""""""""""""""""""""""""""
 
 The Greybus SVC Module Eject response message contains no payload.
+
+As described in :ref:`hardware-model-release`, a RELEASE pulse is only
+an attempt to eject the Module. The Module may still be in the
+MODULE_ATTACHED state after the AP receives the result. Furthermore,
+the RELEASE pulse may fail to eject the Module.
+
+If the release pulse is successful, the AP will receive a subsequent
+notification from the SVC in the form of a :ref:`svc_module_removed`
+request.
 
 Greybus SVC Key Event Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2731,6 +2761,8 @@ Greybus SVC Module Inserted Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus SVC Module Inserted response message contains no payload.
+
+.. _svc_module_removed:
 
 Greybus SVC Module Removed Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

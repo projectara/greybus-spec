@@ -469,6 +469,8 @@ The SVC shall set the REFCLK sub-state of any Interface States
 associated with a :ref:`forcibly removed <hardware-model-detect>`
 Module to REFCLK_OFF after an implementation-defined delay.
 
+.. _hardware-model-release:
+
 RELEASE
 """""""
 
@@ -498,7 +500,7 @@ in :ref:`hardware-model-order`. The SVC may set the RELEASE sub-state
 of an Interface Block which is the Primary Interface to an attached
 module to RELEASE_ASSERTED for an implementation-defined duration, then set
 RELEASE to RELEASE_DEASSERTED, in order to attempt to eject the attached
-module from the Frame.
+module from the Frame. This is called a "RELEASE pulse".
 
 The consequences of setting an Interface State's RELEASE sub-state for
 a Secondary Interface to a Module, or when the Interface State's
