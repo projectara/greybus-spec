@@ -6,9 +6,15 @@ Special Protocols
 This section defines three Protocols, each of which serves a special
 purpose in a Greybus system.
 
-The first is the :ref:`control-protocol`.  Every Interface shall provide
-a CPort that uses the Control Protocol. It is used by the AP Module to
-notify Interfaces when connections are available for them to use.
+The first is the :ref:`control-protocol`.  Interfaces may provide a
+CPort whose user implements the Control Protocol.  The AP may
+establish a Connection between one of its Interfaces' CPorts and such
+CPorts. If it does, the AP may subsequently send Operations on that
+Connection to perform basic initialization of the Interface, configure
+it, send it notifications, and otherwise interact with the Interface
+at a high level. The AP may also use Control Connections while
+establishing and closing other Connections to CPorts declared in the
+Interface's :ref:`Manifest <manifest-description>`.
 
 The second is the :ref:`svc-protocol`, which is used only between the
 SVC and AP Module.  The SVC provides low-level control of the |unipro|
@@ -30,19 +36,33 @@ deprecated for new designs requiring Firmware download to the Module.
 Control Protocol
 ----------------
 
-All Interfaces are required to define a CPort that uses the Control
-Protocol, and shall be prepared to receive Operation requests on that
-CPort at any time. The CPort that uses the Control Protocol must have an
-id of '0'. CPort id '0' is a reserved CPort address for the Control
-Protocol. Similarly the bundle descriptor associated with the Control
-CPort must have an id of '0'. Bundle id '0' is a reserved id for the
-Control Protocol bundle descriptor.
+Interfaces with :ref:`hardware-model-intf-type` equal to IFT_GREYBUS
+shall provide a CPort that responds to the Operations defined in this
+section. Such a CPort is a :ref:`Control CPort
+<glossary-control-cport>`.  If an Interface provides a Control CPort,
+its CPort ID shall be zero.
 
-A Greybus connection is established whenever a control connection is used,
-but the Interface is never notified that such a connection exists. Only
-the AP Module is able to send control requests.  Any other Interface
-shall only send control response messages, and such messages shall
-only be sent in reply to a request received on its control CPort.
+Such Interfaces shall be prepared to receive Operation requests on
+that CPort under conditions defined later in this chapter.  In
+particular, this may occur as a result of successful :ref:`Interface
+Activate <svc_interface_activate>` and :ref:`Interface Resume
+<svc_interface_resume>` Operations, which are defined below in the
+:ref:`svc-protocol`.
+
+Also using a sequence of SVC Protocol Operations, the AP may establish
+a Greybus Connection to a Control CPort if it has determined that the
+Interface is prepared for incoming Operations on that CPort, and the
+Connection is not already established. Any such Connection is a
+:ref:`Control Connection <glossary-control-connection>`. This sequence
+is defined in :ref:`lifecycles_control_establishment`.
+
+Interfaces are not notified when Control Connections are
+established.
+
+Only the AP shall send requests on a Control Connection. Other
+Interfaces shall only send response messages. An Interface shall send
+a response on a Control Connection only after receiving a request from
+the AP.
 
 Conceptually, the Operations in the Greybus Control Protocol are:
 

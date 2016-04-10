@@ -61,6 +61,20 @@ Connection (Greybus)
 Connection Protocol
     See :ref:`Protocol <glossary-protocol>`.
 
+.. _glossary-control-connection:
+
+Control Connection:
+    A :ref:`Connection <glossary-connection>` which is used to
+    exchange :ref:`Operations <glossary-operation>` in the
+    :ref:`control-protocol`.
+
+.. _glossary-control-cport:
+
+Control CPort:
+    A |unipro| CPort provided by an Interface which, under certain
+    conditions, responds to Greybus :ref:`Operations
+    <glossary-operation>` in the :ref:`control-protocol`.
+
 .. _glossary-device-class-protocol:
 
 Device Class Protocol
