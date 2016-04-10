@@ -1462,6 +1462,17 @@ Greybus SVC Interface Set Power Mode Operation
 The AP sends this to the SVC to request that it change the |unipro|
 power mode for the |unipro| link on an Interface.
 
+The AP may use this Operation while an :ref:`Interface State
+<hardware-model-interface-states>` is
+:ref:`hardware-model-lifecycle-enumerated` to manage various features
+of the |unipro| link established between the Frame and the attached
+Module.
+
+The AP shall additionally use this Operation in order to perform
+:ref:`lifecycles_power_management` and certain
+:ref:`lifecycles_error_handling` transitions in
+:ref:`lifecycles_interface_lifecycle`.
+
 .. _svc-interface-set-power-mode-request:
 
 Greybus SVC Interface Set Power Mode Request
@@ -1720,6 +1731,19 @@ If tx_mode or rx_mode is UNIPRO_MODE_UNCHANGED, direction-specific
 parameters (tx_gear, tx_nlanes, SVC_PWRM_TXTERMINATION or
 rx_gear, rx_nlanes, SVC_PWRM_RXTERMINATION, respectively) will be ignored.
 
+Upon receiving the request, the SVC shall check that the
+:ref:`Interface State <hardware-model-interface-states>` with ID
+intf_id has DETECT equal to DETECT_ACTIVE, and has a UNIPRO sub-state
+equal to UPRO_UP or UPRO_HIBERNATE.
+
+If these conditions do not hold, the SVC shall send a response
+signaling an error as described below. The SVC shall take not attempt
+to reconfigure any |unipro| links as a result of receiving such a
+request.
+
+Otherwise, the SVC shall attempt to reconfigure the power mode for the
+|unipro| link identified by the request.
+
 When reconfiguring the link power mode as a result of receiving a
 Greybus SVC Interface Set Power Mode Request, the link's transmitter and/or
 receiver power mode shall be set to the given configuration.
@@ -1727,8 +1751,8 @@ The status field of the response to a Greybus SVC Interface Set Power Mode
 Request shall not be used to check the result of the power mode change
 operation. It shall only be used to indicate the result of the Greybus
 communication only. If the response to a Greybus SVC Interface Set Power Mode
-Request has status different than GB_OP_SUCCESS, it shall indicate that a
-Greybus communication error occurred and that the power mode change could not be
+Request has status different than GB_OP_SUCCESS, it shall indicate that an
+error occurred and that the power mode change could not be
 initiated; the targeted link shall be in the same state as before the request
 was issued. If the response to a Greybus SVC Interface Set Power Mode Request
 has status GB_OP_SUCCESS, it shall indicate that there was no Greybus
@@ -1761,6 +1785,16 @@ Greybus SVC Interface Set Power Mode Response payload.
    =======  ======================     =========   ========   ==============================
 
 ..
+
+The SVC shall return the following errors depending on the sub-state
+values of the :ref:`hardware-model-interface-states` with Interface ID
+given by intf_id in the request payload:
+
+- If DETECT is not DETECT_ACTIVE, the response shall have status
+  GB_SVC_INTF_NOT_DETECTED.
+
+- If UNIPRO is not UPRO_UP or UPRO_HIBERNATE, the response shall have
+  status GB_SVC_INTF_NO_UPRO_LINK.
 
 The Greybus Interface Set Power Mode response message contains a field
 which may contain a PowerChangeResultCode as defined by the |unipro|
