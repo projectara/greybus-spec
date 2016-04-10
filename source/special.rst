@@ -912,17 +912,11 @@ Conceptually, the operations in the Greybus SVC Protocol are:
 
 .. c:function:: int intf_hotplug(u8 intf_id, u32 ddbl1_mfr_id, u32 ddbl1_prod_id, u32 ara_vend_id, u32 ara_prod_id, u64 serial_number);
 
-    The SVC sends this to the AP Module to inform it that it has
-    detected a module on the indicated Interface.  It supplies some information
-    that describes the module that has been attached.
-
-.. XXX We may need to adjust based on whether detect is associated
-.. XXX with a module (as opposed to an Interface).
+    This operation is deprecated, and should not be used in new designs.
 
 .. c:function:: int intf_hotunplug(u8 intf_id);
 
-    The SVC sends this to the AP Module to tell it that a module is
-    no longer present on an Interface.
+    This operation is deprecated, and should not be used in new designs.
 
 .. c:function:: int intf_reset(u8 intf_id);
 
@@ -1110,8 +1104,8 @@ response type values are shown.
     Protocol Version                    0x01           0x81
     SVC Hello                           0x02           0x82
     Interface Device ID                 0x03           0x83
-    Interface Hotplug                   0x04           0x84
-    Interface Hot Unplug                0x05           0x85
+    Interface Hotplug (deprecated)      0x04           0x84
+    Interface Hot Unplug (deprecated)   0x05           0x85
     Interface Reset                     0x06           0x86
     Connection Create                   0x07           0x87
     Connection Destroy                  0x08           0x88
@@ -1654,8 +1648,10 @@ GB_OP_UNKNOWN_ERROR. When this occurs, the value of the DeviceID, as
 well as its validity, are unpredictable, as is the value of the UNIPRO
 sub-state for the Interface identified in the request.
 
-Greybus SVC Interface Hotplug Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus SVC Interface Hotplug Operation (Deprecated)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. note:: This operation is deprecated, and should not be used in new designs.
 
 When the SVC first detects that a module is present on an Interface,
 it sends an Interface Hotplug Request to the AP Module.  The hotplug
@@ -1704,8 +1700,10 @@ Greybus SVC Interface Hotplug Response
 
 The Greybus SVC hotplug response message contains no payload.
 
-Greybus SVC Interface Hot Unplug Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus SVC Interface Hot Unplug Operation (Deprecated)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. note:: This operation is deprecated, and should not be used in new designs.
 
 The SVC sends this to the AP Module to tell it that an Interface
 that was previously the subject of an Interface Hotplug Operation is
