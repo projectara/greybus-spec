@@ -276,12 +276,20 @@ known as :ref:`manifest-description`.
 Greybus Control Connected Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus Control Connected Operation is sent to notify an Interface
-that one of its CPorts (other than control CPort) now has a connection
-established.  The SVC sends this request when it has set up a Greybus
-SVC connection with an AP Module Interface.  The AP Module sends this
-request to other Interfaces when it has set up Greybus connections for
-them to use.
+The AP may establish Connections between Interfaces in the Greybus
+System. If the :ref:`Interface State
+<hardware-model-interface-states>` of an Interface has
+:ref:`hardware-model-intf-type` IFT_GREYBUS, the AP shall only attempt
+to establish non-Control Connections to that Interface if its
+Interface State is :ref:`hardware-model-lifecycle-enumerated`.
+
+Connection establishment is performed by the AP using a sequence of
+Operations in the Control and SVC Protocols, as defined in this
+chapter. A later chapter, :ref:`lifecycles`, provides procedures using
+these Operations which establish connections in
+:ref:`lifecycles_connection_management`.  As part of these procedures,
+the AP uses a Greybus Control Connected Operation to notify Interfaces
+when Connections are established.
 
 Greybus Control Connected Request
 """""""""""""""""""""""""""""""""
@@ -307,6 +315,29 @@ Greybus Control Connected Response
 """"""""""""""""""""""""""""""""""
 
 The Greybus control connected response message contains no payload.
+
+If the AP receives a Control Connected response with status
+GB_OP_SUCCESS, it shall store information indicating that the CPort is
+now connected on that Interface.
+
+The AP may later close the Greybus Connection and disconnect the CPort
+using a sequence of Operations in the Control and SVC Protocols. This
+procedure is defined in :ref:`lifecycles_connection_management`, and
+uses Greybus Operations defined in this chapter. If this procedure
+succeeds, the AP no longer needs to store the information that the
+CPort is connected.
+
+The AP also no longer needs to store information indicating that a
+CPort on an Interface is connected if subsequent Operations guarantee
+that the Interface's Interface State is
+:ref:`hardware-model-lifecycle-attached`,
+:ref:`hardware-model-lifecycle-activated`,
+:ref:`hardware-model-lifecycle-off`, or
+:ref:`hardware-model-lifecycle-detached`.
+
+The AP should not send a Control Connected Request to an Interface
+with a cport_id field if it has stored information indicating that the
+CPort is connected. If this occurs, the results are unspecified.
 
 .. _control-disconnecting:
 
