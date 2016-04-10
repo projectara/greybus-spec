@@ -17,13 +17,17 @@ Interface Information
 
 A Greybus Interface shall provide self-descriptive information in
 order to establish communications with other Interfaces on the
-|unipro| network.  This information is provided via a Manifest, which
-describes components present within the Interface that are accessible
-via |unipro|.  The Manifest is a data structure, which includes a set
-of Descriptors, that presents a functional description of the
-Interface.  Together, these Descriptors define the Interface's
-capabilities and means of communication via |unipro| from the
-perspective of the application layer and above.
+|unipro| network.  This information is provided via two mechanisms:
+
+- The Manifest, which describes components present within the Interface
+  that are accessible via |unipro|.  The Manifest is a data structure,
+  which includes a set of Descriptors, that presents a functional
+  description of the Interface.  Together, these Descriptors define
+  the Interface's capabilities and means of communication via |unipro|
+  from the perspective of the application layer and above.
+
+- Greybus Interface Attributes, which are |unipro| DME attributes
+  which also provide identifying information about the Interface.
 
 .. _manifest-description:
 
@@ -428,3 +432,32 @@ typically should not be used.)
     ============================    ==========
 
 ..
+
+.. _greybus-interface-attributes:
+
+Greybus Interface Attributes
+----------------------------
+
+A Greybus Interface capable of |unipro| communication may support
+retrieval via DME Peer Get requests of the following values. If any of
+the Greybus Interface Attributes listed below is supported by an
+implementation, all shall be supported.
+
+If the Greybus Interface Attributes are supported, their attribute IDs
+are implementation-defined.
+
+- Ara Vendor ID: a 32 bit identifier, which identifies the vendor of
+  the Project Ara Module containing the Interface.
+- Ara Product ID: a 32 bit identifier which in combination with the
+  Ara Vendor ID uniquely identifies the Greybus Module containing the
+  Interface as a particular product released by that vendor.
+- Ara Serial Number: a 64 bit identifier which is unique among all
+  Modules, regardless of Ara Vendor ID or Ara Product ID. The Ara
+  Serial Number may require multiple DME attributes for storage.
+- Ara Initialization Status: a 32 bit identifier, which defines the
+  initialization status of the Interface. When supported, this may be
+  retrieved during interface initialization, as described in later
+  chapters.
+
+  If supported, the values of the Ara Initialization Status attribute
+  are implementation-defined.
