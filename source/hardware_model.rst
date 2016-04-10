@@ -782,13 +782,13 @@ between UNIPRO, MAILBOX, and INTF_TYPE is given in Table
    :caption: INTF_TYPE relationship to UNIPRO and MAILBOX in ACTIVATED
    :spec: l l l
 
-   ===============  ===============  ===============
-   UNIPRO           MAILBOX          INTF_TYPE
-   ===============  ===============  ===============
-   UPRO_DOWN        MAILBOX_NONE     IFT_DUMMY
-   UPRO_UP          MAILBOX_NONE     IFT_UNIPRO
-   UPRO_UP          MAILBOX_GREYBUS  IFT_GREYBUS
-   ===============  ===============  ===============
+    ===============  ===============  ===============
+    INTF_TYPE        UNIPRO           MAILBOX
+    ===============  ===============  ===============
+    IFT_DUMMY        UPRO_DOWN        MAILBOX_NONE
+    IFT_UNIPRO       UPRO_UP          MAILBOX_NONE
+    IFT_GREYBUS      UPRO_UP          MAILBOX_GREYBUS
+    ===============  ===============  ===============
 
 ..
 
