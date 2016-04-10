@@ -795,6 +795,16 @@ Conceptually, the operations in the Greybus SVC Protocol are:
    The AP uses this Operation to request the SVC to set Interface
    State intf_id's :ref:`hardware-model-refclk` to REFCLK_OFF.
 
+.. c:function:: int intf_unipro_enable(u8 intf_id, u8 *result);
+
+   The AP uses this Operation to request the SVC to set Interface
+   State intf_id's :ref:`hardware-model-unipro` to UPRO_DOWN.
+
+.. c:function:: int intf_unipro_disable(u8 intf_id, u8 *result);
+
+   The AP uses this Operation to request the SVC to set Interface
+   State intf_id's :ref:`hardware-model-unipro` to UPRO_OFF.
+
 Greybus SVC Operations
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -851,7 +861,9 @@ response type values are shown.
     Interface V_SYS Disable             0x22           0xa2
     Interface REFCLK Enable             0x23           0xa3
     Interface REFCLK Disable            0x24           0xa4
-    (all other values reserved)         0x25..0x7e     0xa5..0xfe
+    Interface UNIPRO Enable             0x25           0xa5
+    Interface UNIPRO Disable            0x26           0xa6
+    (all other values reserved)         0x27..0x7e     0xa7..0xfe
     Invalid                             0x7f           0xff
     ==================================  =============  ==============
 
@@ -3296,6 +3308,213 @@ is REFCLK_OFF if the response status field is GB_OP_SUCCESS and the
 result_code field in the response is REFCLK_OK. REFCLK shall not have
 changed value as a result of processing the request in any other
 combination of these two fields.
+
+.. _svc_interface_unipro_enable:
+
+Greybus SVC Interface UNIPRO Enable Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The AP uses this Operation to request the SVC to set an
+:ref:`Interface State's <hardware-model-interface-states>`
+:ref:`hardware-model-unipro` to UPRO_DOWN.
+
+.. note:: Important:
+
+          1. This operation will *not* result in UNIPRO being
+             UPRO_UP. The |unipro| state machine requires
+             communication between peers before entering the state
+             modeled by the UPRO_UP value of a Greybus Interface
+             State's UNIPRO sub-state. The process by which UNIPRO
+             transitions from UPRO_DOWN to UPRO_UP is described in
+             :ref:`lifecycles_boot`.
+
+          2. There are additional UNIPRO sub-state values which
+             similarly are not reachable using this operation alone.
+
+Though the AP may send this request at any time, the AP should only do
+so during the "boot" and "reboot" transitions in the :ref:`Interface
+Lifecycle <hardware-model-lifecycle-states>` state machine, as
+described in :ref:`lifecycles_boot` and :ref:`lifecycles_reboot`.
+
+The SVC shall not set UNIPRO to UPRO_DOWN except as a result of
+receiving a Greybus UNIPRO Enable Request.
+
+Greybus SVC Interface UNIPRO Enable Request
+"""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-interface-unipro-enable-request` defines the Greybus SVC
+Interface UNIPRO Enable Request payload.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-interface-unipro-enable-request
+    :caption: SVC Protocol Interface UNIPRO Enable Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ============    ============
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ============    ============
+    0        intf_id         1       Interface ID    Interface ID
+    =======  ==============  ======  ============    ============
+..
+
+The SVC, on receiving this request, shall check the UNIPRO sub-state
+of the Interface State with Interface ID intf_id. If UNIPRO is not
+UPRO_OFF, the SVC shall not attemp to change the UNIPRO sub-state
+value. The SVC shall signal an error to the AP in the response as
+described below, and shall take no further action related to this
+request.
+
+If UNIPRO is UPRO_OFF, the SVC shall attempt to set the UNIPRO
+sub-state of the Interface State specified by the intf_id field to
+UPRO_DOWN.
+
+.. _svc_interface_unipro_enable_response:
+
+Greybus SVC Interface UNIPRO Enable Response
+""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-interface-unipro-enable-response` defines the
+Greybus SVC Interface UNIPRO Enable Response payload. The response
+contains a one-byte result_code field.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-interface-unipro-enable-response
+    :caption: SVC Protocol Interface UNIPRO Enable Response
+    :spec: l l c c l
+
+    =======  ===========  ======  ==========  ===========
+    Offset   Field        Size    Value       Description
+    =======  ===========  ======  ==========  ===========
+    0        result_code  1       Number      Result Code
+    =======  ===========  ======  ==========  ===========
+..
+
+The status of the response shall not be used to determine the value of
+UNIPRO after the response is received. It shall only be used to
+indicate the result of the Greybus communication.  If a Greybus SVC
+Interface UNIPRO Enable Response has status different than
+GB_OP_SUCCESS, a Greybus communication error has occurred; the UNIPRO
+sub-state identified in the request shall not have changed as a result
+of processing the request. If the Greybus SVC Interface UNIPRO Enable
+Response has status GB_OP_SUCCESS, it shall indicate that no Greybus
+communication error was detected.
+
+However, a response status equal to GB_OP_SUCCESS alone does not imply
+the intended UNIPRO is now UPRO_DOWN. When the response status is
+GB_OP_SUCCESS, the value of UNIPRO may be determined given the
+result_code field in the response, as described in Table
+:num:`table-svc-interface-unipro-result-code`. In particular, if the
+response status is GB_OP_SUCCESS:
+
+- UNIPRO is UPRO_DOWN if result_code is UPRO_OK.
+- UNIPRO shall not have changed value if result_code is UPRO_BUSY or UPRO_NOT_OFF.
+- UNIPRO is unpredictable if result_code is UPRO_FAIL.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-interface-unipro-result-code
+    :caption: Interface UNIPRO Enable and Interface UNIPRO Disable result_code
+    :spec: l l l
+
+    ================  ========  ======================================================================
+    Result Code       Value     Description
+    ================  ========  ======================================================================
+    UPRO_OK           0         UNIPRO enable/disable operation was successful.
+    UPRO_BUSY         1         UNIPRO enable/disable operation cannot be attempted as the SVC is busy.
+    UPRO_FAIL         2         UNIPRO enable/disable was attempted and failed.
+    UPRO_NOT_OFF      3         UNIPRO was not UPRO_OFF, attempt to set to UPRO_DOWN was not made.
+    (Reserved)        4-255     (Reserved for future use)
+    ================  ========  ======================================================================
+..
+
+.. _svc_interface_unipro_disable:
+
+Greybus SVC Interface UNIPRO Disable Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The AP uses this Operation to request the SVC to set an
+:ref:`Interface State's <hardware-model-interface-states>`
+:ref:`hardware-model-unipro` to UPRO_OFF.
+
+Though the AP may send this request at any time, the AP should only do
+so under one of the following conditions:
+
+- during "early_power_down" transition in the :ref:`Interface
+  Lifecycle <hardware-model-lifecycle-states>` state machine, as
+  described in :ref:`lifecycles_early_power_down`.
+
+- during the "power_down" transition in the Interface Lifecycle state
+  machine, as described in :ref:`lifecycles_power_down`.
+
+- during the "forcible_removal" transition in the Interface Lifecycle
+  state machine, as described in :ref:`lifecycles_forcible_removal`.
+
+The SVC shall set UNIPRO to UPRO_OFF without having received an
+Interface UNIPRO Disable Request only under the conditions specified in
+:ref:`hardware-model-unipro`.
+
+Greybus SVC Interface UNIPRO Disable Request
+""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-interface-unipro-disable-request` defines the Greybus SVC
+Interface UNIPRO Disable Request payload.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-interface-unipro-disable-request
+    :caption: SVC Protocol Interface UNIPRO Disable Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ============    ============
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ============    ============
+    0        intf_id         1       Interface ID    Interface ID
+    =======  ==============  ======  ============    ============
+..
+
+The SVC, on receiving this request, shall attempt to set the UNIPRO
+sub-state of the Interface State specified by the intf_id field to
+UPRO_OFF.
+
+Greybus SVC Interface UNIPRO Disable Response
+"""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-interface-unipro-disable-response` defines the
+Greybus SVC Interface UNIPRO Disable Response payload. The response
+contains a one-byte result_code field.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-interface-unipro-disable-response
+    :caption: SVC Protocol Interface UNIPRO Disable Response
+    :spec: l l c c l
+
+    =======  ===========  ======  ==========  ===========
+    Offset   Field        Size    Value       Description
+    =======  ===========  ======  ==========  ===========
+    0        result_code  1       Number      Result Code
+    =======  ===========  ======  ==========  ===========
+..
+
+The meaning of the response status field and result_code response
+payload field are analogous to the corresponding status and
+result_code fields in the Interface UNIPRO Enable Response.
+
+That is, the status of the response shall only be used to indicate the
+result of the Greybus communication, exactly as described in
+:ref:`svc_interface_unipro_enable_response`.
+
+Similarly, when the Interface UNIPRO Disable response status is
+GB_OP_SUCCESS, the value of UNIPRO may be determined given the
+result_code field in the response payload, as described in Table
+:num:`table-svc-interface-unipro-result-code`. In particular, if the
+response status is GB_OP_SUCCESS:
+
+- UNIPRO is UPRO_DOWN if result_code is UPRO_OK.
+- UNIPRO shall not have changed value if result_code is UPRO_BUSY.
+- UNIPRO is unpredictable if result_code is UPRO_FAIL.
 
 .. _bootrom-protocol:
 
