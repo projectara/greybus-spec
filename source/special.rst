@@ -816,6 +816,11 @@ Conceptually, the operations in the Greybus SVC Protocol are:
    resume an Interface which is in a low power mode into a state where
    it can again communicate via Greybus.
 
+.. c:function:: int intf_mailbox_event(u8 intf_id, u32 mailbox);
+
+   The SVC uses this Operation to inform the AP that an Interface
+   State's :ref:`hardware-model-mailbox` has changed value.
+
 Greybus SVC Operations
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -876,7 +881,8 @@ response type values are shown.
     Interface UNIPRO Disable            0x26           0xa6
     Interface Activate                  0x27           0xa7
     Interface Resume                    0x28           0xa8
-    (all other values reserved)         0x28..0x7e     0xa9..0xfe
+    Interface Mailbox Event             0x29           0xa9
+    (all other values reserved)         0x2a..0x7e     0xaa..0xfe
     Invalid                             0x7f           0xff
     ==================================  =============  ==============
 
@@ -3563,6 +3569,8 @@ other conditions is unspecified.
 
 The SVC shall not send this Operation request.
 
+.. _svc_interface_activate_request:
+
 Greybus SVC Interface Activate Request
 """"""""""""""""""""""""""""""""""""""
 
@@ -3773,6 +3781,8 @@ this request under other conditions is unspecified.
 
 The SVC shall not send this Operation request.
 
+.. _svc_interface_resume_request:
+
 Greybus SVC Interface Resume Request
 """"""""""""""""""""""""""""""""""""
 
@@ -3917,6 +3927,97 @@ status to GB_SVC_INTF_NO_UPRO_LINK.
 
 If the resume sequence succeeded and no other errors occurred, the SVC
 shall set the status to GB_OP_SUCCESS.
+
+.. _svc_mailbox_event:
+
+Greybus SVC Interface Mailbox Event Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SVC Interface Mailbox Event Operation allows the SVC to
+inform the AP that the :ref:`hardware-model-mailbox` of an
+:ref:`Interface State <hardware-model-interface-states>` has changed
+value.
+
+Though this can occur at other times, it carries special meaning
+during the "ms_exit" transition from the
+:ref:`hardware-model-lifecycle-mode-switching` Interface
+:ref:`Lifecycle State <hardware-model-lifecycle-states>` to
+:ref:`hardware-model-lifecycle-enumerated`, as defined in
+:ref:`lifecycles_interface_lifecycle`. This is described in
+:ref:`lifecycles_ms_exit`.
+
+Though an Interface can set the MAILBOX sub-state at other times, it
+should only do so when explicitly required to do so by the Greybus
+Specification. If a MAILBOX changes value due to other circumstances,
+the SVC shall send this Operation Request subject to the restrictions
+described below, with results that are implementation-defined.
+
+The AP shall not send this Operation Request.
+
+Greybus SVC Interface Mailbox Event Request
+"""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-interface-mailbox-event-request` defines the
+Greybus SVC Interface Mailbox Event Request payload.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-interface-mailbox-event-request
+    :caption: SVC Protocol Interface Mailbox Event Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ============    =====================================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ============    =====================================
+    0        intf_id         1       Interface ID    Interface State whose MAILBOX was set
+    1        result_code     2       Number          |unipro| ConfigResultCode
+    1        mailbox         4       Number          MAILBOX value
+    =======  ==============  ======  ============    =====================================
+..
+
+As described in :ref:`hardware-model-mailbox`, under certain
+circumstances, an Interface can set the MAILBOX sub-state for that
+Interface State. This event can be detected by the SVC, and the SVC
+can subsequently read the value written.
+
+If the SVC detects such an attribute write, it shall attempt to send
+an SVC Interface Mailbox Event Request to the AP if none of the
+following conditions hold:
+
+1. The SVC is currently activating that Interface, as described in
+   :ref:`svc_interface_activate_request`.
+
+2. The SVC is currently resuming that Interface, as described in
+   :ref:`svc_interface_resume_request`.
+
+3. The Interface is an :ref:`AP Interface
+   <hardware-model-ap-module-requirements>`.
+
+If any of the above conditions hold, the SVC shall not attempt to send
+a Mailbox Event Request to the AP as a result of detecting that the
+attribute was written.
+
+The SVC shall attempt to exchange a Mailbox Event Request Operation
+with the AP by sending this request under any other circumstances. If
+the Operation fails, the SVC may take no further action as a result of
+detecting the mailbox attribute write.
+
+Before sending the request, the SVC shall attempt to read the mailbox
+attribute, storing the ConfigResultCode as defined in the |unipro|
+specification, as well the mailbox attribute value if the read is
+successful.
+
+The SVC shall then send the request. The intf_id field in the request
+payload shall equal the MAILBOX Interface State's Interface ID. The
+result_code field in the request payload shall equal the previously
+stored ConfigResultCode. The mailbox field in the request payload
+shall be zero if the read failed, and otherwise shall equal the
+mailbox attribute's value.
+
+Greybus SVC Interface Mailbox Event Response
+""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus SVC Interface Mailbox Event Response has no payload.
 
 .. _bootrom-protocol:
 
