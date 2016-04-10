@@ -365,13 +365,57 @@ established that the CPort connections used by Greybus :ref:`Protocols
 
 Other UNIPRO sub-state values are used primarily during communication
 between the SVC and AP during Module initialization, teardown, power
-management, and error handling, as described in later sections.
+management, and error handling, and are subject to the following
+constraints:
 
-A Module must be attached to an Interface Block for its UNIPRO state
-to become UPRO_LSS, UPRO_UP, or UPRO_RELINK. Before a Module is first
-attached to an Interface Block, UNIPRO is either UPRO_OFF or
-UPRO_DOWN. The SVC can set the UNIPRO sub-state to either UPRO_OFF or
-UPRO_DOWN at any time.
+- Before a Module is first attached to an Interface Block, and during
+  the initialization of a Greybus System, UNIPRO is either UPRO_OFF or
+  UPRO_DOWN.
+
+- If a Module is not attached to an Interface Block, UNIPRO cannot
+  become UPRO_UP, UPRO_HIBERNATE, or UPRO_RELINK.
+
+- The SVC can set UNIPRO to either UPRO_OFF (and subsequently to
+  UPRO_DOWN) at any time, regardless of whether a Module is attached
+  to the Interface Block.
+
+- Both the SVC and any attached Module's Interface shall be notified,
+  by implementation-specific means, if UNIPRO becomes any of the
+  values UPRO_LSS, UPRO_UP, UPRO_HIBERNATE, or UPRO_RELINK.
+
+- If UNIPRO is UPRO_DOWN, either the SVC or an attached Module's
+  Interface may set UNIPRO to UPRO_LSS.
+
+- If the SVC sets UNIPRO to UPRO_LSS, the attached Module's Interface
+  may subsequently set UNIPRO to UPRO_UP, within a duration defined by
+  the |unipro| standard.
+
+- If an attached Module's Interface sets UNIPRO to UPRO_LSS, the SVC
+  may subsequently set UNIPRO to UPRO_UP, within the same duration.
+
+- If UNIPRO remains UPRO_LSS for a duration defined by the |unipro|
+  standard, it autonomously (i.e., without the SVC or Module making
+  the change) is set to UPRO_DOWN.
+
+  When this occurs, if the SVC set UNIPRO to UPRO_LSS, the SVC shall
+  be notified by implementation-specific means; similarly, if the
+  Interface sets UNIPRO to UPRO_LSS, the Interface shall be notified by
+  implementation-specific means.
+
+- The SVC can set UNIPRO to UPRO_HIBERNATE.
+
+- If UNIPRO is UPRO_HIBERNATE, the SVC can attempt to set UNIPRO to
+  UPRO_UP.
+
+  The SVC shall be notified whether the attempt succeeds or fails.  If
+  a Module is attached to the Interface Block, the Interface on the
+  Module may be notified if the attempt succeeds or fails. In both
+  cases, the notification is through implementation-specific means.
+
+- An attached Module can, but should not, set UNIPRO to UPRO_HIBERNATE
+  or UPRO_RELINK.
+
+- The SVC can, but should not, set UNIPRO to UPRO_RELINK.
 
 .. XXX those later sections don't have those descriptions yet. But
    they will need these definitions to exist in order to be written.
@@ -382,14 +426,6 @@ the corresponding |unipro| link. Following a :ref:`forcible removal
 link to the Frame via the corresponding Interface Block, the UNIPRO
 sub-state may retain its previous value or change values. This may
 depend upon its current value and any ongoing activity on the link.
-
-The SVC may set the UNIPRO sub-state of any Interface States
-associated with a :ref:`forcibly removed <hardware-model-detect>`
-Module to UPRO_OFF.
-
-.. NOTE: "may set the UNIPRO [...]" is on purpose. We want to allow
-   current and future implementations some latitude to perform
-   AP-driven cleanup of the network at their leisure.
 
 .. _hardware-model-refclk:
 
