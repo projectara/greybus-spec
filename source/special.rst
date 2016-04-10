@@ -2859,6 +2859,29 @@ Interface ID for the Module that is no longer present.
 
 ..
 
+Using the most recent Module Inserted Operation on the SVC protocol
+whose primary_intf_id field equaled the primary_intf_id field in this
+request, the SVC notified the AP that one or more :ref:`Interface
+States <hardware-model-interface-states>` were
+:ref:`hardware-model-lifecycle-attached`.
+
+The current Lifecycle States of each of these Interface States can be
+determined as follows.
+
+- If the Interface State was :ref:`hardware-model-lifecycle-attached`
+  or :ref:`hardware-model-lifecycle-off`, then the Interface State is
+  now :ref:`hardware-model-lifecycle-detached`.
+
+- Otherwise, a forcible removal has occurred, as described in the
+  :ref:`hardware-model-detect` section. When this occurs, the Interface
+  State is unpredictable.
+
+Following a forcible removal, the AP and SVC shall proceed as
+described in :ref:`lifecycles_forcible_removal`.
+
+The Module is now in the MODULE_DETACHED state, as described in
+:ref:`lifecycles_module_detach`.
+
 Greybus SVC Module Removed Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
