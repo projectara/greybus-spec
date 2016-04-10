@@ -756,7 +756,7 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     The AP uses this operation to power down the SVC and all the devices it
     controls.
 
-.. c:function:: int connection_quiescing(u8 intf_id, u16 cport_id);
+.. c:function:: int connection_quiescing(u8 intf1_id, u16 cport1_id, u8 intf2_id, u16 cport2_id);
 
     The AP uses this operation to notify the SVC that a connection
     being torn down is quiescing.
@@ -1740,8 +1740,9 @@ Greybus SVC Connection Quiescing Request
 Table :num:`table-svc-connection-quiescing-request` defines the Greybus
 SVC Connection Quiescing Request payload.  The Greybus SVC
 Connection Quiescing request is sent only by the AP Module to the
-SVC.  The (Interface ID, CPort ID) pair defines the Connection being
-quiesced.
+SVC. The first Interface ID intf1_id and first CPort ID cport1_id define
+one end of the connection to be quiesced, and the second
+Interface ID intf2_id and CPort ID cport2_id define the other end.
 
 .. figtable::
     :nofig:
@@ -1752,8 +1753,10 @@ quiesced.
     =======  ==============  ======  ==================  ===========================
     Offset   Field           Size    Value               Description
     =======  ==============  ======  ==================  ===========================
-    0        intf_id         1       Number              Interface
-    1        cport_id        2       Number              CPort on Interface
+    0        intf1_id        1       Number              First Interface
+    1        cport1_id       2       Number              CPort on first Interface
+    3        intf2_id        1       Number              Second Interface
+    4        cport2_id       2       Number              CPort on second Interface
     =======  ==============  ======  ==================  ===========================
 
 ..
