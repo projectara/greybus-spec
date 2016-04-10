@@ -144,6 +144,12 @@ Conceptually, the Operations in the Greybus Control Protocol are:
     This Operation is used by the AP to get the version of the Bundle Class
     implemented by a Bundle.
 
+.. c:function:: void mode_switch();
+
+    This Operation can be used by the AP to signal to the Interface
+    that it may reinitialize itself and alter the Bundles it
+    previously described to the AP by sending it an Interface
+    :ref:`Manifest <manifest-description>`.
 
 .. _control_connection_status_values:
 
@@ -206,7 +212,8 @@ type and response type values are shown.
     Bundle Version               0x0b           0x8b
     Disconnecting                0x0c           0x8c
     TimeSync get last event      0x0d           0x8d
-    (all other values reserved)  0x0e..0x7e     0x8e..0xfe
+    Mode Switch                  0x0e           0x8e
+    (all other values reserved)  0x0f..0x7e     0x8f..0xfe
     Invalid                      0x7f           0xff
     ===========================  =============  ==============
 
@@ -767,6 +774,75 @@ contains two 1-byte numbers, major and minor.
     =======  ============  ======  ==========  ===========================
 ..
 
+Greybus Control Mode Switch Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The AP can use this Operation to notify the Interface of the
+following:
+
+- The Control Connection is closed
+- The Interface may now alter its Bundles
+
+Although the AP may send this request at any time, it should only do
+so during the "ms_enter" transition from the
+:ref:`hardware-model-lifecycle-enumerated` Interface :ref:`Lifecycle
+State <hardware-model-lifecycle-states>` to
+:ref:`hardware-model-lifecycle-mode-switching`, as defined in
+:ref:`lifecycles_interface_lifecycle`. This is described in
+:ref:`lifecycles_ms_enter`. The effect of this Operation under other
+conditions is unspecified.
+
+Note that the Greybus Control Mode Switch Operation is unidirectional
+and has no response. This is a necessary consequence of the fact that
+the AP uses this Operation Request to inform the Interface that the
+Control Connection is now closed, since Interfaces shall not transmit
+data on CPorts whose Greybus Connections are closed.
+
+Instead, when the Interface is ready to signal completion of its
+handling of this Operation, it shall do so by setting the
+:ref:`hardware-model-mailbox` sub-state of its Interface State. The
+SVC shall detect when MAILBOX is set and, other than in certain
+special circumstances, shall subsequently notify the AP using a
+:ref:`svc_mailbox_event`. This indirect mechanism allows the Interface
+to notify the AP when the processing that results from a Mode Switch
+Request has completed.
+
+Any timeouts limiting the duration between the receipt of the Mode
+Switch request and a subsequent MAILBOX write by the Interface are
+implementation-defined.
+
+Greybus Control Mode Switch Request
+"""""""""""""""""""""""""""""""""""
+
+The Greybus Control Mode Switch Request contains no payload.
+
+The AP shall send this request only as the final step in the procedure
+defined below in :ref:`lifecycles_control_closure_ms_enter`. When the
+Interface receives the request, its Control Connection is now closed.
+
+After receiving the request, the Interface shall perform any
+implementation-defined procedures required to make the Control CPort
+usable if a Greybus Connection is later reestablished on that
+CPort. The Interface may set local |unipro| attributes related to that
+CPort to implementation-defined values as part of these procedures.
+
+The Interface may now release any internal resources it had acquired
+in response to Control Get Manifest Size or Control Get Manifest
+Operations. In particular, the Interface may now stop responding to
+incoming Operation requests on CPorts whose users previously had been
+configured to implement Greybus Protocols other than the Control
+Protocol. The effects of the AP subsequently establishing Greybus
+Connections and attempting to exchange data with any such CPorts are,
+other than the constraints defined in this version of the Greybus
+Specification, not specified.
+
+After any such procedures are complete, the Interface shall write the
+value MAILBOX_GREYBUS to its Interface State's MAILBOX
+attribute. Before doing so, the Interface shall ensure it can
+subsequently respond to incoming :ref:`control-protocol` Operation
+Requests if its Control Connection is reestablished. If the Interface
+cannot ensure this, it shall not set the MAILBOX state as a result of
+receiving this request.
 
 .. _svc-protocol:
 
