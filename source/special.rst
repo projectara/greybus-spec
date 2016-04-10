@@ -454,26 +454,20 @@ CPort is connected. If this occurs, the results are unspecified.
 Greybus Control Disconnecting Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus Control Disconnecting Operation is used by the AP Module
-to inform an Interface that the disconnect process has begun for a
-CPort that was previously the subject of a Greybus Control Connected
-Operation.  After sending this request, the AP Module may issue
-responses to requests from the Interface, but it shall send no
-further requests on the CPort given in the Control Disconnecting
-Operation request.  The Interface may send responses to the AP to
-Operations whose requests it received before receiving the Control
-Disconnecting Operation Request, but shall otherwise cease
-transmission on the given CPort.  The AP Module may send a Control
-Disconnecting Operation with a cport_id field equal to zero (i.e.,
-when disconnecting the Control CPort itself), but only after all
-other connections on the interface have been disconnected as
-specified by the Control Protocol Disconnected Operation.
+After establishing a Greybus Connection from an AP Interface to
+another Interface, the AP may later use the Greybus Control
+Disconnecting Operation to notify the Interface that the Connection is
+being closed, and thus that the CPort will later be disconnected.
+
+Procedures the AP may use to establish and close Greybus Connections
+are provided in :ref:`lifecycles_connection_management`. Use of this
+Operation is part of those procedures.
 
 Greybus Control Disconnecting Request
 """""""""""""""""""""""""""""""""""""
 
 The Greybus Control Disconnecting request supplies the CPort ID on the
-receiving Interface that is being disconnected.
+receiving Interface that is being closed.
 
 .. figtable::
     :nofig:
@@ -489,10 +483,31 @@ receiving Interface that is being disconnected.
 
 ..
 
+After sending this request to notify the Interface that a Connection
+is closing, the AP may issue responses to requests it has already
+received on that Connection, but it shall not send additional requests
+on the Connection except for :ref:`Ping Operation
+<greybus-protocol-ping-operation>` requests.
+
+The AP may send a Control Disconnecting Operation with a cport_id
+field equal to zero when disconnecting a Control Connection, but
+should not do so if it has stored information indicating that other
+CPorts on that Interface are connected.
+
 Greybus Control Disconnecting Response
 """"""""""""""""""""""""""""""""""""""
 
 The Greybus Control Disconnecting response message contains no payload.
+
+The Interface may send responses on the Connection to Operations whose
+requests it received before the Control Disconnecting Operation
+Request. Additionally, after sending the Control Disconnecting
+Response, the Interface shall continue to send responses to :ref:`Ping
+<greybus-protocol-ping-operation>` requests. However, the Interface
+shall not send any data on the Connection other than responses to Ping
+requests after sending the Control Disconnecting Response.
+
+.. _control_disconnected:
 
 Greybus Control Disconnected Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
