@@ -210,7 +210,7 @@ Common Greybus Protocol Ping Operation
 Every Connection Protocol shall implement a simple "ping"
 operation.  This operation consists of the minimal request sent by
 the AP Module, followed by a response message from an Interface; the
-response always indicates a success status.  The operation
+response status shall equal GB_OP_SUCCESS.  The operation
 implements a simple round-trip message exchange over a connection,
 and can be used to verify a link is still operational.  This
 operation is also used as part of a sequence that quiesces activity
