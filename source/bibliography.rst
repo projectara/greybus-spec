@@ -13,6 +13,9 @@
 .. [MIPI01]    Specification for |unipro|, version 1.6, MIPI Alliance
                Inc., 6 August 2013.
 
+.. [MIPI02]    Specification for |m-phy|, version 3.0, MIPI Alliance,
+               Inc., 26 July, 2013.
+
 .. [US-ASCII]  ANSI_X3.4-1968 encoding standard.
 
 .. [JEDEC-UFS] JESD220B, Universal Flash Storage (UFS), JEDEC Solid

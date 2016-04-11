@@ -310,6 +310,20 @@ Slot
     Modules. Additionally, a Module may be connected to multiple
     Interfaces, depending upon its size.
 
+.. _glossary-switch:
+
+Switch
+    An entity within the :ref:`Frame <glossary-frame>` that allows
+    |unipro| implementations on :ref:`Modules <glossary-module>` to
+    communicate with one another via |unipro| CPorts.
+
+    The Switch is managed directly by the :ref:`SVC
+    <glossary-svc>`. Through the use of the :ref:`svc-protocol`, the
+    :ref:`AP <glossary-ap-module>` may request the SVC to configure
+    the Switch in order to manage its internal state, as well as to
+    establish :ref:`Greybus Connections <glossary-connection>` between
+    :ref:`Interfaces <glossary-interface>`.
+
 .. _glossary-wake-pulse:
 
 WAKE Pulse

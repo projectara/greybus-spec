@@ -22,55 +22,77 @@ A Greybus System has the following physical components:
   module hotplug detection, and communication between the Frame and
   inserted Modules.
 
+- Zero or more :ref:`Modules <glossary-module>`, which are attached to
+  the Frame via one or more Interface Blocks. Individual Modules
+  cannot attach to Interface Blocks which are in different Slots: all
+  of the Interface Blocks a Module is attached to are in the same
+  Slot. Two different Modules cannot attach to the same Interface
+  Block at the same time.
+
 Interface Blocks are separated into Slots by the spine and ribs of the
 Frame.  The Frame additionally contains the :ref:`SVC <glossary-svc>`,
 which, in collaboration with the :ref:`AP Module
-<glossary-ap-module>`, manages the |unipro| network in the Frame,
-along with other physical signals present on the Interface Blocks.
+<glossary-ap-module>`, manages physical signals present on the
+Interface Blocks.
+
+The Frame also contains a :ref:`Switch <glossary-switch>`, which can
+be directly configured by the SVC. Each Interface Block contains
+connections for |m-phy| [MIPI02]_ LINK establishment between attached
+Modules and the Switch. The SVC can configure the Switch and attempt
+to exchange communication between the Switch and attached Modules, and
+thereby indirectly between Modules themselves, via these LINKs. The AP
+is also able, as a Module, to communicate with other Modules, as well
+as the SVC, using these LINKs.
 
 The following sections define abstract representations of state
-present in a Greybus System for use within the Greybus Specification.
+present in a Greybus System for use representing these components
+within the Greybus Specification.
 
 - The first subsection, :ref:`hardware-model-interface-states`,
-  defines the *Interface State* data structure, which represents
-  components in, and state managed by, a Greybus System that are
-  related to each Interface Block.
+  defines the *Interface State* data structure, which is an entity
+  that represents components in, and state managed by, a Greybus
+  System that are part of the Frame and are related to each Interface Block.
 
-  Though Interface States are an abstraction, the dynamics of a Greybus
-  System effect changes to Interface States as defined in the remainder
-  of this document. For this reason, the phrase "Interface States in a
-  Greybus System" is sometimes used to denote the abstract states
-  associated with a particular Greybus System at a given time.
+  The dynamics of a Greybus System effect changes to Interface States
+  as defined in the remainder of this document. These changes map in
+  implementation-defined ways to these components within the Frame.
 
 - The subsequent section, :ref:`hardware-model-initial-states`,
   defines the initial values of each Interface State.
 
-- Certain groups of Interface States have special meaning within the
-  Greybus Specification. These groups of Interface States, named
-  *Lifecycle States*, along with transitions between them managed by
-  the Greybus System, are given in
-  :ref:`hardware-model-lifecycle-states`.
+- :ref:`hardware-model-interfaces` then defines the Interface, which
+  models the entities within attached Modules that communicate with
+  the Frame via Greybus.
 
-- :ref:`hardware-model-ap-module-requirements` defines special
-  requirements related to the AP Module and SVC.
+- Following that, :ref:`hardware-model-lifecycle-states` provides a
+  state machine diagram which describes Interface lifetimes within a
+  Greybus System. The states in this diagram are *Interface Lifecycle
+  States*.
+
+- In conclusion, :ref:`hardware-model-ap-module-requirements` defines
+  special requirements related to the AP Module and SVC.
 
 Each Interface State in a Greybus System is given a unique identifier,
 its Interface ID.  Interface IDs increase consecutively, moving
 counter-clockwise around the Frame.
 
 For convenience, the Interface Blocks in a Greybus System are also
-indexed by the Interface IDs for their corresponding Interface States.
+indexed by the Interface IDs for their corresponding Interface
+States. Any Interfaces within Modules attached to those Interface
+Blocks are also indexed by the same Interface IDs as the Interface
+Blocks to which they are attached.
 
 Subsequent definitions within the Greybus Specification define how
 certain Greybus :ref:`Operations <glossary-operation>` affect
-Interface States and Lifecycle States in a Greybus System.
+Interface States and Interface Lifecycle States in a Greybus System.
 
 .. _hardware-model-interface-states:
 
 Interface States
 ^^^^^^^^^^^^^^^^
 
-An *Interface State* is a tuple containing "sub-state" values.
+An *Interface State* is a tuple containing "sub-state" values.  This
+represents state within the Frame related to each Interface Block.
 
 As stated above, each Interface Block in a Greybus System has an
 associated Interface State. The value of an Interface State varies
@@ -102,21 +124,23 @@ along with an overview of their meaning within a Greybus System.
 - V_CHG: whether the Interface Block can supply power to the Frame.
 - WAKE: whether the Frame is "activating" the Interface Block for
   communication via Greybus.
-- UNIPRO: a simplified representation of the state of the |unipro|
-  port within the Frame connected to the Interface Block.
+- UNIPRO: a representation of the state of the Switch components
+  connected to the Interface Block.
 - REFCLK: whether the Frame is providing a reference clock signal to
   the Interface Block.
-- RELEASE: indicates whether the Frame is attempting to physically
+- RELEASE: whether the Frame is attempting to physically
   eject a Module attached to the Interface Block.
-- INTF_TYPE: an indicator of what communication is supported by a
-  Module connected to the Interface Block, if any.
-- ORDER: If the Interface Block is attached to a Module, an indicator
-  of whether this is the ":ref:`Primary Interface
+- INTF_TYPE: denotes capabilities the SVC has determined related to
+  the Interface communicating with the Interface Block.
+- ORDER: If the SVC has determined the Interface Block is attached to
+  a Module, this indicates whether the SVC has determined the
+  Interface Block is the ":ref:`Primary Interface
   <glossary-primary-interface>`" or a ":ref:`Secondary Interface
   <glossary-secondary-interface>`" to the Module.
 - MAILBOX: the value of a special-purpose and Greybus
-  implementation-specific |unipro| DME attribute used by Modules as a
-  non-CPort based means of communication with the Frame.
+  implementation-specific |unipro| DME attribute within the Switch
+  used by Modules as a non-CPort based means of communication with the
+  Frame.
 
 An Interface State is written as a tuple as follows::
 
@@ -241,8 +265,8 @@ The values of the V_CHG sub-state are given in Table
 
 The value of the V_CHG sub-state is set by the SVC.
 
-The V_CHG sub-state of an Interface State represents whether power is
-supplied by an Interface Block to the Frame, via the Interface Block's
+The V_CHG sub-state of an Interface State represents whether power may
+be supplied to the Frame via that Interface Block, via the Interface Block's
 charger power bus.
 
 The Frame may draw power from an Interface Block, depending on the
@@ -282,9 +306,8 @@ The values of the WAKE sub-state are given in Table
 ..
 
 The WAKE sub-state of an Interface State represents the state of a
-signal used to initialize and manage power consumed by an attached
-Module. The value of the WAKE sub-state is controlled by the SVC and
-any Module attached to the Interface Block.
+signal used to initialize an attached Module. The value of the WAKE
+sub-state is set by the SVC.
 
 During the initialization of a Greybus System, all Interface States
 have WAKE equal to WAKE_UNSET. The SVC shall only set WAKE to a value
@@ -301,7 +324,7 @@ WAKE sub-state by following this sequence, assuming WAKE is WAKE_UNSET.
 
 This is called a *WAKE Pulse*. When the duration of the WAKE Pulse
 equals or exceeds an implementation-defined threshold, the *WAKE Pulse
-Cold Boot Threshold*, this is a signal to any attached Module to
+Cold Boot Threshold*, this is a signal to any attached Interface to
 initiate (or reinitiate) |unipro|, and subsequently Greybus,
 communication, as described in later sections.
 
@@ -343,17 +366,15 @@ The values of the UNIPRO sub-state are given in Table
    ==============  ================================================
 ..
 
-The value of the UNIPRO sub-state changes due to |unipro| protocol
-communication exchanged between the Frame and any Modules attached to
-the corresponding Interface Block.
+The UNIPRO sub-state of each Interface State represents entities
+within the Switch. These entities can communicate with Interfaces
+within Modules, and can be configured by the SVC.
 
 Since all Greybus Protocols exchange data via |unipro| Messages, each
-Interface Block contains the necessary signals to connect a Module
-attached to that Interface Block to the |unipro| switch inside the
-Frame.
-
-The UNIPRO sub-state is an intentionally simplified abstraction for
-the state of the |unipro| port inside the Frame.
+Interface Block contains the necessary signals to connect a |unipro|
+implementation within a Module attached to that Interface Block to the
+Switch, which can route these Messages to other Modules, and perform
+some other |unipro| protocol communiction with attached Modules.
 
 Transitions between successive values of the UNIPRO sub-state are
 shown in the following figure. All other transitions are illegal.
@@ -363,9 +384,12 @@ shown in the following figure. All other transitions are illegal.
 
 Greybus communication between Modules (including the AP Module) is
 only possible through Interface Blocks whose Interface State's UNIPRO
-sub-state is UPRO_UP: it is only after the |unipro| link is
-established that the CPort connections used by Greybus :ref:`Protocols
-<glossary-protocol>` can be created.
+sub-state is UPRO_UP: this is required to allow CPorts managed by
+Module Interfaces to exchange Greybus Operations via |unipro|
+Messages. It is also necessary for *routes* within the Switch to be
+established to allow |unipro| Messages sent by Interfaces to be
+relayed through the Switch to the Interfaces which are their intended
+recipients.
 
 Other UNIPRO sub-state values are used primarily during communication
 between the SVC and AP during Module initialization, teardown, power
@@ -425,11 +449,11 @@ constraints:
    they will need these definitions to exist in order to be written.
 
 Note that the UNIPRO sub-state is a Frame-centric view of the state of
-the corresponding |unipro| link. Following a :ref:`forcible removal
-<hardware-model-detect>` of a Module which had established a |unipro|
-link to the Frame via the corresponding Interface Block, the UNIPRO
-sub-state may retain its previous value or change values. This may
-depend upon its current value and any ongoing activity on the link.
+entities within the Switch. Following a :ref:`forcible removal
+<hardware-model-detect>` of a Module which had established a LINK to
+the Frame via the corresponding Interface Block, the UNIPRO sub-state
+may retain its previous value or change values. This may depend upon
+its current value and any ongoing activity on the LINK.
 
 .. _hardware-model-refclk:
 
@@ -594,9 +618,9 @@ The value of the ORDER sub-state is set by the SVC.
 
 A :ref:`Module <glossary-module>` may attach to one or more Interface
 Blocks on a Slot in the Frame. Exactly one of these Interface Blocks
-is the "Primary Interface" to the Module; signaling on this interface
-may be used to physically eject the Module from the Frame. All other
-Interface Blocks attached to the Module, if any, are "Secondary
+is the "Primary Interface" to the Module; signaling on this Interface
+Block may be used to physically eject the Module from the Frame. All
+other Interface Blocks attached to the Module, if any, are "Secondary
 Interfaces": they may communicate via Greybus to the AP and the SVC,
 but the Frame cannot eject the Module through these Interface Blocks.
 
@@ -672,8 +696,8 @@ in Table :num:`table-interface-state-mailbox`.
 
 .. _hardware-model-initial-states:
 
-Initial States
-^^^^^^^^^^^^^^
+Initial Interface States
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 During the initialization of a Greybus System, the initial value of
 each Interface State is::
@@ -689,6 +713,30 @@ system. This is explained in more detail in later sections, and forms
 the basis of the state machine described in
 :ref:`hardware-model-lifecycle-states`.
 
+.. _hardware-model-interfaces:
+
+Interfaces
+^^^^^^^^^^
+
+As stated above, a Module attached to the Frame may contain one or
+more entities called *Interfaces*, each of which is able to detect and
+respond to signals at a unique Interface Block to which the Module is
+attached. That is, each Interface communicates with the Frame via
+exactly one Interface Block, and no two Interfaces communicate with
+the Frame via the same Interface Block.
+
+A Module shall contain exactly one Interface for each of the Interface
+Blocks to which it is attached. For brevity, it is written that an
+Interface "is connected to the Frame" via this Interface Block.
+
+Interfaces within Modules shall communicate with the Frame as
+specified in this document, but Interfaces may vary in their
+capabilities. For example, an Interface may not be able to communicate
+via |unipro|. Certain Interface communication capabilities can be
+discovered by the AP and SVC, which can record the information
+discovered in the :ref:`hardware-model-intf-type` sub-state of the
+Interface State associated with that Interface.
+
 .. _hardware-model-lifecycle-states:
 
 Interface Lifecycle States
@@ -701,34 +749,36 @@ state machine is provided in :ref:`lifecycles_interface_lifecycle`.
 .. image:: /img/dot/interface-lifecycle.png
    :align: center
 
-Each of the states is a *Lifecycle State*. Lifecycle States are groups
-of Interface States with a special meaning within the Greybus
-Specification.
+Each of the states is a *Lifecycle State*. Lifecycle States denote the
+current status of an Interface, and transitions between Lifecycle
+States manage the dynamic behavior of the Interface as it interacts
+with the Frame. For example, in the ATTACHED Lifecycle State, the SVC
+has determined a Module is attached to an Interface Block, and thus an
+Interface can communicate with the Frame via that Interface Block. No
+other action has been taken by the Greybus System to communicate with
+the Interface, and it is unknown whether the Interface supports
+|unipro| commmunication.
 
-For example, the ATTACHED Lifecycle State is the Interface State for
-an Interface Block which the SVC has determined a Module is attached
-to, but no other action has been taken by the Greybus System to
-communicate with it. Similarly, the DETACHED Lifecycle State is the
-Interface State for an Interface Block with no module attached.
+The DETACHED Lifecycle State is a special case. In this state, the SVC
+has determined an Interface Block has no Module attached. In this
+case, no Interface is connected to the Frame.
 
-Certain Lifecycle States refer to multiple possible Interface
-States. For example, the ACTIVATED Lifecycle State refers to a group
-of related Interface States, all of which have an INTF_TYPE other than
+This section defines a group of Interface States which are the legal
+Interface States within the Frame when an Interface is in each
+Interface Lifecycle State.
+
+For example, when an Interface is in the ACTIVATED Lifecycle State,
+the Interface State within the frame has an INTF_TYPE other than
 IFT_UNKNOWN. Multiple permitted values for the sub-states of the
-Interface States within each Lifecycle State are shown between angle
-brackets (<>).
+Interface States within each Interface Lifecycle State are shown
+between angle brackets (<>).
 
 The square node labeled "Any State" denotes that the transition is
-allowed from any Interface State whatsoever, and models the
+allowed from any Interface status whatsoever, and models the
 consequences of a :ref:`forcible removal <hardware-model-detect>`.
 
-For brevity, the phrase "an Interface is in the ATTACHED Lifecycle
-State" or "an Interface is ATTACHED" is used to mean "the Interface
-State corresponding to the Interface Block is in the ATTACHED
-Lifecycle State", and similarly for the other Lifecycle States.
-
-Using the above notation, the Lifecycle States are defined in the
-following sections.
+The Interface Lifecycle States are introduced, and their associated
+Interface States are defined, in the following sections.
 
 Subsequent chapters define Greybus :ref:`Protocols
 <glossary-protocol>`, of which the :ref:`control-protocol` and
@@ -737,6 +787,9 @@ impact on an Interface's Lifecycle State. Following those chapters, a
 detailed description of the actions taken by the AP, SVC, and each
 Interface is given describing how transitions between Lifecycle States
 are managed.
+
+.. FIXME The following "Interface States are allowed" language is
+   ugly and a better definition should be developed.
 
 .. _hardware-model-lifecycle-attached:
 
@@ -753,11 +806,12 @@ In the ATTACHED Lifecycle State, the SVC has:
   ORDER.
 
 No actions have been taken to boot the module, communicate with it via
-|unipro|, etc. That is, ATTACHED is otherwise identical to the
-:ref:`initial state <hardware-model-initial-states>` of each Interface
-State.
+|unipro|, etc. That is, in the ATTACHED Lifecycle State, the Interface
+State is otherwise identical to its :ref:`initial state
+<hardware-model-initial-states>`.
 
-ATTACHED is the following group of Interface States:
+In the ATTACHED Lifecycle State, the following Interface States are
+allowed as described in later sections:
 
 .. include:: lifecycle-states/attached.txt
 
@@ -798,7 +852,8 @@ between UNIPRO, MAILBOX, and INTF_TYPE is given in Table
 
 ..
 
-ACTIVATED is the following group of Interface States:
+In the ACTIVATED Lifecycle State, the following Interface States are
+allowed as described in later sections:
 
 .. include:: lifecycle-states/activated.txt
 
@@ -807,27 +862,28 @@ ACTIVATED is the following group of Interface States:
 ENUMERATED
 """"""""""
 
-The ENUMERATED Lifecycle State can only be reached when readiness for
-Greybus :ref:`Protocol <glossary-protocol>` communication was
-signaled during the transition to ACTIVATED. Thus, INTF_TYPE is
-IFT_GREYBUS, and MAILBOX is MAILBOX_GREYBUS.
+The ENUMERATED Lifecycle State can only be reached when an Interface
+signals readiness for Greybus :ref:`Protocol <glossary-protocol>`
+communication during the transition to ACTIVATED. Thus,
+INTF_TYPE is IFT_GREYBUS, and MAILBOX is MAILBOX_GREYBUS.
 
 When an Interface is ENUMERATED, a Greybus :ref:`control-protocol`
-Connection has been established to the Module via that Interface
-Block, and its :ref:`manifest-description` has been read by the AP and
-successfully parsed. (This process is referred to as *enumeration*).
+Connection has been established to that Interface, and its
+:ref:`manifest-description` has been read by the AP and successfully
+parsed. (This process is referred to as *enumeration*).
 
 While an Interface is ENUMERATED, the AP may determine through
 application- or Protocol-specific means that the Frame's reference
-clock is not required for the Module attached to the Interface Block
-to function correctly. Thus, REFCLK may be set to REFCLK_OFF.
+clock is not required for the Interface to function correctly. Thus,
+REFCLK may be set to REFCLK_OFF.
 
 Similarly, when the Interface is ENUMERATED, the AP may determine
-through application- or Protocol-specific means that the Module can
+through application- or Protocol-specific means that the Interface can
 supply power to the Frame via the Interface Block. Thus, V_CHG may be
 set to V_CHG_ON.
 
-ENUMERATED is the following group of Interface States:
+In the ENUMERATED Lifecycle State, the following Interface States are
+allowed as described in later sections:
 
 .. include:: lifecycle-states/enumerated.txt
 
@@ -842,20 +898,21 @@ it from, and attaching it to, a Greybus System.
 
 As part of entering the MODE_SWITCHING Lifecycle State, all Greybus
 :ref:`Connections <glossary-connection>` involving the Interface are
-closed. The Module attached to the Interface Block may then perform
-internal re-initialization, and subsequently signal to the Frame by
-setting MAILBOX when this is completed. The Frame will then attempt to
-re-enumerate the Interface, including retrieving its (possibly
-different) :ref:`manifest-description` again.
+closed. The Interface may then perform internal re-initialization, and
+subsequently signal to the Frame when this is complete by setting
+MAILBOX. The Frame can then attempt to re-enumerate the Interface,
+including retrieving its (possibly different)
+:ref:`manifest-description` again.
 
 Before an Interface enters the MODE_SWITCHING Lifecycle State, REFCLK
 shall be set to REFCLK_ON if it is REFCLK_OFF, and V_CHG shall be set
 to V_CHG_OFF if it is V_CHG_ON.
 
-An Interface State may enter and exit the MODE_SWITCHING Lifecycle
-State an arbitrary number of times.
+An Interface may enter and exit the MODE_SWITCHING Lifecycle State an
+arbitrary number of times.
 
-MODE_SWITCHING is the following group of Interface States:
+In the MODE_SWITCHING Lifecycle State, the following Interface States
+are allowed as described in later sections:
 
 .. include:: lifecycle-states/mode-switching.txt
 
@@ -865,15 +922,15 @@ SUSPENDED
 """""""""
 
 The SUSPENDED Lifecycle State is a low-power state during which some
-internal state within the Module is maintained, and system power is
-still applied. No Greybus Protocol communication with the Module via
-that Interface Block is possible when the Interface is in the
-SUSPENDED state.
+internal state within the Interface is maintained, and system power is
+still applied. No Greybus Protocol communication with the Interface is
+possible when the Interface is in the SUSPENDED state.
 
 An Interface shall not alter its :ref:`manifest-description` while it
 is entering, in, or exiting the SUSPENDED state.
 
-SUSPENDED is the following group of Interface States:
+In the SUSPENDED Lifecycle State, the following Interface States are
+allowed as described in later sections:
 
 .. include:: lifecycle-states/suspended.txt
 
@@ -882,12 +939,13 @@ SUSPENDED is the following group of Interface States:
 OFF
 """
 
-The OFF Lifecycle State denotes an Interface Block which has power and
+The OFF Lifecycle State denotes an Interface which has power and
 communication signals disabled, but whose INTF_TYPE and ORDER are
 still known, having been determined during previous Lifecycle States
 in the Interface Lifecycle.
 
-OFF is the following group of Interface States:
+In the OFF Lifecycle State, the following Interface States are allowed
+as described in later sections:
 
 .. include:: lifecycle-states/off.txt
 
@@ -896,13 +954,14 @@ OFF is the following group of Interface States:
 DETACHED
 """"""""
 
-In the DETACHED Lifecycle State, no Module is attached to the
-Interface Block.
+The DETACHED Lifecycle State is a special case. In this Lifecycle
+State, no Module is attached to the Interface Block.
 
 The SVC and AP have otherwise coordinated to disable power and other
 signaling to the Interface Block, as in the OFF Lifecycle State.
 
-DETACHED is the following group of Interface States:
+The unique Interface State possible in the DETACHED Lifecycle State
+is:
 
 .. include:: lifecycle-states/detached.txt
 
@@ -915,12 +974,18 @@ As stated above, a Greybus System contains an AP Module and an SVC.
 This section defines special requirements related to these components.
 
 - The AP Module shall be connected to the Frame via Interface Blocks
-  whose Interface IDs are known to the SVC.
+  whose Interface IDs are known to the SVC. The AP Module shall
+  contain Interfaces as other Modules do, but these Interfaces shall
+  not provide :ref:`Control CPorts <glossary-control-cport>`.
 
   For convenience, the Interface States with these Interface IDs are
   the *AP Interface States*, the corresponding Interface Blocks are
   *AP Interface Blocks*, and the corresponding Interfaces are *AP
   Interfaces*.
+
+  Each AP Interface shall provide a CPort whose user can be configured
+  to communicate with the SVC over a :ref:`Greybus Connection
+  <glossary-connection>` implementing the :ref:`svc-protocol`.
 
 - The Interface Blocks by which the AP Module connects to the Frame
   may differ from those by which other Modules attach to the Frame,

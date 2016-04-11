@@ -8,6 +8,7 @@
 
 .. |unipro| replace:: UniPro℠
 .. |mipi| replace:: MIPI®
+.. |m-phy| replace:: M-PHY®
 
 .. |_| unicode:: 0xA0
    :trim:
