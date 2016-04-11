@@ -933,8 +933,7 @@ Conceptually, the operations in the Greybus SVC Protocol are:
 
     The SVC sends this to inform the AP Module that an active
     Interface needs to be reset.  This might happen when the SVC has
-    detected
-    an error on the link, for example.
+    detected an error on the link, for example.
 
 .. XXX This is nebulous at this point; my intention is to handle the
 .. XXX case where a |unipro| "link down" indicates that a link *was*
