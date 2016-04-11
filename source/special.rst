@@ -501,6 +501,8 @@ Greybus Control Disconnecting Response
 
 The Greybus Control Disconnecting response message contains no payload.
 
+The response status shall equal GB_OP_SUCCESS.
+
 The Interface may send responses on the Connection to Operations whose
 requests it received before the Control Disconnecting Operation
 Request. Additionally, after sending the Control Disconnecting
