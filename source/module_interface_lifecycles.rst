@@ -6,9 +6,10 @@ Module and Interface Lifecycles
 Chapters :ref:`hardware_model` and :ref:`special_protocols` have
 respectively defined the :ref:`Interface Lifecycle
 <glossary-interface-lifecycle>` and various :ref:`Operations
-<glossary-operation>` which affect the :ref:`Interface States
-<glossary-interface-state>` in a :ref:`Greybus System
-<glossary-greybus-system>`.
+<glossary-operation>` which affect the related :ref:`Interfaces
+<hardware-model-interfaces>` within Modules and :ref:`Interface States
+<hardware-model-interface-states>` within the Frame in a :ref:`Greybus
+System <glossary-greybus-system>`.
 
 Using these definitions, this chapter describes an additional state
 machine, the *Module Lifecycle*, as well as the transitions between
@@ -54,54 +55,63 @@ The Interface Lifecycle
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 The :ref:`hardware_model` defined the concept of an :ref:`Interface
-State <hardware-model-interface-states>`, and
+<hardware-model-interfaces>`, and
 :ref:`hardware-model-lifecycle-states` introduced a related set of
-*Lifecycle States*, along with a state machine which operates on
-Lifecycle States, the Interface Lifecycle.
+*Interface Lifecycle States*, along with a state machine which
+operates on Lifecycle States, the Interface Lifecycle.
 
 A subsequent chapter defined the :ref:`special_protocols`, which
-include Operation definitions that may affect Interface and Lifecycle
+include Operation definitions that affect Interfaces' Lifecycle
 States.
 
 This section describes the relationships between these Protocols and
 the Interface Lifecycle in more detail, and specifies Operation
-sequences which must be successfully exchanged to cause Interface
-States to change Lifecycle States.
+sequences which may be successfully exchanged to cause Interfaces to
+change Lifecycle States.
 
 The following sections describe the relationship between these states,
 as well as how transitions between them may occur in a Greybus System.
 
 For convenience, the Interface Lifecycle state machine diagram and the
-definitions of the Lifecycle States are reproduced here:
+Interface States associated with each Interface Lifecycle State are
+reproduced here:
 
 .. image:: /img/dot/interface-lifecycle.png
    :align: center
 
-ATTACHED is the following group of Interface States:
+When an Interface is ATTACHED, the following Interface States are
+possible:
 
 .. include:: lifecycle-states/attached.txt
 
-ACTIVATED is the following group of Interface States:
+When an Interface is ACTIVATED, the following Interface States are
+possible:
 
 .. include:: lifecycle-states/activated.txt
 
-ENUMERATED is the following group of Interface States:
+When an Interface is ENUMERATED, the following Interface States are
+possible:
 
 .. include:: lifecycle-states/enumerated.txt
 
-MODE_SWITCHING is the following group of Interface States:
+When an Interface is MODE_SWITCHING, the following Interface States are
+possible:
 
 .. include:: lifecycle-states/mode-switching.txt
 
-SUSPENDED is the following group of Interface States:
+When an Interface is SUSPENDED, the following Interface States are
+possible:
 
 .. include:: lifecycle-states/suspended.txt
 
-OFF is the following group of Interface States:
+When an Interface is OFF, the following Interface States are
+possible:
 
 .. include:: lifecycle-states/off.txt
 
-DETACHED is the following group of Interface States:
+In the DETACHED Interface Lifecycle State, no Module is attached to
+the Interface Block. The unique Interface State in this Lifecycle
+State is:
 
 .. include:: lifecycle-states/detached.txt
 
