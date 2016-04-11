@@ -1511,14 +1511,194 @@ Mode Switching
 Mode Switch Enter (ENUMERATED → MODE_SWITCHING)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. SW-4659 + any sub-tasks track adding multiple AP Interfaces, and
+   SW-4660 + any sub-tasks track adding module/module connections.
+
+.. note::
+
+   The content in this section is defined under the following assumptions:
+
+   - there is exactly one :ref:`AP Interface
+     <hardware-model-ap-module-requirements>` in the Greybus System.
+
+   - The Non-Control Connections given below are each between that AP
+     Interface and another Interface in the System.
+
+   The results if there are multiple AP Interfaces, or in the case of
+   non-AP to non-AP Interfaces, are undefined.
+
 .. TODO add an MSC here for the successful case
+
+The following procedure can be initiated by the AP when an Interface
+is ENUMERATED, in order to attempt to follow the "ms_enter" transition
+from ENUMERATED to MODE_SWITCHING.
+
+To perform this procedure, the following conditions shall hold.
+
+- The AP Interface and SVC shall have established a Connection
+  implementing the :ref:`svc-protocol`. This is the SVC Connection in
+  this procedure.
+
+- An Interface shall be provided, whose Interface Lifecycle State is
+  ENUMERATED.
+
+- Zero or more additional Non-Control Connections shall be provided,
+  which comprise all such established Connections involving the
+  Interface, and shall each have been established by following the
+  sequence defined in :ref:`lifecycles_connection_establishment`.
+
+If these conditions do not all hold, the procedure shall not be
+followed. The results of following this procedure in this case are
+undefined.
+
+The following values are used in this procedure:
+
+- The AP Interface's ID is ap_interface_id.
+- The Interface ID of the Interface entering MODE_SWITCHING is interface_id.
+
+.. XXX input from the Greybus core and firmware update teams is
+   required to better define the error handling here.
+
+.. XXX input from the power management teams is required to add calls
+   to other proposed Control Operations which act on the Interface's
+   Bundles and the Interface itself in the right places when those
+   proposed operations are merged.
+
+1. Through Protocol-specific means, the AP and Interface shall
+   establish that the remaining steps in the Mode Switch Enter
+   procedure shall be followed.
+
+2. The sequence defined in :ref:`lifecycles_connection_closure` shall be
+   followed to attempt to close all of the provided Non-Control
+   Connections.
+
+   If any attempt fails, this procedure has failed. The results are
+   undefined.
+
+3. The sequence defined in :ref:`lifecycles_control_closure_ms_enter`
+   shall be followed to inform the Interface its Control Connection is
+   closing and it is entering MODE_SWITCHING.
+
+   If the sequence succeeds, this procedure has succeeded. The
+   Interface is MODE_SWITCHING.
+
+   If the sequence fails, this procedure has failed. The results are
+   undefined.
+
+4. The procedure is now complete and has either succeeded or failed.
 
 .. _lifecycles_ms_exit:
 
 Mode Switch Exit (MODE_SWITCHING → ENUMERATED)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. SW-4659 + any sub-tasks track adding multiple AP Interfaces, and
+   SW-4660 + any sub-tasks track adding module/module connections.
+
+.. note::
+
+   The content in this section is defined under the following assumptions:
+
+   - there is exactly one :ref:`AP Interface
+     <hardware-model-ap-module-requirements>` in the Greybus System.
+
+   - The Non-Control Connections given below were each between that AP
+     Interface and another Interface in the System.
+
+   The results if there are multiple AP Interfaces, or in the case of
+   non-AP to non-AP Interfaces, are undefined.
+
 .. TODO add an MSC here for the successful case
+
+The following procedure can be initiated by the Interface when it is
+is MODE_SWITCHING, in order to attempt to follow the "ms_exit"
+transition from MODE_SWITCHING to ENUMERATED.
+
+To perform this procedure, the following condition shall hold.
+
+- An Interface shall be provided, whose Interface Lifecycle State is
+  MODE_SWITCHING. The Interface shall have transitioned to the
+  MODE_SWITCHING Lifecycle State by following the ms_enter procedure
+  defined in :ref:`lifecycles_ms_enter`.
+
+- Another value, ap_cport_id, shall also be provided. The AP Interface
+  shall contain a CPort with CPort ID ap_cport_id. This CPort on the
+  AP Interface shall not be part of an established |unipro|
+  connection.
+
+If these conditions do not all hold, the procedure shall not be
+followed. The results of following this procedure in this case are
+undefined.
+
+The following values are used in this procedure:
+
+- The AP Interface ID is ap_interface_id.
+- The Interface ID of the Interface which is MODE_SWITCHING is
+  interface_id.
+
+.. XXX input from the firmware update team is required to better
+   define the error handling here if it can be improved.
+
+1. The Interface shall conclude any implementation-specific procedures
+   needed while it is in the MODE_SWITCHING Lifecycle State, and write
+   MAILBOX as described in :ref:`control-mode-switch`.
+
+2. The SVC shall detect this write, and exchange an
+   :ref:`svc-interface-mailbox-event` Operation with the AP.
+   The intf_id field in the request payload shall equal interface_id.
+
+   If the Operation is not successful, this procedure has failed. The
+   results are undefined.
+
+3. The :ref:`lifecycles_connection_closure_epilogue` sub-sequence is
+   followed. The Closing Connection for that sub-sequence is the
+   Control Connection to the Module which was MODE_SWITCHING.
+
+   If the sub-sequence succeeds, the Control Connection to the
+   Interface is now closed.
+
+   If the sub-sequence fails, this procedure has failed. The results
+   are undefined.
+
+4. The AP shall initiate a :ref:`svc-connection-create` to establish a
+   new Control Connection to the Interface.
+
+   The intf1_id and cport1_id fields in the request payload shall
+   respectively equal ap_interface_id and ap_cport_id. The intf2_id
+   and cport2_id fields in the request payload shall respectively
+   equal interface_id and zero.
+
+   The tc field in the request payload shall equal zero.  The
+   :ref:`flags field <svc-connection-create-flags>` in the request
+   payload shall equal 0x7 (E2EFC | CSD_N | CSV_N).
+
+   If this Operation fails, this procedure has failed. The results are
+   undefined.
+
+5. The AP shall exchange a :ref:`control-get-manifest-size` via the
+   Control Connection. If the Operation is successful, the value of
+   the manifest_size field in the response payload is
+   interface_manifest_size.
+
+   If the Operation fails, this procedure has failed. The results are
+   undefined.
+
+6. The AP shall exchange a :ref:`control-get-manifest` via the Control
+   Connection. If the Operation is successful, the Manifest's value is
+   interface_manifest.
+
+   If the Operation fails, this procedure has failed. The results are
+   undefined.
+
+7. The AP shall perform implementation-defined procedures to parse the
+   :ref:`components of the Manifest <manifest-description>`.
+
+   The procedure is now complete. The Interface is ENUMERATED once
+   more.
+
+No special provision is made within the Greybus Specification for
+recovery from failure. The AP and Interface may use implementation- or
+protocol-specific timeouts to detect errors and attempt to recover.
 
 .. _lifecycles_error_handling:
 
