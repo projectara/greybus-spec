@@ -1441,7 +1441,65 @@ The following value is used in this procedure:
 Eject (OFF → DETACHED)
 """"""""""""""""""""""
 
+.. SW-4659 + any sub-tasks track adding multiple AP Interfaces
+
+.. note::
+
+   The content in this section is defined under the assumption that
+   there is exactly one :ref:`AP Interface
+   <hardware-model-ap-module-requirements>` in the Greybus System.
+
+   The results if there are multiple AP Interfaces are undefined.
+
 .. TODO add an MSC here for the successful case
+
+The following procedure can be initiated by the AP when an Interface
+is OFF, in order to attempt to follow the "eject" transition from
+OFF to DETACHED.
+
+To perform this procedure, the following conditions shall hold.
+
+- The AP Interface and SVC shall have established a Connection
+  implementing the :ref:`svc-protocol`. This is the SVC Connection in
+  this procedure.
+
+- A Module shall be provided which is MODULE_ATTACHED.
+
+- The Interface Lifecycle State is OFF for all Interfaces in the
+  Module.
+
+If these conditions do not all hold, the procedure shall not be
+followed. The results of following this procedure in this case are
+undefined.
+
+The following value is used in this procedure:
+
+- The Interface ID of the Primary Interface to the Module being
+  ejected is primary_interface_id.
+
+1. If the AP receives an :ref:`svc-module-removed` Request from the
+   SVC with primary_intf_id field equal to primary_interface_id, the
+   procedure has succeeded. Immediately go to to step 4.
+
+2. The AP shall exchange an :ref:`svc-module-eject` with the SVC.
+   The primary_intf_id field in the request payload shall equal
+   primary_interface_id.
+
+   If this Operation fails, the procedure has failed. Go to step 4.
+
+3. After the SVC Interface Eject Response is received, the AP shall
+   start a timer, for an implementation-defined duration.
+
+   If the AP detects the timer has expired and has not received an SVC
+   Module Removed Request from the SVC with primary_intf_id field
+   equal to primary_interface_id, the procedure has failed. Go to the
+   next step.
+
+4. The procedure is now complete and has succeeded or failed. If the
+   procedure succeeded, all Interfaces formerly present in the removed
+   Module are now DETACHED. If the procedure failed, the Interfaces
+   are all still OFF, and the Module is still MODULE_ATTACHED, and the
+   Interfaces are all still OFF.
 
 .. _lifecycles_mode_switching:
 
