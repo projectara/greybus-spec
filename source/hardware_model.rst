@@ -870,7 +870,30 @@ INTF_TYPE is IFT_GREYBUS, and MAILBOX is MAILBOX_GREYBUS.
 When an Interface is ENUMERATED, a Greybus :ref:`control-protocol`
 Connection has been established to that Interface, and its
 :ref:`manifest-description` has been read by the AP and successfully
-parsed. (This process is referred to as *enumeration*).
+parsed.
+
+For brevity, the phrases "an Interface is being enumerated" and "the
+AP is enumerating an Interface" shall mean that one of the following
+conditions holds:
+
+- The Interface was :ref:`hardware-model-lifecycle-activated`, its
+  INTF_TYPE is IFT_GREYBUS, and the procedure in
+  :ref:`lifecycles_enumerate` is subsequently being followed in the
+  "enumerate" transition from ACTIVATED to ENUMERATED in the Interface
+  Lifecycle state machine,
+
+- The Interface was :ref:`hardware-model-lifecycle-mode-switching`,
+  and the procedure in :ref:`lifecycles_ms_exit` is subsequently being
+  followed in the "ms_exit" transition from MODE_SWITCHING to
+  ENUMERATED, or
+
+- The Interface was :ref:`hardware-model-lifecycle-suspended`, and the
+  procedure in :ref:`lifecycles_resume` is subsequently being followed
+  in the "resume" transition from SUSPENDED to ENUMERATED.
+
+The procedure is referred to as *enumeration* in any of the above
+cases. *Re-enumeration* may be used instead when an Interface is being
+enumerated a second or subsequent time.
 
 While an Interface is ENUMERATED, the AP may determine through
 application- or Protocol-specific means that the Frame's reference

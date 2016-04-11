@@ -254,20 +254,9 @@ successfully exchanged, the AP may retrieve the Manifest using
 the :ref:`control-get-manifest`.
 
 Although the AP may send this request at any time, it should only do
-so during the "enumerate" transition from the
-:ref:`hardware-model-lifecycle-activated` Interface :ref:`Lifecycle
-State <hardware-model-lifecycle-states>` to
-:ref:`hardware-model-lifecycle-enumerated`, as defined in
-:ref:`lifecycles_interface_lifecycle`. This is described in
-:ref:`lifecycles_enumerate`. The effect of this Operation under other
-conditions is unspecified.
-
-For brevity, the following terminology is used: if an Interface
-is :ref:`hardware-model-lifecycle-activated`, its INTF_TYPE is
-IFT_GREYBUS, and the procedure in :ref:`lifecycles_enumerate` is being
-followed, including use of these operations, then the Interface *is
-being enumerated*. The Interface Lifecycle State becomes ENUMERATED if
-this procedure completes successfully.
+so while enumerating an Interface, as defined in
+:ref:`hardware-model-lifecycle-enumerated`. The effect of this
+Operation under other conditions is unspecified.
 
 Greybus Control Get Manifest Size Request
 """""""""""""""""""""""""""""""""""""""""
@@ -320,9 +309,9 @@ retrieve an Interface's :ref:`Manifest <manifest-description>` via its
 Control Connection.
 
 Though the AP may send this request at any time, it should only do so
-while the Interface is being enumerated, as defined in
-:ref:`control-get-manifest-size`. The effect of this Operation under
-other conditions is unspecified.
+while enumerating an Interface, as defined in
+:ref:`hardware-model-lifecycle-enumerated`. The effect of this
+Operation under other conditions is unspecified.
 
 Greybus Control Get Manifest Request
 """"""""""""""""""""""""""""""""""""
