@@ -258,7 +258,7 @@ State <hardware-model-lifecycle-states>` to
 :ref:`lifecycles_enumerate`. The effect of this Operation under other
 conditions is unspecified.
 
-For brevity, the following terminology is used: if an Interface State
+For brevity, the following terminology is used: if an Interface
 is :ref:`hardware-model-lifecycle-activated`, its INTF_TYPE is
 IFT_GREYBUS, and the procedure in :ref:`lifecycles_enumerate` is being
 followed, including use of these operations, then the Interface *is
@@ -369,7 +369,7 @@ response status is GB_OP_SUCCESS, the following shall hold:
    implemented by the CPort users of any such CPorts shall be as
    defined in the Manifest.
 
-The Interface State Lifecycle State is ENUMERATED when the AP receives
+An Interface's Lifecycle State is ENUMERATED when the AP receives
 such a successful response. The enumeration procedure guarantees that
 the Interface State is in one of two possible values, as follows::
 
@@ -382,7 +382,7 @@ the Interface State is in one of two possible values, as follows::
    ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
    MAILBOX=MAILBOX_GREYBUS)
 
-The Interface shall ensure that as long as its Interface State remains
+The Interface shall ensure that as long as the Interface State remains
 this value, that the above list of two conditions in this section
 shall continue to hold.
 
@@ -398,7 +398,7 @@ System. If the :ref:`Interface State
 <hardware-model-interface-states>` of an Interface has
 :ref:`hardware-model-intf-type` IFT_GREYBUS, the AP shall only attempt
 to establish non-Control Connections to that Interface if its
-Interface State is :ref:`hardware-model-lifecycle-enumerated`.
+Lifecycle State is :ref:`hardware-model-lifecycle-enumerated`.
 
 Connection establishment is performed by the AP using a sequence of
 Operations in the Control and SVC Protocols, as defined in this
@@ -446,7 +446,7 @@ CPort is connected.
 
 The AP also no longer needs to store information indicating that a
 CPort on an Interface is connected if subsequent Operations guarantee
-that the Interface's Interface State is
+that the Interface's Lifecycle State is
 :ref:`hardware-model-lifecycle-attached`,
 :ref:`hardware-model-lifecycle-activated`,
 :ref:`hardware-model-lifecycle-off`, or
@@ -800,12 +800,12 @@ data on CPorts whose Greybus Connections are closed.
 
 Instead, when the Interface is ready to signal completion of its
 handling of this Operation, it shall do so by setting the
-:ref:`hardware-model-mailbox` sub-state of its Interface State. The
-SVC shall detect when MAILBOX is set and, other than in certain
-special circumstances, shall subsequently notify the AP using a
-:ref:`svc_mailbox_event`. This indirect mechanism allows the Interface
-to notify the AP when the processing that results from a Mode Switch
-Request has completed.
+:ref:`hardware-model-mailbox` sub-state of its associated Interface
+State. The SVC shall detect when MAILBOX is set and, other than in
+certain special circumstances, shall subsequently notify the AP using
+a :ref:`svc_mailbox_event`. This indirect mechanism allows the
+Interface to notify the AP when the processing that results from a
+Mode Switch Request has completed.
 
 Any timeouts limiting the duration between the receipt of the Mode
 Switch request and a subsequent MAILBOX write by the Interface are
@@ -1785,10 +1785,10 @@ Greybus SVC Interface Set Power Mode Operation
 The AP sends this to the SVC to request that it change the |unipro|
 power mode for the |unipro| link on an Interface.
 
-The AP may use this Operation while an :ref:`Interface State
-<hardware-model-interface-states>` is
+The AP may use this Operation while an :ref:`Interface
+<hardware-model-interfaces>` is
 :ref:`hardware-model-lifecycle-enumerated` to manage various features
-of the |unipro| link established between the Frame and the attached
+of the Link established between the Switch and the attached
 Module.
 
 The AP shall additionally use this Operation in order to perform
@@ -2628,13 +2628,13 @@ Module from the Frame.
 
 Although the AP may send this Operation's request at any time
 following a successful :ref:`svc_hello`, the AP should ensure that the
-:ref:`Lifecycle State <hardware-model-lifecycle-states>` of each of
-the Interface States associated with the attached Module is either
+:ref:`Interface Lifecycle State <hardware-model-lifecycle-states>` of
+each of the Interfaces in the attached Module is either
 :ref:`hardware-model-lifecycle-attached` or
 :ref:`hardware-model-lifecycle-off` before doing so. Otherwise, the
 effect on the Greybus System is equivalent to a
-:ref:`lifecycles_forcible_removal` of the Module, and may otherwise disrupt
-the operation of the System.
+:ref:`lifecycles_forcible_removal` of the Module, and may otherwise
+disrupt the operation of the System.
 
 Greybus SVC Module Eject Request
 """"""""""""""""""""""""""""""""
@@ -3103,14 +3103,11 @@ is greater than one, all Interface States with IDs from
 inclusive, have ORDER equal to ORDER_SECONDARY.
 
 In all cases, regardless of the value of the flags field, every
-Interface State identified by the request is in the
+Interface identified by the request is in the
 :ref:`hardware-model-lifecycle-attached` :ref:`Lifecycle State
 <hardware-model-lifecycle-states>`. After sending the response to this
-request, the AP may thus subsequently initialize any Interfaces
-identified by the request, attempt to retrieve their :ref:`Manifests
-<manifest-description>`, etc.
-
-This process is described in :ref:`lifecycles_boot_enumeration`.
+request, the AP may thus subsequently attempt to :ref:`enumerate
+<hardware-model-lifecycle-enumerated>` these Interfaces.
 
 Additionally, the entire Module has transitioned to the
 MODULE_ATTACHED state, as described in
@@ -3182,20 +3179,20 @@ Interface ID for the Module that is no longer present.
 
 Using the most recent Module Inserted Operation on the SVC protocol
 whose primary_intf_id field equaled the primary_intf_id field in this
-request, the SVC notified the AP that one or more :ref:`Interface
-States <hardware-model-interface-states>` were
+request, the SVC notified the AP that one or more :ref:`Interfaces
+<hardware-model-interfaces>` were
 :ref:`hardware-model-lifecycle-attached`.
 
-The current Lifecycle States of each of these Interface States can be
+The current Lifecycle States of each of these Interfaces can be
 determined as follows.
 
-- If the Interface State was :ref:`hardware-model-lifecycle-attached`
-  or :ref:`hardware-model-lifecycle-off`, then the Interface State is
+- If the Interface was :ref:`hardware-model-lifecycle-attached`
+  or :ref:`hardware-model-lifecycle-off`, then the Interface is
   now :ref:`hardware-model-lifecycle-detached`.
 
 - Otherwise, a forcible removal has occurred, as described in the
-  :ref:`hardware-model-detect` section. When this occurs, the Interface
-  State is unpredictable.
+  :ref:`hardware-model-detect` section. When this occurs, the
+  Interface's Lifecycle State is unpredictable.
 
 Following a forcible removal, the AP and SVC shall proceed as
 described in :ref:`lifecycles_forcible_removal`.
@@ -3406,13 +3403,12 @@ so under one of the following conditions:
   Lifecycle <hardware-model-lifecycle-states>` state machine, as
   described in :ref:`lifecycles_boot` and :ref:`lifecycles_reboot`.
 
-- while the Interface State is
-  :ref:`hardware-model-lifecycle-enumerated`, if REFCLK is REFCLK_OFF and
-  the AP has determined using application-specific means that REFCLK
-  should be set to REFCLK_ON.
+- while the Interface is :ref:`hardware-model-lifecycle-enumerated`,
+  if REFCLK is REFCLK_OFF and the AP has determined using
+  application-specific means that REFCLK should be set to REFCLK_ON.
 
-- if the Interface State is :ref:`hardware-model-lifecycle-enumerated`
-  and REFCLK is REFCLK_OFF, during the "ms_enter" transition in the
+- if the Interface is :ref:`hardware-model-lifecycle-enumerated` and
+  REFCLK is REFCLK_OFF, during the "ms_enter" transition in the
   Interface Lifecycle state machine, as described in
   :ref:`lifecycles_ms_enter`.
 
@@ -3518,17 +3514,16 @@ so under one of the following conditions:
   Lifecycle <hardware-model-lifecycle-states>` state machine, as
   described in :ref:`lifecycles_early_power_down`.
 
-- while the Interface State is
-  :ref:`hardware-model-lifecycle-enumerated`, if REFCLK is REFCLK_ON and
-  the AP has determined using application-specific means that REFCLK
-  should be set to REFCLK_OFF.
+- while the Interface is :ref:`hardware-model-lifecycle-enumerated`,
+  if REFCLK is REFCLK_ON and the AP has determined using
+  application-specific means that REFCLK should be set to REFCLK_OFF.
 
-- if the Interface State is :ref:`hardware-model-lifecycle-enumerated`
+- if the Interface is :ref:`hardware-model-lifecycle-enumerated`
   and REFCLK is REFCLK_ON, during the "power_down" transition in the
   Interface Lifecycle state machine, as described in
   :ref:`lifecycles_power_down`.
 
-- if the Interface State is :ref:`hardware-model-lifecycle-enumerated`
+- if the Interface is :ref:`hardware-model-lifecycle-enumerated`
   and REFCLK is REFCLK_ON, during the "suspend" transition in the
   Interface Lifecycle state machine, as described in
   :ref:`lifecycles_suspend`.
@@ -3818,7 +3813,7 @@ determining if it is capable of communication via Greybus.
 
 More precisely, use of this Operation is the final step in a sequence
 of Greybus Operations which are used when transitioning an
-:ref:`Interface State <hardware-model-interface-states>` to the
+:ref:`Interface <hardware-model-interfaces>` to the
 :ref:`hardware-model-lifecycle-activated` Interface :ref:`Lifecycle
 State <hardware-model-lifecycle-states>`, as defined in
 :ref:`lifecycles_interface_lifecycle`.
@@ -3878,8 +3873,8 @@ The SVC and Module shall now activate the Interface by following
 these steps in the order specified.
 
 If this sequence completes successfully, INTF_TYPE is one of
-IFT_DUMMY, IFT_UNIPRO, or IFT_GREYBUS, and the Interface State's
-:ref:`Interface Lifecycle State <hardware-model-lifecycle-states>` is
+IFT_DUMMY, IFT_UNIPRO, or IFT_GREYBUS, and the Interface's
+:ref:`Lifecycle State <hardware-model-lifecycle-states>` is
 consequently :ref:`hardware-model-lifecycle-activated`. If this
 sequence fails, INTF_TYPE is IFT_UNKNOWN, and the SVC shall signal an
 error to the AP in the response, as described below.
@@ -3899,7 +3894,7 @@ This sequence is also depicted in :ref:`lifecycles_boot` and
 
    If the SVC detects the timer has expired and UNIPRO is UPRO_DOWN,
    the activation sequence is complete. The SVC shall set
-   :ref:`hardware-model-intf-type` to IFT_DUMMY. The Interface State
+   :ref:`hardware-model-intf-type` to IFT_DUMMY. The Interface
    is ACTIVATED, as described above.  When this occurs, immediately
    proceed to step 9.
 
@@ -3932,7 +3927,7 @@ This sequence is also depicted in :ref:`lifecycles_boot` and
    If the SVC detects this timer has expired and
    :ref:`hardware-model-mailbox` is MAILBOX_NONE, the activation
    sequence is complete. The SVC shall set INTF_TYPE to
-   IFT_UNIPRO. The Interface State is ACTIVATED, as described above.
+   IFT_UNIPRO. The Interface is ACTIVATED, as described above.
    When this occurs, immediately proceed to step 9.
 
 7. If the Interface is notified that UNIPRO is UPRO_UP and supports
@@ -3958,7 +3953,7 @@ This sequence is also depicted in :ref:`lifecycles_boot` and
 9. Regardless of the path to reach this step, the INTF_TYPE sub-state
    is now set. The activation sequence is complete.
 
-   If the Interface State is ACTIVATED, the SVC shall now send a
+   If the Interface is ACTIVATED, the SVC shall now send a
    successful response. Otherwise, it shall signal an error in the
    response.
 
@@ -4012,7 +4007,7 @@ Interface having set MAILBOX to an illegal value. If this occurred,
 the SVC shall signal an error to the AP in the response by setting the
 status to GB_SVC_INTF_BAD_MBOX.
 
-If the Interface State is :ref:`hardware-model-lifecycle-activated`
+If the Interface is :ref:`hardware-model-lifecycle-activated`
 and no other errors occurred, the SVC shall set the response status to
 GB_OP_SUCCESS. In this case, the intf_type field in the response
 payload contains the numeric value of the INTF_TYPE as defined in
@@ -4024,13 +4019,13 @@ Greybus SVC Interface Resume Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus SVC Interface Resume Operation allows the AP to request
-the SVC to "resume" an Interface State which was previously
+the SVC to "resume" an Interface which was previously
 :ref:`hardware-model-lifecycle-suspended`, allowing it to later be
 :ref:`hardware-model-lifecycle-enumerated`.
 
 More precisely, use of this Operation is one step in a sequence of
 Greybus Operations which are used when transitioning an
-:ref:`Interface State <hardware-model-interface-states>` to the
+:ref:`Interface <hardware-model-interfaces>` to the
 :ref:`hardware-model-lifecycle-enumerated` Interface :ref:`Lifecycle
 State <hardware-model-lifecycle-states>` from the
 :ref:`hardware-model-lifecycle-suspended` Lifecycle State, as defined
