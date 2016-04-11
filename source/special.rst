@@ -45,8 +45,8 @@ its CPort ID shall be zero.
 Such Interfaces shall be prepared to receive Operation requests on
 that CPort under conditions defined later in this chapter.  In
 particular, this may occur as a result of successful :ref:`Interface
-Activate <svc_interface_activate>` and :ref:`Interface Resume
-<svc_interface_resume>` Operations, which are defined below in the
+Activate <svc-interface-activate>` and :ref:`Interface Resume
+<svc-interface-resume>` Operations, which are defined below in the
 :ref:`svc-protocol`.
 
 Also using a sequence of SVC Protocol Operations, the AP may establish
@@ -803,7 +803,7 @@ handling of this Operation, it shall do so by setting the
 :ref:`hardware-model-mailbox` sub-state of its associated Interface
 State. The SVC shall detect when MAILBOX is set and, other than in
 certain special circumstances, shall subsequently notify the AP using
-a :ref:`svc_mailbox_event`. This indirect mechanism allows the
+a :ref:`svc-interface-mailbox-event`. This indirect mechanism allows the
 Interface to notify the AP when the processing that results from a
 Mode Switch Request has completed.
 
@@ -1146,7 +1146,7 @@ response type values are shown.
 
 ..
 
-.. _svc_connection_status_values:
+.. _svc-connection-status-values:
 
 Greybus SVC Connection Status Values
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1187,6 +1187,8 @@ values.
 
 ..
 
+.. _svc-ping:
+
 Greybus SVC Ping Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1194,6 +1196,8 @@ The Greybus SVC Ping Operation is the
 :ref:`greybus-protocol-ping-operation` for the SVC Protocol.
 It consists of a request containing no payload, and a response
 with no payload that indicates a successful result.
+
+.. _svc-protocol-version:
 
 Greybus SVC Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1206,7 +1210,7 @@ shall specify the value |gb-major| for the version_major and
 |gb-minor| for the version_minor fields found in this Operation's
 request and response messages.
 
-.. _svc_hello:
+.. _svc-hello:
 
 Greybus SVC Hello Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1253,7 +1257,9 @@ The Greybus SVC Hello response contains no payload.
 During the initialization of a Greybus System, after receiving a
 successful SVC Hello Response from the AP, the SVC shall attempt to
 exchange a sequence of :ref:`Module Inserted
-<greybus-svc-module-inserted-operation>` Operations with the AP.
+<svc-module-inserted>` Operations with the AP.
+
+.. _svc-dme-peer-get:
 
 Greybus SVC DME Peer Get Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1342,6 +1348,8 @@ specification, as well as the value of the attribute, if applicable.
     =======  ==============  ===========  ================  =========================================
 
 ..
+
+.. _svc-dme-peer-set:
 
 Greybus SVC DME Peer Set Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1432,6 +1440,8 @@ defined in the |unipro| specification.
 
 ..
 
+.. _svc-route-create:
+
 Greybus SVC Route Create Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1449,7 +1459,7 @@ the Interface Blocks identified by the request.
 
 However, creation of a route is not a sufficient condition for Message
 exchange. In order to exchange |unipro| Messages between the two
-Interfaces, a successful :ref:`svc_connection_create`
+Interfaces, a successful :ref:`svc-connection-create`
 between the two interfaces is required as well. Additional Operations
 are required to establish a Greybus Connection, as described in
 :ref:`lifecycles_connection_management`.
@@ -1510,6 +1520,8 @@ Operation shall have no effect on either the UNIPRO sub-state of
 either Interface identified by the request, or the value of any of the
 |unipro| DME attributes for the Interfaces identified by the request.
 
+.. _svc-route-destroy:
+
 Greybus SVC Route Destroy Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1559,6 +1571,8 @@ Regardless of the response status value, the Greybus SVC Route Destroy
 Operation shall have no effect on either the UNIPRO sub-state of
 either Interface identified by the request, or the value of any of the
 |unipro| DME attributes for the Interfaces identified by the request.
+
+.. _svc-interface-device-id:
 
 Greybus SVC Interface Device ID Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1744,6 +1758,8 @@ Greybus SVC Interface Hot Unplug Response
 
 The Greybus SVC hot unplug response message contains no payload.
 
+.. _svc-interface-reset:
+
 Greybus SVC Interface Reset Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1778,6 +1794,8 @@ Greybus SVC Interface Reset Response
 """"""""""""""""""""""""""""""""""""
 
 The Greybus SVC Interface Reset response message contains no payload.
+
+.. _svc-interface-set-power-mode:
 
 Greybus SVC Interface Set Power Mode Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2147,7 +2165,7 @@ Table :num:`table-svc-interface-set-power-mode-response-pwr-change-result-code`.
 
 ..
 
-.. _svc_connection_create:
+.. _svc-connection-create:
 
 Greybus SVC Connection Create Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2192,7 +2210,7 @@ and are defined in table :num:`table-svc-connection-create-request-flags`.
 
 ..
 
-.. _svc_connection_create_flags:
+.. _svc-connection-create-flags:
 
 .. figtable::
     :nofig:
@@ -2256,6 +2274,8 @@ response status value shall equal GB_OP_UNKNOWN_ERROR. When this
 occurs, the values of the |unipro| DME attributes of one or both of
 the Interfaces is unpredictable, as are the values of the UNIPRO
 sub-states for the Interfaces identified in the request.
+
+.. _svc-connection-quiescing:
 
 Greybus SVC Connection Quiescing Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2332,7 +2352,7 @@ Otherwise, the SVC shall perform the *connection-quiesce sequence* by
 temporarily disconnecting both ends of the Connection, then
 reconfiguring them as follows before reconnecting them:
 
-- ensuring :ref:`E2EFC, CSD, and CSV <svc_connection_create_flags>`
+- ensuring :ref:`E2EFC, CSD, and CSV <svc-connection-create-flags>`
   are all disabled, and
 
 - clearing estimates of local and peer buffer space, as well as credits
@@ -2359,6 +2379,8 @@ the connection quiesce sequence due to fatal errors exchanging
 status shall be GB_OP_UNKNOWN_ERROR. When this occurs, the value of
 the UNIPRO sub-state for the Interface identified in the request is
 unpredictable.
+
+.. _svc-connection-destroy:
 
 Greybus SVC Connection Destroy Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2434,6 +2456,8 @@ occurs, the values of the |unipro| DME attributes of one or both of
 the Interfaces is unpredictable, as are the values of the UNIPRO
 sub-states for the Interfaces identified in the request.
 
+.. _svc-timesync-enable:
+
 Greybus SVC TimeSync Enable Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The AP Module uses this operation to request the SVC to enable frame-time
@@ -2478,6 +2502,8 @@ Greybus SVC TimeSync Enable Response
 
 The Greybus SVC Protocol TimeSync Enable response contains no payload.
 
+.. _svc-timesync-disable:
+
 Greybus SVC TimeSync Disable Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The AP Module uses this operation to request the SVC stop tracking
@@ -2492,6 +2518,8 @@ Greybus SVC TimeSync Disable Response
 """""""""""""""""""""""""""""""""""""
 
 The Greybus SVC Protocol TimeSync Disable response contains no payload.
+
+.. _svc-timesync-authoritative:
 
 Greybus SVC TimeSync Authoritative Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2531,6 +2559,8 @@ response shall contain zero.
 
 ..
 
+.. _svc-timesync-wake-detect-pins-acquire:
+
 Greybus SVC TimeSync Wake-Detect Pins Acquire Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The AP Module uses this operation to request the SVC to take ownership-of and
@@ -2567,6 +2597,8 @@ Greybus SVC TimeSync Wake-Detect Pins Acquire Response
 
 The Greybus SVC Protocol TimeSync Wake-Detect Pins Acquire response contains no payload.
 
+.. _svc-timesync-wake-detect-pins-release:
+
 Greybus SVC TimeSync Wake-Detect Pins Release Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The AP Module uses this operation to request the SVC to release ownership of any
@@ -2582,6 +2614,8 @@ Greybus SVC TimeSync Wake-Detect Pins Release Response
 """"""""""""""""""""""""""""""""""""""""""""""""""""""
 
 The Greybus SVC Protocol TimeSync Wake-Detect Pins Release response contains no payload.
+
+.. _svc-timesync-ping:
 
 Greybus SVC TimeSync Ping Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2619,6 +2653,8 @@ authoritative frame-time at the ping event generated.
 
 ..
 
+.. _svc-module-eject:
+
 Greybus SVC Module Eject Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -2627,7 +2663,7 @@ to request the SVC to execute the necessary actions to eject a
 Module from the Frame.
 
 Although the AP may send this Operation's request at any time
-following a successful :ref:`svc_hello`, the AP should ensure that the
+following a successful :ref:`svc-hello`, the AP should ensure that the
 :ref:`Interface Lifecycle State <hardware-model-lifecycle-states>` of
 each of the Interfaces in the attached Module is either
 :ref:`hardware-model-lifecycle-attached` or
@@ -2680,8 +2716,10 @@ MODULE_ATTACHED state after the AP receives the result. Furthermore,
 the RELEASE pulse may fail to eject the Module.
 
 If the release pulse is successful, the AP will receive a subsequent
-notification from the SVC in the form of a :ref:`svc_module_removed`
+notification from the SVC in the form of a :ref:`svc-module-removed`
 request.
+
+.. _svc-key-event:
 
 Greybus SVC Key Event Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2706,13 +2744,13 @@ supplies a key code and an event type.
     =======  ============  ======  ==========  ======================================
     Offset   Field         Size    Value       Description
     =======  ============  ======  ==========  ======================================
-    0        key_code      2       Number      :ref:`svc_key_code`
-    2        key_event     1       Number      :ref:`svc_key_events`
+    0        key_code      2       Number      :ref:`svc-key-code`
+    2        key_event     1       Number      :ref:`svc-key-events`
     =======  ============  ======  ==========  ======================================
 
 ..
 
-.. _svc_key_code:
+.. _svc-key-code:
 
 Greybus SVC Key Codes
 """""""""""""""""""""
@@ -2735,7 +2773,7 @@ included in Key Event Request.
 
 ..
 
-.. _svc_key_events:
+.. _svc-key-events:
 
 Greybus SVC Key Events
 """"""""""""""""""""""
@@ -2757,6 +2795,8 @@ included in Key Event Request.
     |_|                   (all other values reserved)           0x02..0xFF
     ====================  ====================================  ============
 ..
+
+.. _svc-power-monitor-get-rail-count:
 
 Greybus SVC Power Monitor Get Rail Count Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2791,6 +2831,8 @@ in which case no rail can be measured by the SVC.
     =======  ==============  ===========  ==========      ===========================
 
 ..
+
+.. _svc-power-monitor-get-rail-names:
 
 Greybus SVC Power Monitor Get Rail Names Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2844,6 +2886,8 @@ this operation are guaranteed to be unique.
 
 ..
 
+.. _svc-power-monitor-get-sample:
+
 Greybus SVC Power Monitor Get Sample Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -2867,12 +2911,12 @@ only. It contains the ID of the rail and the measurement type
     Offset   Field           Size         Value           Description
     =======  ==============  ===========  ==========      ===========================
     0        rail_id         1            Number          ID of the rail that shall be measured
-    1        type            1            Number          Measurement type indicator (:ref:`svc_pwrmon_measurement_types`)
+    1        type            1            Number          Measurement type indicator (:ref:`svc-pwrmon-measurement-types`)
     =======  ==============  ===========  ==========      ===========================
 
 ..
 
-.. _svc_pwrmon_measurement_types:
+.. _svc-pwrmon-measurement-types:
 
 Greybus SVC Power Monitor Get Sample Type Indicators
 """"""""""""""""""""""""""""""""""""""""""""""""""""
@@ -2913,13 +2957,13 @@ power.
     =======  ==============  ===========  ==========      ===========================
     Offset   Field           Size         Value           Description
     =======  ==============  ===========  ==========      ===========================
-    0        result          1            Number          Result code (:ref:`svc_pwrmon_get_sample_results`)
+    0        result          1            Number          Result code (:ref:`svc-pwrmon-get-sample-results`)
     1        measurement     4            Number          Measured value
     =======  ==============  ===========  ==========      ===========================
 
 ..
 
-.. _svc_pwrmon_get_sample_results:
+.. _svc-pwrmon-get-sample-results:
 
 Greybus SVC Power Monitor Get Sample Result Codes
 """""""""""""""""""""""""""""""""""""""""""""""""
@@ -2941,6 +2985,8 @@ Greybus SVC Power Monitor Get Sample Result Codes
     ==================================  ========================================  ============
 
 ..
+
+.. _svc-power-monitor-interface-get-sample:
 
 Greybus SVC Power Monitor Interface Get Sample Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2971,7 +3017,7 @@ measurement type (voltage, current, power).
     Offset   Field           Size         Value           Description
     =======  ==============  ===========  ==========      ===========================
     0        intf_id         1            Number          ID of the interface
-    1        type            1            Number          Measurement type indicator (:ref:`svc_pwrmon_measurement_types`)
+    1        type            1            Number          Measurement type indicator (:ref:`svc-pwrmon-measurement-types`)
     =======  ==============  ===========  ==========      ===========================
 
 ..
@@ -2994,11 +3040,13 @@ microwatts for power.
     =======  ==============  ===========  ==========      ===========================
     Offset   Field           Size         Value           Description
     =======  ==============  ===========  ==========      ===========================
-    0        result          1            Number          Result code (:ref:`svc_pwrmon_get_sample_results`)
+    0        result          1            Number          Result code (:ref:`svc-pwrmon-get-sample-results`)
     1        measurement     4            Number          Measured value
     =======  ==============  ===========  ==========      ===========================
 
 ..
+
+.. _svc-power-down:
 
 Greybus SVC Power Down Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -3028,7 +3076,7 @@ The Greybus SVC Power Down response message contains no payload.
 
 ..
 
-.. _greybus-svc-module-inserted-operation:
+.. _svc-module-inserted:
 
 Greybus SVC Module Inserted Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -3117,7 +3165,7 @@ The consequences of boot and enumeration when the NO_PRIMARY_INTERFACE
 flag is set are unspecified.
 
 During the initialization of a Greybus System, following a successful
-:ref:`svc_hello`, the SVC shall attempt to exchange Module Inserted
+:ref:`svc-hello`, the SVC shall attempt to exchange Module Inserted
 Operations with the AP for each attached Module.
 
 Unless an error occurs, there is a unique Primary Interface to each
@@ -3145,7 +3193,7 @@ Greybus SVC Module Inserted Response
 
 The Greybus SVC Module Inserted response message contains no payload.
 
-.. _svc_module_removed:
+.. _svc-module-removed:
 
 Greybus SVC Module Removed Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -3154,7 +3202,7 @@ The Greybus SVC Module Removed request is sent by the SVC
 to the AP Module.  It supplies the Interface ID for the Primary
 Interface to the Module that is no longer present.  The Interface
 ID shall have been the subject of a previous
-:ref:`greybus-svc-module-inserted-operation`.
+:ref:`svc-module-inserted`.
 
 Greybus SVC Module Removed Request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -3205,7 +3253,7 @@ Greybus SVC Module Removed Response
 
 The Greybus SVC Module Removed response message contains no payload.
 
-.. _svc_interface_vsys_enable:
+.. _svc-interface-vsys-enable:
 
 Greybus SVC Interface V_SYS Enable Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -3246,7 +3294,7 @@ The SVC, on receiving this request, shall attempt to set the V_SYS
 sub-state of the Interface State specified by the intf_id field to
 V_SYS_ON.
 
-.. _svc_interface_vsys_enable_response:
+.. _svc-interface-vsys-enable-response:
 
 Greybus SVC Interface V_SYS Enable Response
 """""""""""""""""""""""""""""""""""""""""""
@@ -3303,7 +3351,7 @@ the request in any other combination of these two fields.
     ================  ========  ======================================================================
 ..
 
-.. _svc_interface_vsys_disable:
+.. _svc-interface-vsys-disable:
 
 Greybus SVC Interface V_SYS Disable Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -3376,7 +3424,7 @@ result_code fields in the Interface V_SYS Enable Response.
 
 That is, the status of the response shall only be used to indicate the
 result of the Greybus communication, exactly as described in
-:ref:`svc_interface_vsys_enable_response`.
+:ref:`svc-interface-vsys-enable-response`.
 
 Similarly, when the Interface V_SYS Disable response status is
 GB_OP_SUCCESS, the value of V_SYS may be determined given the
@@ -3387,7 +3435,7 @@ result_code field in the response is V_SYS_OK. V_SYS shall not have
 changed value as a result of processing the request in any other
 combination of these two fields.
 
-.. _svc_interface_refclk_enable:
+.. _svc-interface-refclk-enable:
 
 Greybus SVC Interface REFCLK Enable Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -3441,7 +3489,7 @@ The SVC, on receiving this request, shall attempt to set the REFCLK
 sub-state of the Interface State specified by the intf_id field to
 REFCLK_ON.
 
-.. _svc_interface_refclk_enable_response:
+.. _svc-interface-refclk-enable-response:
 
 Greybus SVC Interface REFCLK Enable Response
 """"""""""""""""""""""""""""""""""""""""""""
@@ -3498,7 +3546,7 @@ processing the request in any other combination of these two fields.
     ================  ========  ======================================================================
 ..
 
-.. _svc_interface_refclk_disable:
+.. _svc-interface-refclk-disable:
 
 Greybus SVC Interface REFCLK Disable Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -3584,7 +3632,7 @@ result_code fields in the Interface REFCLK Enable Response.
 
 That is, the status of the response shall only be used to indicate the
 result of the Greybus communication, exactly as described in
-:ref:`svc_interface_refclk_enable_response`.
+:ref:`svc-interface-refclk-enable-response`.
 
 Similarly, when the Interface REFCLK Disable response status is
 GB_OP_SUCCESS, the value of REFCLK may be determined given the
@@ -3595,7 +3643,7 @@ result_code field in the response is REFCLK_OK. REFCLK shall not have
 changed value as a result of processing the request in any other
 combination of these two fields.
 
-.. _svc_interface_unipro_enable:
+.. _svc-interface-unipro-enable:
 
 Greybus SVC Interface UNIPRO Enable Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -3655,7 +3703,7 @@ If UNIPRO is UPRO_OFF, the SVC shall attempt to set the UNIPRO
 sub-state of the Interface State specified by the intf_id field to
 UPRO_DOWN.
 
-.. _svc_interface_unipro_enable_response:
+.. _svc-interface-unipro-enable-response:
 
 Greybus SVC Interface UNIPRO Enable Response
 """"""""""""""""""""""""""""""""""""""""""""
@@ -3715,7 +3763,7 @@ response status is GB_OP_SUCCESS:
     ================  ========  ======================================================================
 ..
 
-.. _svc_interface_unipro_disable:
+.. _svc-interface-unipro-disable:
 
 Greybus SVC Interface UNIPRO Disable Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -3790,7 +3838,7 @@ result_code fields in the Interface UNIPRO Enable Response.
 
 That is, the status of the response shall only be used to indicate the
 result of the Greybus communication, exactly as described in
-:ref:`svc_interface_unipro_enable_response`.
+:ref:`svc-interface-unipro-enable-response`.
 
 Similarly, when the Interface UNIPRO Disable response status is
 GB_OP_SUCCESS, the value of UNIPRO may be determined given the
@@ -3802,7 +3850,7 @@ response status is GB_OP_SUCCESS:
 - UNIPRO shall not have changed value if result_code is UPRO_BUSY.
 - UNIPRO is unpredictable if result_code is UPRO_FAIL.
 
-.. _svc_interface_activate:
+.. _svc-interface-activate:
 
 Greybus SVC Interface Activate Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -3826,7 +3874,7 @@ other conditions is unspecified.
 
 The SVC shall not send this Operation request.
 
-.. _svc_interface_activate_request:
+.. _svc-interface-activate-request:
 
 Greybus SVC Interface Activate Request
 """"""""""""""""""""""""""""""""""""""
@@ -4013,7 +4061,7 @@ GB_OP_SUCCESS. In this case, the intf_type field in the response
 payload contains the numeric value of the INTF_TYPE as defined in
 :ref:`hardware-model-intf-type`.
 
-.. _svc_interface_resume:
+.. _svc-interface-resume:
 
 Greybus SVC Interface Resume Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -4038,7 +4086,7 @@ this request under other conditions is unspecified.
 
 The SVC shall not send this Operation request.
 
-.. _svc_interface_resume_request:
+.. _svc-interface-resume-request:
 
 Greybus SVC Interface Resume Request
 """"""""""""""""""""""""""""""""""""
@@ -4185,7 +4233,7 @@ status to GB_SVC_INTF_NO_UPRO_LINK.
 If the resume sequence succeeded and no other errors occurred, the SVC
 shall set the status to GB_OP_SUCCESS.
 
-.. _svc_mailbox_event:
+.. _svc-interface-mailbox-event:
 
 Greybus SVC Interface Mailbox Event Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -4242,10 +4290,10 @@ an SVC Interface Mailbox Event Request to the AP if none of the
 following conditions hold:
 
 1. The SVC is currently activating that Interface, as described in
-   :ref:`svc_interface_activate_request`.
+   :ref:`svc-interface-activate-request`.
 
 2. The SVC is currently resuming that Interface, as described in
-   :ref:`svc_interface_resume_request`.
+   :ref:`svc-interface-resume-request`.
 
 3. The Interface is an :ref:`AP Interface
    <hardware-model-ap-module-requirements>`.
