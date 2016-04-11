@@ -2053,6 +2053,12 @@ mode of the transmitter which is attached to the |unipro| switch at
 the Interface given by intf_id; tx_mode does not refer to the
 transmitter within the switch itself.
 
+If either of tx_mode or rx_mode equals UNIPRO_HIBERNATE_MODE, both
+shall equal UNIPRO_HIBERNATE_MODE. Under this condition, the following
+fields in the request payload shall be ignored: hs_series, tx_gear,
+tx_nlanes, tx_amplitude, tx_hs_equalizer, rx_gear, rx_nlanes, flags,
+quirks, local_l2timerdata, remote_l2timerdata.
+
 When reconfiguring the link power mode as a result of receiving a
 Greybus SVC Interface Set Power Mode Request, the SVC shall set the
 |unipro| PA_HSSeries attribute for the link according to the hs_series
