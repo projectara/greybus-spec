@@ -987,35 +987,461 @@ Power Management
 Suspend (ENUMERATED → SUSPENDED)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-TODO
+.. SW-4659 + any sub-tasks track adding multiple AP Interfaces, and
+   SW-4660 + any sub-tasks track adding module/module connections.
+
+.. note::
+
+   The content in this section is defined under the following assumptions:
+
+   - there is exactly one :ref:`AP Interface
+     <hardware-model-ap-module-requirements>` in the Greybus System.
+
+   - The Non-Control Connections given below are each between that AP
+     Interface and another Interface in the System.
+
+   The results if there are multiple AP Interfaces, or in the case of
+   non-AP to non-AP Interfaces, are undefined.
+
+.. TODO add an MSC here for the successful case
+
+The following procedure can be initiated by the AP when an Interface
+is ENUMERATED, in order to attempt to follow the "suspend" transition
+from ENUMERATED to SUSPENDED.
+
+To perform this procedure, the following conditions shall hold.
+
+- The AP Interface and SVC shall have established a Connection
+  implementing the :ref:`svc-protocol`. This is the SVC Connection in
+  this procedure.
+
+- An Interface shall be provided, whose Interface Lifecycle State is
+  ENUMERATED.
+
+- Zero or more additional Non-Control Connections shall be provided,
+  which comprise all such established Connections involving the
+  Interface, and shall each have been established by following the
+  sequence defined in :ref:`lifecycles_connection_establishment`.
+
+If these conditions do not all hold, the procedure shall not be
+followed. The results of following this procedure in this case are
+undefined.
+
+The following values are used in this procedure:
+
+- The AP Interface's ID is ap_interface_id.
+- The Interface ID of the Interface being suspended is interface_id.
+
+.. XXX input from the power management team is required to better
+   define the error handling here.
+
+.. XXX input from the power management team is required to add calls
+   to other proposed Control Operations which act on the Interface's
+   Bundles and the Interface itself in the right places when those
+   proposed operations are merged.
+
+1. The AP Interface and the Interface being suspended shall exchange
+   Protocol-specific Operations which inform the Interface the
+   subsequent steps in this Procedure shall be performed next.
+
+2. The sequence defined :ref:`lifecycles_connection_closure` shall be
+   followed to attempt to close all of the provided Non-Control
+   Connections.
+
+   If any attempt fails, this procedure has failed. The results are
+   undefined.
+
+3. The sequence defined in
+   :ref:`lifecycles_control_closure_suspend` shall be followed to
+   close the Control Connection to the Interface.
+
+   If the sequence fails, this procedure has failed. The results are
+   undefined.
+
+4. The AP shall exchange an :ref:`svc-route-destroy` with the SVC. The
+   intf1_id and intf2_id fields in the request payload shall
+   respectively equal ap_interface_id and interface_id.
+
+   If the Operation fails, this procedure has failed. The results are
+   undefined.
+
+5. The AP shall exchange an :ref:`svc-interface-set-power-mode` with
+   the SVC.
+
+   The intf_id field in the request payload shall equal interface_id.
+   The tx_mode and rx_mode fields shall both equal
+   UNIPRO_HIBERNATE_MODE.
+
+   If the Operation fails, this procedure has failed. The results are
+   undefined.
+
+   If it succeeds, the SVC shall set the UNIPRO Interface State to
+   UPRO_HIBERNATE. The SVC shall wait an implementationed-defined
+   duration in this step to allow the Interface to enter a low-power
+   state in the next step.
+
+6. The Interface shall be capable of receiving notification that
+   UNIPRO became UPRO_HIBERNATE. The Interface shall now enter an
+   implementation-defined suspend state, during which it should
+   attempt to draw minimal power from the Frame.
+
+7. The AP shall exchange an :ref:`svc-interface-unipro-disable` with
+   the SVC.  The intf_id field in the request payload shall equal
+   interface_id.
+
+   If the Operation fails, this procedure has failed. The results are
+   undefined.
+
+8. The AP shall exchange an :ref:`svc-interface-refclk-disable` with
+   the SVC.  The intf_id field in the request payload shall equal
+   interface_id.
+
+   If the Operation succeeds, this procedure has succeeded.
+
+   If the Operation fails, this procedure has failed. The results are
+   undefined.
+
+9. This procedure is now complete, and has either succeeded or
+   failed. If it succeeded, the Interface is now SUSPENDED.
 
 .. _lifecycles_resume:
 
 Resume (SUSPENDED → ENUMERATED)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-TODO
+.. SW-4659 + any sub-tasks track adding multiple AP Interfaces, and
+   SW-4660 + any sub-tasks track adding module/module connections.
+
+.. note::
+
+   The content in this section is defined under the following assumptions:
+
+   - there is exactly one :ref:`AP Interface
+     <hardware-model-ap-module-requirements>` in the Greybus System.
+
+   - The Non-Control Connections given below were each between that AP
+     Interface and another Interface in the System.
+
+   The results if there are multiple AP Interfaces, or in the case of
+   non-AP to non-AP Interfaces, are undefined.
+
+.. TODO add an MSC here for the successful case
+
+The following procedure can be initiated by the AP when an Interface
+is SUSPENDED, in order to attempt to follow the "resume" transition
+from SUSPENDED to ENUMERATED.
+
+To perform this procedure, the following conditions shall hold.
+
+- The AP Interface and SVC shall have established a Connection
+  implementing the :ref:`svc-protocol`. This is the SVC Connection in
+  this procedure.
+
+- An Interface shall be provided, whose Interface Lifecycle State is
+  SUSPENDED. The Interface shall have transitioned to the SUSPENDED
+  Lifecycle State by following the suspend procedure defined in
+  :ref:`lifecycles_suspend`.
+
+- Zero or more additional Non-Control Connections shall be provided,
+  which comprise all such established Connections involving the
+  Interface when the suspend procedure was followed.
+
+- A Device ID value shall be provided, which is the SUSPENDED
+  Interface's Device ID previously assigned Device ID used to destroy
+  any Routes to the Interface as defined in :ref:`lifecycles_suspend`.
+
+- A CPort ID value shall be provided, which was the AP CPort ID which
+  was previously used for the Interface Control Connection before the
+  Interface was suspended.
+
+If these conditions do not all hold, the procedure shall not be
+followed. The results of following this procedure in this case are
+undefined.
+
+The following values are used in this procedure:
+
+- The AP Interface's ID is ap_interface_id.
+- The AP Interface Device ID is ap_device_id.
+- The Provided AP CPort ID used for the Interface Control Connection
+  is ap_cport_id.
+- The Interface ID of the Interface being resumed is interface_id.
+- The provided Device ID of the Interface being resumed is
+  interface_device_id.
+
+.. XXX input from the power management team is required to better
+   define the error handling here.
+
+.. XXX input from the power management team is required to add calls
+   to other proposed Control Operations which act on the Interface's
+   Bundles and the Interface itself in the right places when those
+   proposed operations are merged.
+
+1. The AP shall exchange an :ref:`svc-interface-refclk-enable` with the
+   SVC. The intf_id field in the request payload shall equal
+   interface_id.
+
+   If the Operation fails, this procedure has failed. The results are
+   undefined.
+
+2. The AP shall exchange an :ref:`svc-interface-unipro-enable` with the
+   SVC. The intf_id field in the request payload shall equal
+   interface_id.
+
+   If the Operation fails, this procedure has failed. The results are
+   undefined.
+
+3. The AP shall exchange an :ref:`svc-interface-resume` with the
+   SVC. The intf_id field in the request payload shall equal
+   interface_id.
+
+   If the Operation fails, this procedure has failed. The results are
+   undefined.
+
+4. The AP shall exchange an :ref:`svc-route-create` with the SVC.  The
+   intf1_id and dev1_id fields in the request payload shall
+   respectively equal ap_interface_id and ap_device_id. The intf2_id
+   and dev2_id fields in the request payload shall respectively equal
+   interface_id and interface_device_id.
+
+   If the Operation fails, this procedure has failed. The results are
+   undefined.
+
+5. The AP shall initiate a :ref:`svc-connection-create` to establish the
+   Control Connection.
+
+   The intf1_id and cport1_id fields in the request payload shall
+   respectively equal ap_interface_id and ap_cport_id. The intf2_id
+   and cport2_id fields in the request payload shall respectively
+   equal interface_id and zero.
+
+   The tc field in the request payload shall equal zero.  The
+   :ref:`flags field <svc-connection-create-flags>` in the request
+   payload should equal 0x7 (E2EFC | CSD_N | CSV_N).
+
+   If this Operation fails, the procedure has failed.  The results are
+   undefined.
+
+   If it succeeds, the procedure has succeeded. The Interface is
+   ENUMERATED. The requirements specified in
+   :ref:`svc-interface-resume` guarantee that the Interface has the
+   same Manifest defined as that it made available to the AP Interface
+   the most recent time it was ENUMERATED.
+
+6. The procedure is complete and has succeeded or failed.
 
 .. _lifecycles_power_down:
 
 Power Down (ENUMERATED → OFF)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-TODO
+.. SW-4659 + any sub-tasks track adding multiple AP Interfaces, and
+   SW-4660 + any sub-tasks track adding module/module connections.
+
+.. note::
+
+   The content in this section is defined under the following assumptions:
+
+   - there is exactly one :ref:`AP Interface
+     <hardware-model-ap-module-requirements>` in the Greybus System.
+
+   - The Non-Control Connections given below are each between that AP
+     Interface and another Interface in the System.
+
+   The results if there are multiple AP Interfaces, or in the case of
+   non-AP to non-AP Interfaces, are undefined.
+
+.. TODO add an MSC here for the successful case
+
+The following procedure can be initiated by the AP when an Interface
+is ENUMERATED, in order to attempt to follow the "suspend" transition
+from ENUMERATED to SUSPENDED.
+
+To perform this procedure, the following conditions shall hold.
+
+- The AP Interface and SVC shall have established a Connection
+  implementing the :ref:`svc-protocol`. This is the SVC Connection in
+  this procedure.
+
+- An Interface shall be provided, whose Interface Lifecycle State is
+  ENUMERATED.
+
+- Zero or more additional Non-Control Connections shall be provided,
+  which comprise all such established Connections involving the
+  Interface, and shall each have been established by following the
+  sequence defined in :ref:`lifecycles_connection_establishment`.
+
+If these conditions do not all hold, the procedure shall not be
+followed. The results of following this procedure in this case are
+undefined.
+
+The following values are used in this procedure:
+
+- The AP Interface's ID is ap_interface_id.
+- The Interface ID of the Interface being powered off is interface_id.
+
+.. XXX input from the power management team is required to better
+   define the error handling here.
+
+.. XXX input from the power management team is required to add calls
+   to other proposed Control Operations which act on the Interface's
+   Bundles and the Interface itself in the right places when those
+   proposed operations are merged.
+
+1. The sequence defined :ref:`lifecycles_connection_closure` shall be
+   followed to attempt to close all of the provided Non-Control
+   Connections.
+
+   If any attempt fails, this procedure has failed. The results are
+   undefined.
+
+2. The sequence defined in
+   :ref:`lifecycles_control_closure_power_down` shall be followed to
+   close the Control Connection to the Interface.
+
+   If the sequence fails, this procedure has failed. The results are
+   undefined.
+
+3. The AP shall exchange a :ref:`svc-route-destroy` with the SVC. The
+   intf1_id and intf2_id fields in the request payload shall
+   respectively equal ap_interface_id and interface_id.
+
+   If the Operation fails, this procedure has failed. The results are
+   undefined.
+
+4. The AP shall exchange a :ref:`svc-interface-set-power-mode` with
+   the SVC.
+
+   The intf_id field in the request payload shall equal interface_id.
+   The tx_mode and rx_mode fields shall both equal
+   UNIPRO_HIBERNATE_MODE.
+
+   If the Operation fails, this procedure has failed. The results are
+   undefined.
+
+   If it succeeds, the SVC shall set the UNIPRO Interface State to
+   UPRO_HIBERNATE. The SVC shall wait an implementationed-defined
+   duration in this step to allow the Interface to power down in the
+   next step.
+
+5. The AP shall exchange an :ref:`svc-interface-unipro-disable` with
+   the SVC to disable UNIPRO within the Switch.
+
+   If the Operation fails, this procedure has failed. The results are
+   undefined.
+
+7. The AP shall exchange an :ref:`svc-interface-refclk-disable` with
+   the SVC.  The intf_id field in the request payload shall equal
+   interface_id.
+
+   If the Operation succeeds, this procedure has succeeded.
+
+   If the Operation fails, this procedure has failed. The results are
+   undefined.
+
+7. The AP shall exchange an :ref:`svc-interface-vsys-disable` with
+   the SVC.  The intf_id field in the request payload shall equal
+   interface_id.
+
+   If the Operation succeeds, this procedure has succeeded.
+
+   If the Operation fails, this procedure has failed. The results are
+   undefined.
+
+
+8. This procedure is now complete, and has either succeeded or
+   failed. If it succeeded, the Interface is now SUSPENDED.
 
 .. _lifecycles_reboot:
 
 Reboot (OFF → ACTIVATED)
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-TODO
+.. SW-4659 + any sub-tasks track adding multiple AP Interfaces
+
+.. note::
+
+   The content in this section is defined under the assumption that
+   there is exactly one :ref:`AP Interface
+   <hardware-model-ap-module-requirements>` in the Greybus System.
+
+   The results if there are multiple AP Interfaces are undefined.
+
+.. TODO add an MSC here for the successful case
+
+The following procedure can be initiated by the AP when an Interface
+is OFF, in order to attempt to follow the "reboot" transition from
+OFF to ACTIVATED.
+
+To perform this procedure, the following conditions shall hold.
+
+- The AP Interface and SVC shall have established a Connection
+  implementing the :ref:`svc-protocol`. This is the SVC Connection in
+  this procedure.
+
+- An Interface shall be provided, whose Interface Lifecycle State is
+  OFF.
+
+If these conditions do not all hold, the procedure shall not be
+followed. The results of following this procedure in this case are
+undefined.
+
+Other than the initial state which led to the transition, this
+procedure is otherwise identical to that defined in
+:ref:`lifecycles_boot`.
+
+The following value is used in this procedure:
+
+- The Interface ID of the Interface being rebooted is interface_id.
+
+1. The AP shall exchange an :ref:`svc-interface-vsys-enable` with the
+   SVC. The intf_id field in the request payload shall equal
+   interface_id.
+
+   If the Operation fails, this procedure has failed. Go to step 8.
+
+2. The AP shall exchange an :ref:`svc-interface-refclk-enable` with
+   the SVC. The intf_id field in the request payload shall equal
+   interface_id.
+
+   If the Operation fails, this procedure has failed. Go to step 7.
+
+3. The AP shall exchange an :ref:`svc-interface-unipro-enable` with
+   the SVC. The intf_id field in the request payload shall equal
+   interface_id.
+
+   If the Operation fails, this procedure has failed. Go to step 6.
+
+4. The AP shall exchange an :ref:`svc-interface-activate` with the
+   SVC. The intf_id field in the request payload shall equal
+   interface_id.
+
+   If the Operation fails, this procedure has failed. Go to step 5.
+
+   If the Operation succeeds, this procedure has succeeded. The
+   Interface is now ACTIVATED. Go to step 8.
+
+5. The AP shall exchange a :ref:`svc-interface-unipro-disable` with
+   the SVC. The intf_id field in the request payload shall equal
+   interface_id.
+
+6. The AP shall exchange a :ref:`svc-interface-refclk-disable` with
+   the SVC. The intf_id field in the request payload shall equal
+   interface_id.
+
+7. The AP shall exchange a :ref:`svc-interface-vsys-disable` with the
+   SVC. The intf_id field in the request payload shall equal
+   interface_id.
+
+8. The procedure is complete and has succeeded or failed. If the
+   procedure failed and all of the steps 5, 6, and 7 which were
+   reached succeeded, the Interface is now OFF.
 
 .. _lifecycles_eject:
 
 Eject (OFF → DETACHED)
 """"""""""""""""""""""
 
-TODO
+.. TODO add an MSC here for the successful case
 
 .. _lifecycles_mode_switching:
 
@@ -1027,14 +1453,14 @@ Mode Switching
 Mode Switch Enter (ENUMERATED → MODE_SWITCHING)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-TODO
+.. TODO add an MSC here for the successful case
 
 .. _lifecycles_ms_exit:
 
 Mode Switch Exit (MODE_SWITCHING → ENUMERATED)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-TODO
+.. TODO add an MSC here for the successful case
 
 .. _lifecycles_error_handling:
 
@@ -1046,25 +1472,31 @@ Error Handling
 Early Eject (ATTACHED → DETACHED)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-TODO
+.. TODO add an MSC here for the successful case
 
 .. _lifecycles_early_power_down:
 
 Early Power Down (ACTIVATED → OFF)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-TODO
+.. TODO add an MSC here for the successful case
+
+Make sure cleanup when jumping from failure to enumerate is covered:
+
+- tear down routes
+- destroy device ID
+- unipro, refclk, vsys from activation -> off
 
 .. _lifecycles_mode_switch_fail:
 
 Mode Switch Fail (MODE_SWITCHING → ACTIVATED)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-TODO
+.. TODO add an MSC here for the successful case
 
 .. _lifecycles_forcible_removal:
 
 Forcible Removal (Any → DETACHED)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-TODO
+.. TODO add an MSC here for the successful case
