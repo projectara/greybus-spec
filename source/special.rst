@@ -559,6 +559,8 @@ Greybus Control Disconnected Response
 
 The Greybus Control Disconnected Response message contains no payload.
 
+The response status shall equal GB_OP_SUCCESS.
+
 .. _control-timesync-enable:
 
 Greybus Control TimeSync Enable Operation
