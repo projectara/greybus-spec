@@ -151,7 +151,7 @@ Conceptually, the Operations in the Greybus Control Protocol are:
     previously described to the AP by sending it an Interface
     :ref:`Manifest <manifest-description>`.
 
-.. _control_connection_status_values:
+.. _control-connection-status-values:
 
 Greybus Control Connection Status Values
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -219,6 +219,8 @@ type and response type values are shown.
 
 ..
 
+.. _control-ping:
+
 Greybus Control Ping Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -226,6 +228,8 @@ The Greybus Control Ping Operation is the
 :ref:`greybus-protocol-ping-operation` for the Control Protocol.
 It consists of a request containing no payload, and a response
 with no payload that indicates a successful result.
+
+.. _control-protocol-version:
 
 Greybus Control Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -238,7 +242,7 @@ shall specify the value |gb-major| for the version_major and
 |gb-minor| for the version_minor fields found in this Operation's
 request and response messages.
 
-.. _control_get_manifest_size:
+.. _control-get-manifest-size:
 
 Greybus Control Get Manifest Size Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -247,7 +251,7 @@ The Greybus Control Get Manifest Size Operation is used by the AP to
 ensure an Interface's :ref:`Manifest <manifest-description>` is
 available for retrieval via Greybus. After this Operation is
 successfully exchanged, the AP may retrieve the Manifest using
-the :ref:`control_get_manifest`.
+the :ref:`control-get-manifest`.
 
 Although the AP may send this request at any time, it should only do
 so during the "enumerate" transition from the
@@ -306,7 +310,7 @@ by the AP. If an Interface is being enumerated when it sends this
 response, the Interface shall not alter the size of this Interface
 Manifest as long as it continues being enumerated.
 
-.. _control_get_manifest:
+.. _control-get-manifest:
 
 Greybus Control Get Manifest Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -317,7 +321,7 @@ Control Connection.
 
 Though the AP may send this request at any time, it should only do so
 while the Interface is being enumerated, as defined in
-:ref:`control_get_manifest_size`. The effect of this Operation under
+:ref:`control-get-manifest-size`. The effect of this Operation under
 other conditions is unspecified.
 
 Greybus Control Get Manifest Request
@@ -389,6 +393,8 @@ shall continue to hold.
 The AP and Interface may subsequently, through Protocol-specific
 means, change the values of some of these sub-states without relaxing
 these requirements.
+
+.. _control-connected:
 
 Greybus Control Connected Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -514,7 +520,7 @@ Response, the Interface shall continue to send responses to :ref:`Ping
 shall not send any data on the Connection other than responses to Ping
 requests after sending the Control Disconnecting Response.
 
-.. _control_disconnected:
+.. _control-disconnected:
 
 Greybus Control Disconnected Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -562,6 +568,8 @@ Greybus Control Disconnected Response
 
 The Greybus Control Disconnected Response message contains no payload.
 
+.. _control-timesync-enable:
+
 Greybus Control TimeSync Enable Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The AP Module uses this operation to inform the Interface of an upcoming
@@ -607,6 +615,8 @@ Greybus Control TimeSync Enable Response
 
 The Greybus Control Protocol TimeSync Enable response contains no payload.
 
+.. _control-timesync-disable:
+
 Greybus Control TimeSync Disable Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The AP Module uses this operation to inform an Interface to stop tracking
@@ -621,6 +631,8 @@ Greybus Control TimeSync Disable Response
 """""""""""""""""""""""""""""""""""""""""
 
 The Greybus Control Protocol TimeSync Disable response contains no payload.
+
+.. _control-timesync-authoritative:
 
 Greybus Control TimeSync Authoritative Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -658,6 +670,8 @@ Greybus Control TimeSync Authoritative Response
 
 The Greybus Control Protocol TimeSync Authoritative Response contains no payload.
 
+.. _control-timesync-get-last-event:
+
 Greybus Control TimeSync Get Last Event Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The AP Module uses this operation to extract the last frame-time from an Interface
@@ -686,6 +700,8 @@ wake-detect event is returned.
     =======  ==============  ======  ==========  ===================================================================
     0        frame-time      8       Number      frame-time at the last wake-detect event.
     =======  ==============  ======  ==========  ===================================================================
+
+.. _control-interface-version:
 
 Greybus Control Interface Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -718,7 +734,7 @@ contains two 2-byte numbers, major and minor.
     =======  ============  ======  ==========  ===========================
 ..
 
-.. _control_protocol_bundle_version:
+.. _control-bundle-version:
 
 Greybus Control Bundle Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -773,6 +789,8 @@ contains two 1-byte numbers, major and minor.
     1        minor         1       Number      Minor number of the version
     =======  ============  ======  ==========  ===========================
 ..
+
+.. _control-mode-switch:
 
 Greybus Control Mode Switch Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
