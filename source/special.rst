@@ -2532,7 +2532,7 @@ response shall contain zero.
 ..
 
 Greybus SVC TimeSync Wake-Detect Pins Acquire Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The AP Module uses this operation to request the SVC to take ownership-of and
 establish-an initial state on a bit-mask of SVC device-ids specified by the
 strobe_mask parameter passed as part of the request phase of the operation.
