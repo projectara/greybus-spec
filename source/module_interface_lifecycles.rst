@@ -795,19 +795,187 @@ The following value is used in this sub-sequence:
 Boot and Enumeration
 """"""""""""""""""""
 
+This section describes the procedures required to initialize an
+:ref:`hardware-model-lifecycle-attached` Interface, putting it in the
+:ref:`hardware-model-lifecycle-activated` Lifecycle State.
+
+If an ACTIVATED :ref:`Interface State's
+<hardware-model-interface-states>` :ref:`hardware-model-intf-type` is
+IFT_GREYBUS, the Interface can be enumerated, as outlined in
+:ref:`hardware-model-lifecycle-enumerated`. The enumeration procedure
+under these conditions is also defined in this section.
+
 .. _lifecycles_boot:
 
-Boot (DETECTED → ACTIVATED)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Boot (ATTACHED → ACTIVATED)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-TODO
+.. SW-4659 + any sub-tasks track adding multiple AP Interfaces
+
+.. note::
+
+   The content in this section is defined under the assumption that
+   there is exactly one :ref:`AP Interface
+   <hardware-model-ap-module-requirements>` in the Greybus System.
+
+   The results if there are multiple AP Interfaces are undefined.
+
+.. TODO add an MSC here for the successful case
+
+The following procedure can be initiated by the AP when an Interface
+is ATTACHED, in order to attempt to follow the "boot" transition from
+ATTACHED to ACTIVATED.
+
+To perform this procedure, the following conditions shall hold.
+
+- The AP Interface and SVC shall have established a Connection
+  implementing the :ref:`svc-protocol`. This is the SVC Connection in
+  this procedure.
+
+- An Interface shall be provided, whose Interface Lifecycle State is
+  ATTACHED. No other actions shall have been taken to affect the
+  Interface's Lifecycle State or its corresponding Interface State
+  since the Interface became ATTACHED, except as defined in this
+  procedure.
+
+If these conditions do not all hold, the procedure shall not be
+followed. The results of following this procedure in this case are
+undefined.
+
+The following value is used in this procedure:
+
+- The Interface ID of the Interface being activated is interface_id.
+
+1. The AP shall exchange an :ref:`svc-interface-vsys-enable` with the
+   SVC. The intf_id field in the request payload shall equal
+   interface_id.
+
+   If the Operation fails, this procedure has failed. Go to step 8.
+
+2. The AP shall exchange an :ref:`svc-interface-refclk-enable` with
+   the SVC. The intf_id field in the request payload shall equal
+   interface_id.
+
+   If the Operation fails, this procedure has failed. Go to step 7.
+
+3. The AP shall exchange an :ref:`svc-interface-unipro-enable` with
+   the SVC. The intf_id field in the request payload shall equal
+   interface_id.
+
+   If the Operation fails, this procedure has failed. Go to step 6.
+
+4. The AP shall exchange an :ref:`svc-interface-activate` with the
+   SVC. The intf_id field in the request payload shall equal
+   interface_id.
+
+   If the Operation fails, this procedure has failed. Go to step 5.
+
+   If the Operation succeeds, this procedure has succeeded. The
+   Interface is now ACTIVATED. Go to step 8.
+
+5. The AP shall exchange a :ref:`svc-interface-unipro-disable` with
+   the SVC. The intf_id field in the request payload shall equal
+   interface_id.
+
+6. The AP shall exchange a :ref:`svc-interface-refclk-disable` with
+   the SVC. The intf_id field in the request payload shall equal
+   interface_id.
+
+7. The AP shall exchange a :ref:`svc-interface-vsys-disable` with the
+   SVC. The intf_id field in the request payload shall equal
+   interface_id.
+
+8. The procedure is complete and has succeeded or failed. If the
+   procedure failed and all of the steps 5, 6, and 7 which were
+   reached succeeded, the Interface is now ATTACHED.
 
 .. _lifecycles_enumerate:
 
 Enumerate (ACTIVATED → ENUMERATED)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-TODO
+.. SW-4659 + any sub-tasks track adding multiple AP Interfaces
+
+.. note::
+
+   The content in this section is defined under the assumption that
+   there is exactly one :ref:`AP Interface
+   <hardware-model-ap-module-requirements>` in the Greybus System.
+
+   The results if there are multiple AP Interfaces are undefined.
+
+.. TODO add an MSC here for the successful case
+
+The following procedure can be initiated by the AP when an Interface
+is ACTIVATED and its :ref:`hardware-model-intf-type` is IFT_GREYBUS,
+in order to attempt to follow the "enumerate" transition from
+ACTIVATED to ENUMERATED.
+
+To perform this procedure, the following conditions shall hold.
+
+- The AP Interface and SVC shall have established a Connection
+  implementing the :ref:`svc-protocol`. This is the SVC Connection in
+  this procedure.
+
+- An Interface shall be provided, whose Interface Lifecycle State is
+  ACTIVATED, and whose INTF_TYPE is IFT_GREYBUS. No other actions
+  shall have been taken to affect the Interface's Lifecycle State or
+  its corresponding Interface State since the Interface became
+  ACTIVATED.
+
+If these conditions do not all hold, the procedure shall not be
+followed. The results of following this procedure in this case are
+undefined.
+
+The following value is used in this procedure:
+
+- The Interface ID of the Interface being enumerated is interface_id.
+
+.. TODO add an MSC here for the successful case
+
+1. The sequence to establish a Control Connection to the Interface
+   described in :ref:`lifecycles_control_establishment` shall be
+   followed.
+
+   If the sequence fails, this procedure has failed. Go to step 6.
+
+2. The AP shall exchange a :ref:`control-get-manifest-size` via the
+   Control Connection. If the Operation is successful, the value of
+   the manifest_size field in the response payload is
+   interface_manifest_size.
+
+   If the Operation fails, this procedure has failed. Go to step 5.
+
+3. The AP shall exchange a :ref:`control-get-manifest` via the Control
+   Connection. If the Operation is successful, the Manifest's value is
+   interface_manifest.
+
+   If the Operation fails, this procedure has failed. Go to step 5.
+
+4. The AP shall perform implementation-defined procedures to parse the
+   :ref:`components of the Manifest <manifest-description>`.
+
+   The Interface is now ENUMERATED. Go to step 7.
+
+5. The AP shall attempt to close the Control Connection to the
+   Interface as described in
+   :ref:`lifecycles_control_closure_power_down`. Regardless of the
+   Operation's success or failure, go to the next step.
+
+6. The AP shall perform the procedure described in below in
+   :ref:`lifecycles_early_power_down`. If the Early Power Down procedure
+   succeeds, and step 5 succeeded if it was reached, the Interface is
+   :ref:`hardware-model-lifecycle-off`. Its Interface State's INTF_TYPE
+   is still IFT_GREYBUS, and its ORDER has not changed its value
+   since before this Enumerate procedure was followed.
+
+7. The procedure is complete and has succeeded or failed.
+
+If the Interface is now ENUMERATED, additional Connections to the
+Interface may be established using the sequence defined in
+:ref:`lifecycles_connection_establishment`, and closed using the
+sequence defined in :ref:`lifecycles_connection_closure`; if no errors
+occur, the Interface remains ENUMERATED.
 
 .. _lifecycles_power_management:
 
