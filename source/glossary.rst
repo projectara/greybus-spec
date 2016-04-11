@@ -105,9 +105,10 @@ Greybus System
 .. _glossary-interface:
 
 Interface
-    An abstract representation of the services provided by the
-    :ref:`Frame <glossary-module>` at one of its :ref:`Interface
-    Blocks <glossary-interface-block>`.
+    An entity with a Greybus :ref:`Module <glossary-module>` which can
+    interact with a :ref:`Frame <glossary-frame>` via its physical
+    connection to an :ref:`Interface Block <glossary-interface-block>`
+    if the Module is attached to the Frame.
 
 .. _glossary-interface-block:
 
