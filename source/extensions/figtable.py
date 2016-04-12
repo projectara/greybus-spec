@@ -19,7 +19,10 @@ def depart_figtable_node(self, node):
 
 def visit_figtable_tex(self, node):
     if node['nofig']:
-        self.body.append('\n\n\\begin{table}\n\\capstart\n\\begin{center}\n')
+        self.body.append('\n\n\\begin{table}')
+        if 'loc' in node:
+            self.body.append(node['loc'])
+        self.body.append('\n\\capstart\n\\begin{center}\n')
     else:
         self.body.append('\n\n\\begin{figure}[tbp]\n\\capstart\n\\begin{center}\n')
 
@@ -46,7 +49,8 @@ class FigTableDirective(Directive):
                    'spec': directives.unchanged,
                    'caption': directives.unchanged,
                    'alt': directives.unchanged,
-                   'nofig': directives.flag}
+                   'nofig': directives.flag,
+                   'loc': directives.unchanged}
 
     def run(self):
         label = self.options.get('label', None)
@@ -54,6 +58,7 @@ class FigTableDirective(Directive):
         caption = self.options.get('caption', None)
         alt = self.options.get('alt', None)
         nofig = 'nofig' in self.options
+        loc = self.options.get('loc', None)
         
         figtable_node = figtable('', ids=[label] if label is not None else [])
         figtable_node['nofig'] = nofig
@@ -77,7 +82,10 @@ class FigTableDirective(Directive):
         if label is not None:
             targetnode = nodes.target('', '', ids=[label])
             figtable_node.append(targetnode)
-        
+
+        if loc is not None:
+            figtable_node['loc'] = '[' + loc + ']'
+
         return [figtable_node]
 
 def setup(app):
