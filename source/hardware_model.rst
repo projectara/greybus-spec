@@ -374,7 +374,7 @@ Since all Greybus Protocols exchange data via |unipro| Messages, each
 Interface Block contains the necessary signals to connect a |unipro|
 implementation within a Module attached to that Interface Block to the
 Switch, which can route these Messages to other Modules, and perform
-some other |unipro| protocol communiction with attached Modules.
+some other |unipro| protocol communication with attached Modules.
 
 Transitions between successive values of the UNIPRO sub-state are
 shown in the following figure. All other transitions are illegal.
