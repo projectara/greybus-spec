@@ -110,6 +110,13 @@ Interface
     connection to an :ref:`Interface Block <glossary-interface-block>`
     if the Module is attached to the Frame.
 
+.. _glossary-interface-backend-firmware:
+
+Interface Backend Firmware
+    The Interface Backend Firmware may be required for a Module for the
+    functioning of an entity other than the :ref:`Interface
+    <hardware-model-interfaces>`.
+
 .. _glossary-interface-block:
 
 Interface Block
@@ -117,6 +124,13 @@ Interface Block
     <glossary-frame>` for connection to :ref:`Modules
     <glossary-module>` as defined by the Project Ara :ref:`MDK
     <glossary-mdk>`.
+
+.. _glossary-interface-firmware:
+
+Interface Firmware
+    The Interface Firmware may be required for a Module for the
+    functioning of an :ref:`Interface <hardware-model-interfaces>`,
+    which is responsible for exchanging Greybus Operations.
 
 .. _glossary-interface-lifecycle:
 
