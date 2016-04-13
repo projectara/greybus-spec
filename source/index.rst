@@ -61,3 +61,16 @@
    bridged_phy
    module_interface_lifecycles
    bibliography
+
+.. raw:: latex
+
+   % Set up the appendix mode and modify the LaTex toc behavior
+   \appendix
+   \noappendicestocpagenum
+   \addappheadtotoc
+
+.. toctree::
+   :maxdepth: 2
+   :numbered:
+
+   appendix/firmware_lifecycle
