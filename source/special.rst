@@ -3862,7 +3862,7 @@ result_code field in the response payload, as described in Table
 :num:`table-svc-interface-unipro-result-code`. In particular, if the
 response status is GB_OP_SUCCESS:
 
-- UNIPRO is UPRO_DOWN if result_code is UPRO_OK.
+- UNIPRO is UPRO_OFF if result_code is UPRO_OK.
 - UNIPRO shall not have changed value if result_code is UPRO_BUSY.
 - UNIPRO is unpredictable if result_code is UPRO_FAIL.
 
