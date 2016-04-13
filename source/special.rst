@@ -136,11 +136,6 @@ Conceptually, the Operations in the Greybus Control Protocol are:
     is used in conjunction with an SVC timesync-ping operation to verify
     the local time at a given Interface.
 
-.. c:function:: int interface_version(u16 *major, u16 *minor);
-
-    This Operation is used by the AP to get the current version of the
-    interface.
-
 .. c:function:: int bundle_version(u8 bundle_id, u8 *major, u8 *minor);
 
     This Operation is used by the AP to get the version of the Bundle Class
@@ -210,7 +205,7 @@ type and response type values are shown.
     TimeSync enable              0x07           0x87
     TimeSync disable             0x08           0x88
     TimeSync authoritative       0x09           0x89
-    Interface Version            0x0a           0x8a
+    Reserved                     0x0a           0x8a
     Bundle Version               0x0b           0x8b
     Disconnecting                0x0c           0x8c
     TimeSync get last event      0x0d           0x8d
@@ -695,39 +690,6 @@ wake-detect event is returned.
     =======  ==============  ======  ==========  ===================================================================
     0        frame-time      8       Number      frame-time at the last wake-detect event.
     =======  ==============  ======  ==========  ===================================================================
-
-.. _control-interface-version:
-
-Greybus Control Interface Version Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The AP uses this operation to retrieve the version of the interface.
-The version is represented by two 2-byte numbers, major and minor.
-
-Greybus Control Interface Version Request
-"""""""""""""""""""""""""""""""""""""""""
-
-The Greybus Control Interface Version request has no payload.
-
-Greybus Control Interface Version Response
-""""""""""""""""""""""""""""""""""""""""""
-
-Table :num:`table-control-interface-version-response` defines the
-Greybus Control Interface Version Response payload. The response
-contains two 2-byte numbers, major and minor.
-
-.. figtable::
-    :nofig:
-    :label: table-control-interface-version-response
-    :caption: Control Protocol Interface Version Response
-    :spec: l l c c l
-
-    =======  ============  ======  ==========  ===========================
-    Offset   Field         Size    Value       Description
-    =======  ============  ======  ==========  ===========================
-    0        major         2       Number      Major number of the version
-    2        minor         2       Number      Minor number of the version
-    =======  ============  ======  ==========  ===========================
-..
 
 .. _control-bundle-version:
 
