@@ -426,7 +426,8 @@ typically should not be used.)
     SVC                             0x14
     Bootrom                         0x15
     Camera Data                     0x16
-    (All other values reserved)     0x17..0xfd
+    Firmware Download               0x17
+    (All other values reserved)     0x18..0xfd
     Raw                             0xfe
     Vendor Specific                 0xff
     ============================    ==========

@@ -16,6 +16,339 @@ are said to be *device class conformant*.
           - MIPI CSI-3: for camera Modules
           - JEDEC UFS: for storage Modules
 
+.. _firmware-download-protocol:
+
+Firmware Download Protocol
+--------------------------
+
+The Greybus Firmware Download Protocol can be used by an Interface to
+communicate with the AP and receive firmware packages over |unipro|.
+
+If an Interface requires to download a firmware package, it shall first
+request the AP to find a firmware package for the Interface using a
+:ref:`find-firmware-operation`.  This may be followed by one or more
+:ref:`Greybus Firmware Download Protocol Fetch Firmware Operations
+<fetch-firmware-operation>` to receive the firmware package block by
+block.  Finally the Interface shall request the AP to release the
+firmware package using a :ref:`release-firmware-operation`.
+
+Conceptually, the Operations in the Greybus Firmware Download Protocol
+are:
+
+.. c:function:: int ping(void);
+
+    See :ref:`greybus-protocol-ping-operation`.
+
+.. c:function:: int find_firmware(u8 firmware_tag[10], u8 *firmware_id, u32 *size);
+
+    This Operation can be initiated only by an Interface to request the
+    AP to find a firmware package for the Interface.
+
+.. c:function:: int fetch_firmware(u8 firmware_id, u32 offset, u32 size, void *data);
+
+    This Operation can be initiated only by an Interface to fetch a
+    block of data from the AP in the firmware package previously
+    requested from the AP.
+
+.. c:function:: int release_firmware(u8 firmware_id);
+
+    If the Interface has requested the AP to find a firmware package
+    using a :ref:`find-firmware-operation` earlier, it shall use this
+    Operation to request the AP to release that firmware package.
+
+Greybus Firmware Download Operations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+All Firmware Download Protocol Operations are initiated using a Greybus
+Firmware Download Protocol Request message, which results in a matching
+Response message.  The Request and Response messages for each Operation
+are defined below.
+
+Table :num:`table-firmware-download-operation-type` defines the Greybus
+Firmware Download Protocol Operation types and their values.  Both the
+Request type and the Response type values are shown below.
+
+.. figtable::
+    :nofig:
+    :label: table-firmware-download-operation-type
+    :caption: Firmware Download Protocol Operation Types
+    :spec: l l l
+
+    =================================  =============  ===============
+    Firmware Operation Type            Request Value  Response Value
+    =================================  =============  ===============
+    Ping                               0x00           0x80
+    Find Firmware                      0x01           0x81
+    Fetch Firmware                     0x02           0x82
+    Release Firmware                   0x03           0x83
+    (all other values reserved)        0x04..0x7e     0x84..0xfe
+    Invalid                            0x7f           0xff
+    =================================  =============  ===============
+..
+
+Greybus Firmware Download Ping Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Firmware Download Ping Operation is the
+:ref:`greybus-protocol-ping-operation` for the Firmware Download
+Protocol.  It consists of a Request containing no payload, and a
+Response with no payload that indicates a successful result.
+
+.. _find-firmware-operation:
+
+Greybus Firmware Download Find Firmware Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Firmware Download Find Firmware Operation Request can be
+sent only by an Interface to request the AP to find a firmware package
+for the Interface.
+
+The Interface provides a firmware_tag to the AP as part of the request,
+which may be used by the AP in an implementation-defined way to find the
+firmware package for the Interface.
+
+In response, the AP locates a matching firmware package and returns to
+the Interface the size of the firmware package and a unique firmware_id
+associated with the firmware package.
+
+The same firmware_id shall be sent by the Interface as part of the Fetch
+Firmware or the Release Firmware Requests sent later.
+
+This may be followed by one or more :ref:`Greybus Firmware Download
+Fetch Firmware Operation Requests <fetch-firmware-operation>` from the
+Interface to the AP, in order to receive the firmware package block by
+block.
+
+Once the firmware is successfully requested by the Interface using a
+:ref:`find-firmware-operation`, the AP shall support all valid
+:ref:`Greybus Firmware Download Fetch Firmware Operation Requests
+<fetch-firmware-operation>` until the Interface initiates a
+:ref:`release-firmware-operation` or the AP times out waiting for a
+request from the Interface.
+
+An Interface may request the AP to find one or more firmware packages
+using separate :ref:`Greybus Firmware Download Find Firmware Operations
+<find-firmware-operation>` and fetch them in parallel by using the
+firmware_id received from the AP earlier in the Find Firmware Response.
+
+The AP may impose implementation-defined timeouts for:
+
+- The time interval between the Find Firmware Response and the first
+  Fetch Firmware Request.
+- The time interval between a Fetch Firmware Response and the next Fetch
+  Firmware Request.
+- The time interval between a Fetch Firmware Response and the Release
+  Firmware Request.
+
+If any of the above timeouts occur, the AP shall respond with
+GB_OP_TIMEOUT in the status byte of the Response header, to the next
+Request from the Interface that uses the same firmware_id for the which
+the AP has timed out.
+
+Greybus Firmware Download Find Firmware Request
+"""""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-firmware-download-find-firmware-request` defines the
+Greybus Firmware Download Find Firmware Request payload.  The Request
+contains a 10-byte firmware_tag of the firmware package requested for
+download.  This may be used by the AP in an implementation-defined way
+to find the requested firmware package.
+
+.. figtable::
+    :nofig:
+    :label: table-firmware-download-find-firmware-request
+    :caption: Firmware Download Find Firmware Request
+    :spec: l l c c l
+
+    ======  =============  ======  ===========  ===========================
+    Offset  Field          Size    Value        Description
+    ======  =============  ======  ===========  ===========================
+    0       firmware_tag   10      [US-ASCII]_  A null-terminated character string used to identify the firmware package.
+    ======  =============  ======  ===========  ===========================
+..
+
+Greybus Firmware Download Find Firmware Response
+""""""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-firmware-download-find-firmware-response` defines the
+Greybus Firmware Download Find Firmware Response payload.  The Response
+contains a one-byte firmware_id and a four-byte size of the
+firmware package in bytes.
+
+The firmware_id is unique and the same firmware_id shall not be used by
+the AP in another :ref:`find-firmware-operation` Request, until the
+Interface has initiated the :ref:`release-firmware-operation` with the
+same firmware_id.
+
+If the AP fails to find a firmware package for the Interface, it shall
+return GB_OP_INVALID in the status byte of the Response header.
+
+.. figtable::
+    :nofig:
+    :label: table-firmware-download-find-firmware-response
+    :caption: Firmware Download Find Firmware Response
+    :spec: l l c c l
+
+    ======  ============  ====  ======  ===================================
+    Offset  Field         Size  Value   Description
+    ======  ============  ====  ======  ===================================
+    0       firmware_id   1     Number  Unique firmware package identifier.
+    1       size          4     Number  Size of the firmware package in bytes.
+    ======  ============  ====  ======  ===================================
+..
+
+.. _fetch-firmware-operation:
+
+Greybus Firmware Download Fetch Firmware Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Firmware Download Fetch Firmware Operation Request can be
+sent only by an Interface to request the AP to provide a block of data,
+from the firmware package the Interface has previously requested from
+the AP.
+
+The Interface sends to the AP the firmware_id of the firmware package,
+received as part of the Find Firmware Response earlier, the offset
+within the firmware package, and the size in bytes of the block of data
+to fetch from the offset.
+
+Unless the AP finds the Request to be invalid or if the AP hasn't timed
+out waiting for a Fetch Firmware Request, it shall respond with exactly
+the number of bytes requested by the Interface, from the firmware
+package associated with the firmware_id.
+
+The AP may consider a Request as invalid if:
+
+- The AP couldn't associate the firmware_id sent by the Interface to an
+  already requested firmware package.
+- The Interface tries to read past the end of the firmware package.
+- Size field in the Request is set to 0.
+
+The Interface may send one or more Fetch Firmware Requests to receive
+the firmware package.  The access to the firmware package isn't required
+to be sequential and the Interface may download the firmware package in
+any order.  The Interface may download a section of the firmware package
+multiple times.
+
+Greybus Firmware Download Fetch Firmware Request
+""""""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-firmware-download-fetch-firmware-request` defines the
+Greybus Firmware Download Fetch Firmware Request payload.  The Request
+contains a one-byte firmware_id associated with the firmware package, a
+four-byte offset within the firmware package, and a four-byte size of
+the block of data requested in bytes.
+
+The requested size must be less than or equal to the firmware size
+received with the Find Firmware Response, minus the requested offset
+into the firmware package.
+
+The Interface is responsible for tracking its offset into the firmware
+package as needed.
+
+.. figtable::
+    :nofig:
+    :label: table-firmware-download-fetch-firmware-request
+    :caption: Firmware Download Fetch Firmware Request
+    :spec: l l c c l
+
+    ======  ============  ====  ======  =================================
+    Offset  Field         Size  Value   Description
+    ======  ============  ====  ======  =================================
+    0       firmware_id   1     Number  Unique firmware package identifier.
+    1       offset        4     Number  Offset into the firmware package.
+    5       size          4     Number  Size of block of data in bytes.
+    ======  ============  ====  ======  =================================
+..
+
+Greybus Firmware Download Fetch Firmware Response
+"""""""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-firmware-download-fetch-firmware-response` defines the
+Greybus Firmware Download Fetch Firmware Response payload.  The Response
+contains the block of data requested by the Interface.
+
+The AP may return GB_OP_INVALID in the status byte of the Response
+header, if the AP finds the Request sent by an Interface as invalid, as
+described in the :ref:`fetch-firmware-operation` section.
+
+Upon receiving a Response with status equal to GB_OP_INVALID, the
+Interface may resend this Request after verifying its parameters.
+
+The AP may return GB_OP_TIMEOUT in the status byte of the Response
+header, if the AP has timed out waiting for the Fetch Firmware Request.
+
+If this occurs, the firmware_id is no longer valid.  Upon receiving a
+Response with status equal to GB_OP_TIMEOUT, the Interface shall not
+send additional Fetch Firmware Requests with the same firmware_id,
+unless a subsequent :ref:`find-firmware-operation` Response includes
+that firmware_id.  The Interface may initiate another
+:ref:`find-firmware-operation` with the same firmware_tag in order to
+attempt to subsequently recover from the timeout and retrieve the same
+firmware package.
+
+.. figtable::
+    :nofig:
+    :label: table-firmware-download-fetch-firmware-response
+    :caption: Firmware Download Fetch Firmware Response
+    :spec: l l c c l
+
+    ======  =====  ====== ======  =================================
+    Offset  Field  Size   Value   Description
+    ======  =====  ====== ======  =================================
+    0       data   *size* Data    Block of data within the firmware package.
+    ======  =====  ====== ======  =================================
+..
+
+.. _release-firmware-operation:
+
+Greybus Firmware Download Release Firmware Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Firmware Download Release Firmware Operation Request can be
+sent only by an Interface to request the AP to release a firmware
+package it has requested earlier.
+
+The Interface sends to the AP the firmware_id associated with the
+firmware package, provided earlier by the AP in the response to the
+:ref:`find-firmware-operation`.
+
+Greybus Firmware Download Release Firmware Request
+""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-firmware-download-release-firmware-request` defines
+the Greybus Firmware Download Release Firmware Request payload.  The
+Request contains a one-byte firmware_id associated with the firmware
+package to be released.
+
+.. figtable::
+    :nofig:
+    :label: table-firmware-download-release-firmware-request
+    :caption: Firmware Download Release Firmware Request
+    :spec: l l c c l
+
+    ======  ============  ====  ======  =================================
+    Offset  Field         Size  Value   Description
+    ======  ============  ====  ======  =================================
+    0       firmware_id   1     Number  Unique firmware package identifier.
+    ======  ============  ====  ======  =================================
+..
+
+Greybus Firmware Download Release Firmware Response
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus Firmware Download Release Firmware Response has no payload.
+
+If the AP couldn't associate the firmware_id sent by the Interface to a
+firmware package, then the AP shall return GB_OP_INVALID in the status
+byte of the Response header.
+
+If the AP has timed out waiting for the Release Firmware Request, it
+shall return GB_OP_TIMEOUT in the status byte of the Response header.
+
+On any such errors, the Interface shall do nothing as the firmware
+package shall already have been released by the AP.
+
 Vibrator Protocol
 -----------------
 

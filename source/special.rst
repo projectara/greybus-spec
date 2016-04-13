@@ -30,6 +30,8 @@ executables to the module.  When a module's manifest includes a CPort
 using the Bootrom Protocol, the AP can connect to that CPort and
 download a firmware executable to the module.  Bootrom protocol is
 deprecated for new designs requiring Firmware download to the Module.
+The :ref:`firmware-download-protocol` should be used for any new
+designs.
 
 .. _control-protocol:
 
@@ -4353,6 +4355,9 @@ Bootrom Protocol
           another.  It is already part of chips that went into
           production, and so its support can't be dropped from Greybus
           Specifications.
+
+          The :ref:`firmware-download-protocol` should be used for any
+          new designs.
 
 The Greybus Bootrom Protocol is used by a module's bootloader to communicate
 with the AP and download firmware executables via |unipro| when a module does
