@@ -52,7 +52,7 @@ Connection (Greybus)
 
     The AP may also subsequently close Connections. When a Connection
     is closed, Greybus Operations can no longer be exchanged between
-    the CPort Useres.
+    the CPort Users.
 
     The AP also exchanges data on a Connection with the SVC.
 
