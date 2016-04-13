@@ -349,6 +349,667 @@ shall return GB_OP_TIMEOUT in the status byte of the Response header.
 On any such errors, the Interface shall do nothing as the firmware
 package shall already have been released by the AP.
 
+.. _firmware-management-protocol:
+
+Firmware Management Protocol
+----------------------------
+
+The Firmware Management Protocol can be used by the Application
+Processor (AP) to communicate with an Interface to:
+
+- Load and Validate an :ref:`Interface Firmware
+  <glossary-interface-firmware>` package for an Interface.
+- Prepare the Interface to enter the
+  :ref:`hardware-model-lifecycle-mode-switching` :ref:`Interface
+  Lifecycle State <hardware-model-lifecycle-states>`.
+- Update :ref:`Interface Backend Firmware
+  <glossary-interface-backend-firmware>` packages on an Interface.
+
+The :ref:`Interface Firmware <glossary-interface-firmware>` that
+requires the capability to enter the
+:ref:`hardware-model-lifecycle-mode-switching`
+:ref:`Interface Lifecycle State <hardware-model-lifecycle-states>`, may
+provide a CPort that implements the Firmware Management Protocol.
+
+In order to use the Firmware Management Protocol for an Interface, the
+Interface :ref:`manifest-description` received by the AP from the
+Interface over the :ref:`control-protocol` shall contain a
+:ref:`bundle-descriptor` with the Class Type Firmware-Management.  This
+Bundle shall contain one :ref:`cport-descriptor` with the Protocol Type
+Firmware-Management.
+
+The Firmware Management Protocol shall not be used by the AP, if its
+:ref:`cport-descriptor` isn't part of the :ref:`bundle-descriptor` with
+the Class Type Firmware-Management.
+
+The Firmware-Management Bundle may contain another
+:ref:`cport-descriptor` with the Protocol Type SPI, if the Interface
+contains a local SPI flash and the Interface Firmware running on the
+Interface is designed to allow the AP to manage updates to the SPI
+flash.  The AP shall communicate over this SPI CPort using the
+:ref:`spi-protocol`.
+
+The Firmware-Management Bundle may contain another
+:ref:`cport-descriptor` with the Protocol Type Firmware-Download.  The
+Interface Firmware may use this CPort to receive firmware packages from
+the AP using the :ref:`firmware-download-protocol`.
+
+The Firmware-Management Bundle may contain another
+:ref:`cport-descriptor` with the Protocol Type Component Authentication
+Protocol (CAP).  The AP may use this CPort to Authenticate the
+Interface.
+
+.. todo::
+    Add Component Authentication Protocol (CAP) to Greybus
+    Specifications.
+
+The rest of this section defines the Firmware Management Protocol.
+
+Conceptually, the Operations of the Greybus Firmware Management Protocol
+are:
+
+.. c:function:: int ping(void);
+
+    See :ref:`greybus-protocol-ping-operation`.
+
+.. note::
+    Below Operations are specific to the :ref:`Interface Firmware
+    <glossary-interface-firmware>` for an Interface.
+
+.. c:function:: int interface_firmware_version(u8 firmware_tag[10], u16 *major, u16 *minor);
+
+    This Operation can be initiated only by the AP to get the
+    firmware_tag and the version of the Interface Firmware currently
+    running on an Interface.
+
+.. c:function:: int interface_firmware_load_and_validate(u8 request_id, u8 load_method, u8 firmware_tag[10]);
+
+    This Operation can be initiated only by the AP to instruct an
+    Interface to load and validate an Interface Firmware package.
+
+.. c:function:: int interface_firmware_loaded(u8 request_id, u8 status, u16 major, u16 minor);
+
+    If the AP has requested an Interface to load an Interface Firmware
+    using the :ref:`interface-firmware-load-and-validate-operation`
+    earlier, then the Interface shall use this Operation to inform the
+    AP once the requested Interface Firmware package is loaded and
+    validated by the Interface.
+
+.. note::
+    Below Operations are specific to the :ref:`Interface Backend
+    Firmware <glossary-interface-backend-firmware>` for an Interface.
+
+.. c:function:: int interface_backend_firmware_version(u8 firmware_tag[10], u16 *major, u16 *minor);
+
+    This Operation can be initiated only by the AP to get the current
+    version of a specific Interface Backend Firmware package available
+    locally with an Interface.
+
+.. c:function:: int interface_backend_firmware_update(u8 request_id, u8 firmware_tag[10]);
+
+    This Operation can be initiated only by the AP to request an
+    Interface to update a specific Interface Backend Firmware package.
+
+.. c:function:: int interface_backend_firmware_updated(u8 request_id, u8 status);
+
+    If the AP has requested an Interface to update an Interface Backend
+    Firmware using the
+    :ref:`interface-backend-firmware-update-operation` earlier, then the
+    Interface shall use this Operation to inform the AP once the update
+    to the Interface Backend Firmware has finished.
+
+Greybus Firmware Management Protocol Operations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+All Firmware Management Protocol Operations are initiated using a
+Greybus Firmware Management Protocol Request message, which results in a
+matching Response message.  The Request and Response messages for each
+Operation are defined below.
+
+Table :num:`table-firmware-management-operation-type` defines the
+Greybus Firmware Management Protocol Operation types and their values.
+Both the Request type and the Response type values are shown below.
+
+.. figtable::
+    :nofig:
+    :label: table-firmware-management-operation-type
+    :caption: Firmware Management Protocol Operation Types
+    :spec: l l l
+
+    =====================================  =============  =================
+    Firmware Management Operation Type     Request Value  Response Value
+    =====================================  =============  =================
+    Ping                                   0x00           0x80
+    Interface Firmware Version             0x01           0x81
+    Interface Firmware Load and Validate   0x02           0x82
+    Interface Firmware Loaded              0x03           0x83
+    Interface Backend Firmware Version     0x04           0x84
+    Interface Backend Firmware Update      0x05           0x85
+    Interface Backend Firmware Updated     0x06           0x86
+    (all other values reserved)            0x07..0x7e     0x87..0xfe
+    Invalid                                0x7f           0xff
+    =====================================  =============  =================
+..
+
+Greybus Firmware Management Ping Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Firmware Management Ping Operation is the
+:ref:`greybus-protocol-ping-operation` for the Firmware Management
+Protocol.  It consists of a Request containing no payload, and a
+Response with no payload that indicates a successful result.
+
+.. _interface-firmware-version-operation:
+
+Greybus Firmware Management Interface Firmware Version Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Firmware Management Interface Firmware Version Operation
+Request can be sent only by the AP to an Interface.  The Interface shall
+respond with the firmware_tag, and the version of the Interface Firmware
+currently running on the Interface.
+
+Greybus Firmware Management Interface Firmware Version Request
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus Firmware Management Interface Firmware Version Request has
+no payload.
+
+Greybus Firmware Management Interface Firmware Version Response
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-interface-firmware-version-response` defines the
+Greybus Firmware Management Interface Firmware Version Response payload.
+The Response contains a 10-byte firmware_tag, and two 2-byte version
+numbers, major and minor.  The firmware_tag may be used by the AP in an
+implementation-defined way to identify the currently running Interface
+Firmware.
+
+.. figtable::
+    :nofig:
+    :label: table-interface-firmware-version-response
+    :caption: Firmware Management Interface Firmware Version Response
+    :spec: l l c c l
+
+    ======  =============  ======  ===========  ===========================
+    Offset  Field          Size    Value        Description
+    ======  =============  ======  ===========  ===========================
+    0       firmware_tag   10      [US-ASCII]_  A null-terminated character string used to identify the Interface Firmware.
+    10      major          2       Number       Major version number of the currently running Interface Firmware.
+    12      minor          2       Number       Minor version number of the currently running Interface Firmware.
+    ======  =============  ======  ===========  ===========================
+..
+
+.. _interface-firmware-load-and-validate-operation:
+
+Greybus Firmware Management Interface Firmware Load and Validate Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Firmware Management Interface Firmware Load and Validate
+Operation Request can be sent only by the AP to an Interface.
+
+On receiving this Request, the Interface shall respond immediately and
+start loading the requested Interface Firmware package using the
+specified load_method and then validate it using implementation-defined
+means.  Once the Interface has loaded and validated the Interface
+Firmware package or if the Interface failed to load or validate the
+Interface Firmware package, it shall initiate a
+:ref:`interface-firmware-loaded-operation`.
+
+The Interface shall load at most one Interface Firmware package at a
+time.  A Request to load a new Interface Firmware package may replace
+the Interface Firmware package loaded earlier.
+
+The process of validating an Interface Firmware package is
+implementation-defined.
+
+The AP sends a unique request_id to the Interface and the Interface
+shall use the same request_id while sending the
+:ref:`interface-firmware-loaded-operation` Request.
+
+The AP may wait for an implementation-defined time interval, for the
+Interface to initiate a :ref:`interface-firmware-loaded-operation`.  If
+the AP times out waiting for it, the AP may re-initiate this Operation
+with a new request_id.
+
+If an Interface receives another Interface Firmware Load and Validate
+Request with a different request_id, before it has initiated a
+:ref:`interface-firmware-loaded-operation` for the earlier Load and
+Validate Firmware Request, then the Interface shall abort the previous
+Load and Validate Firmware Request and start servicing the new Request.
+
+The AP may initiate this Operation any number of times.
+
+If the AP is using the :ref:`firmware-download-protocol` to prepare an
+Interface to enter the :ref:`hardware-model-lifecycle-mode-switching`
+:ref:`Interface Lifecycle State <hardware-model-lifecycle-states>`, then
+the AP shall initiate the :ref:`control-mode-switch` only after it has
+received a successful :ref:`interface-firmware-loaded-operation` Request
+from the Interface.
+
+Greybus Firmware Management Interface Firmware Load and Validate Request
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus Firmware Management Interface Firmware Load and Validate
+Request contains a one-byte request_id, a one-byte load_method, which
+identifies the method to be used to load the Interface Firmware, and a
+10-byte firmware_tag of the Interface Firmware that is requested to be
+loaded.  The firmware_tag may be used by the Interface in an
+implementation-defined way to identify the requested Interface Firmware
+package.
+
+The request_id is unique and the same request_id shall not be used by
+the AP in another :ref:`interface-firmware-load-and-validate-operation`
+Request until the Interface has initiated a
+:ref:`interface-firmware-loaded-operation` with the same request_id.
+
+If the load_method specified in the Request is set to
+FIRMWARE_LOAD_METHOD_UNIPRO, then the Interface shall receive the
+Interface Firmware package using the :ref:`firmware-download-protocol`
+and send the same firmware_tag value received from the AP to the
+:ref:`find-firmware-operation` Request.
+
+If load_method specified in the Request from the AP is set to
+FIRMWARE_LOAD_METHOD_INTERNAL, then the Interface shall load the
+Interface Firmware package available locally with the Interface, in an
+implementation-defined way.
+
+.. figtable::
+    :nofig:
+    :label: table-interface-firmware-load-and-validate-request
+    :caption: Firmware Management Interface Firmware Load and Validate Request
+    :spec: l l c c l
+
+    ======  =============  ======  ===========  ===========================
+    Offset  Field          Size    Value        Description
+    ======  =============  ======  ===========  ===========================
+    0       request_id     1       Number       Unique Request Identifier.
+    1       load_method    1       Number       Possible values of load_method are specified in table :num:`table-interface-firmware-load-method`.
+    2       firmware_tag   10      [US-ASCII]_  A null-terminated character string used to identify the Interface Firmware.
+    ======  =============  ======  ===========  ===========================
+..
+
+.. figtable::
+    :nofig:
+    :label: table-interface-firmware-load-method
+    :caption: Firmware Management Interface Firmware Load Method
+    :spec: l l l
+
+    ==============================  ===========================================  ============
+    Interface Firmware Load Method  Brief Description                            Value
+    ==============================  ===========================================  ============
+    FIRMWARE_LOAD_METHOD_INVALID    Invalid                                      0x00
+    FIRMWARE_LOAD_METHOD_UNIPRO     Load Interface Firmware package over         0x01
+                                    |unipro|.
+    FIRMWARE_LOAD_METHOD_INTERNAL   Load Interface Firmware package internally   0x02
+                                    available to the Interface.
+    |_|                             (Reserved Range)                             0x03..0xFF
+    ==============================  ===========================================  ============
+..
+
+Greybus Firmware Management Interface Firmware Load and Validate Response
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus Firmware Management Interface Firmware Load and Validate
+Response has no payload.
+
+.. _interface-firmware-loaded-operation:
+
+Greybus Firmware Management Interface Firmware Loaded Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Firmware Management Interface Firmware Loaded Operation
+Request can be sent only by an Interface to indicate to the AP that an
+earlier :ref:`Interface Firmware Load and Validate Operation Request
+<interface-firmware-load-and-validate-operation>` from the AP has
+finished.
+
+On receiving this Request, the AP may check the status byte from the
+Request and compare the version of the loaded Interface Firmware with
+the Interface Firmware packages available with the AP.  The AP may
+subsequently choose to initiate another
+:ref:`interface-firmware-load-and-validate-operation`, to load a new
+Interface Firmware package.
+
+If the AP is using the :ref:`firmware-download-protocol` to prepare an
+Interface to enter the :ref:`hardware-model-lifecycle-mode-switching`
+:ref:`Interface Lifecycle State <hardware-model-lifecycle-states>`, then
+the AP shall initiate the :ref:`control-mode-switch` only after it has
+received a successful :ref:`interface-firmware-loaded-operation` Request
+from the Interface.
+
+Greybus Firmware Management Interface Firmware Loaded Request
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus Firmware Management Interface Firmware Loaded Request
+contains a one-byte request_id, a one-byte status of the loaded
+Interface Firmware package, a two-byte major version, a two-byte minor
+version.
+
+The value of the request_id field shall be set to the value of the
+request_id field sent by the AP in the
+:ref:`interface-firmware-load-and-validate-operation` Request, in
+response to which the Interface is sending this Request.
+
+If the AP has initiated another
+:ref:`interface-firmware-load-and-validate-operation` before receiving a
+:ref:`interface-firmware-loaded-operation` Response from the Interface
+for the previous :ref:`interface-firmware-load-and-validate-operation`
+Request, then the AP shall ignore the Interface Firmware Loaded Request
+with the request_id matching the request_id of the first
+:ref:`interface-firmware-load-and-validate-operation` Request.
+
+.. figtable::
+    :nofig:
+    :label: table-interface-firmware-loaded-response
+    :caption: Firmware Management Interface Firmware Loaded Response
+    :spec: l l c c l
+
+    =======  ==========  ===========  =======  ==================================================================
+    Offset   Field       Size         Value    Description
+    =======  ==========  ===========  =======  ==================================================================
+    0        request_id  1            Number   Unique Request Identifier.
+    1        status      1            Number   Status of the Interface Firmware loading and validation is
+                                               defined by the table :num:`table-interface-firmware-loaded-status`
+                                               and is set by the Interface in an implementation-defined way.
+    2        major       2            Number   Major version number of the loaded Interface Firmware package.
+    4        minor       2            Number   Minor version number of the loaded Interface Firmware package.
+    =======  ==========  ===========  =======  ==================================================================
+..
+
+.. figtable::
+    :nofig:
+    :label: table-interface-firmware-loaded-status
+    :caption: Firmware Management Interface Firmware Loaded Status
+    :spec: l l l
+
+    ===========================  ====================================  ============
+    Interface Firmware Status    Brief Description                     Status Value
+    ===========================  ====================================  ============
+    FW_STATUS_LOAD_FAILED        Failed to Load the Interface          0x00
+                                 Firmware package.
+    FW_STATUS_UNVALIDATED        Loaded Interface Firmware Package     0x01
+                                 is not signed.
+    FW_STATUS_VALIDATED          Loaded Interface Firmware Package     0x02
+                                 is signed and is validated by the
+                                 Interface.
+    FW_STATUS_VALIDATION_FAILED  Loaded Interface Firmware Package     0x03
+                                 is signed and the Interface failed
+                                 to validate it.
+    |_|                          (Reserved Range)                      0x04..0xFF
+    ===========================  ====================================  ============
+..
+
+Greybus Firmware Management Interface Firmware Loaded Response
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus Firmware Management Interface Firmware Loaded Response has
+no payload.
+
+.. _interface-backend-firmware-version-operation:
+
+Greybus Firmware Management Interface Backend Firmware Version Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Greybus Firmware Management Interface Backend Firmware Version
+Operation Request can be sent only by the AP to an Interface, to request
+the version of a specific Interface Backend Firmware available locally
+with the Interface.
+
+Greybus Firmware Management Interface Backend Firmware Version Request
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-interface-backend-firmware-version-request` defines
+the Greybus Firmware Management Interface Backend Firmware Version
+Request payload.  The Request contains a 10-byte firmware_tag of the
+Interface Backend Firmware package, whose version is requested by the
+AP.  The firmware_tag may be used by the AP in an implementation-defined
+way for each requested Interface Backend Firmware package.
+
+.. figtable::
+    :nofig:
+    :label: table-interface-backend-firmware-version-request
+    :caption: Firmware Management Interface Backend Firmware Version Request
+    :spec: l l c c l
+
+    ======  =============  ======  ===========  ===========================
+    Offset  Field          Size    Value        Description
+    ======  =============  ======  ===========  ===========================
+    0       firmware_tag   10      [US-ASCII]_  A null-terminated character string used to identify the Interface Backend Firmware package.
+    ======  =============  ======  ===========  ===========================
+..
+
+
+Greybus Firmware Management Interface Backend Firmware Version Response
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-interface-backend-firmware-version-response` defines
+the Greybus Firmware Management Interface Backend Firmware Version
+Response payload.  The Response contains two 2-byte numbers, major and
+minor.
+
+If the Interface doesn't require the specific Interface Backend Firmware
+package for its functioning, then the Interface shall send GB_OP_INVALID
+in the status byte of the Response header.
+
+If the Interface doesn't have the specific Interface Backend Firmware
+package available with it, then it shall set both major and minor fields
+in its Response with zero.
+
+The Interface may take some time before providing the version of the
+Interface Backend Firmware package.  This may happen, for example, if
+the Interface needs to boot the Backend Device Processors before getting
+the version of the available Interface Backend Firmware.  On such an
+event, the Interface shall send GB_OP_RETRY in the status byte of the
+Response header.
+
+On receiving GB_OP_RETRY from the Interface, the AP may re-initiate this
+Operation after an implementation-defined time interval.  The AP may
+keep sending this Request until the time it receives the Interface
+Backend Firmware version, or the Request fails and returns some other
+error value.
+
+.. figtable::
+    :nofig:
+    :label: table-interface-backend-firmware-version-response
+    :caption: Firmware Management Interface Backend Firmware Version Response
+    :spec: l l c c l
+
+    =======  ==================  ===========  =======  ===========================
+    Offset   Field               Size         Value    Description
+    =======  ==================  ===========  =======  ===========================
+    0        major               2            Number   Major version number of the Interface Backend Firmware package.
+    2        minor               2            Number   Minor version number of the Interface Backend Firmware package.
+    =======  ==================  ===========  =======  ===========================
+..
+
+.. _interface-backend-firmware-update-operation:
+
+Greybus Firmware Management Interface Backend Firmware Update Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Firmware Management Interface Backend Firmware Update
+Operation Request can be sent only by the AP to request an Interface, to
+update a specific Interface Backend Firmware package.
+
+The Interface shall update the Interface Backend Firmware package.
+
+If the Interface can not service the Interface Backend Firmware Update
+Request or if the Interface doesn't require the specified Interface
+Backend Firmware for its functioning, then it shall send GB_OP_INVALID
+in the status field of the Response header.
+
+Otherwise, the Interface shall immediately respond to this Request and
+start downloading the Interface Backend Firmware package from the AP.
+
+If the Interface is designed to use the
+:ref:`firmware-download-protocol` for downloading firmware packages,
+then it shall contain a :ref:`cport-descriptor` with the Protocol Type
+Firmware-Download in its :ref:`bundle-descriptor` whose Class Type is
+Firmware-Management, in the Interface :ref:`manifest-description` sent
+to the AP.
+
+The rest of this section uses the :ref:`firmware-download-protocol` as
+the Interface Backend Firmware download method.  The Interface may
+choose another implementation-defined method for receiving the Interface
+Backend Firmware packages.
+
+Once the specific Interface Backend Firmware package is updated on the
+Interface, the Interface shall initiate a
+:ref:`interface-backend-firmware-updated-operation`.
+
+The AP sends a unique request_id to the Interface and the Interface
+shall use the same request_id while sending the
+:ref:`interface-backend-firmware-updated-operation` Request.
+
+The same request_id shall not be used by the AP in another
+:ref:`interface-backend-firmware-update-operation` Request until the
+Interface has initiated a
+:ref:`interface-backend-firmware-updated-operation` with the same
+request_id.
+
+The AP may wait for an implementation-defined time interval, for the
+Interface to initiate a
+:ref:`interface-backend-firmware-updated-operation`.  In case the AP
+times out waiting for it, the AP may re-initiate this Operation for the
+same firmware_tag, with a different request_id.
+
+If the Interface receives another Interface Backend Firmware Update
+Request before it has initiated a
+:ref:`interface-backend-firmware-updated-operation` for the earlier
+Interface Backend Firmware Update Request, the Interface shall abort the
+previous Interface Backend Firmware Update Request and start servicing
+the new Request.
+
+The AP may initiate multiple Interface Backend Firmware Update
+Operations in parallel with different firmware_tag values, in order to
+update multiple Interface Backend Firmware packages together.
+
+Greybus Firmware Management Interface Backend Firmware Update Request
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-interface-backend-firmware-update-request` defines the
+Greybus Firmware Management Interface Backend Firmware Update Request
+payload.  The Request contains a one-byte request_id, and a 10-byte
+firmware_tag of the Interface Backend Firmware package, which is
+requested to be updated.  The firmware_tag may be used by the AP in an
+implementation-defined way for each requested Interface Backend Firmware
+package.
+
+The request_id is unique and the same request_id shall not be used by
+the AP in another :ref:`interface-backend-firmware-update-operation`
+Request until the Interface has initiated a
+:ref:`interface-backend-firmware-updated-operation` with the same
+request_id.
+
+.. figtable::
+    :nofig:
+    :label: table-interface-backend-firmware-update-request
+    :caption: Firmware Management Interface Backend Firmware Update Request
+    :spec: l l c c l
+
+    ======  =============  ======  ===========  ===========================
+    Offset  Field          Size    Value        Description
+    ======  =============  ======  ===========  ===========================
+    0       request_id     1       Number       Unique Request Identifier.
+    1       firmware_tag   10      [US-ASCII]_  A null-terminated character string used to identify the Interface Backend Firmware package.
+    ======  =============  ======  ===========  ===========================
+..
+
+Greybus Firmware Management Interface Backend Firmware Update Response
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus Firmware Management Interface Backend Firmware Update
+Response has no payload.
+
+.. _interface-backend-firmware-updated-operation:
+
+Greybus Firmware Management Interface Backend Firmware Updated Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Firmware Management Interface Backend Firmware Updated
+Operation Request can be send only by an Interface to inform the AP that
+the Interface Backend Firmware update to a specific Interface Backend
+Firmware package has finished.  This shall be sent by the Interface
+after it has downloaded the requested Interface Backend Firmware package
+using the :ref:`firmware-download-protocol` and updated it internally in
+an implementation-defined way.
+
+The Interface shall also initiate this Operation if it has failed to
+update the requested Interface Backend Firmware package.  It shall
+specify the reason of the failure in the status field of the Request.
+
+The AP may initiate another
+:ref:`interface-backend-firmware-update-operation` with same
+firmware_tag now.
+
+Greybus Firmware Management Interface Backend Firmware Updated Request
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-interface-backend-firmware-updated-request` defines
+the Greybus Firmware Management Interface Backend Firmware Updated
+Request payload.  The Request contains a one-byte request_id, and a
+one-byte status of the Firmware update.
+
+The value of the request_id field shall be set to the value of the
+request_id field sent by the AP in the
+:ref:`interface-backend-firmware-update-operation` Request, in response
+to which the Interface is sending this Request.
+
+If the AP initiates another
+:ref:`interface-backend-firmware-update-operation` before receiving a
+:ref:`interface-backend-firmware-updated-operation` Request from the
+Interface for the previous
+:ref:`interface-backend-firmware-update-operation` Request, then the AP
+shall ignore the Interface Backend Firmware Updated Request with the
+request_id matching the request_id of the first
+:ref:`interface-backend-firmware-update-operation` Request.
+
+.. figtable::
+    :nofig:
+    :label: table-interface-backend-firmware-updated-request
+    :caption: Firmware Management Interface Backend Firmware Updated Request
+    :spec: l l c c l
+
+    ======  =============  ======  ===========  ===================================================================
+    Offset  Field          Size    Value        Description
+    ======  =============  ======  ===========  ===================================================================
+    0       request_id     1       Number       Unique Request Identifier.
+    1       status         1       Number       Status of the Interface Backend Firmware update is defined by the
+                                                table :num:`table-interface-backend-firmware-update-status` and
+                                                is set by the Interface in an implementation-defined way.
+    ======  =============  ======  ===========  ===================================================================
+..
+
+.. figtable::
+    :nofig:
+    :label: table-interface-backend-firmware-update-status
+    :caption: Firmware Interface Backend Firmware Update Status
+    :spec: l l l
+
+    ==================  ===========================================  ==========
+    Update Status       Brief Description                            Value
+    ==================  ===========================================  ==========
+    STATUS_INVALID      Invalid Status.                              0x00
+    STATUS_SUCCESS      Interface Backend Firmware package           0x01
+                        successfully updated.
+    STATUS_FAIL_FIND    Failed to find Interface Backend Firmware    0x02
+                        package.
+    STATUS_FAIL_FETCH   Failed to fetch Interface Backend Firmware   0x03
+                        package.
+    STATUS_FAIL_WRITE   Failed to write downloaded Interface         0x04
+                        Backend Firmware package.
+    STATUS_FAIL_INT     Failed due to internal errors.               0x05
+    |_|                 (Reserved Range)                             0x06..0xFF
+    ==================  ===========================================  ==========
+
+..
+
+Greybus Firmware Management Interface Backend Firmware Updated Response
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus Firmware Interface Backend Firmware Updated Response has no
+payload.
+
 Vibrator Protocol
 -----------------
 

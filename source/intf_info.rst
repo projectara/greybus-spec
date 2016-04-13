@@ -334,7 +334,8 @@ it. Class types are defined in Table :num:`table-bundle-class`.
     Reserved                        0x13
     Unused                          0x14
     Bootrom                         0x15
-    (All other values reserved)     0x16..0xfd
+    Firmware Management             0x16
+    (All other values reserved)     0x17..0xfd
     Raw                             0xfe
     Vendor Specific                 0xff
     ============================    ==========
@@ -427,7 +428,8 @@ typically should not be used.)
     Bootrom                         0x15
     Camera Data                     0x16
     Firmware Download               0x17
-    (All other values reserved)     0x18..0xfd
+    Firmware Management             0x18
+    (All other values reserved)     0x19..0xfd
     Raw                             0xfe
     Vendor Specific                 0xff
     ============================    ==========
