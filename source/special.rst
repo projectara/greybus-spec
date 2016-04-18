@@ -995,7 +995,7 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     The AP uses this operation to notify the SVC that a connection
     being torn down is quiescing.
 
-.. c:function:: int module_inserted(u8 primary_intf_id, u8 intf_count);
+.. c:function:: int module_inserted(u8 primary_intf_id, u8 intf_count, u16 flags);
 
     The SVC uses this operation to notify the AP Module of the
     presence of a newly inserted Module.  It sends the request after
