@@ -1048,7 +1048,7 @@ Conceptually, the operations in the Greybus SVC Protocol are:
    resume an Interface which is in a low power mode into a state where
    it can again communicate via Greybus.
 
-.. c:function:: int intf_mailbox_event(u8 intf_id, u32 mailbox);
+.. c:function:: int intf_mailbox_event(u8 intf_id, u16 result_code, u32 mailbox);
 
    The SVC uses this Operation to inform the AP that an Interface
    State's :ref:`hardware-model-mailbox` has changed value.
@@ -4256,7 +4256,7 @@ Greybus SVC Interface Mailbox Event Request payload.
     =======  ==============  ======  ============    =====================================
     0        intf_id         1       Interface ID    Interface State whose MAILBOX was set
     1        result_code     2       Number          |unipro| ConfigResultCode
-    1        mailbox         4       Number          MAILBOX value
+    3        mailbox         4       Number          MAILBOX value
     =======  ==============  ======  ============    =====================================
 ..
 
