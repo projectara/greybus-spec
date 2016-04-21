@@ -14,35 +14,33 @@ Greybus Specification is a *Greybus System*.
 A Greybus System has the following physical components:
 
 - A :ref:`Frame <glossary-frame>`, which contains at least one
-  :ref:`Slot <glossary-slot>`.
+  :ref:`Slot <glossary-slot>`.  The Slots on a Frame are separated
+  by the Frame's spine and ribs.
 
 - A collection of Slots on the Frame, each of which contains at least
   one :ref:`Interface Block <glossary-interface>`. Each Interface
   Block contains several pins, which allow for power distribution,
   module hotplug detection, and communication between the Frame and
-  inserted Modules.
+  attached Modules.
 
-- Zero or more :ref:`Modules <glossary-module>`, which are attached to
-  the Frame via one or more Interface Blocks. Individual Modules
-  cannot attach to Interface Blocks which are in different Slots: all
-  of the Interface Blocks a Module is attached to are in the same
-  Slot. Two different Modules cannot attach to the same Interface
-  Block at the same time.
+- Zero or more attached :ref:`Modules <glossary-module>`, which mate
+  with the Frame via one or more Interface Blocks.  All Interface
+  Blocks used by an individual Module are in the same Slot on the
+  Frame.  An Interface Block on the Frame can be used by at most one
+  Module at a time.
 
-Interface Blocks are separated into Slots by the spine and ribs of the
-Frame.  The Frame additionally contains the :ref:`SVC <glossary-svc>`,
-which, in collaboration with the :ref:`AP Module
-<glossary-ap-module>`, manages physical signals present on the
-Interface Blocks.
+The Frame contains the :ref:`SVC <glossary-svc>`, which, in
+collaboration with the :ref:`AP Module <glossary-ap-module>`,
+manages physical signals present on the Interface Blocks.  The Frame
+also contains a :ref:`Switch <glossary-switch>`, which can be
+directly configured by the SVC.
 
-The Frame also contains a :ref:`Switch <glossary-switch>`, which can
-be directly configured by the SVC. Each Interface Block contains
-connections for |m-phy| [MIPI02]_ LINK establishment between attached
-Modules and the Switch. The SVC can configure the Switch and attempt
-to exchange communication between the Switch and attached Modules, and
-thereby indirectly between Modules themselves, via these LINKs. The AP
-is also able, as a Module, to communicate with other Modules, as well
-as the SVC, using these LINKs.
+Each Interface Block contains connections for |m-phy| [MIPI02]_ LINK
+establishment between attached Modules and the Switch. The SVC can
+configure the Switch and permit communication between the Switch and
+attached Modules, and thereby indirectly between Modules themselves,
+via these LINKs. The AP is also able--as a Module--to communicate
+with other Modules, as well as the SVC, using these LINKs.
 
 The following sections define abstract representations of state
 present in a Greybus System for use representing these components
