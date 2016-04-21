@@ -46,14 +46,14 @@ The following sections define abstract representations of state
 present in a Greybus System for use representing these components
 within the Greybus Specification.
 
-- The first subsection, :ref:`hardware-model-interface-states`,
-  defines the *Interface State* data structure, which is an entity
-  that represents components in, and state managed by, a Greybus
-  System that are part of the Frame and are related to each Interface Block.
+- The first section, :ref:`hardware-model-interface-states`,
+  defines the *Interface State* data structure.  This structure
+  represents the state of components related to an Interface Block
+  on the Frame.
 
   The dynamics of a Greybus System effect changes to Interface States
-  as defined in the remainder of this document. These changes map in
-  implementation-defined ways to these components within the Frame.
+  as defined in the remainder of this document.  These changes map
+  to Interface Block components in implementation-defined ways.
 
 - The subsequent section, :ref:`hardware-model-initial-states`,
   defines the initial values of each Interface State.
@@ -63,22 +63,22 @@ within the Greybus Specification.
   the Frame via Greybus.
 
 - Following that, :ref:`hardware-model-lifecycle-states` provides a
-  state machine diagram which describes Interface lifetimes within a
+  state diagram which describes Interface lifetimes within a
   Greybus System. The states in this diagram are *Interface Lifecycle
   States*.
 
-- In conclusion, :ref:`hardware-model-ap-module-requirements` defines
-  special requirements related to the AP Module and SVC.
+- Finally, :ref:`hardware-model-ap-module-requirements` defines
+  special requirements related to the AP Module and the SVC.
 
-Each Interface State in a Greybus System is given a unique identifier,
+Each Interface Block in a Greybus System is given a unique identifier,
 its Interface ID.  Interface IDs increase consecutively, moving
-counter-clockwise around the Frame.
+counter-clockwise around the Frame.  The Interface State and the
+Interface Block it is associated with share the same Interface ID.
 
-For convenience, the Interface Blocks in a Greybus System are also
-indexed by the Interface IDs for their corresponding Interface
-States. Any Interfaces within Modules attached to those Interface
-Blocks are also indexed by the same Interface IDs as the Interface
-Blocks to which they are attached.
+.. XXX Is the following even needed?  I'm commenting it out for now.
+.. Any Interfaces within Modules attached to those Interface
+.. Blocks are also indexed by the same Interface IDs as the Interface
+.. Blocks to which they are attached.
 
 Subsequent definitions within the Greybus Specification define how
 certain Greybus :ref:`Operations <glossary-operation>` affect
