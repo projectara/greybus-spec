@@ -4132,9 +4132,9 @@ configuration of the channel.
     0        intensity_min_uA   4       Number          Minimum Value for Current Intensity in microampere
     4        intensity_max_uA   4       Number          Maximum Value for Current Intensity in microampere
     8        intensity_step_uA  4       Number          Step Value for Current Intensity in microampere
-    12       timeout_min_us     4       Number          Minimum Value for Strobe Flash timeout in milliseconds
-    16       timeout_max_us     4       Number          Maximum Value for Strobe Flash timeout in milliseconds
-    20       timeout_step_us    4       Number          Step Value for Strobe Flash timeout in milliseconds
+    12       timeout_min_us     4       Number          Minimum Value for Strobe Flash timeout in microseconds
+    16       timeout_max_us     4       Number          Maximum Value for Strobe Flash timeout in microseconds
+    20       timeout_step_us    4       Number          Step Value for Strobe Flash timeout in microseconds
     =======  =================  ======  ==========      ===========================
 
 ..
