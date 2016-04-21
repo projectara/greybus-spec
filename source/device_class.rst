@@ -4522,16 +4522,16 @@ which specify the fault status of the flash controller.
     ============================================  =============================  ===============
     Symbol                                        Brief Description              Mask Value
     ============================================  =============================  ===============
-    GB_LIGHTS_FLASH_FAULT_OVER_VOLTAGE            Over Voltage                   0x00000000
-    GB_LIGHTS_FLASH_FAULT_TIMEOUT                 Timeout                        0x00000001
-    GB_LIGHTS_FLASH_FAULT_OVER_TEMPERATURE        Over Temperature               0x00000002
-    GB_LIGHTS_FLASH_FAULT_SHORT_CIRCUIT           Short Circuit                  0x00000004
-    GB_LIGHTS_FLASH_FAULT_OVER_CURRENT            Over Current                   0x00000008
-    GB_LIGHTS_FLASH_FAULT_INDICATOR               Indicator Fault                0x00000010
-    GB_LIGHTS_FLASH_FAULT_UNDER_VOLTAGE           Under Voltage                  0x00000020
-    GB_LIGHTS_FLASH_FAULT_INPUT_VOLTAGE           Input Voltage                  0x00000040
-    GB_LIGHTS_FLASH_FAULT_LED_OVER_TEMPERATURE    LED Over Temperature           0x00000080
-    |_|                                           (All other values reserved)    0x00000100..0x80000000
+    GB_LIGHTS_FLASH_FAULT_OVER_VOLTAGE            Over Voltage                   0x00000001
+    GB_LIGHTS_FLASH_FAULT_TIMEOUT                 Timeout                        0x00000002
+    GB_LIGHTS_FLASH_FAULT_OVER_TEMPERATURE        Over Temperature               0x00000004
+    GB_LIGHTS_FLASH_FAULT_SHORT_CIRCUIT           Short Circuit                  0x00000008
+    GB_LIGHTS_FLASH_FAULT_OVER_CURRENT            Over Current                   0x00000010
+    GB_LIGHTS_FLASH_FAULT_INDICATOR               Indicator Fault                0x00000020
+    GB_LIGHTS_FLASH_FAULT_UNDER_VOLTAGE           Under Voltage                  0x00000040
+    GB_LIGHTS_FLASH_FAULT_INPUT_VOLTAGE           Input Voltage                  0x00000080
+    GB_LIGHTS_FLASH_FAULT_LED_OVER_TEMPERATURE    LED Over Temperature           0x00000100
+    |_|                                           (All other values reserved)    0x00000200..0x80000000
     ============================================  =============================  ===============
 
 ..
