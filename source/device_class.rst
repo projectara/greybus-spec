@@ -3769,7 +3769,7 @@ The operations in the Greybus Lights Protocol are:
    increments from 0 to channel_count less one.
 
 
-.. c:function:: int get_channel_config(u8 light_id, u8 channel_id, u8 *channel_count, struct gb_channel_config *config);
+.. c:function:: int get_channel_config(u8 light_id, u8 channel_id, struct gb_channel_config *config);
 
    Request a set of configuration parameters related to a channel in a
    light controller. The return structure elements shall map the fields
