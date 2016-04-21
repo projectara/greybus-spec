@@ -3764,7 +3764,7 @@ The operations in the Greybus Lights Protocol are:
 .. c:function:: int get_light_config(u8 light_id, u8 *channel_count, u8 *name[32]);
 
    Request the number of channels controlled by a light controller
-   and it's name, providing a valid identifier for that light.
+   and its name, providing a valid identifier for that light.
    channel_id used in the following operations are sequential
    increments from 0 to channel_count less one.
 
