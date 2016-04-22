@@ -89,20 +89,22 @@ Interface States and Interface Lifecycle States in a Greybus System.
 Interface States
 ^^^^^^^^^^^^^^^^
 
-An *Interface State* is a tuple containing "sub-state" values.  This
-represents state within the Frame related to each Interface Block.
+An *Interface State* is a tuple containing "sub-state" values.
+Each Interface State is defined by the specific values of its
+sub-states.  Each Interface Block in a Greybus System has an
+associated Interface State, which represents its state within the
+Frame.  The initial value of each Interface State is given in
+:ref:`hardware-model-initial-states`.  An Interface Block's
+Interface State is well-defined at the time a Greybus Operation's
+request message is transmitted or response message is received.  A
+Greybus Operation can lead to a change to one or more sub-state
+values, and consequently change the Interface State associated with
+an Interface Block.
 
-As stated above, each Interface Block in a Greybus System has an
-associated Interface State. The value of an Interface State varies
-over time, but its contents are well defined before a Greybus
-Operation's request is transmitted or its response is received.
+.. ??? Some Operations additionally define transient changes to
+       sub-state values that take place after the request is
+       transmitted, but before the response is received.
 
-Changes to the value of an Interface State are defined by any
-Operation which may alter an Interface State. The initial value of
-each Interface State is given in
-:ref:`hardware-model-initial-states`. Some Operations additionally
-define transient changes to Interface State values that take place
-after the request is transmitted, but before the response is received.
 
 The names of the sub-states of each Interface State are as follows,
 along with an overview of their meaning within a Greybus System.
