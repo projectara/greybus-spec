@@ -1094,43 +1094,42 @@ response type values are shown.
 
 ..
 
-.. _svc-connection-status-values:
+.. _svc-protocol-op-status:
 
-Greybus SVC Connection Status Values
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus SVC Protocol Operation Status
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The SVC Protocol defines a common set of status values which are
+embedded in some Operation Response payload fields, and are defined in
+Table :num:`table-svc-protocol-op-status-values`.
 
-As described in :ref:`greybus-protocol-error-codes`, the Connection
-Status Values from 0x80 to 0xfd may be defined by the Protocol in use.
-Table :num:`table-svc-connection-status-values` defines the Connection
-Status Values with specific meaning within the SVC Protocol.
-
-These status values are currently used to signal errors related to
-invalid :ref:`hardware-model-interface-states` during Operation
-handling which depends on those Interface States having particular
-values.
+These status values are used to signal errors related to invalid
+:ref:`hardware-model-interface-states` during Operation handling which
+depends on those Interface States having particular values.
 
 .. figtable::
     :nofig:
-    :label: table-svc-connection-status-values
-    :caption: SVC Protocol Connection Status Values
+    :label: table-svc-protocol-op-status-values
+    :caption: SVC Protocol Status Values
     :spec: l c l
 
     ===============================  ===============  ======================================
     Status                           Value            Meaning
     ===============================  ===============  ======================================
-    GB_SVC_INTF_NOT_DETECTED         0x80             DETECT is not DETECT_ACTIVE
-    GB_SVC_INTF_NO_UPRO_LINK         0x81             UNIPRO is not UPRO_UP
-    GB_SVC_INTF_UPRO_NOT_DOWN        0x82             UNIPRO is not UPRO_DOWN
-    GB_SVC_INTF_NO_V_SYS             0x83             V_SYS is not V_SYS_ON
-    GB_SVC_INTF_V_CHG                0x84             V_CHG is V_CHG_ON
-    GB_SVC_INTF_WAKE_BUSY            0x85             WAKE is not WAKE_UNSET
-    GB_SVC_INTF_NO_REFCLK            0x86             REFCLK is not REFCLK_ON
-    GB_SVC_INTF_RELEASING            0x87             RELEASE is RELEASE_ASSERTED
-    GB_SVC_INTF_NO_ORDER             0x88             ORDER is ORDER_UNKNOWN
-    GB_SVC_INTF_MBOX_SET             0x89             MAILBOX is not MAILBOX_NONE
-    GB_SVC_INTF_BAD_MBOX             0x8a             Interface set MAILBOX to illegal value
-    GB_SVC_INTF_UPRO_NOT_HIBERNATED  0x8b             UNIPRO is not UPRO_HIBERNATE
-    Reserved                         0x8c to 0xfd     Reserved for future use
+    GB_SVC_OP_SUCCESS                0x00             SVC Protocol Operation completed successfully
+    GB_SVC_OP_UNKNOWN_ERROR          0x01             Unknown error occured
+    GB_SVC_INTF_NOT_DETECTED         0x02             DETECT is not DETECT_ACTIVE
+    GB_SVC_INTF_NO_UPRO_LINK         0x03             UNIPRO is not UPRO_UP
+    GB_SVC_INTF_UPRO_NOT_DOWN        0x04             UNIPRO is not UPRO_DOWN
+    GB_SVC_INTF_UPRO_NOT_HIBERNATED  0x05             UNIPRO is not UPRO_HIBERNATE
+    GB_SVC_INTF_NO_V_SYS             0x06             V_SYS is not V_SYS_ON
+    GB_SVC_INTF_V_CHG                0x07             V_CHG is V_CHG_ON
+    GB_SVC_INTF_WAKE_BUSY            0x08             WAKE is not WAKE_UNSET
+    GB_SVC_INTF_NO_REFCLK            0x09             REFCLK is not REFCLK_ON
+    GB_SVC_INTF_RELEASING            0x0a             RELEASE is RELEASE_ASSERTED
+    GB_SVC_INTF_NO_ORDER             0x0b             ORDER is ORDER_UNKNOWN
+    GB_SVC_INTF_MBOX_SET             0x0c             MAILBOX is not MAILBOX_NONE
+    GB_SVC_INTF_BAD_MBOX             0x0d             Interface set MAILBOX to illegal value
+    Reserved                         0x0e to 0xff     Reserved for future use
     ===============================  ===============  ======================================
 
 ..
