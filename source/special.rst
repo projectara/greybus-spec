@@ -1457,11 +1457,15 @@ Otherwise, the SVC shall attempt to create the specified route.
 Greybus SVC Route Create Response
 """""""""""""""""""""""""""""""""
 
-The Greybus SVC Protocol Route Create response contains no payload.
+Table :num:`table-svc-route-create-response` defines the Greybus SVC Route
+Create Response payload. If the :ref:`greybus-protocol-error-codes` is not
+GB_OP_SUCCESS, the value of the Response payload field is undefined and shall
+be ignored.
 
-The SVC shall return the following errors depending on the sub-state
-values of the :ref:`hardware-model-interface-states` with Interface IDs
-given by intf1_id and intf2_id in the request payload:
+The SVC shall return the following errors in the status field of the Operation
+Response payload depending on the sub-state values of the
+:ref:`hardware-model-interface-states` with Interface ID given by intf1_id and
+intf2_id in the Request payload.
 
 - If DETECT is not DETECT_ACTIVE in both Interface States, the
   response shall have status GB_SVC_INTF_NOT_DETECTED.
@@ -1470,10 +1474,25 @@ given by intf1_id and intf2_id in the request payload:
   not UPRO_UP in both Interface States, the response shall have status
   GB_SVC_INTF_NO_UPRO_LINK.
 
-Regardless of the response status value, the Greybus SVC Route Create
+Regardless of the Response status value, the Greybus SVC Route Create
 Operation shall have no effect on either the UNIPRO sub-state of
 either Interface identified by the request, or the value of any of the
 |unipro| DME attributes for the Interfaces identified by the request.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-route-create-response
+    :caption: SVC Protocol Route Create Response
+    :spec: l l c c l
+
+    =======  ==============  ===========  ================  =========================================
+    Offset   Field           Size         Value             Description
+    =======  ==============  ===========  ================  =========================================
+    0        status          1            Number            SVC Protocol Operation Status
+    =======  ==============  ===========  ================  =========================================
+
+..
+
 
 .. _svc-route-destroy:
 
