@@ -148,32 +148,6 @@ Conceptually, the Operations in the Greybus Control Protocol are:
     previously described to the AP by sending it an Interface
     :ref:`Manifest <manifest-description>`.
 
-.. _control-connection-status-values:
-
-Greybus Control Connection Status Values
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-As described in :ref:`greybus-protocol-error-codes`, the Connection
-Status Values from 0x80 to 0xfd may be defined by the Protocol in use.
-Table :num:`table-control-connection-status-values` defines the
-Connection Status Values with specific meaning within the Control
-Protocol.
-
-.. figtable::
-    :nofig:
-    :label: table-control-connection-status-values
-    :caption: Control Protocol Connection Status Values
-    :spec: l c l
-
-    ===============================  ===============  ======================================
-    Status                           Value            Meaning
-    ===============================  ===============  ======================================
-    GB_CONTROL_BUNDLE_ERR            0x80             Bundle could not be initialized
-    Reserved                         0x81 to 0xfd     Reserved for future use
-    ===============================  ===============  ======================================
-
-..
-
 Greybus Control Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
