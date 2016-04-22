@@ -1256,13 +1256,16 @@ Greybus SVC DME Peer Get Response
 """""""""""""""""""""""""""""""""
 
 Table :num:`table-dme-peer-get-response` defines the Greybus SVC DME
-Peer Get Response payload. If the response status is not
-GB_OP_SUCCESS, the values of the response payload fields are undefined
+Peer Get Operation Response payload. If the :ref:`greybus-protocol-error-codes`
+is not GB_OP_SUCCESS, the values of the response payload fields are undefined
 and shall be ignored.
 
-The SVC shall return the following errors depending on the sub-state
-values of the :ref:`hardware-model-interface-states` with Interface ID
-given by intf_id in the request payload:
+If the status field in the Operation Response payload is not GB_SVC_OP_SUCCESS,
+values in all other fields of the Operation Response payload are undefined and
+shall be ignored. The SVC shall return the following errors in the status field
+of the Operation Response payload depending on the sub-state values of the
+:ref:`hardware-model-interface-states` with Interface ID given by intf_id in
+the request payload:
 
 - If DETECT is not DETECT_ACTIVE, the response shall have status
   GB_SVC_INTF_NOT_DETECTED.
@@ -1271,13 +1274,13 @@ given by intf_id in the request payload:
   GB_SVC_INTF_NO_UPRO_LINK.
 
 If during the handling of the request, the SVC is unable to exchange
-the |unipro| frames required to retrieve a ConfigResultCode or
-attribute value from the peer identified in the request, the response
-status shall be GB_OP_UNKNOWN_ERROR. When this occurs, the value of
-the UNIPRO sub-state for the Interface identified in the request is
-unpredictable.
+the |unipro| frames required to retrieve a ConfigResultCode or attribute value
+from the peer identified in the request, the status field in Operation Response
+payload shall be GB_SVC_OP_UNKNOWN_ERROR. When this occurs, the value of the
+UNIPRO sub-state for the Interface identified in the request is unpredictable.
 
-If the response status is GB_OP_SUCCESS, the Greybus DME Peer Get
+If the :ref:`greybus-protocol-error-codes` is GB_OP_SUCCESS and the status field
+in Operation Response payload is GB_SVC_OP_SUCCESS, the Greybus DME Peer Get
 response contains the ConfigResultCode as defined in the |unipro|
 specification, as well as the value of the attribute, if applicable.
 
@@ -1290,8 +1293,9 @@ specification, as well as the value of the attribute, if applicable.
     =======  ==============  ===========  ================  =========================================
     Offset   Field           Size         Value             Description
     =======  ==============  ===========  ================  =========================================
-    0        result_code     2            Number            |unipro| DME Peer Get ConfigResultCode
-    2        attr_value      4            Number            |unipro| DME Peer Get DME Attribute value
+    0        status          1            Number            SVC Protocol Operation Status
+    1        result_code     2            Number            |unipro| DME Peer Get ConfigResultCode
+    3        attr_value      4            Number            |unipro| DME Peer Get DME Attribute value
     =======  ==============  ===========  ================  =========================================
 
 ..
@@ -1348,13 +1352,16 @@ Greybus SVC DME Peer Set Response
 """""""""""""""""""""""""""""""""
 
 Table :num:`table-dme-peer-set-response` defines the Greybus SVC DME
-Peer Set Response payload.  If the response status is not
-GB_OP_SUCCESS, the value of the result_code field is undefined and
-shall be ignored.
+Peer Set Response payload.  If the :ref:`greybus-protocol-error-codes` is not
+GB_OP_SUCCESS, the values of the response payload fields are undefined
+and shall be ignored.
 
-The SVC shall return the following errors depending on the sub-state
-values of the :ref:`hardware-model-interface-states` with Interface ID
-given by intf_id in the request payload:
+If the status field in the Operation Response payload is not GB_SVC_OP_SUCCESS,
+values in all other fields of the Operation Response payload are undefined and
+shall be ignored. The SVC shall return the following errors in the status field
+of the Operation Response payload depending on the sub-state values of the
+:ref:`hardware-model-interface-states` with Interface ID given by intf_id
+in the request payload:
 
 - If DETECT is not DETECT_ACTIVE, the response shall have status
   GB_SVC_INTF_NOT_DETECTED.
@@ -1363,13 +1370,13 @@ given by intf_id in the request payload:
   GB_SVC_INTF_NO_UPRO_LINK.
 
 If during the handling of the request, the SVC is unable to exchange
-the |unipro| frames required to retrieve a ConfigResultCode or
-attribute value from the peer identified in the request, the response
-status shall be GB_OP_UNKNOWN_ERROR. When this occurs, the value of
-the UNIPRO sub-state for the Interface identified in the request is
-unpredictable.
+the |unipro| frames required to retrieve a ConfigResultCode or attribute value
+from the peer identified in the request, the status field in Operation Response
+payload shall be GB_SVC_OP_UNKNOWN_ERROR. When this occurs, the value of the
+UNIPRO sub-state for the Interface identified in the request is unpredictable.
 
-If the response status is GB_OP_SUCCESS, the Greybus DME Peer Set
+If the :ref:`greybus-protocol-error-codes` is GB_OP_SUCCESS and the status field in
+Operation Response payload is GB_SVC_OP_SUCCESS, the Greybus DME Peer Set
 response contains the ConfigResultCode for the attribute write as
 defined in the |unipro| specification.
 
@@ -1382,7 +1389,8 @@ defined in the |unipro| specification.
     =======  ==============  ===========  ================  =========================================
     Offset   Field           Size         Value             Description
     =======  ==============  ===========  ================  =========================================
-    0        result_code     2            Number            |unipro| DME Peer Set ConfigResultCode
+    0        status          1            Number            SVC Protocol Operation Status
+    1        result_code     2            Number            |unipro| DME Peer Set ConfigResultCode
     =======  ==============  ===========  ================  =========================================
 
 ..
