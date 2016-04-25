@@ -152,9 +152,9 @@ Greybus Control Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 All control Operations are contained within a Greybus control
-request message. Every control request results in a matching
-response.  The request and response messages for each control
-Operation are defined below.
+request message. Most of control requests results in a matching
+response, except mode_switch which is unidirectional.  The request and
+response messages for each control Operation are defined below.
 
 Table :num:`table-control-operation-type` defines the Greybus
 Control Protocol Operation types and their values. Both the request
@@ -183,7 +183,7 @@ type and response type values are shown.
     Bundle Version               0x0b           0x8b
     Disconnecting                0x0c           0x8c
     TimeSync get last event      0x0d           0x8d
-    Mode Switch                  0x0e           0x8e
+    Mode Switch                  0x0e           N/A
     (all other values reserved)  0x0f..0x7e     0x8f..0xfe
     Invalid                      0x7f           0xff
     ===========================  =============  ==============
