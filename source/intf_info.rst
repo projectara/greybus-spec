@@ -89,11 +89,11 @@ with which the Manifest complies.
     3        version_minor   1       |gb-minor|      Greybus minor version
     =======  ==============  ======  ==========      ===========================
 
-The values of version_major and version_minor values shall refer to
+The values of version_major and version_minor shall refer to
 the highest version of this document (currently |gb-major|.\
 |gb-minor|) with which the format complies.
 
-Minor versions increment with modifications to the Greybus
+version_minor increments with modifications to the Greybus
 definition, in such a way that any Protocol handler that supports
 the version_major can correctly interpret a Manifest in the
 modified format.
