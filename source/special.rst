@@ -141,7 +141,7 @@ Conceptually, the Operations in the Greybus Control Protocol are:
     This Operation is used by the AP to get the version of the Bundle Class
     implemented by a Bundle.
 
-.. c:function:: void mode_switch();
+.. c:function:: void mode_switch(void);
 
     This Operation can be used by the AP to signal to the Interface
     that it may reinitialize itself and alter the Bundles it
