@@ -1,3 +1,5 @@
+.. _greybus-connection-protocols:
+
 Connection Protocols
 ====================
 

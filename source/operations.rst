@@ -145,11 +145,16 @@ result of the operation.
 Greybus Operation Status
 ------------------------
 
-A Protocol can define its own status values if needed. These status
-values shall lie within the range defined by the "(Reserved for
-Protocol use)" table entry in Table
-:num:`table-connection-status-values`. Every status byte with a MSB set
-to one other than 0xff is a valid Protocol status value.
+Table :num:`table-connection-status-values` defines the Greybus
+Operation status values.
+
+The Greybus Operation status shall be determined by checking the status field of
+the Greybus Operation Message Header of the Response as described in Table
+:num:`table-operation-message-header`.
+
+A :ref:`Connection Protocol <greybus-connection-protocols>` can define its own
+status values in its Response payload if required. These status values shall be
+interpreted only by its respective protocol handler.
 
 .. figtable::
     :nofig:
