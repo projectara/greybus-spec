@@ -174,15 +174,10 @@ interpreted only by its respective protocol handler.
     GB_OP_INVALID                 0x06             Invalid argument supplied
     GB_OP_RETRY                   0x07             Request should be retried
     GB_OP_NONEXISTENT             0x08             The device does not exist
-    Reserved                      0x09 to 0x7f     Reserved for future use
-    Reserved for Protocol use     0x80 to 0xfd     Status defined by the Protocol in use
+    Reserved                      0x09 to 0xfd     Reserved for future use
     GB_OP_UNKNOWN_ERROR           0xfe             Unknown error occured
     GB_OP_INTERNAL                0xff             Invalid initial value.
     ============================  ===============  =======================
-
-Values marked *Reserved for Protocol use* are to be used by the
-individual Protocols as defined in the :ref:`device-class-protocols` and
-:ref:`bridged-phy-protocols` sections below.
 
 Note that *GB_OP_INTERNAL* shall not be used in a response message. It
 is reserved for internal use by the Greybus application stack only.
