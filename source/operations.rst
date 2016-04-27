@@ -140,12 +140,12 @@ payload portions of the request and response messages used for the
 Protocol, along with all actions or state changes that take place as a
 result of the operation.
 
-.. _greybus-protocol-error-codes:
+.. _greybus-operation-status:
 
 Greybus Operation Status
 ------------------------
 
-Table :num:`table-connection-status-values` defines the Greybus
+Table :num:`table-operation-status-values` defines the Greybus
 Operation status values.
 
 The Greybus Operation status shall be determined by checking the status field of
@@ -158,7 +158,7 @@ interpreted only by its respective protocol handler.
 
 .. figtable::
     :nofig:
-    :label: table-connection-status-values
+    :label: table-operation-status-values
     :caption: Connection Status Values
     :spec: l c l
 

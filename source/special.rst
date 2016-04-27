@@ -1255,7 +1255,7 @@ Greybus SVC DME Peer Get Response
 """""""""""""""""""""""""""""""""
 
 Table :num:`table-dme-peer-get-response` defines the Greybus SVC DME
-Peer Get Operation Response payload. If the :ref:`greybus-protocol-error-codes`
+Peer Get Operation Response payload. If the :ref:`greybus-operation-status`
 is not GB_OP_SUCCESS, the values of the response payload fields are undefined
 and shall be ignored.
 
@@ -1278,7 +1278,7 @@ from the peer identified in the request, the status field in Operation Response
 payload shall be GB_SVC_OP_UNKNOWN_ERROR. When this occurs, the value of the
 UNIPRO sub-state for the Interface identified in the request is unpredictable.
 
-If the :ref:`greybus-protocol-error-codes` is GB_OP_SUCCESS and the status field
+If the :ref:`greybus-operation-status` is GB_OP_SUCCESS and the status field
 in Operation Response payload is GB_SVC_OP_SUCCESS, the Greybus DME Peer Get
 response contains the ConfigResultCode as defined in the |unipro|
 specification, as well as the value of the attribute, if applicable.
@@ -1351,7 +1351,7 @@ Greybus SVC DME Peer Set Response
 """""""""""""""""""""""""""""""""
 
 Table :num:`table-dme-peer-set-response` defines the Greybus SVC DME
-Peer Set Response payload.  If the :ref:`greybus-protocol-error-codes` is not
+Peer Set Response payload.  If the :ref:`greybus-operation-status` is not
 GB_OP_SUCCESS, the values of the response payload fields are undefined
 and shall be ignored.
 
@@ -1374,7 +1374,7 @@ from the peer identified in the request, the status field in Operation Response
 payload shall be GB_SVC_OP_UNKNOWN_ERROR. When this occurs, the value of the
 UNIPRO sub-state for the Interface identified in the request is unpredictable.
 
-If the :ref:`greybus-protocol-error-codes` is GB_OP_SUCCESS and the status field in
+If the :ref:`greybus-operation-status` is GB_OP_SUCCESS and the status field in
 Operation Response payload is GB_SVC_OP_SUCCESS, the Greybus DME Peer Set
 response contains the ConfigResultCode for the attribute write as
 defined in the |unipro| specification.
@@ -1457,7 +1457,7 @@ Greybus SVC Route Create Response
 """""""""""""""""""""""""""""""""
 
 Table :num:`table-svc-route-create-response` defines the Greybus SVC Route
-Create Response payload. If the :ref:`greybus-protocol-error-codes` is not
+Create Response payload. If the :ref:`greybus-operation-status` is not
 GB_OP_SUCCESS, the value of the Response payload field is undefined and shall
 be ignored.
 
@@ -1619,7 +1619,7 @@ Greybus SVC Interface Device ID Response
 
 Table :num:`table-svc-intf-device-id-response` defines the Greybus SVC
 Interface Device ID Response payload. If the Response message header has
-:ref:`greybus-protocol-error-codes` not equal to GB_OP_SUCCESS, the value of
+:ref:`greybus-operation-status` not equal to GB_OP_SUCCESS, the value of
 the Response payload field is undefined and shall be ignored.
 
 The SVC shall return the following errors in the status field of the Operation
@@ -2022,7 +2022,7 @@ Interface given by intf_id, and whether that |unipro| link is up. If
 so, the SVC shall attempt to change the power mode of the |unipro|
 link at the given interface. If not, the SVC shall transmit a Greybus
 SVC Interface Set Power Mode Response message with the
-:ref:`greybus-protocol-error-codes` in the Response message header set to
+:ref:`greybus-operation-status` in the Response message header set to
 GB_OP_INVALID. The SVC shall make no changes to the link's power mode in this
 case.
 
@@ -2087,16 +2087,16 @@ Otherwise, the SVC shall attempt to reconfigure the power mode for the
 When reconfiguring the link power mode as a result of receiving a
 Greybus SVC Interface Set Power Mode Request, the link's transmitter and/or
 receiver power mode shall be set to the given configuration.
-The :ref:`greybus-protocol-error-codes` in the Response message header of the
+The :ref:`greybus-operation-status` in the Response message header of the
 response to a Greybus SVC Interface Set Power Mode Request shall not be used
 to check the result of the power mode change operation. It shall only be used
 to indicate the result of the Greybus communication only. If the
-:ref:`greybus-protocol-error-codes` in the Response message header of the
+:ref:`greybus-operation-status` in the Response message header of the
 response to a Greybus SVC Interface Set Power Mode Request is different
 than GB_OP_SUCCESS, it shall indicate that an error occurred and that the power
 mode change could not be initiated; the targeted link shall be in the same
 state as before the request was issued. If the
-:ref:`greybus-protocol-error-codes` in the Response message header of response
+:ref:`greybus-operation-status` in the Response message header of response
 to a Greybus SVC Interface Set Power Mode Request is GB_OP_SUCCESS, it shall
 indicate that there was no Greybus communication error detected (Request and
 Response were successfully exchanged). However, it shall not also be considered
@@ -2104,7 +2104,7 @@ as a successful power mode change. The status and pwr_change_result_code fields
 as respectively described in Table
 :num:`table-svc-interface-set-power-mode-response` shall be used for that
 unique purpose. In other words, if and only if the
-:ref:`greybus-protocol-error-codes` in the Response message header is
+:ref:`greybus-operation-status` in the Response message header is
 GB_OP_SUCCESS and the status field in the Greybus SVC Interface Set Power Mode
 Response payload as described in Table
 :num:`table-svc-interface-set-power-mode-response` is GB_SVC_OP_SUCCESS,
@@ -2116,7 +2116,7 @@ Greybus SVC Interface Set Power Mode Response
 
 Table :num:`table-svc-interface-set-power-mode-response` defines the
 Greybus SVC Interface Set Power Mode Response payload. If the Response message
-header has the :ref:`greybus-protocol-error-codes` not equal to GB_OP_SUCCESS,
+header has the :ref:`greybus-operation-status` not equal to GB_OP_SUCCESS,
 the values of the Response payload fields are undefined and shall be ignored.
 
 
@@ -2149,7 +2149,7 @@ Interface ID given by intf_id in the Request payload:
 - If UNIPRO is not UPRO_UP or UPRO_HIBERNATE, the response shall have
   status GB_SVC_INTF_NO_UPRO_LINK.
 
-If the Response message header has the :ref:`greybus-protocol-error-codes`
+If the Response message header has the :ref:`greybus-operation-status`
 equal to GB_OP_SUCCESS and the status field in the Operation Response payload
 is GB_SVC_OP_SUCCESS, the pwr_change_result_code field in the Greybus Interface
 Set Power Mode response message contains a PowerChangeResultCode as defined by
@@ -2271,7 +2271,7 @@ Greybus SVC Connection Create Response
 
 Table :num:`table-svc-connection-create-response` defines the Greybus SVC
 Connection Create Response. If the Response message header has the
-:ref:`greybus-protocol-error-codes` not equal to GB_OP_SUCCESS, the value
+:ref:`greybus-operation-status` not equal to GB_OP_SUCCESS, the value
 of the status field in the Operation Response payload is undefined and shall
 be ignored.
 
@@ -2397,7 +2397,7 @@ Greybus SVC Connection Quiescing Response
 
 Table :num:`table-svc-connection-quiescing-response` defines the Greybus SVC
 Connection Quiescing Response payload. If the Response message header as the
-:ref:`greybus-protocol-error-codes` not equal to GB_OP_SUCCESS, the value in
+:ref:`greybus-operation-status` not equal to GB_OP_SUCCESS, the value in
 the status field in the Operation Response payload is undefined and shall be
 ignored.
 
@@ -2492,7 +2492,7 @@ Greybus SVC Connection Destroy Response
 
 Table :num:`table-svc-connection-destroy-response` defines the Greybus SVC
 Connection Destroy Response payload. If the Response message header has the
-:ref:`greybus-protocol-error-codes` not equal to GB_OP_SUCCESS, the value in
+:ref:`greybus-operation-status` not equal to GB_OP_SUCCESS, the value in
 the status field in the Operation Response payload is undefined and shall be
 ignored.
 
@@ -2924,7 +2924,7 @@ Greybus SVC Power Monitor Get Rail Names Response
 """""""""""""""""""""""""""""""""""""""""""""""""
 Table :num:`table-svc-powermon-get-rail-names-response` defines the Greybus SVC
 Power Monitor Get Rail Names Response payload. If the Response message header
-has the :ref:`greybus-protocol-error-codes` not equal to GB_OP_SUCCESS, the
+has the :ref:`greybus-operation-status` not equal to GB_OP_SUCCESS, the
 values in the Operation Response payload are undefined and shall be ignored.
 
 Otherwise, If the status field in the Operation Response payload is not
@@ -3397,25 +3397,25 @@ contains a one-byte result_code field.
     =======  ===========  ======  ==========  ===========
 ..
 
-The :ref:`greybus-protocol-error-codes` in the Operation Response message
+The :ref:`greybus-operation-status` in the Operation Response message
 header shall not be used to determine the value of V_SYS sub-state after the
 response is received. It shall only be used to indicate the result of the
 Greybus communication.  If the Greybus SVC Interface V_SYS Enable Response
-message header has the :ref:`greybus-protocol-error-codes` value different than
+message header has the :ref:`greybus-operation-status` value different than
 GB_OP_SUCCESS, a Greybus communication error has occurred; the V_SYS
 sub-state identified in the Operation Request shall not have changed as a
 result of processing the Request. If the Greybus SVC Interface V_SYS Enable
-Response message header has the :ref:`greybus-protocol-error-codes` equal to
+Response message header has the :ref:`greybus-operation-status` equal to
 GB_OP_SUCCESS, it shall indicate that no Greybus communication error was
 detected.
 
-However, a :ref:`greybus-protocol-error-codes` in the Response message header
+However, a :ref:`greybus-operation-status` in the Response message header
 equal to GB_OP_SUCCESS alone does not imply the intended V_SYS is now V_SYS_ON.
-When the Response message header has the :ref:`greybus-protocol-error-codes`
+When the Response message header has the :ref:`greybus-operation-status`
 equal to GB_OP_SUCCESS, the value of V_SYS may be determined given the
 result_code field in the Operation Response payload, as described in Table
 :num:`table-svc-interface-vsys-result-code`. In particular, V_SYS is V_SYS_ON
-if the Response message header has :ref:`greybus-protocol-error-codes` equal to
+if the Response message header has :ref:`greybus-operation-status` equal to
 GB_OP_SUCCESS and the result_code in the Operation Response payload is
 V_SYS_OK. V_SYS shall not have changed value as a result of processing the
 Request in any other combination of these two fields.
@@ -3503,22 +3503,22 @@ contains a one-byte result_code field.
     =======  ===========  ======  ==========  ===========
 ..
 
-The meaning of the :ref:`greybus-protocol-error-codes` in the Operation
+The meaning of the :ref:`greybus-operation-status` in the Operation
 Response message header and the result_code in the Operation Response payload
-are analogous to the corresponding :ref:`greybus-protocol-error-codes` in the
+are analogous to the corresponding :ref:`greybus-operation-status` in the
 Interface V_SYS Enable Response message header and the result_code field in the
 Interface V_SYS Enable Operation Response payload.
 
-That is, the :ref:`greybus-protocol-error-codes` of the Operation Response message
+That is, the :ref:`greybus-operation-status` of the Operation Response message
 header shall only be used to indicate the result of the Greybus communication,
 exactly as described in :ref:`svc-interface-vsys-enable-response`.
 
 Similarly, when the Interface V_SYS Disable Response message header has the
-:ref:`greybus-protocol-error-codes` equal to GB_OP_SUCCESS, the value of V_SYS
+:ref:`greybus-operation-status` equal to GB_OP_SUCCESS, the value of V_SYS
 may be determined given the result_code field in the Operation Response
 payload, as described in Table :num:`table-svc-interface-vsys-result-code`. In
 particular, V_SYS is V_SYS_OFF if Response message header has the
-:ref:`greybus-protocol-error-codes` equal to GB_OP_SUCCESS and the result_code
+:ref:`greybus-operation-status` equal to GB_OP_SUCCESS and the result_code
 field in the Operation Response payload is V_SYS_OK. V_SYS shall not have
 changed value as a result of processing the Request in any other combination of
 these two fields.
@@ -3599,26 +3599,26 @@ Response payload contains a one-byte result_code field.
     =======  ===========  ======  ==========  ===========
 ..
 
-The :ref:`greybus-protocol-error-codes` in the Operation Response message
+The :ref:`greybus-operation-status` in the Operation Response message
 header shall not be used to determine the value of REFCLK sub-state after the
 response is received. It shall only be used to indicate the result of the
 Greybus communication.  If the Greybus SVC Interface REFCLK Enable Response
-message header has the :ref:`greybus-protocol-error-codes` value different than
+message header has the :ref:`greybus-operation-status` value different than
 GB_OP_SUCCESS, a Greybus communication error has occurred; the REFCLK sub-state
 identified in the Operation Request shall not have changed as a result of
 processing the request. If the Greybus SVC Interface REFCLK Enable Response
-message header has the :ref:`greybus-protocol-error-codes` equal to
+message header has the :ref:`greybus-operation-status` equal to
 GB_OP_SUCCESS, it shall indicate that no Greybus communication error was
 detected.
 
-However, a :ref:`greybus-protocol-error-codes` in the Response message header
+However, a :ref:`greybus-operation-status` in the Response message header
 equal to GB_OP_SUCCESS alone does not imply the intended REFCLK is now
 REFCLK_ON. When the Response message header has the
-:ref:`greybus-protocol-error-codes` equal to GB_OP_SUCCESS, the value of REFCLK
+:ref:`greybus-operation-status` equal to GB_OP_SUCCESS, the value of REFCLK
 may be determined given the result_code field in the Operation Response
 payload, as described in Table :num:`table-svc-interface-refclk-result-code`.
 In particular, REFCLK is REFCLK_ON if the Response message header has the
-:ref:`greybus-protocol-error-codes` equal to GB_OP_SUCCESS and the result_code
+:ref:`greybus-operation-status` equal to GB_OP_SUCCESS and the result_code
 in the Operation Response payload is REFCLK_OK. REFCLK shall not have changed
 value as a result of processing the request in any other combination of these
 two fields.
@@ -3719,22 +3719,22 @@ Response payload contains a one-byte result_code field.
     =======  ===========  ======  ==========  ===========
 ..
 
-The meaning of the :ref:`greybus-protocol-error-codes` in the Operation
+The meaning of the :ref:`greybus-operation-status` in the Operation
 Response message header and the result_code in the Operation Response payload
-are analogous to the corresponding :ref:`greybus-protocol-error-codes` in the
+are analogous to the corresponding :ref:`greybus-operation-status` in the
 Interface REFCLK Enable Response message header and the result_code field in the
 Interface REFCLK Enable Operation Response payload.
 
-That is, the :ref:`greybus-protocol-error-codes` of the Operation Response message
+That is, the :ref:`greybus-operation-status` of the Operation Response message
 header shall only be used to indicate the result of the Greybus communication,
 exactly as described in :ref:`svc-interface-refclk-enable-response`.
 
 Similarly, when the Interface REFCLK Disable Response message header has the
-:ref:`greybus-protocol-error-codes` equal to GB_OP_SUCCESS, the value of REFCLK
+:ref:`greybus-operation-status` equal to GB_OP_SUCCESS, the value of REFCLK
 may be determined given the result_code field in the Operation Response
 payload, as described in Table :num:`table-svc-interface-refclk-result-code`.
 In particular, REFCLK is REFCLK_OFF if the Response message header has
-:ref:`greybus-protocol-error-codes` equal to GB_OP_SUCCESS and the result_code
+:ref:`greybus-operation-status` equal to GB_OP_SUCCESS and the result_code
 field in the Operation Response payload is REFCLK_OK. REFCLK shall not have
 changed value as a result of processing the Request in any other combination
 of these two fields.
@@ -3821,26 +3821,26 @@ Response payload contains a one-byte result_code field.
     =======  ===========  ======  ==========  ===========
 ..
 
-The :ref:`greybus-protocol-error-codes` in the Operation Response message
+The :ref:`greybus-operation-status` in the Operation Response message
 header shall not be used to determine the value of UNIPRO sub-state after the
 response is received. It shall only be used to indicate the result of the
 Greybus communication.  If the Greybus SVC Interface UNIPRO Enable Response
-message header has the :ref:`greybus-protocol-error-codes` value different than
+message header has the :ref:`greybus-operation-status` value different than
 GB_OP_SUCCESS, a Greybus communication error has occurred; the UNIPRO sub-state
 identified in the Operation Request shall not have changed as a result of
 processing the Request. If the Greybus SVC Interface UNIPRO Enable Response
-message header has the :ref:`greybus-protocol-error-codes` equal to
+message header has the :ref:`greybus-operation-status` equal to
 GB_OP_SUCCESS, it shall indicate that no Greybus communication error was
 detected.
 
-However, a :ref:`greybus-protocol-error-codes` in the Response message header
+However, a :ref:`greybus-operation-status` in the Response message header
 equal to GB_OP_SUCCESS alone does not imply the intended UNIPRO is now
 UNIPRO_DOWN. When the Response message header has
-:ref:`greybus-protocol-error-codes` equal to GB_OP_SUCCESS, the value of UNIPRO
+:ref:`greybus-operation-status` equal to GB_OP_SUCCESS, the value of UNIPRO
 may be determined given the result_code field in the Operation Response
 payload, as described in Table :num:`table-svc-interface-unipro-result-code`.
 In particular, if the Response message header has
-:ref:`greybus-protocol-error-codes` equal to GB_OP_SUCCESS:
+:ref:`greybus-operation-status` equal to GB_OP_SUCCESS:
 
 - UNIPRO is UPRO_DOWN if the result_code is UPRO_OK.
 - UNIPRO shall not have changed value if the result_code is UPRO_BUSY or UPRO_NOT_OFF.
@@ -3932,22 +3932,22 @@ Response payload contains a one-byte result_code field.
     =======  ===========  ======  ==========  ===========
 ..
 
-The meaning of the :ref:`greybus-protocol-error-codes` in the Operation
+The meaning of the :ref:`greybus-operation-status` in the Operation
 Response message header and the result_code in the Operation Response payload
-are analogous to the corresponding :ref:`greybus-protocol-error-codes` in the
+are analogous to the corresponding :ref:`greybus-operation-status` in the
 Interface UNIPRO Enable Response message header and the result_code field in the
 Interface UNIPRO Enable Operation Response payload.
 
-That is, the :ref:`greybus-protocol-error-codes` of the Operation Response message
+That is, the :ref:`greybus-operation-status` of the Operation Response message
 header shall only be used to indicate the result of the Greybus communication,
 exactly as described in :ref:`svc-interface-unipro-enable-response`.
 
 Similarly, when the Interface UNIPRO Disable Response message header has the
-:ref:`greybus-protocol-error-codes` equal to GB_OP_SUCCESS, the value of UNIPRO
+:ref:`greybus-operation-status` equal to GB_OP_SUCCESS, the value of UNIPRO
 may be determined given the result_code field in the Operation Response
 payload, as described in Table :num:`table-svc-interface-unipro-result-code`. In
 particular, if the Response message header has
-the :ref:`greybus-protocol-error-codes` equal to GB_OP_SUCCESS:
+the :ref:`greybus-operation-status` equal to GB_OP_SUCCESS:
 
 - UNIPRO is UPRO_OFF if the result_code is UPRO_OK.
 - UNIPRO shall not have changed value if the result_code is UPRO_BUSY.
@@ -4113,7 +4113,7 @@ Greybus SVC Interface Activate Response
 
 Table :num:`table-svc-interface-activate-response` defines the Greybus
 SVC Interface Activate Operation Response payload. If the Response message
-header has :ref:`greybus-protocol-error-codes` not equal to GB_OP_SUCCESS,
+header has :ref:`greybus-operation-status` not equal to GB_OP_SUCCESS,
 the values in the Operation Response payload are undefined and shall be
 ignored.
 
@@ -4162,7 +4162,7 @@ the Operation Response payload to GB_SVC_INTF_BAD_MBOX.
 
 If the Interface is :ref:`hardware-model-lifecycle-activated`
 and no other errors occur, the SVC shall set the
-:ref:`greybus-protocol-error-codes` in the Response message header to
+:ref:`greybus-operation-status` in the Response message header to
 GB_OP_SUCCESS and the status field of the Operation Response payload to
 GB_SVC_OP_SUCCESS. In this case, the intf_type field in the Operation Response
 payload contains the numeric value of the INTF_TYPE as defined in
@@ -4302,7 +4302,7 @@ Greybus SVC Interface Resume Response
 """""""""""""""""""""""""""""""""""""
 Table :num:`table-svc-interface-resume-response` defines the Greybus SVC
 Interface Resume Response payload. If the Response message header has
-:ref:`greybus-protocol-error-codes` not equal to GB_OP_SUCCESS, the value
+:ref:`greybus-operation-status` not equal to GB_OP_SUCCESS, the value
 in the Operation Response payload is undefined and shall be ignored.
 
 After receiving the request, the SVC first checked various sub-states
@@ -4341,7 +4341,7 @@ that the attempt to set UPRO to UPRO_UP failed, the SVC shall set the
 status field in the Operation Response payload to GB_SVC_INTF_NO_UPRO_LINK.
 
 If the resume sequence succeeded and no other errors occurred, the SVC
-shall set the :ref:`greybus-protocol-error-codes` in the Response message
+shall set the :ref:`greybus-operation-status` in the Response message
 header to GB_OP_SUCCESS and set the status field in Operation Response payload
 to GB_SVC_OP_SUCCESS.
 

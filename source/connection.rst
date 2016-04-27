@@ -17,7 +17,7 @@ communicates whether any error occurred in delivering or processing a
 requested operation. If the operation completed successfully, the
 status value is *GB_OP_SUCCESS*.  Otherwise, the reason it was not successful is
 conveyed by one of the positive values defined in Table
-:num:`table-connection-status-values`. All Protocols defined herein are subject
+:num:`table-operation-status-values`. All Protocols defined herein are subject
 to the :ref:`message-data-requirements` listed above.
 
 .. _greybus-protocol-version:
