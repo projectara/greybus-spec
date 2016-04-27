@@ -4111,9 +4111,10 @@ Greybus SVC Interface Activate Response
 """""""""""""""""""""""""""""""""""""""
 
 Table :num:`table-svc-interface-activate-response` defines the Greybus
-SVC Interface Activate Response payload. If the Response status is not
-GB_OP_SUCCESS, the value of the intf_type field is undefined and shall
-be ignored.
+SVC Interface Activate Operation Response payload. If the Response message
+header has :ref:`greybus-protocol-error-codes` not equal to GB_OP_SUCCESS,
+the values in the Operation Response payload are undefined and shall be
+ignored.
 
 .. figtable::
     :nofig:
@@ -4124,14 +4125,15 @@ be ignored.
     =======  ==============  ======  ============    ======================================================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ============    ======================================================
-    0        intf_type       1       INTF_TYPE       :ref:`hardware-model-intf-type` of activated Interface
+    0        status          1       Number          :ref:`svc-protocol-op-status`
+    1        intf_type       1       INTF_TYPE       :ref:`hardware-model-intf-type` of activated Interface
     =======  ==============  ======  ============    ======================================================
 ..
 
-After receiving the request, the SVC first checked various sub-states
-before starting the activation sequence. If any of these checks
-failed, the SVC shall signal errors to the AP in the response by
-setting the response status byte as follows.
+After receiving the request, the SVC first checks various sub-states before
+starting the activation sequence. If any of these checks fail, the SVC shall
+signal errors to the AP in the Operation Response payload by setting the status
+field of the Operation Response payload as follows.
 
 - If DETECT was not DETECT_ACTIVE, the status is
   GB_SVC_INTF_NOT_DETECTED.
@@ -4154,12 +4156,14 @@ setting the response status byte as follows.
 
 Also as described above, INTF_TYPE may be IFT_UNKNOWN due to the
 Interface having set MAILBOX to an illegal value. If this occurred,
-the SVC shall signal an error to the AP in the response by setting the
-status to GB_SVC_INTF_BAD_MBOX.
+the SVC shall signal an error to the AP by setting the status field in
+the Operation Response payload to GB_SVC_INTF_BAD_MBOX.
 
 If the Interface is :ref:`hardware-model-lifecycle-activated`
-and no other errors occurred, the SVC shall set the response status to
-GB_OP_SUCCESS. In this case, the intf_type field in the response
+and no other errors occur, the SVC shall set the
+:ref:`greybus-protocol-error-codes` in the Response message header to
+GB_OP_SUCCESS and the status field of the Operation Response payload to
+GB_SVC_OP_SUCCESS. In this case, the intf_type field in the Operation Response
 payload contains the numeric value of the INTF_TYPE as defined in
 :ref:`hardware-model-intf-type`.
 
