@@ -1618,11 +1618,15 @@ identified in the request.
 Greybus SVC Interface Device ID Response
 """"""""""""""""""""""""""""""""""""""""
 
-The Greybus SVC Interface Device ID response message contains no payload.
+Table :num:`table-svc-intf-device-id-response` defines the Greybus SVC
+Interface Device ID Response payload. If the Response message header has
+:ref:`greybus-protocol-error-codes` not equal to GB_OP_SUCCESS, the value of
+the Response payload field is undefined and shall be ignored.
 
-The SVC shall return the following errors depending on the sub-state
-values of the :ref:`hardware-model-interface-states` with Interface ID
-given by intf_id in the request payload:
+The SVC shall return the following errors in the status field of the Operation
+Response payload depending on the sub-state values of the
+:ref:`Interface State <hardware-model-interface-states>` with Interface ID
+given by intf_id in the Request payload.
 
 - If DETECT is not DETECT_ACTIVE, the response shall have status
   GB_SVC_INTF_NOT_DETECTED.
@@ -1630,11 +1634,26 @@ given by intf_id in the request payload:
 - If UNIPRO is not UPRO_UP, the response shall have status
   GB_SVC_INTF_NO_UPRO_LINK.
 
-If the SVC fails to set the DeviceID due to an I/O or protocol error
-on a |unipro| link, the response status value shall equal
-GB_OP_UNKNOWN_ERROR. When this occurs, the value of the DeviceID, as
-well as its validity, are unpredictable, as is the value of the UNIPRO
-sub-state for the Interface identified in the request.
+If the SVC fails to set the Device ID due to an error on a |unipro| link, the
+status field in the Operation Response payload shall be
+GB_SVC_OP_UNKNOWN_ERROR. When this occurs, the value of the Device ID, as well
+as its validity, are unpredictable, as is the value of the UNIPRO sub-state of
+the :ref:`Interface State <hardware-model-interface-states>` with Interface ID
+given by the intf_id in Request payload.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-intf-device-id-response
+    :caption: SVC Protocol Interface Device Id Response
+    :spec: l l c c l
+
+    =======  ==============  ===========  ================  =========================================
+    Offset   Field           Size         Value             Description
+    =======  ==============  ===========  ================  =========================================
+    0        status          1            Number            :ref:`svc-protocol-op-status`
+    =======  ==============  ===========  ================  =========================================
+
+..
 
 Greybus SVC Interface Hotplug Operation (Deprecated)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
