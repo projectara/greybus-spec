@@ -1292,7 +1292,7 @@ specification, as well as the value of the attribute, if applicable.
     =======  ==============  ===========  ================  =========================================
     Offset   Field           Size         Value             Description
     =======  ==============  ===========  ================  =========================================
-    0        status          1            Number            SVC Protocol Operation Status
+    0        status          1            Number            :ref:`svc-protocol-op-status`
     1        result_code     2            Number            |unipro| DME Peer Get ConfigResultCode
     3        attr_value      4            Number            |unipro| DME Peer Get DME Attribute value
     =======  ==============  ===========  ================  =========================================
@@ -1388,7 +1388,7 @@ defined in the |unipro| specification.
     =======  ==============  ===========  ================  =========================================
     Offset   Field           Size         Value             Description
     =======  ==============  ===========  ================  =========================================
-    0        status          1            Number            SVC Protocol Operation Status
+    0        status          1            Number            :ref:`svc-protocol-op-status`
     1        result_code     2            Number            |unipro| DME Peer Set ConfigResultCode
     =======  ==============  ===========  ================  =========================================
 
@@ -1487,7 +1487,7 @@ either Interface identified by the request, or the value of any of the
     =======  ==============  ===========  ================  =========================================
     Offset   Field           Size         Value             Description
     =======  ==============  ===========  ================  =========================================
-    0        status          1            Number            SVC Protocol Operation Status
+    0        status          1            Number            :ref:`svc-protocol-op-status`
     =======  ==============  ===========  ================  =========================================
 
 ..
