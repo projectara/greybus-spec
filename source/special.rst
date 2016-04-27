@@ -2022,9 +2022,10 @@ valid, by determining if there is a |unipro| link associated with the
 Interface given by intf_id, and whether that |unipro| link is up. If
 so, the SVC shall attempt to change the power mode of the |unipro|
 link at the given interface. If not, the SVC shall transmit a Greybus
-SVC Interface Set Power Mode Response message with status byte
-GB_OP_INVALID. The SVC shall make no changes to the link's power mode
-in this case.
+SVC Interface Set Power Mode Response message with the
+:ref:`greybus-protocol-error-codes` in the Response message header set to
+GB_OP_INVALID. The SVC shall make no changes to the link's power mode in this
+case.
 
 The tx_mode and rx_mode fields in the Greybus SVC Interface Set Power
 Mode Request determine the |unipro| Power Modes of the link's transmit
@@ -2087,30 +2088,38 @@ Otherwise, the SVC shall attempt to reconfigure the power mode for the
 When reconfiguring the link power mode as a result of receiving a
 Greybus SVC Interface Set Power Mode Request, the link's transmitter and/or
 receiver power mode shall be set to the given configuration.
-The status field of the response to a Greybus SVC Interface Set Power Mode
-Request shall not be used to check the result of the power mode change
-operation. It shall only be used to indicate the result of the Greybus
-communication only. If the response to a Greybus SVC Interface Set Power Mode
-Request has status different than GB_OP_SUCCESS, it shall indicate that an
-error occurred and that the power mode change could not be
-initiated; the targeted link shall be in the same state as before the request
-was issued. If the response to a Greybus SVC Interface Set Power Mode Request
-has status GB_OP_SUCCESS, it shall indicate that there was no Greybus
-communication error detected (request and response were successfully exchanged).
-However, it shall not also be considered as a successful power mode change.
-The pwr_change_result_code field in the response, as described in
-Table :num:`table-svc-interface-set-power-mode-response-pwr-change-result-code`
-shall be used for that unique purpose. In other words, if and only if response
-status field is GB_OP_SUCCESS and pwr_change_result_code field in the response
-is PWR_OK then the power mode change request shall be considered as successful.
-Operation shall otherwise be considered as failed in any other
-combination of these two fields.
+The :ref:`greybus-protocol-error-codes` in the Response message header of the
+response to a Greybus SVC Interface Set Power Mode Request shall not be used
+to check the result of the power mode change operation. It shall only be used
+to indicate the result of the Greybus communication only. If the
+:ref:`greybus-protocol-error-codes` in the Response message header of the
+response to a Greybus SVC Interface Set Power Mode Request is different
+than GB_OP_SUCCESS, it shall indicate that an error occurred and that the power
+mode change could not be initiated; the targeted link shall be in the same
+state as before the request was issued. If the
+:ref:`greybus-protocol-error-codes` in the Response message header of response
+to a Greybus SVC Interface Set Power Mode Request is GB_OP_SUCCESS, it shall
+indicate that there was no Greybus communication error detected (Request and
+Response were successfully exchanged). However, it shall not also be considered
+as a successful power mode change. The status and pwr_change_result_code fields
+as respectively described in Table
+:num:`table-svc-interface-set-power-mode-response` shall be used for that
+unique purpose. In other words, if and only if the
+:ref:`greybus-protocol-error-codes` in the Response message header is
+GB_OP_SUCCESS and the status field in the Greybus SVC Interface Set Power Mode
+Response payload as described in Table
+:num:`table-svc-interface-set-power-mode-response` is GB_SVC_OP_SUCCESS,
+the pwr_change_result_code field in the Response payload indicates the actual
+result of the power mode change request.
 
 Greybus SVC Interface Set Power Mode Response
 """""""""""""""""""""""""""""""""""""""""""""
 
 Table :num:`table-svc-interface-set-power-mode-response` defines the
-Greybus SVC Interface Set Power Mode Response payload.
+Greybus SVC Interface Set Power Mode Response payload. If the Response message
+header has the :ref:`greybus-protocol-error-codes` not equal to GB_OP_SUCCESS,
+the values of the Response payload fields are undefined and shall be ignored.
+
 
 .. figtable::
    :nofig:
@@ -2121,14 +2130,19 @@ Greybus SVC Interface Set Power Mode Response payload.
    =======  ======================     =========   ========   ==============================
    Offset   Field                      Size        Value      Description
    =======  ======================     =========   ========   ==============================
-   0        pwr_change_result_code     1           Number     |unipro| PowerChangeResultCode
+   0        status                     1           Number     :ref:`svc-protocol-op-status`
+   1        pwr_change_result_code     1           Number     |unipro| PowerChangeResultCode
    =======  ======================     =========   ========   ==============================
 
 ..
 
-The SVC shall return the following errors depending on the sub-state
-values of the :ref:`hardware-model-interface-states` with Interface ID
-given by intf_id in the request payload:
+If the status field in the Operation response payload as described in Table
+:num:`table-svc-interface-set-power-mode-response` is not GB_SVC_OP_SUCCESS,
+the value in the pwr_change_result_code field of the Response payload is
+undefined and shall be ignored. The SVC shall return the following errors in
+the status field of the Operation Response payload depending on the sub-state
+values of the :ref:`Interface State <hardware-model-interface-states>` with
+Interface ID given by intf_id in the Request payload:
 
 - If DETECT is not DETECT_ACTIVE, the response shall have status
   GB_SVC_INTF_NOT_DETECTED.
@@ -2136,13 +2150,15 @@ given by intf_id in the request payload:
 - If UNIPRO is not UPRO_UP or UPRO_HIBERNATE, the response shall have
   status GB_SVC_INTF_NO_UPRO_LINK.
 
-The Greybus Interface Set Power Mode response message contains a field
-which may contain a PowerChangeResultCode as defined by the |unipro|
-specification, version 1.6, Table 9.
-The pwr_change_result_code field in the response payload indicates a successful
-operation or describes the reason for the operation failure. The values of the
-pwr_change_result_code field are defined in
-Table :num:`table-svc-interface-set-power-mode-response-pwr-change-result-code`.
+If the Response message header has the :ref:`greybus-protocol-error-codes`
+equal to GB_OP_SUCCESS and the status field in the Operation Response payload
+is GB_SVC_OP_SUCCESS, the pwr_change_result_code field in the Greybus Interface
+Set Power Mode response message contains a PowerChangeResultCode as defined by
+the |unipro| specification, version 1.6, Table 9. The pwr_change_result_code
+field indicates a successful Operation or describes the reason for the
+Operation failure. The values of the pwr_change_result_code field are defined
+in Table
+:num:`table-svc-interface-set-power-mode-response-pwr-change-result-code`.
 
 .. figtable::
    :nofig:
