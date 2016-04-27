@@ -1098,13 +1098,10 @@ response type values are shown.
 
 Greybus SVC Protocol Operation Status
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The SVC Protocol defines a common set of status values which are
-embedded in some Operation Response payload fields, and are defined in
-Table :num:`table-svc-protocol-op-status-values`.
-
-These status values are used to signal errors related to invalid
-:ref:`hardware-model-interface-states` during Operation handling which
-depends on those Interface States having particular values.
+The SVC Protocol defines a common set of status values which are embedded in
+some Operation Response payload fields, and are defined in Table
+:num:`table-svc-protocol-op-status-values`. These status values are used
+to signal errors specific to SVC Protocol.
 
 .. figtable::
     :nofig:
@@ -1129,7 +1126,8 @@ depends on those Interface States having particular values.
     GB_SVC_INTF_NO_ORDER             0x0b             ORDER is ORDER_UNKNOWN
     GB_SVC_INTF_MBOX_SET             0x0c             MAILBOX is not MAILBOX_NONE
     GB_SVC_INTF_BAD_MBOX             0x0d             Interface set MAILBOX to illegal value
-    Reserved                         0x0e to 0xff     Reserved for future use
+    GB_SVC_PWRMON_OP_NOT_PRESENT     0x0e             Measurable power rails are not present
+    Reserved                         0x0f to 0xff     Reserved for future use
     ===============================  ===============  ======================================
 
 ..
@@ -2923,21 +2921,27 @@ the AP only. It has no payload.
 
 Greybus SVC Power Monitor Get Rail Names Response
 """""""""""""""""""""""""""""""""""""""""""""""""
+Table :num:`table-svc-powermon-get-rail-names-response` defines the Greybus SVC
+Power Monitor Get Rail Names Response payload. If the Response message header
+has the :ref:`greybus-protocol-error-codes` not equal to GB_OP_SUCCESS, the
+values in the Operation Response payload are undefined and shall be ignored.
 
-The Greybus SVC Power Monitor Get Rail Names response is comprised of
+Otherwise, If the status field in the Operation Response payload is not
+GB_SVC_OP_SUCCESS, values in all other fields of the Operation Response payload
+are undefined and shall be ignored.
+
+The Greybus SVC Power Monitor Get Rail Names Response payload is comprised of
 human-readable names for rails that support voltage, current and power
 measurement. Each name consists of a fixed 32-byte sub-buffer
-containing a rail name padded with zero bytes. A rail name is
-comprised of a subset of [US-ASCII]_ characters: lower- and upper-case
-alphanumerics and the character '_'. A rail name is 1-32 bytes long;
-a 32-byte name has no pad bytes.
+containing a rail name padded with zero bytes. A rail name is comprised of a
+subset of [US-ASCII]_ characters: lower- and upper-case alphanumerics and the
+character '_'. A rail name is 1-32 bytes long; a 32-byte name has no pad bytes.
 
 The number of these buffers shall be exactly the number returned by
 a prior Greybus SVC Power Monitor Get Rail Name Count operation.
 
-If there are no measurable power rails on the platform,
-the GB_OP_INVALID Greybus error shall be returned in response to this
-request.
+If there are no measurable power rails on the platform, the status field in the
+Operation Response payload shall be set to GB_SVC_PWRMON_OP_NOT_PRESENT.
 
 Each rail has an implicit 'Rail ID' which is equal to its position in
 the array of rail names returned by this response. The rail whose name
@@ -2954,8 +2958,9 @@ this operation are guaranteed to be unique.
     =======  ==============  ===========  ==========      ===========================
     Offset   Field           Size         Value           Description
     =======  ==============  ===========  ==========      ===========================
-    0        rail_1_name     32           String          Rail #1 name
-    32       rail_2_name     32           String          Rail #2 name
+    0        status          1            Number          :ref:`svc-protocol-op-status`
+    1        rail_1_name     32           String          Rail #1 name
+    33       rail_2_name     32           String          Rail #2 name
     (...)
     =======  ==============  ===========  ==========      ===========================
 
