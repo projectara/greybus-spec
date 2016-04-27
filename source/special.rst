@@ -1126,8 +1126,9 @@ to signal errors specific to SVC Protocol.
     GB_SVC_INTF_NO_ORDER             0x0b             ORDER is ORDER_UNKNOWN
     GB_SVC_INTF_MBOX_SET             0x0c             MAILBOX is not MAILBOX_NONE
     GB_SVC_INTF_BAD_MBOX             0x0d             Interface set MAILBOX to illegal value
-    GB_SVC_PWRMON_OP_NOT_PRESENT     0x0e             Measurable power rails are not present
-    Reserved                         0x0f to 0xff     Reserved for future use
+    GB_SVC_INTF_OP_TIMEOUT           0x0e             SVC Interface operation timed out
+    GB_SVC_PWRMON_OP_NOT_PRESENT     0x0f             Measurable power rails are not present
+    Reserved                         0x10 to 0xff     Reserved for future use
     ===============================  ===============  ======================================
 
 ..
@@ -4299,13 +4300,15 @@ This sequence is also depicted in :ref:`lifecycles_resume`.
 
 Greybus SVC Interface Resume Response
 """""""""""""""""""""""""""""""""""""
-
-The Greybus SVC Interface Resume Response has no payload.
+Table :num:`table-svc-interface-resume-response` defines the Greybus SVC
+Interface Resume Response payload. If the Response message header has
+:ref:`greybus-protocol-error-codes` not equal to GB_OP_SUCCESS, the value
+in the Operation Response payload is undefined and shall be ignored.
 
 After receiving the request, the SVC first checked various sub-states
-before before starting the resume sequence. If any of these checks
-failed, the SVC shall signal errors to the AP in the response by
-setting the response status byte as follows.
+before starting the resume sequence. If any of these checks fail, the
+SVC shall signal errors to the AP in the Operation Response payload by setting
+the status field of the Operation Response payload as follows.
 
 - If DETECT was not DETECT_ACTIVE, the status is
   GB_SVC_INTF_NOT_DETECTED.
@@ -4326,18 +4329,35 @@ setting the response status byte as follows.
 
 If a protocol error occurs due to erroneous Interface behavior which
 writes a different value than MAILBOX_GREYBUS to MAILBOX, the SVC
-shall set the status to GB_SVC_INTF_BAD_MBOX.
+shall set the status field in Operation Response payload
+to GB_SVC_INTF_BAD_MBOX.
 
 If the resume sequence failed because the SVC detected in step 4 that
-MAILBOX was MAILBOX_NONE, the SVC shall set the status to
-GB_OP_TIMEOUT.
+MAILBOX was MAILBOX_NONE, the SVC shall set the status field in the Operation
+response payload to GB_SVC_INTF_OP_TIMEOUT.
 
 If the resume sequence failed because the SVC was notified in step 4
 that the attempt to set UPRO to UPRO_UP failed, the SVC shall set the
-status to GB_SVC_INTF_NO_UPRO_LINK.
+status field in the Operation Response payload to GB_SVC_INTF_NO_UPRO_LINK.
 
 If the resume sequence succeeded and no other errors occurred, the SVC
-shall set the status to GB_OP_SUCCESS.
+shall set the :ref:`greybus-protocol-error-codes` in the Response message
+header to GB_OP_SUCCESS and set the status field in Operation Response payload
+to GB_SVC_OP_SUCCESS.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-interface-resume-response
+    :caption: SVC Interface Resume Response
+    :spec: l l c c l
+
+    =======  ==============  ===========  ================  =========================================
+    Offset   Field           Size         Value             Description
+    =======  ==============  ===========  ================  =========================================
+    0        status          1            Number            :ref:`svc-protocol-op-status`
+    =======  ==============  ===========  ================  =========================================
+
+..
 
 .. _svc-interface-mailbox-event:
 
