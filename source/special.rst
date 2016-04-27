@@ -2270,11 +2270,16 @@ UniPorts attached to each Interface Block identified in the request.
 Greybus SVC Connection Create Response
 """"""""""""""""""""""""""""""""""""""
 
-The Greybus SVC connection create response message contains no payload.
+Table :num:`table-svc-connection-create-response` defines the Greybus SVC
+Connection Create Response. If the Response message header has the
+:ref:`greybus-protocol-error-codes` not equal to GB_OP_SUCCESS, the value
+of the status field in the Operation Response payload is undefined and shall
+be ignored.
 
-The SVC shall return the following errors depending on the sub-state
-values of the :ref:`hardware-model-interface-states` with Interface IDs
-given by intf1_id and intf2_id in the request payload:
+The SVC shall return the following errors in the status field of the
+Operation Response payload depending on the sub-state values of the
+:ref:`hardware-model-interface-states` with Interface IDs given by intf1_id
+and intf2_id in the Request payload:
 
 - If DETECT is not DETECT_ACTIVE in both Interface States, the
   response shall have status GB_SVC_INTF_NOT_DETECTED.
@@ -2285,10 +2290,25 @@ given by intf1_id and intf2_id in the request payload:
 
 If the SVC fails to establish a |unipro| connection between the two
 Interfaces due to an I/O or protocol error on the |unipro| links, the
-response status value shall equal GB_OP_UNKNOWN_ERROR. When this
-occurs, the values of the |unipro| DME attributes of one or both of
+status field in Operation Response payload shall equal GB_SVC_OP_UNKNOWN_ERROR.
+When this occurs, the values of the |unipro| DME attributes of one or both of
 the Interfaces is unpredictable, as are the values of the UNIPRO
-sub-states for the Interfaces identified in the request.
+sub-state of the :ref:`hardware-model-interface-states` with Interface IDs
+given by intf1_id and intf2_id in Request payload.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-connection-create-response
+    :caption: SVC Protocol Connection Create Response
+    :spec: l l c c l
+
+    =======  ==============  ===========  ================  =========================================
+    Offset   Field           Size         Value             Description
+    =======  ==============  ===========  ================  =========================================
+    0        status          1            Number            :ref:`svc-protocol-op-status`
+    =======  ==============  ===========  ================  =========================================
+
+..
 
 .. _svc-connection-quiescing:
 
@@ -2376,11 +2396,16 @@ reconfiguring them as follows before reconnecting them:
 Greybus SVC Connection Quiescing Response
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus SVC Connection Quiescing response message contains no payload.
+Table :num:`table-svc-connection-quiescing-response` defines the Greybus SVC
+Connection Quiescing Response payload. If the Response message header as the
+:ref:`greybus-protocol-error-codes` not equal to GB_OP_SUCCESS, the value in
+the status field in the Operation Response payload is undefined and shall be
+ignored.
 
-The SVC shall return the following errors depending on the sub-state
-values of the :ref:`hardware-model-interface-states` with Interface ID
-given by intf_id in the request payload:
+The SVC shall return the following errors in the status field of the Operation
+Response payload depending on the sub-state values of the
+:ref:`hardware-model-interface-states` with Interface IDs given by intf1_id
+and intf2_id in the request payload:
 
 - If DETECT is not DETECT_ACTIVE, the response shall have status
   GB_SVC_INTF_NOT_DETECTED.
@@ -2390,10 +2415,25 @@ given by intf_id in the request payload:
 
 If during the handling of the request, the SVC is unable to perform
 the connection quiesce sequence due to fatal errors exchanging
-|unipro| traffic with either end of the Connection, the response
-status shall be GB_OP_UNKNOWN_ERROR. When this occurs, the value of
-the UNIPRO sub-state for the Interface identified in the request is
-unpredictable.
+|unipro| traffic with either end of the Connection, the status field in the
+Operation Response payload shall equal GB_SVC_OP_UNKNOWN_ERROR. When this
+occurs, the value of the UNIPRO sub-state of the
+:ref:`hardware-model-interface-states` with Interface IDs given by intf1_id
+and intf2_id in Request payload is unpredictable.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-connection-quiescing-response
+    :caption: SVC Protocol Connection Quiescing Response
+    :spec: l l c c l
+
+    =======  ==============  ===========  ================  =========================================
+    Offset   Field           Size         Value             Description
+    =======  ==============  ===========  ================  =========================================
+    0        status          1            Number            :ref:`svc-protocol-op-status`
+    =======  ==============  ===========  ================  =========================================
+
+..
 
 .. _svc-connection-destroy:
 
@@ -2451,11 +2491,16 @@ Interface Block identified in the request.
 Greybus SVC Connection Destroy Response
 """""""""""""""""""""""""""""""""""""""
 
-The Greybus SVC connection destroy response message contains no payload.
+Table :num:`table-svc-connection-destroy-response` defines the Greybus SVC
+Connection Destroy Response payload. If the Response message header has the
+:ref:`greybus-protocol-error-codes` not equal to GB_OP_SUCCESS, the value in
+the status field in the Operation Response payload is undefined and shall be
+ignored.
 
-The SVC shall return the following errors depending on the sub-state
-values of the :ref:`hardware-model-interface-states` with Interface IDs
-given by intf1_id and intf2_id in the request payload:
+The SVC shall return the following errors in the status field of the Operation
+Response payload depending on the sub-state values of the
+:ref:`hardware-model-interface-states` with Interface IDs given by intf1_id
+and intf2_id in the request payload:
 
 - If DETECT is not DETECT_ACTIVE in both Interface State, the response
   shall have status GB_SVC_INTF_NOT_DETECTED.
@@ -2466,10 +2511,25 @@ given by intf1_id and intf2_id in the request payload:
 
 If the SVC fails to destroy the |unipro| connection between the two
 Interfaces due to an I/O or protocol error on the |unipro| links, the
-response status value shall equal GB_OP_UNKNOWN_ERROR. When this
-occurs, the values of the |unipro| DME attributes of one or both of
+status field in Operation Response payload shall equal GB_SVC_OP_UNKNOWN_ERROR.
+When this occurs, the values of the |unipro| DME attributes of one or both of
 the Interfaces is unpredictable, as are the values of the UNIPRO
-sub-states for the Interfaces identified in the request.
+sub-state of the :ref:`hardware-model-interface-states` with
+Interface IDs given by intf1_id and intf2_id in Request payload.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-connection-destroy-response
+    :caption: SVC Protocol Connection Destroy Response
+    :spec: l l c c l
+
+    =======  ==============  ===========  ================  =========================================
+    Offset   Field           Size         Value             Description
+    =======  ==============  ===========  ================  =========================================
+    0        status          1            Number            :ref:`svc-protocol-op-status`
+    =======  ==============  ===========  ================  =========================================
+
+..
 
 .. _svc-timesync-enable:
 
