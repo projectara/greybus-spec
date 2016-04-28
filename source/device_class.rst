@@ -139,6 +139,8 @@ The AP may impose implementation-defined timeouts for:
   Firmware Request.
 - The time interval between a Fetch Firmware Response and the Release
   Firmware Request.
+- The time interval between the Find Firmware Response and the Release
+  Firmware Request.
 
 If any of the above timeouts occur, the AP shall respond with
 GB_OP_TIMEOUT in the status byte of the Response header, to the next
