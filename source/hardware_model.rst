@@ -20,7 +20,7 @@ A Greybus System has the following physical components:
 - A collection of Slots on the Frame, each of which contains at least
   one :ref:`Interface Block <glossary-interface>`. Each Interface
   Block contains several pins, which allow for power distribution,
-  module hotplug detection, and communication between the Frame and
+  Module hotplug detection, and communication between the Frame and
   attached Modules.
 
 - Zero or more attached :ref:`Modules <glossary-module>`, which mate
@@ -522,9 +522,9 @@ implementation-defined means. Any attached Module has exactly one
 Primary Interface, and may contain Secondary Interfaces, as described
 in :ref:`hardware-model-order`. The SVC may set the RELEASE sub-state
 of an Interface Block which is the Primary Interface to an attached
-module to RELEASE_ASSERTED for an implementation-defined duration, then set
+Module to RELEASE_ASSERTED for an implementation-defined duration, then set
 RELEASE to RELEASE_DEASSERTED, in order to attempt to eject the attached
-module from the Frame. This is called a "RELEASE pulse".
+Module from the Frame. This is called a "RELEASE pulse".
 
 The consequences of setting an Interface State's RELEASE sub-state for
 a Secondary Interface to a Module, or when the Interface State's
@@ -569,7 +569,7 @@ INTF_TYPE sub-state is communicated to the AP via Greybus Operations,
 its symbolic names are also given numeric values as shown in the
 table.
 
-From the module perspective, the physical connections made to
+From the Module perspective, the physical connections made to
 Interface Blocks may not always support Greybus
 communications. Additionally, Greybus Systems are intended to
 concurrently support non-Greybus |unipro|\ -based application
@@ -584,7 +584,7 @@ attached to an Interface Block (DETECT is DETECT_INACTIVE), the
 INTF_TYPE sub-state is IFT_UNKNOWN.
 
 Subsequent sections describe how the AP and SVC coordinate during the
-module detection and boot process to allow the SVC to set the
+Module detection and boot process to allow the SVC to set the
 INTF_TYPE sub-state, and how the AP is informed of its value.
 
 .. XXX this isn't true yet -- but we need this text here so the later
@@ -768,7 +768,7 @@ Interface States within the Frame when an Interface is in each
 Interface Lifecycle State.
 
 For example, when an Interface is in the ACTIVATED Lifecycle State,
-the Interface State within the frame has an INTF_TYPE other than
+the Interface State within the Frame has an INTF_TYPE other than
 IFT_UNKNOWN. Multiple permitted values for the sub-states of the
 Interface States within each Interface Lifecycle State are shown
 between angle brackets (<>).
@@ -805,7 +805,7 @@ In the ATTACHED Lifecycle State, the SVC has:
   <glossary-secondary-interface>` Interface to the Module, setting
   ORDER.
 
-No actions have been taken to boot the module, communicate with it via
+No actions have been taken to boot the Module, communicate with it via
 |unipro|, etc. That is, in the ATTACHED Lifecycle State, the Interface
 State is otherwise identical to its :ref:`initial state
 <hardware-model-initial-states>`.
@@ -824,7 +824,7 @@ In the ACTIVATED Lifecycle State, system power and clock have been
 applied to the Interface Block, and an attempt to establish a |unipro|
 link between Frame and Module has been made.
 
-As a consequence, it is known whether the module supports |unipro|, so
+As a consequence, it is known whether the Module supports |unipro|, so
 UNIPRO is either UPRO_DOWN or UPRO_UP. If UNIPRO is UPRO_UP, then the
 Module may signal readiness for communication via Greybus
 :ref:`Protocols <glossary-protocol>` by setting MAILBOX. Thus, MAILBOX
