@@ -354,16 +354,16 @@ The values of the UNIPRO sub-state are given in Table
    :caption: UNIPRO sub-state values
    :spec: l l
 
-   ==============  ================================================
-   Value           Description
-   ==============  ================================================
-   UPRO_OFF        |unipro| port is powered off
-   UPRO_DOWN       |unipro| port is powered on, and the link is down
-   UPRO_LSS        |unipro| link startup sequence is ongoing between Module and Frame
-   UPRO_UP         |unipro| link is established
-   UPRO_HIBERNATE  |unipro| link is in low-power hibernate state
-   UPRO_RELINK     |unipro| peer is attempting to re-initiate linkup
-   ==============  ================================================
+   ================  ================================================
+   Value             Description
+   ================  ================================================
+   UNIPRO_OFF        |unipro| port is powered off
+   UNIPRO_DOWN       |unipro| port is powered on, and the link is down
+   UNIPRO_LSS        |unipro| link startup sequence is ongoing between Module and Frame
+   UNIPRO_UP         |unipro| link is established
+   UNIPRO_HIBERNATE  |unipro| link is in low-power hibernate state
+   UNIPRO_RELINK     |unipro| peer is attempting to re-initiate linkup
+   ================  ================================================
 ..
 
 The UNIPRO sub-state of each Interface State represents entities
@@ -384,7 +384,7 @@ shown in the following figure. All other transitions are illegal.
 
 Greybus communication between Modules (including the AP Module) is
 only possible through Interface Blocks whose Interface State's UNIPRO
-sub-state is UPRO_UP: this is required to allow CPorts managed by
+sub-state is UNIPRO_UP: this is required to allow CPorts managed by
 Module Interfaces to exchange Greybus Operations via |unipro|
 Messages. It is also necessary for *routes* within the Switch to be
 established to allow |unipro| Messages sent by Interfaces to be
@@ -397,53 +397,53 @@ management, and error handling, and are subject to the following
 constraints:
 
 - Before a Module is first attached to an Interface Block, and during
-  the initialization of a Greybus System, UNIPRO is either UPRO_OFF or
-  UPRO_DOWN.
+  the initialization of a Greybus System, UNIPRO is either UNIPRO_OFF or
+  UNIPRO_DOWN.
 
 - If a Module is not attached to an Interface Block, UNIPRO cannot
-  become UPRO_UP, UPRO_HIBERNATE, or UPRO_RELINK.
+  become UNIPRO_UP, UNIPRO_HIBERNATE, or UNIPRO_RELINK.
 
-- The SVC can set UNIPRO to either UPRO_OFF (and subsequently to
-  UPRO_DOWN) at any time, regardless of whether a Module is attached
+- The SVC can set UNIPRO to either UNIPRO_OFF (and subsequently to
+  UNIPRO_DOWN) at any time, regardless of whether a Module is attached
   to the Interface Block.
 
 - Both the SVC and any attached Module's Interface shall be notified,
   by implementation-specific means, if UNIPRO becomes any of the
-  values UPRO_LSS, UPRO_UP, UPRO_HIBERNATE, or UPRO_RELINK.
+  values UNIPRO_LSS, UNIPRO_UP, UNIPRO_HIBERNATE, or UNIPRO_RELINK.
 
-- If UNIPRO is UPRO_DOWN, either the SVC or an attached Module's
-  Interface may set UNIPRO to UPRO_LSS.
+- If UNIPRO is UNIPRO_DOWN, either the SVC or an attached Module's
+  Interface may set UNIPRO to UNIPRO_LSS.
 
-- If the SVC sets UNIPRO to UPRO_LSS, the attached Module's Interface
-  may subsequently set UNIPRO to UPRO_UP, within a duration defined by
+- If the SVC sets UNIPRO to UNIPRO_LSS, the attached Module's Interface
+  may subsequently set UNIPRO to UNIPRO_UP, within a duration defined by
   the |unipro| standard.
 
-- If an attached Module's Interface sets UNIPRO to UPRO_LSS, the SVC
-  may subsequently set UNIPRO to UPRO_UP, within the same duration.
+- If an attached Module's Interface sets UNIPRO to UNIPRO_LSS, the SVC
+  may subsequently set UNIPRO to UNIPRO_UP, within the same duration.
 
-- If UNIPRO remains UPRO_LSS for a duration defined by the |unipro|
+- If UNIPRO remains UNIPRO_LSS for a duration defined by the |unipro|
   standard, it autonomously (i.e., without the SVC or Module making
-  the change) is set to UPRO_DOWN.
+  the change) is set to UNIPRO_DOWN.
 
-  When this occurs, if the SVC set UNIPRO to UPRO_LSS, the SVC shall
+  When this occurs, if the SVC set UNIPRO to UNIPRO_LSS, the SVC shall
   be notified by implementation-specific means; similarly, if the
-  Interface sets UNIPRO to UPRO_LSS, the Interface shall be notified by
+  Interface sets UNIPRO to UNIPRO_LSS, the Interface shall be notified by
   implementation-specific means.
 
-- The SVC can set UNIPRO to UPRO_HIBERNATE.
+- The SVC can set UNIPRO to UNIPRO_HIBERNATE.
 
-- If UNIPRO is UPRO_HIBERNATE, the SVC can attempt to set UNIPRO to
-  UPRO_UP.
+- If UNIPRO is UNIPRO_HIBERNATE, the SVC can attempt to set UNIPRO to
+  UNIPRO_UP.
 
   The SVC shall be notified whether the attempt succeeds or fails.  If
   a Module is attached to the Interface Block, the Interface on the
   Module may be notified if the attempt succeeds or fails. In both
   cases, the notification is through implementation-specific means.
 
-- An attached Module can, but should not, set UNIPRO to UPRO_HIBERNATE
-  or UPRO_RELINK.
+- An attached Module can, but should not, set UNIPRO to UNIPRO_HIBERNATE
+  or UNIPRO_RELINK.
 
-- The SVC can, but should not, set UNIPRO to UPRO_RELINK.
+- The SVC can, but should not, set UNIPRO to UNIPRO_RELINK.
 
 .. XXX those later sections don't have those descriptions yet. But
    they will need these definitions to exist in order to be written.
@@ -665,10 +665,10 @@ present on each port in the |unipro| switch inside the Frame.
 
 The mailbox attribute ID is 0xA000, and its selector index is ignored.
 
-When an Interface State's UNIPRO sub-state is UPRO_OFF, its MAILBOX
+When an Interface State's UNIPRO sub-state is UNIPRO_OFF, its MAILBOX
 sub-state is NULL. Otherwise, it is a positive integer.
 
-When an Interface State's UNIPRO sub-state is UPRO_UP, a Module may
+When an Interface State's UNIPRO sub-state is UNIPRO_UP, a Module may
 write to this DME attribute using a |unipro| peer write. In a Greybus
 System, the SVC shall detect such a write and subsequently read the
 value of the mailbox attribute.
@@ -685,7 +685,7 @@ in Table :num:`table-interface-state-mailbox`.
    =======================    ===============  ========================================================
    MAILBOX sub-state          Value            Description
    =======================    ===============  ========================================================
-   MAILBOX_NULL               (none)           UNIPRO is UPRO_OFF; DME attribute access is not possible
+   MAILBOX_NULL               (none)           UNIPRO is UNIPRO_OFF; DME attribute access is not possible
    MAILBOX_NONE (Reserved)    0x0              Initial DME attribute value; reserved for internal use
    MAILBOX_AP                 0x1              AP Interface is ready for :ref:`svc-protocol` Connection
    MAILBOX_GREYBUS            0x2              Module is ready for :ref:`control-protocol` Connection
@@ -703,7 +703,7 @@ During the initialization of a Greybus System, the initial value of
 each Interface State is::
 
   (DETECT=DETECT_UNKNOWN, V_SYS=V_SYS_OFF, V_CHG=V_CHG_OFF,
-   WAKE=WAKE_UNSET, UNIPRO=UPRO_OFF, REFCLK=REFCLK_OFF,
+   WAKE=WAKE_UNSET, UNIPRO=UNIPRO_OFF, REFCLK=REFCLK_OFF,
    RELEASE=RELEASE_DEASSERTED, INTF_TYPE=IFT_UNKNOWN, ORDER=ORDER_UNKNOWN,
    MAILBOX=MAILBOX_NULL)
 
@@ -825,7 +825,7 @@ applied to the Interface Block, and an attempt to establish a |unipro|
 link between Frame and Module has been made.
 
 As a consequence, it is known whether the Module supports |unipro|, so
-UNIPRO is either UPRO_DOWN or UPRO_UP. If UNIPRO is UPRO_UP, then the
+UNIPRO is either UNIPRO_DOWN or UNIPRO_UP. If UNIPRO is UNIPRO_UP, then the
 Module may signal readiness for communication via Greybus
 :ref:`Protocols <glossary-protocol>` by setting MAILBOX. Thus, MAILBOX
 either remains its initial value, MAILBOX_NONE, or is set by the
@@ -845,9 +845,9 @@ between UNIPRO, MAILBOX, and INTF_TYPE is given in Table
     ===============  ===============  ===============
     INTF_TYPE        UNIPRO           MAILBOX
     ===============  ===============  ===============
-    IFT_DUMMY        UPRO_DOWN        MAILBOX_NONE
-    IFT_UNIPRO       UPRO_UP          MAILBOX_NONE
-    IFT_GREYBUS      UPRO_UP          MAILBOX_GREYBUS
+    IFT_DUMMY        UNIPRO_DOWN      MAILBOX_NONE
+    IFT_UNIPRO       UNIPRO_UP        MAILBOX_NONE
+    IFT_GREYBUS      UNIPRO_UP        MAILBOX_GREYBUS
     ===============  ===============  ===============
 
 ..
