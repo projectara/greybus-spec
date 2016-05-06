@@ -20,8 +20,8 @@ A Greybus System has the following physical components:
 - A collection of Slots on the Frame, each of which contains at least
   one :ref:`Interface Block <glossary-interface>`. Each Interface
   Block contains several pins, which allow for power distribution,
-  Module hotplug detection, and communication between the Frame and
-  attached Modules.
+  Module hotplug detection, time synchronization and communication
+  between the Frame and  attached Modules.
 
 - Zero or more attached :ref:`Modules <glossary-module>`, which mate
   with the Frame via one or more Interface Blocks.  All Interface
@@ -112,10 +112,9 @@ along with an overview of their meaning within a Greybus System.
 .. NOTE: the WAKE signal is intentionally under-specified at the
    present. There is enough here for module activation by the SVC
    sending a "wake out pulse" for enough time to cause a power-on
-   reset of the bridge ASIC. Later work to integrate time-sync and
-   power management into the hardware model will need to extend the
-   WAKE sub-state and the operation definitions that rely on it under
-   the hood.
+   reset of the bridge ASIC. Later work to integrate power management
+   into the hardware model will need to extend the WAKE sub-state and
+   the operation definitions that rely on it.
 
 - DETECT: whether the SVC has sensed that a Module is attached to the
   Interface Block.
@@ -314,6 +313,23 @@ have WAKE equal to WAKE_UNSET. The SVC shall only set WAKE to a value
 other than WAKE_UNSET for an Interface State whose DETECT sub-state is
 DETECT_ACTIVE and V_SYS is V_SYS_ON.
 
+.. XXX this "as described" descriptions are currently not described
+   anywhere; later updates will need to fix that once Interface States
+   are in the spec as mechanism to do so.
+
+Note that the WAKE sub-state only indicates whether the wake signal is
+asserted, deasserted, or neither to corresponding Interface Block; it
+does *not* imply that a Module is attached to the Interface Block.
+
+The SVC shall set the WAKE sub-state of any Interface States
+associated with a :ref:`forcibly removed <hardware-model-detect>`
+Module to WAKE_UNSET after an implementation-defined delay.
+
+.. _hardware-model-wake-pulse:
+
+WAKE Pulse
+----------
+
 Subject to the above restrictions, the SVC may assert and deassert the
 WAKE sub-state by following this sequence, assuming WAKE is WAKE_UNSET.
 
@@ -328,17 +344,43 @@ Cold Boot Threshold*, this is a signal to any attached Interface to
 initiate (or reinitiate) |unipro|, and subsequently Greybus,
 communication, as described in later sections.
 
-.. XXX this "as described" descriptions are currently not described
-   anywhere; later updates will need to fix that once Interface States
-   are in the spec as mechanism to do so.
+.. _hardware-model-timesync-pulse:
 
-Note that the WAKE sub-state only indicates whether the wake signal is
-asserted, deasserted, or neither to corresponding Interface Block; it
-does *not* imply that a Module is attached to the Interface Block.
+TimeSync Pulse
+--------------
+In addition to the restrictions described in the :ref:`Wake
+section<hardware-model-wake>`; once an Interface is in the
+:ref:`ENUMERATED Lifecycle State
+<hardware-model-lifecycle-enumerated>` and upon successful completion
+of the :ref:`Greybus SVC TimeSync Wake-Detect Pins Acquire Operation
+<svc-timesync-wake-detect-pins-acquire>` the interpretation of the
+WAKE signal is re-defined as a TimeSync signal until successful
+completion of the :ref:`Greybus SVC TimeSync Wake-Detect Pins Release
+Operation <svc-timesync-wake-detect-pins-release>`.
 
-The SVC shall set the WAKE sub-state of any Interface States
-associated with a :ref:`forcibly removed <hardware-model-detect>`
-Module to WAKE_UNSET after an implementation-defined delay.
+During the period between successful completion of a :ref:`TimeSync
+Wake-Detect Pins Acquire Operation
+<svc-timesync-wake-detect-pins-acquire>` and completion of a
+:ref:`Greybus SVC TimeSync Wake-Detect Pins Release Operation
+<svc-timesync-wake-detect-pins-release>` the SVC may toggle
+WAKE_ASSERTED and WAKE_DEASSERTED to an Interface Block to indicate a
+:ref:`Greybus SVC TimeSync Pulse <glossary-timesync-pulse>` event. The
+SVC is required to ensure the duration of the WAKE_ASSERTED signal is
+sufficiently short that it cannot be misinterpreted as any type of
+:ref:`WAKE Pulse <hardware-model-wake-pulse>`.
+
+Assuming WAKE is WAKE_UNSET:
+
+1. Set WAKE to WAKE_ASSERTED
+2. Delay for some duration less than the duration of a :ref:`WAKE Pulse <hardware-model-wake-pulse>`
+3. Set WAKE to WAKE_DEASSERTED
+4. Set WAKE to WAKE_UNSET
+
+This is called a :ref:`TimeSync Pulse <glossary-timesync-pulse>`. The
+duration of the :ref:`TimeSync Pulse <glossary-timesync-pulse>` is
+implementation-defined but must be less than the
+implementation-defined :ref:`WAKE Pulse Cold Boot Threshold
+<glossary-wake-pulse-cold-boot>`.
 
 .. _hardware-model-unipro:
 
