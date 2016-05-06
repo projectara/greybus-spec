@@ -96,6 +96,16 @@ Frame
     other elements of a Greybus System by physical connection to one
     or more Interfaces.
 
+.. _glossary-frame-time:
+
+FrameTime
+    A global monotonic clock shared by all processors in the system.
+    FrameTime is based off of a common reference clock and is
+    synchronized using Greybus Operations and a series of
+    :ref:`TimeSync Pulses <glossary-timesync-pulse>`. FrameTime
+    provides a global 64 bit timestamp at a clock rate specified by
+    the AP.
+
 .. _glossary-greybus-system:
 
 Greybus System
@@ -337,6 +347,16 @@ Switch
     the Switch in order to manage its internal state, as well as to
     establish :ref:`Greybus Connections <glossary-connection>` between
     :ref:`Interfaces <glossary-interface>`.
+
+.. _glossary-timesync-pulse:
+
+TimeSync Pulse
+    An assertion and deassertion of the WAKE pin associated with an
+    Interface Block for the purposes of communicating the FrameTime to
+    an Interface Block. The duration of the assertion is
+    implementation-defined but must be shorter than both the
+    :ref:`WAKE Pulse <glossary-wake-pulse>` and the :ref:`WAKE Pulse
+    Cold Boot Threshold <glossary-wake-pulse-cold-boot>` respectively.
 
 .. _glossary-wake-pulse:
 
