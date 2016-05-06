@@ -911,9 +911,10 @@ Conceptually, the operations in the Greybus SVC Protocol are:
 .. c:function:: int timesync_wd_pins_acquire(u32 strobe_mask);
 
     The AP Module uses this operation to request the SVC to take control
-    of a bit-mask of SVC device-id wake-detect lines. This done to establish
-    an initial state on the relevant wake-detect lines prior to generating
-    timesync releated events.
+    of a bit-mask of wake lines associated with the bit-mask of
+    Interface IDs specified by the strobe_mask parameter. This is done
+    to establish an initial state on the relevant wake-detect lines
+    prior to generating timesync related events.
 
 .. c:function:: int timesync_wd_pins_release(void);
 
@@ -2658,11 +2659,11 @@ pins set to output with logical state 0.
     :caption: SVC Protocol TimeSync Wake-Detect Pins Acquire Request
     :spec: l l c c l
 
-    =======  ============  ======  ==========  =================================================
+    =======  ============  ======  ==========  ========================================================
     Offset   Field         Size    Value       Description
-    =======  ============  ======  ==========  =================================================
-    0        strobe_mask   4       Number      Bit-mask of devices SVC should allocate to output
-    =======  ============  ======  ==========  =================================================
+    =======  ============  ======  ==========  ========================================================
+    0        strobe_mask   4       Number      Bit-mask of Interface IDs SVC should allocate as outputs
+    =======  ============  ======  ==========  ========================================================
 
 ..
 
