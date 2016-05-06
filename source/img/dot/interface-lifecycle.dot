@@ -9,6 +9,8 @@ digraph {
     subgraph alive {
         MODE_SWITCHING -> ENUMERATED [label="ms_exit"];
         ENUMERATED -> MODE_SWITCHING [label="ms_enter"];
+        ENUMERATED -> TIME_SYNCING [label="timesync_enter"];
+        TIME_SYNCING -> ENUMERATED [label="timesync_exit"];
         ENUMERATED -> SUSPENDED [label="suspend  "];
         SUSPENDED -> ENUMERATED [label="resume  "];
     }

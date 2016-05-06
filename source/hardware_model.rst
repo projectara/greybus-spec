@@ -939,6 +939,40 @@ are allowed as described in later sections:
 
 .. include:: lifecycle-states/mode-switching.txt
 
+.. _hardware-model-lifecycle-time-syncing:
+
+TIME_SYNCING
+""""""""""""
+
+The TIME_SYNCING Lifecycle State represents the Interface state as the
+frame-time is being synchronized to an Interface from the SVC. For the
+duration of the TIME_SYNCING state it is not valid to generate a
+:ref:`WAKE Pulse <glossary-wake-pulse>` to an Interface.
+
+A Greybus Operation :ref:`TimeSync Wake-Detect Pins Acquire
+Operation <svc-timesync-wake-detect-pins-acquire>` is responsible for
+transitioning an Interface into the TIME_SYNCING state.
+
+Once an Interface has entered the TIME_SYNCING state it will wait for
+the SVC to generate a known number of :ref:`TimeSync Pulses
+<glossary-timesync-pulse>`. The Interface will have been informed of
+how many :ref:`TimeSync Pulses <glossary-timesync-pulse>` to expect
+emanating from the SVC and shall mark the local time of the incoming
+:ref:`TimeSync Pulse <glossary-timesync-pulse>` on the rising-edge of
+the :ref:`TimeSync Pulse <glossary-timesync-pulse>`.
+
+The :ref:`Greybus SVC TimeSync Wake-Detect Pins Release Operation
+<svc-timesync-wake-detect-pins-release>` is responsible for
+transitioning an Interface out of the TIME_SYNCING state.
+
+An Interface may enter and exit the TIME_SYNCING Lifecycle State an
+arbitrary number of times.
+
+In the TIME_SYNCING Lifecycle State, the following Interface States
+are allowed as described in later sections:
+
+.. include:: lifecycle-states/time-syncing.txt
+
 .. _hardware-model-lifecycle-suspended:
 
 SUSPENDED

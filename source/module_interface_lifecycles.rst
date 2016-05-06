@@ -101,6 +101,11 @@ possible:
 
 .. include:: lifecycle-states/mode-switching.txt
 
+When an Interface is TIME_SYNCING, the following Interface States are
+possible:
+
+.. include:: lifecycle-states/time-syncing.txt
+
 When an Interface is SUSPENDED, the following Interface States are
 possible:
 
