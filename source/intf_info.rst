@@ -186,10 +186,11 @@ descriptor as described in Table :num:`table-interface-descriptor`.
     =======  =================  ======  ==========  ==================================
     0        size               2       0x0008      Size of this descriptor
     2        type               1       0x01        Type of the descriptor (Interface)
-    3        features           1       Bit Mask    :ref:`interface-feature-bits`
+    3        (pad)              1       0           Reserved (pad to 4 byte boundary)
     4        vendor_string_id   1       ID          String ID for the vendor name
     5        product_string_id  1       ID          String ID for the product name
-    6        (pad)              2       0           Reserved (pad to 4 byte boundlary)
+    6        features           1       Bit Mask    :ref:`interface-feature-bits`
+    7        (pad)              1       0           Reserved (pad to 4 byte boundary)
     =======  =================  ======  ==========  ==================================
 
 ..
