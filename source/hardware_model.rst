@@ -352,17 +352,16 @@ In addition to the restrictions described in the :ref:`Wake
 section<hardware-model-wake>`; once an Interface is in the
 :ref:`ENUMERATED Lifecycle State
 <hardware-model-lifecycle-enumerated>` and upon successful completion
-of the :ref:`Greybus SVC TimeSync Wake-Detect Pins Acquire Operation
-<svc-timesync-wake-detect-pins-acquire>` the interpretation of the
+of the :ref:`Greybus SVC TimeSync Wake Pins Acquire Operation
+<svc-timesync-wake-pins-acquire>` the interpretation of the
 WAKE signal is re-defined as a TimeSync signal until successful
-completion of the :ref:`Greybus SVC TimeSync Wake-Detect Pins Release
-Operation <svc-timesync-wake-detect-pins-release>`.
+completion of the :ref:`Greybus SVC TimeSync Wake Pins Release
+Operation <svc-timesync-wake-pins-release>`.
 
 During the period between successful completion of a :ref:`TimeSync
-Wake-Detect Pins Acquire Operation
-<svc-timesync-wake-detect-pins-acquire>` and completion of a
-:ref:`Greybus SVC TimeSync Wake-Detect Pins Release Operation
-<svc-timesync-wake-detect-pins-release>` the SVC may toggle
+Wake Pins Acquire Operation <svc-timesync-wake-pins-acquire>`
+and completion of a :ref:`Greybus SVC TimeSync Wake Pins Release
+Operation <svc-timesync-wake-pins-release>` the SVC may toggle
 WAKE_ASSERTED and WAKE_DEASSERTED to an Interface Block to indicate a
 :ref:`Greybus SVC TimeSync Pulse <glossary-timesync-pulse>` event. The
 SVC is required to ensure the duration of the WAKE_ASSERTED signal is
@@ -991,8 +990,8 @@ frame-time is being synchronized to an Interface from the SVC. For the
 duration of the TIME_SYNCING state it is not valid to generate a
 :ref:`WAKE Pulse <glossary-wake-pulse>` to an Interface.
 
-A Greybus Operation :ref:`TimeSync Wake-Detect Pins Acquire
-Operation <svc-timesync-wake-detect-pins-acquire>` is responsible for
+A Greybus Operation :ref:`TimeSync Wake Pins Acquire Operation
+<svc-timesync-wake-pins-acquire>` is responsible for
 transitioning an Interface into the TIME_SYNCING state.
 
 Once an Interface has entered the TIME_SYNCING state it will wait for
@@ -1003,8 +1002,8 @@ emanating from the SVC and shall mark the local time of the incoming
 :ref:`TimeSync Pulse <glossary-timesync-pulse>` on the rising-edge of
 the :ref:`TimeSync Pulse <glossary-timesync-pulse>`.
 
-The :ref:`Greybus SVC TimeSync Wake-Detect Pins Release Operation
-<svc-timesync-wake-detect-pins-release>` is responsible for
+The :ref:`Greybus SVC TimeSync Wake Pins Release Operation
+<svc-timesync-wake-pins-release>` is responsible for
 transitioning an Interface out of the TIME_SYNCING state.
 
 An Interface may enter and exit the TIME_SYNCING Lifecycle State an
