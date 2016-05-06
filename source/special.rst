@@ -2577,6 +2577,21 @@ Greybus SVC TimeSync Enable Response
 
 The Greybus SVC Protocol TimeSync Enable response contains no payload.
 
+If the Response message header status field :ref:`greybus-operation-status`
+is not equal to GB_OP_SUCCESS the AP shall immediately issue a
+:ref:`svc-timesync-disable` to the set of Interfaces previously
+indicated in the 'strobe_mask' field of the
+:ref:`svc-timesync-wake-pins-acquire`. The AP shall then issue a
+:ref:`svc-timesync-wake-pins-release` to the SVC.
+
+If the Response message header status field :ref:`greybus-operation-status`
+is equal to GB_OP_SUCCESS the SVC shall set the
+:ref:`hardware-model-timesync-pulse` sub-state for the indicated set of
+Interfaces to WAKE_ASSERTED and WAKE_DEASSERTED repeatedly to indicate
+'count' number of :ref:`TimeSync Pulse <glossary-timesync-pulse>` events.
+The SVC may send the response before initiating or completing the set of
+:ref:`TimeSync Pulse <glossary-timesync-pulse>` events.
+
 .. _svc-timesync-disable:
 
 Greybus SVC TimeSync Disable Operation
@@ -2593,6 +2608,8 @@ Greybus SVC TimeSync Disable Response
 """""""""""""""""""""""""""""""""""""
 
 The Greybus SVC Protocol TimeSync Disable response contains no payload.
+The SVC shall always return GB_OP_SUCCESS to this Operation. This Greybus
+Operation does not affect any Interface sub-states.
 
 .. _svc-timesync-authoritative:
 
@@ -2615,7 +2632,10 @@ Greybus SVC TimeSync Authoritative Response
 Table :num:`table-svc-timesync-authoritative-response` defines the Greybus SVC
 TimeSync Authoritative Response payload. The response specifies the
 authoritative frame-time at each TIME_SYNC strobe. Unused slots in the
-response shall contain zero.
+response shall contain zero. If the Response message header status field
+:ref:`greybus-operation-status` is not equal to GB_OP_SUCCESS the values
+in the Operation Response payload are undefined and shall be ignored. This
+Greybus Operation does not affect any Interface sub-states.
 
 .. figtable::
     :nofig:
@@ -2673,6 +2693,18 @@ Greybus SVC TimeSync Wake Pins Acquire Response
 
 The Greybus SVC Protocol TimeSync Wake Pins Acquire Response contains no payload.
 
+If the Response message header status field :ref:`greybus-operation-status`
+is equal to GB_OP_SUCCESS then the SVC shall set the the
+:ref:`hardware-model-timesync-pulse` sub-state for the indicated set of
+Interfaces to WAKE_UNSET. After this Operation completes the
+:ref:`hardware-model-wake-pulse` shall be re-interpreted as a
+:ref:`hardware-model-timesync-pulse` subject to the restrictions defined in
+the hardware model.
+
+If the Response message header status field
+:ref:`greybus-operation-status` is not equal to GB_OP_SUCCESS the AP
+shall abandon further TimeSync activities.
+
 .. _svc-timesync-wake-pins-release:
 
 Greybus SVC TimeSync Wake Pins Release Operation
@@ -2690,6 +2722,14 @@ Greybus SVC TimeSync Wake Pins Release Response
 """""""""""""""""""""""""""""""""""""""""""""""
 
 The Greybus SVC Protocol TimeSync Wake Pins Release Response contains no payload.
+The SVC shall always return GB_OP_SUCCESS to this Operation. Before
+completion of this Operation the the SVC shall set the
+:ref:`hardware-model-timesync-pulse` sub-state for the set of Interfaces
+previously indicated in the :ref:`svc-timesync-wake-pins-acquire` to
+WAKE_UNSET. After this Operation completes the
+:ref:`hardware-model-timesync-pulse` shall be re-interpreted as a
+:ref:`hardware-model-wake-pulse` subject to the restrictions defined in
+the hardware-model.
 
 .. _svc-timesync-ping:
 
@@ -2713,7 +2753,11 @@ Greybus SVC TimeSync Ping Response
 
 Table :num:`table-svc-timesync-ping-response` defines the Greybus SVC
 TimeSync Ping Response payload. The response specifies the
-authoritative frame-time at the ping event generated.
+authoritative frame-time at the ping event generated. If the Response
+message header status field :ref:`greybus-operation-status` is not
+equal to GB_OP_SUCCESS the values in the Operation Response payload
+are undefined and shall be ignored. This Greybus Operation does not affect
+any Interface sub-states.
 
 .. figtable::
     :nofig:
