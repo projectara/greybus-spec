@@ -941,7 +941,7 @@ of a SPI transaction.
     8        delay_usecs     2       Number          Wait period after completion of transfer
     10       cs_change       1       Number          Toggle chip select pin after this transfer completes
     11       bits_per_word   1       Number          Select bits per word for this transfer
-    12       rdwr            1       Bit Mask        Bit Mask indicating Read (0x01) and/or Write (0x02) transfer type
+    12       xfer_flags      1       Bit Mask        :ref:`gb-spi-transfer-flags`
     =======  ==============  ======  ==========      ===========================
 
 Table :num:`table-spi-transfer-request` defines the Greybus SPI
@@ -971,6 +971,32 @@ descriptor in the array immediately follows the last :ref:`gb_spi_transfer
 <gb_spi_transfer>` descriptor in the array, and no padding shall be inserted
 between data sent for distinct SPI :ref:`gb_spi_transfer <gb_spi_transfer>`
 descriptors.
+
+.. _gb-spi-transfer-flags:
+
+Greybus SPI Transfer Flags Bits
+"""""""""""""""""""""""""""""""
+
+Table :num:`table-spi-transfer-flags-bits` describes possible transfer
+descriptors flags. Only the listed values are valid.
+
+
+.. figtable::
+    :nofig:
+    :label: table-spi-transfer-flags-bits
+    :caption: SPI Transfer Flags Bits
+    :spec: l l l
+
+    ===============================  ===========================================================  ===============
+    Symbol                           Brief Description                                            Mask Value
+    ===============================  ===========================================================  ===============
+    GB_SPI_XFER_READ                 Read Transfer Descriptor                                     0x01
+    GB_SPI_XFER_WRITE                Write Transfer Descriptor                                    0x02
+    GB_SPI_XFER_INPROGRESS           Indicate current operation will continue in next transfer    0x04
+    |_|                              (All other values reserved)                                  0x08..0x80
+    ===============================  ===========================================================  ===============
+
+..
 
 Greybus SPI Transfer Response
 """""""""""""""""""""""""""""
