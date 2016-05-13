@@ -4342,9 +4342,14 @@ This sequence is also depicted in :ref:`lifecycles_resume`.
    that section if the appropriate CPort is connected and used for
    Greybus communication.
 
-   The SVC shall detect the new value of MAILBOX. The resume sequence
-   has succeeded. The SVC shall signal this success to the AP in the
-   response to this request as described below.
+   The SVC shall detect the new value of MAILBOX. The SVC shall then
+   attempt to clear the mailbox attribute by setting its value to
+   zero, setting MAILBOX to MAILBOX_NONE as a result. If the SVC is
+   unable to do so, the results are undefined.
+
+   Otherwise, the resume sequence has succeeded. The SVC shall signal
+   this success to the AP in the response to this request as described
+   below.
 
 6. The resume sequence is now complete, and has succeeded or failed.
    The SVC shall signal completion and either success or failure to
