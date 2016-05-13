@@ -4479,10 +4479,18 @@ with the AP by sending this request under any other circumstances. If
 the Operation fails, the SVC may take no further action as a result of
 detecting the mailbox attribute write.
 
-Before sending the request, the SVC shall attempt to read the mailbox
-attribute, storing the ConfigResultCode as defined in the |unipro|
-specification, as well the mailbox attribute value if the read is
-successful.
+Before sending the request, the SVC shall:
+
+1. Attempt to read the mailbox attribute, storing the ConfigResultCode
+   as defined in the |unipro| specification, as well the mailbox
+   attribute value if the read is successful.
+
+2. If the mailbox attribute is read successfully, the SVC shall clear
+   it by setting its value to zero, thus setting the MAILBOX Interface
+   State sub-state to MAILBOX_NONE.
+
+   If the SVC is unable to successfully clear the attribute, the
+   results are undefined.
 
 The SVC shall then send the request. The intf_id field in the request
 payload shall equal the MAILBOX Interface State's Interface ID. The
