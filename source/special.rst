@@ -4143,6 +4143,12 @@ This sequence is also depicted in :ref:`lifecycles_boot` and
 8. As stated in :ref:`hardware-model-mailbox`, the SVC can detect if
    the MAILBOX value has changed, and if so, to what value.
 
+   If this occurs and MAILBOX is MAILBOX_GREYBUS, the SVC shall set
+   INTF_TYPE to IFT_GREYBUS. The SVC shall then attempt to clear the
+   mailbox attribute by setting its value to zero, setting MAILBOX to
+   MAILBOX_NONE as a result. If the SVC is unable to do so, the
+   results are undefined. Immediately proceed to step 9.
+
    If this occurs and MAILBOX is not MAILBOX_GREYBUS, the SVC shall
    set INTF_TYPE to IFT_UNKNOWN, and signal an error to the AP as
    described below.
