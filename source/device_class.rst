@@ -3985,6 +3985,105 @@ flag ADJUSTED shall be set.
     =============  ===========  =============================================
 ..
 
+Greybus Camera Capture Streams Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. pincahrtl: TODO: Explain the bitmask in more details.
+              In particular, what's the behavior for a request with 0 bitmask?
+
+.. pincahrtl: TODO: Define the behaviour for concurrent requests affecting
+              separate streams.
+   binchen:   What does concurrent thread means here? From Android side, for
+              one single camera, all the requests from camera service will be
+              serialized (sending from one thread).
+   pinchartL: What happens if request n is received from stream 1 and request
+              n + 1 for stream 2 ? Can they complete out of order ?
+              Are they added to separate queues ? What if request n + 2 then
+              targets both streams 1 and 2 ? All the corner cases need to be
+              documented explicitly. The current text is too vague
+   pinchart:  For reference: concurrent requests that affect separate streams
+              should not block each other, and thus somehow need separate
+              queues.
+
+Capture requests are queued and processed in order.
+Each request contains an incrementing ID, a bitmask of the streams it affects,
+a number of frames to capture for all the streams in the bitmask and a list of
+settings.
+
+Valid Capture requests are added to a queue in the Camera Module as they are
+received and the responses are sent immediately.
+When the request is complete the module shall remove it from the queue and
+start processing the next request.
+Camera Modules shall minimize the delay between requests by pre-processing
+pending requests ahead of time as necessary.
+
+When the first request is queued the Camera Module moves to the *Streaming*
+state and starts transmitting frames as soon as possible. When the last
+request completes the module moves to the Configured state and stops
+transmitting frames immediately.
+Modules shall not transmit any frame that has no corresponding Capture request.
+
+The request ID shall start at one and by incremented with every Capture request. If the request ID is not higher than the ID of the previous request the module
+shall ignore the request and set the reply status to GB_OP_INVALID.
+Modules shall not use the request ID number for any purpose other than
+synchronizing the *Capture* operation with the *Flush* operation and the
+*Metadata*.
+In particular modules shall accept request IDs higher than the previous ID by
+more than one.
+
+The *num_frames* field contains the number of times the request shall be
+repeated for all affected streams.
+Camera Modules shall capture and transmit one frame per stream for every
+repetition of the request using the requested capture settings.
+When the *num_frames* field is set to zero the request shall be repeated
+indefinitely until the next *Capture* request is queued or a *Flush* request
+is received.
+
+The request is only valid in the *Configured* and *Streaming* states,
+the module shall reply set the reply status to GB_CAM_OP_INVALID_STATE in all
+other states.
+
+Greybus Camera Capture Streams Operation Request
+""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Camera Capture request contains a variable-size *settings* block that shall
+conform to the format described in the Properties section of this
+specification.
+If no settings need to be applied for the request the settings block size shall
+be zero.
+
+Parameters for the capture operation request are shown in table
+:num:`table-camera-operations-capture-request`
+
+.. figtable::
+   :nofig:
+   :label: table-camera-operations-capture-request
+   :caption: Camera Class Capture response
+   :spec: l l c c l
+
+    ======  =============  ======  ===========  ===============================
+    Offset  Field          Size    Value        Description
+    ======  =============  ======  ===========  ===============================
+    0       request_id     4       number       An incrementing integer to
+                                                uniquely identify the capture
+                                                request
+    4       streams        1       bitmask      Bitmask of the streams included
+                                                in the capture request
+    5       padding        1       0            Shall be set to 0
+    6       num_frames     2       number       Number of frames to capture
+                                                (0 for infinite)
+    8       settings       n       data         Capture request settings
+    ======  =============  ======  ===========  ===============================
+..
+
+Greybus Camera Capture Streams Operation Respose
+""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Camera Capture response message has no payload.
+
+If the request streams *bitmask* contains non-configured streams the Camera
+Module shall set the response status to GB_OP_INVALID.
+
 Consumer IR Protocol
 --------------------
 
