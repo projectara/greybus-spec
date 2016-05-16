@@ -3751,6 +3751,46 @@ major version 0, minor version 1, as show in table
     ======  =============  ======  ===========  ===========================
 ..
 
+Greybus Camera Capabilities Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To accommodate for the vast diversity of camera modules in terms of features
+and complexity this Protocol defines a number of features that are optional to
+implement for Camera Modules.
+Using this operation the sender can dynamically query the Camera Module for its
+capabilities.
+
+Capabilities are constant for the lifetime of the Camera Bundle.
+Once a Camera Class Module has been enumerated it shall respond to all Camera
+Capabilities requests with the same capabilities. The capabilities may only
+change if the module is re-enumerated, for instance after a firmware upgrade.
+
+Greybus Camera Capabilities Operation Request
+"""""""""""""""""""""""""""""""""""""""""""""
+
+The Capabilities Request operation has no payload
+
+Greybus Camera Capabilities Operation Respose
+"""""""""""""""""""""""""""""""""""""""""""""
+
+The Camera Capabilities response contains a variable-size capabilities block
+that shall conform to the format described in the Greybus Camera Class
+Properties section of this specification.
+
+
+.. figtable::
+   :nofig:
+   :label: table-camera-operations-capabilities-response
+   :caption: Camera Class Capabilities response
+   :spec: l l c c l
+
+    ======  =============  ======  ===========  ===========================
+    Offset  Field          Size    Value        Description
+    ======  =============  ======  ===========  ===========================
+    0       capabilities   n       Data         Capabilities of Camera Module
+    ======  =============  ======  ===========  ===========================
+..
+
 Consumer IR Protocol
 --------------------
 
