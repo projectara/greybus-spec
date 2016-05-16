@@ -7,10 +7,9 @@ digraph {
 
     subgraph cluster_Connected {
         node [style=filled];
-        label="Connected Meta-State";
-        labelloc=t
         style="dashed";
 
+        "CONNECTED" [label="Connected Meta-State"]
         "GHOSTHEAD" [style=invisible];
         "UNCONFIGURED";
         "GHOST1" [style=invisible];
@@ -19,6 +18,9 @@ digraph {
         "STREAMING";
         "GHOST3" [style=invisible];
     }
+
+    CONNECTED -> GHOSTHEAD [style = invis]
+    CONNECTED -> CONNECTED [xlabel = "     capabilities()   "]
 
     ENUMERATED -> UNCONFIGURED [lhead=cluster_Connected, xlabel="        Connect - CPort 1 "];
     UNCONFIGURED -> ENUMERATED [ltail=cluster_Connected xlabel="    Disconnect - CPort 1   "];

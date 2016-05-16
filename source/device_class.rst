@@ -3614,6 +3614,86 @@ Camera Class Modules shall implement a Camera Bundle with its type set to
 the *Greybus Camera Bundle Class Type*. The Camera Bundle shall contain a
 single CPort with its protocol value set to the *Greybus Camera Protocol*.
 
+Camera Management Operations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following operations have been defined for Greybus Camera Device Class
+
+.. FIXME: jmondi: Do we need version operation? Is this the default
+          Greybus one?
+.. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
+
+   FIXME: do we need this?
+
+.. c:function:: int capabilities(u16 *size, u8 *capabilities);
+
+   Retrieve the list of camera capabilities from module
+
+.. c:function:: int configure_streams(u8 num_streams, u8 *flags, struct stream_config *streams);
+
+   Configures or unconfigures the module to prepare or stop the video streaming
+
+.. c:function:: int capture(u32 request_id, u8 streams, u16 num_frames, const u8 *settings, u16 size);
+
+   Enqueue a frame capture request to camera module
+
+.. c:function:: int flush(u32 *request_id);
+
+   Removes all capture requests from the camera module request queue
+
+.. c:function:: int metadata(u8 *metadata);
+
+Greybus Camera Management Message Types
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Table :num:`table-camera-operations` describes the Greybus Camera operation
+types and their values.
+
+A message type consists of an operation type combined with a flag
+(0x80) indicating whether the operation is a request or a response.
+
+
+.. figtable::
+   :nofig:
+   :label: table-camera-operations
+   :caption: Camera Device Class operations
+   :spec: l l l
+
+    ===========================  =============  ==============
+    Camera Operation Type        Request Value  Response Value
+    ===========================  =============  ==============
+    Reserved                     0x00           0x80
+    Protocol Version             0x01           0x81
+    Capabilities                 0x02           0x82
+    Configure Streams            0x03           0x83
+    Capture                      0x04           0x84
+    Flush                        0x05           0x85
+    Metadata                     0x06           N/A
+    (all other values reserved)  0x07..0x7f     0x87..0xff
+    ===========================  =============  ==============
+..
+
+Greybus Camera Protocol Status
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In addition to the protocol status values defined by the Greybus Specification,
+the Camera Class Protocol defines the status values reported in table
+:num:`table-camera-protocol-status`
+
+.. figtable::
+   :nofig:
+   :label: table-camera-protocol-status
+   :caption: Camera Device Class Protocol Status
+   :spec: l l l
+
+    ===========================  =======  ===============================
+    Status                       Value    Meaning
+    ===========================  =======  ===============================
+    GB_CAM_OP_INVALID_STATE      0x80     The request is not valid in the
+                                          current state
+    ===========================  =======  ===============================
+..
+
 Consumer IR Protocol
 --------------------
 
