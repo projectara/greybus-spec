@@ -3350,6 +3350,58 @@ Bluetooth Protocol
 
 TBD
 
+Camera Protocol
+---------------
+
+Introduction (Informative)
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Ara Camera Class Protocol defines how Camera Modules communicate with AP
+Modules in an Ara system.
+MIPI has specified two interface protocols for camera integration relevant
+to Ara systems.
+
+CSI-2 is a high-speed point-to-point unidirectional data transfer protocol.
+It defines an interface between a camera peripheral device and a host processor.
+CSI-2 usage is widespread in the mobile industry and  is natively supported by
+most mobile application processors.
+
+CSI-3 is a high-speed bidirectional communication protocol for camera systems.
+Based on UniPro℠, it specifies communication between camera sensors, image
+signal processors, bridge devices and host processors. CSI-3 addresses both
+control communication and image data transfer.
+
+Usage of UniPro℠ as the communication network in Ara systems naturally suggests
+building the Ara Camera Class protocol based on CSI-3. However, adoption and
+implementation of CSI-3 in camera sensors and application processors is
+currently very limited.
+Furthermore, the Toshiba AP Bridge used to interface legacy devices to the
+UniPro℠ network doesn't support CSI-3 but transports camera image streams
+over UniPro℠ using a proprietary protocol.
+For those reasons usage of CSI-3 in first-generation Ara systems isn't possible.
+
+The AP Bridge uses CSI-2 as the camera interface on its legacy protocol side.
+The Camera AP Bridge encapsulates the CSI-2 stream received from the camera into
+packets and sends them on the UniPro℠ network. On the receiving side the
+Application Processor AP Bridge extracts the stream and outputs it over CSI-2
+to the application processor.
+
+Ara Class Protocols define communication in terms of packets exchanged over
+UniPro℠.
+This method, if used for the Camera Class Protocol, would essentially produce
+a description of a Toshiba proprietary protocol.
+The result would be unclear and confusing for developers without bringing
+any benefit.
+
+The Camera Class Protocol will thus describe communication over the image
+channel in terms of the CSI-2 interface on the legacy side of the AP Bridge.
+Control messages exchanged over UniPro℠ outside of the image channel will be
+described in terms of Greybus messages and operations as for all other Ara Class
+Protocols.
+The specific legacy protocol used to communicate between the Camera AP Bridge
+and the components internal to the Camera Module is considered to be
+implementation-specific and out-of-scope for this document.
+
 Consumer IR Protocol
 --------------------
 
