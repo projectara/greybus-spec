@@ -3558,6 +3558,62 @@ Metadata request per image frame.
 Metadata transmitted over Greybus using the Metadata operation shall always be
 encoded as specified in the Properties section of this specification.
 
+Operational Model (Informative)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following diagram describes the operational model of class-compliant
+Camera Modules.
+
+.. image:: /img/dot/camera-operational-model.png
+   :align: center
+..
+
+Once the camera module enters the *ENUMERATED* state, as defined in
+:ref:`lifecycles_enumerate`, it is now ready to accept a *Connect* or
+*Disconnect* event on its *Camera Management CPort*.
+
+Upon successful a *Connect* operation, the camera class protocol state machine
+is entered.
+In order to exit from it, a *Disconnect* operation on the Camera Management
+CPort shall be performed.
+
+The Camera Class state machine is composed by the 3 sub-states,
+logically grouped in a single meta-state called *Connected*, where the
+*capabilities()* operation is always possible and shall always return the same
+set of camera module's capabilities.
+
+The sub-states that define the Camera Device Class state machine are:
+
+* **Unconfigured:**
+  In this state the camera CPort is operational and waits for
+  a *configure_streams()* request before moving to the **Configured** state.
+* **Configured:**
+  In this state the module shall be ready to process *capture()* requests
+  immediately as it receives them. Reception of a *configure_streams()*
+  request with a zero stream count moves the module to the **Unconfigured**
+  state.
+* **Streaming:**
+  In this state the module transmits video frames over CSI-2.
+  Additional capture requests can be queued. If no more capture request is left
+  to be processed the module moves to the **Configured** state.
+  Reception of a *flush()* request clears the queue of pending capture requests
+  and also moves the module to the **Configured** state.
+
+Greybus Protocol
+""""""""""""""""
+The Camera Class Protocol conforms with the Greybus Specification.
+
+**Version**
+
+Camera Class Modules shall report major and minor version numbers equal to
+0 and 1 respectively in their Greybus Manifest.
+
+**Bundles and CPorts**
+
+Camera Class Modules shall implement a Camera Bundle with its type set to
+the *Greybus Camera Bundle Class Type*. The Camera Bundle shall contain a
+single CPort with its protocol value set to the *Greybus Camera Protocol*.
+
 Consumer IR Protocol
 --------------------
 
