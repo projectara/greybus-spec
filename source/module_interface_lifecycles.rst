@@ -694,7 +694,7 @@ The following value is used in this sub-sequence:
    step 5.
 
    If it succeeds, the SVC shall set the UNIPRO Interface State to
-   UPRO_HIBERNATE. The SVC shall wait an implementationed-defined
+   UPRO_HIBERNATE. The SVC shall wait an implementation-defined
    duration in this step to allow the Interface to power down
    internally in the next step.
 
@@ -771,7 +771,7 @@ The following value is used in this sub-sequence:
    step 5.
 
    If it succeeds, the SVC shall set the UNIPRO Interface State to
-   UPRO_HIBERNATE. The SVC shall wait an implementationed-defined
+   UPRO_HIBERNATE. The SVC shall wait an implementation-defined
    duration in this step to allow the Interface to power down
    internally in the next step.
 
@@ -1081,7 +1081,7 @@ The following values are used in this procedure:
    undefined.
 
    If it succeeds, the SVC shall set the UNIPRO Interface State to
-   UPRO_HIBERNATE. The SVC shall wait an implementationed-defined
+   UPRO_HIBERNATE. The SVC shall wait an implementation-defined
    duration in this step to allow the Interface to enter a low-power
    state in the next step.
 
@@ -1324,7 +1324,7 @@ The following values are used in this procedure:
    undefined.
 
    If it succeeds, the SVC shall set the UNIPRO Interface State to
-   UPRO_HIBERNATE. The SVC shall wait an implementationed-defined
+   UPRO_HIBERNATE. The SVC shall wait an implementation-defined
    duration in this step to allow the Interface to power down in the
    next step.
 
