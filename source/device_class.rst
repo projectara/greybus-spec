@@ -4084,6 +4084,59 @@ The Camera Capture response message has no payload.
 If the request streams *bitmask* contains non-configured streams the Camera
 Module shall set the response status to GB_OP_INVALID.
 
+Greybus Camera Flush Streams Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Flush operation removes all Capture requests from the queue and stops
+frame transmission as soon as possible.
+As a result the Camera Module moves to the *Configured* state.
+
+The Camera Module shall stop transmitting frames as soon as possible.
+Delays are permitted to the extent they are necessary to flush hardware
+pipelines.
+In order to allow synchronization modules shall report in their reply the ID of
+the last Capture request they will process and for which they will transmit
+frames.
+After finishing processing of that request the module moves to the *Configured*
+state and shall not transmit any more frame.
+
+The *Flush* operation may be invoked while the module is in the *Configured*
+state.
+In that case the module shall return the ID of the last transmitted *Capture*
+request, or zero if no *Capture* request has been processed yet.
+
+The request is only valid in the *Configured* and *Streaming* states,
+the module shall reply with an empty payload and set the status
+to GB_CAM_OP_INVALID_STATE in all other states.
+
+Greybus Camera Flush Streams Operation Request
+""""""""""""""""""""""""""""""""""""""""""""""
+
+The Camera Flush request message has no payload.
+
+Greybus Camera Flush Streams Operation Respose
+""""""""""""""""""""""""""""""""""""""""""""""
+
+Payload description for *Flush* operation response is reported in table
+:num:`table-camera-operations-flush-response`
+
+.. figtable::
+   :nofig:
+   :label: table-camera-operations-flush-response
+   :caption: Camera Class Flush response
+   :spec: l l c c l
+
+    =========   =============  ======  ===========  ===========================
+    Offset      Field          Size    Value        Description
+    =========   =============  ======  ===========  ===========================
+    0           request_id     4       Number       The last request that will
+                                                    be processed before the
+    \                                               module stops transmitting
+                                                    frames
+    =========   =============  ======  ===========  ===========================
+..
+
+
 Consumer IR Protocol
 --------------------
 
