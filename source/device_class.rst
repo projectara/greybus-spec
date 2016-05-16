@@ -4136,6 +4136,49 @@ Payload description for *Flush* operation response is reported in table
     =========   =============  ======  ===========  ===========================
 ..
 
+Greybus Camera Metadata Streams Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. pinchrtl: TODO: Describe metadata operation with multiple streams.
+             We can't have one metadata stream per video stream.
+             The "stream" field thus doesn't make sense.
+
+The *Metadata* operation allows the Camera Module to transmit metadata
+associated with a frame over Greybus.
+The frame the metadata is associated with is identified by the request ID,
+the CSI-2 frame number and the stream number.
+
+Camera Modules should only use the *Metadata* operation if they can’t transmit
+metadata over CSI-2.
+
+Greybus Camera Metadata Streams Operation Request
+"""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Camera Metadata request is sent by the camera module to the AP.
+It contains a variable-size metadata block that shall conform to the format
+described in the Properties section of this specification.
+
+If no metadata needs to be reported for a particular frame the metadata block
+size shall be zero.
+
+.. figtable::
+   :nofig:
+   :label: table-camera-operations-metadata-request
+   :caption: Camera Class Metadata response
+   :spec: l l c c l
+
+    =========   =============  ======  ===========  ===========================
+    Offset      Field          Size    Value        Description
+    =========   =============  ======  ===========  ===========================
+    0           request_id     4       Number       The ID of the corrisponding
+                                                    frame request
+    4           frame_number   2       Number       The CSI-2 frame number
+    6           request_id     1       Number       The stream number
+    7           request_id     1       0            Shall be set to zero
+    8           metadata       n       metadata     Metadata block
+    =========   =============  ======  ===========  ===========================
+..
+
 
 Consumer IR Protocol
 --------------------
