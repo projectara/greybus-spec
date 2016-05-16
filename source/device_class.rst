@@ -3694,6 +3694,63 @@ the Camera Class Protocol defines the status values reported in table
     ===========================  =======  ===============================
 ..
 
+Greybus Camera Version Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Negotiates the major and minor version of the Protocol used for communication
+over the connection. The sender offers the version of the Protocol it supports.
+
+The receiver replies with the version that will be used--either the one offered
+if supported or its own (lower) version otherwise. Protocol handling code
+adhering to the Protocol specified herein supports major version 0,
+minor version 1.
+
+Greybus Camera Version Operation Request
+"""""""""""""""""""""""""""""""""""""""""""""
+
+The request supplies the greatest major and minor version of the Camera
+Protocol supported by the sender, as shown in table
+:num:`table-camera-operations-version-request`
+
+.. figtable::
+   :nofig:
+   :label: table-camera-operations-version-request
+   :caption: Camera Class Version Request
+   :spec: l l c c l
+
+    ======  =============  ======  ===========  ===========================
+    Offset  Field          Size    Value        Description
+    ======  =============  ======  ===========  ===========================
+    0       version_major  1       0            Offered camera protocol version
+                                                major
+    1       version_minor  1       1            Offered camera protocol version
+                                                minor
+    ======  =============  ======  ===========  ===========================
+..
+
+Greybus Camera Version Operation Respose
+"""""""""""""""""""""""""""""""""""""""""""""
+
+A Greybus Camera Module adhering to the Protocol specified herein shall report
+major version 0, minor version 1, as show in table
+:num:`table-camera-operations-version-respose`
+
+.. figtable::
+   :nofig:
+   :label: table-camera-operations-version-respose
+   :caption: Camera Class Version Request
+   :spec: l l c c l
+
+    ======  =============  ======  ===========  ===========================
+    Offset  Field          Size    Value        Description
+    ======  =============  ======  ===========  ===========================
+    0       version_major  1       0            Camera protocol version
+                                                major
+    1       version_minor  1       1            Camera protocol version
+                                                minor
+    ======  =============  ======  ===========  ===========================
+..
+
 Consumer IR Protocol
 --------------------
 
