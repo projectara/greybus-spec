@@ -3791,6 +3791,200 @@ Properties section of this specification.
     ======  =============  ======  ===========  ===========================
 ..
 
+Greybus Camera Configure Streams Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When called with a non-zero number of streams the operation configures the
+Camera Module for capture with a list of stream parameters.
+The request is only valid in the Unconfigured state, the module shall reply
+with an empty payload and set the status to GB_CAM_OP_INVALID_STATE in all
+other states.
+
+Up to four streams are supported. A request with a number of streams higher
+than four shall be answered by an error response with the status set to
+GB_OP_INVALID.
+
+If the requested streams configuration is supported by the Camera module it
+shall copy the configuration in its response and additionally set the
+virtual_channel, data_types and max_size for each stream.
+As a result the module moves to the Configured state and shall be ready to
+process Capture requests with as little delay as possible.
+In particular time consuming operations needed to wake the system up from power
+saving modes shall be performed when moving to the Configured state.
+Requesters shall thus not keep Camera Modules in the Configured state
+unnecessarily.
+
+In order to support negotiation of the stream configuration between the module
+and the AP, the module may modify the requested configuration to match its
+capabilities.
+This includes lowering the number of requested streams and modifying the width,
+height and format of each stream. The module shall in that case reply to the
+Configure Streams request with the best configuration it can support according
+to the request and set the ADJUSTED bit in the response flags field.
+As a result the module shall stay in the Unconfigured state without modifying
+the device state.
+
+.. TODO: pinchartl: "best configuration" needs to be defined.
+
+Additionally the TEST_ONLY flag allows the AP to test a configuration without
+applying it.
+When the flag is set the Camera Module shall process the request normally but
+stop from applying the configuration. The module shall send the same response
+as it would if the TEST_ONLY flag wasn’t set and stay in the Unconfigured state
+without modifying the device state.
+
+The Camera Module shall report in the response the Virtual Channel number
+and Data Types for each stream regardless of whether the requested
+configuration was supported. All Virtual Channel numbers shall be identical
+and between 0 and 3 inclusive.
+All Data Types shall be different.
+Up to two data types can be used to identify different components of the same
+stream sent by a Camera Module. At least one data type shall be provided by the
+Camera Module, the second is optional and shall be set to the reserved 0x00
+value if not used.
+The Data Types should be set to the CSI-2 Data Type value matching the streams
+formats if possible, and may be set to a User Defined 8-bit Data Type
+(0x30 to 0x37).
+
+.. TODO: pinchartl: This requires a more detailed description.
+
+Streams shall be transmitted over CSI-2 using the reported Virtual Channels
+and Data Types.
+
+The Configure Streams operation shall be stateless.
+As long as the Camera Module doesn’t leave the Connected meta-state it shall
+send the same reply to all requests with the same set of parameters.
+
+The Configure Streams operation shall be stateless.
+As long as the Camera Module doesn’t leave the Connected meta-state it shall
+send the same reply to all requests with the same set of parameters.
+
+.. TODO: jmondi: properly define the parameters for bandwidth requirement
+   extimation
+
+.. TODO: jmondi: The following section shall be revised and included
+   Moreover, the camera module, shall report in the operation response
+   configuration parameters that will be used to set-up the CSI interfaces
+   between AP side and on Bridge side.
+   The supplied parameters describe the functional requirements that have to be
+   respected in order to guarantee a working image transmission, and they
+   will be applied to the CSI receiver of the AP, and to the CSI transmitter
+   connected to it, installed on the AP-Bridge.
+   The CSI configuration parameters, are be also used to compute the minimum
+   bandwidth requirement, not only during the CSI interface configuration
+   process, but also for tuning the UNIPRO network speed constraints.
+   It is thus important that camera module reports their maximum required
+   bandwidth expressed as number of lines sent in a second of transmission,
+   blanking included. This [and possibly other parameters] will be used for
+   the end-2-end configuration of the image transmission system.
+
+
+Greybus Camera Configure Streams Operation Request
+""""""""""""""""""""""""""""""""""""""""""""""""""
+
+The request supplies a list of stream configurations with the desired image
+width, height and format for each stream as show in table
+:num:`table-camera-operations-configure-streams-request`
+Both the width and height shall be multiples of 2.
+
+.. figtable::
+   :nofig:
+   :label: table-camera-operations-configure-streams-request
+   :caption: Camera Class Configure Streams Request
+   :spec: l l c c l
+
+    =========   =============  ======  ===========  ===========================
+    Offset      Field          Size    Value        Description
+    =========   =============  ======  ===========  ===========================
+    0           num_streams    1       Number       Number of streams. Between 0
+                                                    and 4
+    1           flags          1       Bitmap       Table :num:`table-camera-configure-streams-request-flag-bitmask`
+    2           padding        2       0            Shall be set to 0
+
+    *The following block appears num_streams times*
+    ---------------------------------------------------------------------------
+
+    4+(i*4)     width          2       Number       Image width in pixels
+    6+(i*4)     height         2       Number       Image height in pixels
+    8+(i*4)     format         2       Number       Image Format
+    10+(i*4)    padding        2       0            Shall be set to 0
+    =========   =============  ======  ===========  ===========================
+..
+
+.. figtable::
+   :nofig:
+   :label: table-camera-configure-streams-request-flag-bitmask
+   :caption: The flag bitmask in Camera Class Configure Stream Request
+   :spec: l l c c l
+
+    =============  ===========  =============================================
+    Field (Bit)    Value        Description
+    =============  ===========  =============================================
+    0              TEST-ONLY    The requested configuration shall not
+    \                           be applied but Camera Module shall
+    \                           only verify it is supported or not.
+    1\-7           Reserved     Shall be set to 0
+    =============  ===========  =============================================
+..
+
+Greybus Camera Configure Streams Operation Respose
+""""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Camera Module reports its configuration in the response message as shown
+in table :num:`table-camera-operations-configure-streams-response`
+If the response configuration isn’t identical to the request the response
+flag ADJUSTED shall be set.
+
+
+.. figtable::
+   :nofig:
+   :label: table-camera-operations-configure-streams-response
+   :caption: Camera Class Configure Streams Response
+   :spec: l l c c l
+
+    =========   =============  ======  ===========  ===========================
+    Offset      Field          Size    Value        Description
+    =========   =============  ======  ===========  ===========================
+    0           num_streams    1       Number       Number of streams. Between 0
+                                                    and 4
+    1           flags          1       Bitmap       Table :num:`table-camera-configure-streams-response-flag-bitmask`
+    2           num_lanes      1       Number       The number of data lanes configured
+    \                                               for the CSI-2 interface on the legacy
+    \                                               side of the AP bridge
+    3           padding        2       0            Shall be set to 0
+    4           bus_freq       4       Number       The CSI-2 bus frequency in HZ
+    8           lines_per_sec  4       Number       The total number of lines sent
+    \                                               in a second of transmission
+    \                                               (blankings included)
+
+    *The following block appears num_streams times*
+    ---------------------------------------------------------------------------
+
+    12+(i*16)    width          2       Number      Image width in pixels
+    14+(i*16)    height         2       Number      Image height in pixels
+    16+(i*16)    format         2       Number      Image Format
+    18+(i*16)    virtual_chan   1       Number      Virtual channel number
+    19+(i*16)    data_type[2]   2       Number      Data types for the stream
+    21+(i*16)    padding        1       0           Shall be set to 0
+    24+(i*16)    max_size       4       Number      Maximum frame size in Bytes
+    =========   =============  ======  ===========  ===========================
+..
+
+.. figtable::
+   :nofig:
+   :label: table-camera-configure-streams-response-flag-bitmask
+   :caption: The flag bitmask in Camera Class Configure Stream Response
+   :spec: l l c c l
+
+    =============  ===========  =============================================
+    Field (Bit)    Value        Description
+    =============  ===========  =============================================
+    0              ADJUSTED     The requested configuration is not
+    \                           supported and has been adjusted
+    1\-7           Reserved     Shall be set to 0
+    =============  ===========  =============================================
+..
+
 Consumer IR Protocol
 --------------------
 
