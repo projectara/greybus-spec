@@ -75,6 +75,16 @@ Control CPort:
     conditions, responds to Greybus :ref:`Operations
     <glossary-operation>` in the :ref:`control-protocol`.
 
+.. _glossary_camera-csi2:
+
+CSI-2:
+   Camera Serial Interface 2 as specified by MIPI.
+
+.. _glossary_camera-csi3:
+
+CSI-3:
+   Camera Serial Interface 3 as specified by MIPI.
+
 .. _glossary-device-class-protocol:
 
 Device Class Protocol
