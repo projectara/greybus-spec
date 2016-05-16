@@ -3402,6 +3402,162 @@ The specific legacy protocol used to communicate between the Camera AP Bridge
 and the components internal to the Camera Module is considered to be
 implementation-specific and out-of-scope for this document.
 
+Interfaces
+^^^^^^^^^^
+Camera Modules conformant with this specification are connected to the UniPro℠
+network using two separate interfaces.
+The modules shall implement a Greybus Interface for control purpose, and a
+CSI-2 interface to transmit data streams and optionally metadata.
+
+Camera Modules shall have one Greybus Interface that include two Bundles, a
+Control Bundle and a Camera Bundle, as shown in the following diagram.
+
+.. image:: /img/svg/ara-camera-class-protocol.png
+    :align: center
+..
+
+Greybus Interface
+"""""""""""""""""
+
+The Control Bundle shall be implemented as per the Greybus Specification.
+
+The Camera Bundle shall have ID 1 and class 13 and contain two CPorts referred
+to as the Camera Management CPort and the Camera Data CPort.
+
+The Camera Management CPort shall have protocol 13 and implement the Camera
+Class Protocol as defined in this specification.
+
+The Camera Data CPort shall have protocol 22 and implement CSI-2 packet
+transfer using the Toshiba AP Bridge CSI-2 encapsulation protocol.
+
+CSI-2 Interface
+"""""""""""""""
+
+Camera Modules shall transmit all data streams over a single CSI-2 port
+bridged over UniPro℠ using the Toshiba AP Bridge CSI-2 encapsulation protocol.
+The module may select the number of data lanes it requires up to a maximum of
+four lanes.
+
+Camera data transfer between a bridge-based Module and a native CSI-3 module
+is not supported.
+
+Communications (Informative)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Control
+"""""""
+
+Camera Modules are controlled through their Greybus Interface.
+The CSI-2 interface is not involved in control operations.
+
+Modules shall be able to reply to Greybus requests as soon as a connection is
+established with their Camera CPort.
+
+Control operations are split in three categories:
+
+* The management operations handle protocol version negotiation, capability
+  enumeration and generally any retrieval of information from the Camera Module
+  for the purpose of initializing the peer.
+* The video streaming operations control the video streams and their parameters
+  such as image resolution and image format.
+  Currently defined video streaming operations are the Configure Streams and
+  Flush operations.
+
+.. FIXME: jmondi: Isn't capture one video streaming control operation as well?
+
+* The image processing operations control all the Camera Module image capture
+  and processing algorithms and their parameters.
+  Currently defined image processing operation is the Capture operation.
+
+Camera modules shall implement all the operations defined in this section.
+When explicitly allowed Camera Modules may freely select implementation options
+but shall ensure that the options are compatible with each other as mandated
+by the specification, and shall report the selected options through
+capabilities.
+
+While the operations are fully specified, the content of the capabilities,
+capture settings and metadata lists allow for vendor-specific extensions.
+Unless stated otherwise the standard properties are optional.
+Camera Modules are encouraged to implement support for the standard properties
+where applicable, but are free to depart from the standard if it doesn't apply
+to a particular Camera Module architecture or use cases.
+
+Image Data
+""""""""""
+
+.. pincahrtl:
+   TODO: Add descriptions of use cases (in particular still image capture)
+   somewhere.
+
+
+All Camera Modules shall support transmission of one video stream over CSI-2.
+Additionally, Camera Modules may support additional concurrent video streams,
+for instance to transmit still images or auxiliary channels such as depth maps
+or resized images.
+
+Camera Modules shall transmit all streams multiplexed over a single CSI-2 port
+and a single Virtual Channel using the Data Type Interleaving method defined
+by CSI-2.
+The modules shall use Packet Level Interleaving as defined in section
+9.13.1 of [CSI-2]_.
+
+.. pinchartl:
+   TODO: What are the minimum demultiplexing requirements of the AP
+   CSI-2 receiver ?
+
+Metadata
+""""""""
+
+Metadata is defined as data other than image content that relates to a
+particular image frame.
+Metadata is used by Camera Modules to inform the image receiver of the
+properties used to capture a particular frame.
+
+Metadata support is optional. However, when supported, it shall be implemented
+according to this specification.
+
+The Camera Class Protocol defines two transport methods for metadata,
+over the Greybus interface or the CSI-2 interface.
+Camera Modules may implement neither, one or both of these transport methods.
+Implementing the CSI-2 transport method is recommended over the Greybus
+transport method.
+The supported methods shall be reported through the Camera Capabilities
+operation.
+
+Camera Modules that support metadata shall implement the CSI-2 frame number
+counter for all streams  that can generate metadata.
+
+.. pinchartl: TODO: Define the minimum counter period.
+
+**CSI-2 Transport**
+
+..
+    pinchartl:
+    TODO: To be revised, meta-data stream configuration needs to be specified.
+
+When transmitting metadata over CSI-2 the Camera Module shall send the metadata
+using the same Virtual Channel number as the image frames and set the Data Type
+to User Defined 8-bit Data Type 8 (0x37).
+
+Camera Modules should encode metadata using the properties and serialization
+format defined in the Properties section of Camera Device Class specifications.
+However, when this isn’t possible or practical (for instance when the module
+hardware dictates the metadata format), modules may chose to encode metadata
+using a custom method for metadata transmitted over CSI-2.
+
+Metadata transmitted over CSI-2 using a custom encoding shall at minimum
+contain the ID of the associated request.
+
+.. FIXME: jmondi: we probably want some other mandatory field here
+
+**Greybus Transport**
+
+When transmitting metadata over Greybus the Camera Module shall send a single
+Metadata request per image frame.
+
+Metadata transmitted over Greybus using the Metadata operation shall always be
+encoded as specified in the Properties section of this specification.
+
 Consumer IR Protocol
 --------------------
 
