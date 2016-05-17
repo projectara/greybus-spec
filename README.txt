@@ -6,11 +6,10 @@ Requirements:
 - LaTeX (and pdflatex, and various LaTeX packages)
 - Graphviz (in particular, "dot"): http://www.graphviz.org/
 - Mscgen: http://www.mcternan.me.uk/mscgen/
-- Imagemagick: https://imagemagick.org
 
 On Ubuntu:
 
-# apt-get install python-sphinx texlive texlive-latex-extra texlive-humanities graphviz mscgen imagemagick
+# apt-get install python-sphinx texlive texlive-latex-extra texlive-humanities graphviz mscgen
 
 Then:
 

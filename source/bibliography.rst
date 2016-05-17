@@ -20,6 +20,3 @@
 
 .. [JEDEC-UFS] JESD220B, Universal Flash Storage (UFS), JEDEC Solid
                State Technology Association, September 2013.
-
-.. [CSI-2]     MIPI Alliance Specification for CSI-2, version 1.3, MIPI
-               Alliance, Inc., 29 May 2014.
