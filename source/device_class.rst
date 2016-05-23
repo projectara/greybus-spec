@@ -21,37 +21,8 @@ are said to be *device class conformant*.
 .. include:: device_class/vibrator.txt
 .. include:: device_class/power.txt
 .. include:: device_class/audio.txt
-
-Bluetooth Protocol
-------------------
-
-TBD
-
-Consumer IR Protocol
---------------------
-
-TBD
-
-GPS Protocol
-------------
-
-TBD
-
 .. include:: device_class/hid.txt
-
-Keymaster Protocol
-------------------
-
-TBD
-
 .. include:: device_class/lights.txt
-
-
-Sensors Protocol
-----------------
-
-TBD
-
 .. include:: device_class/loopback.txt
 .. include:: device_class/raw.txt
 
