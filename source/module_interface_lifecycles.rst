@@ -1354,7 +1354,7 @@ The following values are used in this procedure:
 
 
 8. This procedure is now complete, and has either succeeded or
-   failed. If it succeeded, the Interface is now SUSPENDED.
+   failed. If it succeeded, the Interface is now OFF.
 
 .. _lifecycles_reboot:
 
