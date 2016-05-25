@@ -707,7 +707,7 @@ present on each port in the |unipro| switch inside the Frame.
 The mailbox attribute ID is 0xA000, and its selector index is ignored.
 
 When an Interface State's UNIPRO sub-state is UNIPRO_OFF, its MAILBOX
-sub-state is NULL. Otherwise, it is a positive integer.
+sub-state is MAILBOX_NULL. Otherwise, it is a positive integer.
 
 When an Interface State's UNIPRO sub-state is UNIPRO_UP, a Module may
 write to this DME attribute using a |unipro| peer write. In a Greybus
