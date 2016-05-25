@@ -420,7 +420,7 @@ that the Interface's Lifecycle State is
 
 The AP should not send a Control Connected Request to an Interface
 with a cport_id field if it has stored information indicating that the
-CPort is connected. If this occurs, the results are unspecified.
+CPort is connected. If this occurs, the results are undefined.
 
 .. _control-disconnecting:
 
