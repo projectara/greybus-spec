@@ -348,15 +348,17 @@ it. Class types are defined in Table :num:`table-bundle-class`.
 CPort Descriptor
 ^^^^^^^^^^^^^^^^
 
-A CPort descriptor describes a CPort implemented within the
-Module. Each CPort is associated with one of the Interface's Bundle,
-and has an ID unique for that Interface.  Every CPort defines the
-Protocol used by the AP Module to interact with the CPort.
+A CPort Descriptor describes a CPort implemented within the
+Interface. Each CPort is associated with one of the Interface's
+Bundles, and has an ID unique among CPorts in that Interface.  A CPort
+Descriptor declares the Greybus Protocol implemented by that CPort's
+User. This information may be used by the AP Module to interact with
+the CPort User.
 
 A special control CPort shall be defined for every Interface, and
 shall be defined to use the *Control Protocol*.
 
-The Cport Descriptor is defined in Table
+The CPort Descriptor is defined in Table
 :num:`table-cport-descriptor`. The details of these Protocols are
 defined in the sections :ref:`device-class-protocols` and
 :ref:`bridged-phy-protocols` below.
