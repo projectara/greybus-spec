@@ -478,9 +478,9 @@ The Interface may send responses on the Connection to Operations whose
 requests it received before the Control Disconnecting Operation
 Request. Additionally, after sending the Control Disconnecting
 Response, the Interface shall continue to send responses to :ref:`Ping
-<greybus-protocol-ping-operation>` requests. However, the Interface
-shall not send any data on the Connection other than responses to Ping
-requests after sending the Control Disconnecting Response.
+<greybus-protocol-ping-operation>` requests. However, after sending
+the Control Disconnecting Response, the Interface shall not send any
+data on the Connection other than responses to Ping requests.
 
 .. _control-disconnected:
 
