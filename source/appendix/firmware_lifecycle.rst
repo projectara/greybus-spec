@@ -112,9 +112,9 @@ Firmware Management Bundle (Bundle 1):
 
   - protocol = 0x0b
 
-- (Optional) Component Authentication Protocol (CAP) on CPort 4 talks over CAP Protocol (Not defined yet in the Greybus Specifications).
+- (Optional) Component Authentication Protocol (CAP) on CPort 4 talks over CAP Protocol :ref:`auth-protocol`.
 
-  - protocol = 0xXX (TBD)
+  - protocol = 0x19
 
 Identify Current Interface Firmware Stage
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -435,7 +435,8 @@ typically should not be used.)
     Camera Data                     0x16
     Firmware Download               0x17
     Firmware Management             0x18
-    (All other values reserved)     0x19..0xfd
+    Component Authentication        0x19
+    (All other values reserved)     0x1a..0xfd
     Raw                             0xfe
     Vendor Specific                 0xff
     ============================    ==========
