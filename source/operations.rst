@@ -174,7 +174,8 @@ interpreted only by its respective protocol handler.
     GB_OP_INVALID                 0x06             Invalid argument supplied
     GB_OP_RETRY                   0x07             Request should be retried
     GB_OP_NONEXISTENT             0x08             The device does not exist
-    Reserved                      0x09 to 0xfd     Reserved for future use
+    GB_OP_INVALID_STATE           0x09             Request is incompatible with receiving Bundle state
+    Reserved                      0x0a to 0xfd     Reserved for future use
     GB_OP_UNKNOWN_ERROR           0xfe             Unknown error occured
     GB_OP_INTERNAL                0xff             Invalid initial value.
     ============================  ===============  =======================
