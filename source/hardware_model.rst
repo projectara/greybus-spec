@@ -1063,6 +1063,66 @@ is:
 
 .. include:: lifecycle-states/detached.txt
 
+Bundle Power States
+^^^^^^^^^^^^^^^^^^^
+
+A Bundle represents a device in Greybus and as such is the smallest
+power-manageable entity. A Bundle is always in one of the following
+power states: BUNDLE_ACTIVE, BUNDLE_SUSPENDED or BUNDLE_OFF.
+
+The Bundle power states impact the Interface Lifecycle transitions
+between the :ref:`hardware-model-lifecycle-enumerated`,
+:ref:`hardware-model-lifecycle-suspended` and
+:ref:`hardware-model-lifecycle-off` states. For example, an Interface
+shall not enter the :ref:`hardware-model-lifecycle-suspended` state
+unless all Bundles associated with it are already in BUNDLE_SUSPENDED
+or BUNDLE_OFF state.
+
+A Bundle State change request can only be issued by the AP when the
+Interface is in the :ref:`hardware-model-lifecycle-enumerated` state.
+
+After an Interface completes the transition to the
+:ref:`hardware-model-lifecycle-activated` state, a Bundle is in the
+BUNDLE_OFF state and shall be activated only when requested by the AP.
+
+All Bundles are required to support four power-state transitions:
+BUNDLE_ACTIVE -> BUNDLE_OFF, BUNDLE_OFF -> BUNDLE_ACTIVE,
+BUNDLE_ACTIVE -> BUNDLE_SUSPENDED and BUNDLE_SUSPENDED ->
+BUNDLE_ACTIVE.
+
+A detailed specification of the Bundle and Interface power-management
+flow can be found in sections describing the related Greybus
+Operations.
+
+BUNDLE_ACTIVE
+"""""""""""""
+
+The underlying hardware is fully operational, powered and Greybus
+Connections for all CPorts associated with this Bundle can be
+established if required by the AP. The Bundle shall enter this state
+only when its corresponding Interface is in the
+:ref:`hardware-model-lifecycle-enumerated` state.
+
+BUNDLE_SUSPENDED
+""""""""""""""""
+
+The underlying hardware is in a low-power state and Greybus
+Connections for all CPorts associated with this Bundle are closed
+and the |unipro| link is hibernated, but the internal context may be
+preserved (in an implementation-specific way) allowing the Bundle to
+quickly transition back to the BUNDLE_ACTIVE state. Any Greybus
+Connection that the AP might want to use shall be re-established
+when transitioning back to the BUNDLE_ACTIVE state.
+
+BUNDLE_OFF
+""""""""""
+
+The underlying hardware is disabled and the context is lost. Greybus
+Connections for all CPorts associated with this Bundle are closed.
+
+This is the default state of a Bundle after the :ref:`lifecycles_boot`
+stage.
+
 .. _hardware-model-ap-module-requirements:
 
 Special AP Module Requirements
