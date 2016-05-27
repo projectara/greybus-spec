@@ -1107,12 +1107,12 @@ BUNDLE_SUSPENDED
 """"""""""""""""
 
 The underlying hardware is in a low-power state and Greybus
-Connections for all CPorts associated with this Bundle are closed
-and the |unipro| link is hibernated, but the internal context may be
-preserved (in an implementation-specific way) allowing the Bundle to
-quickly transition back to the BUNDLE_ACTIVE state. Any Greybus
-Connection that the AP might want to use shall be re-established
-when transitioning back to the BUNDLE_ACTIVE state.
+Connections for all CPorts associated with this Bundle are closed, but
+the internal context may be preserved (in an implementation-specific
+way) allowing the Bundle to quickly transition back to the
+BUNDLE_ACTIVE state. Any Greybus Connection that the AP might want to
+use shall be re-established when transitioning back to the
+BUNDLE_ACTIVE state.
 
 BUNDLE_OFF
 """"""""""
