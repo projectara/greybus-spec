@@ -12,12 +12,6 @@ The operations in the Greybus loopback Protocol are:
 
     See :ref:`greybus-protocol-ping-operation`.
 
-.. c:function:: int ping(void);
-
-   Sends a "ping" message to the device, from the host, that needs to be
-   acknowledged by the device.  By measuring how long this message takes
-   to succeed, an idea of the speed of the connection can be made.
-
 .. c:function:: int transfer(u32 len, char *send, char *receive);
 
    Sends a stream of bytes to the device and receives them back from the
@@ -63,23 +57,6 @@ The Greybus Loopback Ping Operation is the
 :ref:`greybus-protocol-ping-operation` for the Loopback Protocol.
 It consists of a request containing no payload, and a response
 with no payload that indicates a successful result.
-
-Greybus Loopback Ping Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The Greybus ping operation is a simple message that has no response.  It
-is used to time how long a single message takes to be sent and
-acknowledged from the receiver.
-
-Greybus Loopback Ping Request
-"""""""""""""""""""""""""""""
-
-The Greybus ping request message has no payload.
-
-Greybus Loopback Ping Response
-""""""""""""""""""""""""""""""
-
-The Greybus ping response message has no payload.
 
 Greybus Loopback Transfer Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
