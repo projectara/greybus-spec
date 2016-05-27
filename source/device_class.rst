@@ -16,12 +16,15 @@ are said to be *device class conformant*.
           - MIPI CSI-3: for camera Modules
           - JEDEC UFS: for storage Modules
 
-.. include:: device_class/audio.txt
-.. include:: device_class/firmware.txt
-.. include:: device_class/hid.txt
-.. include:: device_class/lights.txt
-.. include:: device_class/loopback.txt
-.. include:: device_class/power.txt
-.. include:: device_class/raw.txt
-.. include:: device_class/vibrator.txt
+.. toctree::
+    :maxdepth: 2
+
+    device_class/audio.rst
+    device_class/firmware.rst
+    device_class/hid.rst
+    device_class/lights.rst
+    device_class/loopback.rst
+    device_class/power.rst
+    device_class/raw.rst
+    device_class/vibrator.rst
 
