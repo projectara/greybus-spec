@@ -1024,6 +1024,11 @@ internal state within the Interface is maintained, and system power is
 still applied. No Greybus Protocol communication with the Interface is
 possible when the Interface is in the SUSPENDED state.
 
+An Interface shall not enter this state from the ENUMERATED state
+unless all bundles associated with it have entered the
+:ref:`hardware-model-bundle-suspended` or
+:ref:`hardware-model-bundle-off` state.
+
 An Interface shall not alter its :ref:`manifest-description` while it
 is entering, in, or exiting the SUSPENDED state.
 
@@ -1041,6 +1046,10 @@ The OFF Lifecycle State denotes an Interface which has power and
 communication signals disabled, but whose INTF_TYPE and ORDER are
 still known, having been determined during previous Lifecycle States
 in the Interface Lifecycle.
+
+An Interface shall not enter this state from the ENUMERATED state
+unless all bundles associated with it have entered the
+:ref:`hardware-model-bundle-off` state.
 
 In the OFF Lifecycle State, the following Interface States are allowed
 as described in later sections:
