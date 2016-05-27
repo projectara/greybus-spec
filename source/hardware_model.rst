@@ -1094,6 +1094,8 @@ A detailed specification of the Bundle and Interface power-management
 flow can be found in sections describing the related Greybus
 Operations.
 
+.. _hardware-model-bundle-active:
+
 BUNDLE_ACTIVE
 """""""""""""
 
@@ -1102,6 +1104,8 @@ Connections for all CPorts associated with this Bundle can be
 established if required by the AP. The Bundle shall enter this state
 only when its corresponding Interface is in the
 :ref:`hardware-model-lifecycle-enumerated` state.
+
+.. _hardware-model-bundle-suspended:
 
 BUNDLE_SUSPENDED
 """"""""""""""""
@@ -1113,6 +1117,8 @@ way) allowing the Bundle to quickly transition back to the
 BUNDLE_ACTIVE state. Any Greybus Connection that the AP might want to
 use shall be re-established when transitioning back to the
 BUNDLE_ACTIVE state.
+
+.. _hardware-model-bundle-off:
 
 BUNDLE_OFF
 """"""""""
