@@ -482,6 +482,11 @@ Response, the Interface shall continue to send responses to :ref:`Ping
 the Control Disconnecting Response, the Interface shall not send any
 data on the Connection other than responses to Ping requests.
 
+Before issuing a response to a Disconnecting request, the Interface
+shall ensure that any further |unipro| Messages received on the CPort
+associated with its side of the Connection are immediately discarded,
+unless the Messages are well-formed Greybus Ping requests.
+
 .. _control-disconnected:
 
 Greybus Control Disconnected Operation
