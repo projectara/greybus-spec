@@ -78,12 +78,12 @@ Control CPort:
 .. _glossary_camera-csi2:
 
 CSI-2:
-   Camera Serial Interface 2 as specified by MIPI.
+   Camera Serial Interface 2. See :ref:`CSI 2 Specifications <CSI-2>`.
 
 .. _glossary_camera-csi3:
 
 CSI-3:
-   Camera Serial Interface 3 as specified by MIPI.
+   Camera Serial Interface 3. See :ref:`CSI 3 Specifications <CSI-3>`.
 
 .. _glossary-device-class-protocol:
 

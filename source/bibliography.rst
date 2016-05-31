@@ -23,3 +23,6 @@
 
 .. [CSI-2]     MIPI Alliance Specification for CSI-2, version 1.3, MIPI
                Alliance, Inc., 29 May 2014.
+
+.. [CSI-3]     MIPI Alliance Specification for CSI-3, version 1.1, MIPI
+               Alliance, Inc., 2012.
