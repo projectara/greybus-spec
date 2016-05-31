@@ -1235,6 +1235,7 @@ line coding values to be set.
     4        format          1       Number          :ref:`uart-stop-bit-format`
     5        parity          1       Number          :ref:`uart-parity-format`
     6        data_bits       1       Number          Number of data bits
+    7        flow_control    1       Bit mask        :ref:`uart-flow-control-flags`
     =======  ==============  ======  ==========      ===========================
 
 ..
@@ -1284,6 +1285,29 @@ formats.
     Space Parity                    0x04
     (All other values reserved)     0x05..0xff
     ==============================  ====
+
+..
+
+.. _uart-flow-control-flags:
+
+Greybus UART Flow Control Flags
+""""""""""""""""""""""""""""""""
+
+Table :num:`table-uart-flow-control-flags` defines the Greybus UART
+flow control bit mask.
+
+.. figtable::
+    :nofig:
+    :label: table-uart-flow-control-flags
+    :caption: UART Protocol Flow Control Flags
+    :spec: l l l
+
+    ============================    ==============  ===================
+    Flag                            Value           Description
+    ============================    ==============  ===================
+    AUTO_RTSCTS                     0x01            Enable automatic rts/cts
+    (all other values reserved)     0x02..0x80
+    ============================    ==============  ===================
 
 ..
 
