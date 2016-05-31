@@ -681,9 +681,16 @@ The following value is used in this sub-sequence:
 1. The :ref:`lifecycles_connection_closure_prologue` sub-sequence is
    followed. The Closing Connection for that sub-sequence is the
    Control Connection for the other Interface.  If the sub-sequence
-   fails, this sequence has failed. Go directly to step 5.
+   fails, this sequence has failed. If it has failed, go directly to
+   step 5.
 
-2. The AP shall exchange an :ref:`svc-interface-set-power-mode` with
+2. The :ref:`lifecycles_connection_closure_epilogue` sub-sequence is
+   followed. The Closing Connection for that sub-sequence is the
+   Control Connection for the other Interface. If the sub-sequence
+   fails, this sequence has failed. If it has failed, go directly to
+   step 5.
+
+3. The AP shall exchange a :ref:`svc-interface-set-power-mode` with
    the SVC.
 
    The intf_id field in the request payload shall equal interface_id.
@@ -698,17 +705,14 @@ The following value is used in this sub-sequence:
    duration in this step to allow the Interface to power down
    internally in the next step.
 
-3. The Interface shall be capable of receiving notification that
+   If the Operation succeeds, this procedure has succeeded.
+
+4. The Interface shall be capable of receiving notification that
    UNIPRO became UPRO_HIBERNATE. The Interface may now perform
    implementation-defined procedures used during shutdown. No
    provision is made within the Greybus Specification to determine
    whether these procedures, if any, are complete, other than the
    delay in the previous step.
-
-4. The :ref:`lifecycles_connection_closure_epilogue` sub-sequence is
-   followed. The Closing Connection for that sub-sequence is the
-   Control Connection for the other Interface. If the sub-sequence
-   fails, this sequence has failed. Otherwise, it has succeeded.
 
 5. The sequence is now complete, and has succeeded or failed.
 
@@ -758,9 +762,16 @@ The following value is used in this sub-sequence:
 1. The :ref:`lifecycles_connection_closure_prologue` sub-sequence is
    followed. The Closing Connection for that sub-sequence is the
    Control Connection for the other Interface.  If the sub-sequence
-   fails, this sequence has failed. Go directly to step 5.
+   fails, this sequence has failed. If it has failed, go directly to
+   step 5.
 
-2. The AP shall exchange an :ref:`svc-interface-set-power-mode` with
+2. The :ref:`lifecycles_connection_closure_epilogue` sub-sequence is
+   followed. The Closing Connection for that sub-sequence is the
+   Control Connection for the other Interface. If the sub-sequence
+   fails, this sequence has failed. If it has failed, go directly to
+   step 5.
+
+3. The AP shall exchange a :ref:`svc-interface-set-power-mode` with
    the SVC.
 
    The intf_id field in the request payload shall equal interface_id.
@@ -775,7 +786,9 @@ The following value is used in this sub-sequence:
    duration in this step to allow the Interface to power down
    internally in the next step.
 
-3. The Interface shall be capable of receiving notification that
+   If the Operation succeeds, this procedure has suceeded.
+
+4. The Interface shall be capable of receiving notification that
    UNIPRO became UPRO_HIBERNATE. The Interface may now perform
    implementation-defined procedures used during shutdown.
 
@@ -787,11 +800,6 @@ The following value is used in this sub-sequence:
    ensure it can be resumed successfully if it remains SUSPENDED, then
    the procedure defined in :ref:`lifecycles_resume` is subsequently
    followed.
-
-4. The :ref:`lifecycles_connection_closure_epilogue` sub-sequence is
-   followed. The Closing Connection for that sub-sequence is the
-   Control Connection for the other Interface. If the sub-sequence
-   fails, this sequence has failed. Otherwise, it has succeeded.
 
 5. The sequence is now complete, and has succeeded or failed.
 
