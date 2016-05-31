@@ -1064,6 +1064,10 @@ conceptually:
 
     Receives the state of the UART's control lines.
 
+.. c:function:: int receive_credits(u16 count);
+
+   Receive transmit credits form the uart controller.
+
 UART Protocol Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1096,7 +1100,8 @@ operation is a request or a response.
     Set Control Line State       0x05           0x85
     Send Break                   0x06           0x86
     Serial State                 0x07           0x87
-    (all other values reserved)  0x08..0x7e     0x88..0xfe
+    Receive Credits              0x08           0x88
+    (all other values reserved)  0x09..0x7e     0x89..0xfe
     Invalid                      0x7f           0xff
     ===========================  =============  ==============
 
@@ -1460,6 +1465,37 @@ a Greybus UART serial state request.
     RI                              0x04            Ring Signal detected
     (all other values reserved)     0x08..0x80
     ============================    ==============  ===================
+
+..
+
+Greybus UART Receive Credits Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus UART receive credits operation is initiated by the Module implementing
+the UART Protocol. It notifies the peer that output data has been processed and
+more space has been made available in its internal output buffers. For optimal
+performance, and when suitable, the module should aggregate credits.
+
+Note that the UART receive credits operation is unidirectional and has no response.
+
+Greybus UART Receive Credits Request
+""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-uart-receive-credits-request` defines the Greybus UART
+receive credits request. The request contains the amount of credits that has been
+processed and that is now available to the peer for more output data.
+
+.. figtable::
+    :nofig:
+    :label: table-uart-receive-credits-request
+    :caption: UART Protocol Receive Credits Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ==========      ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ==========      ===========================
+    0        count            2       Number         number of credits
+    =======  ==============  ======  ==========      ===========================
 
 ..
 
