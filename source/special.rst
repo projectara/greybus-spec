@@ -359,6 +359,17 @@ these requirements.
 Greybus Control Connected Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. SW-4660 + any sub-tasks track adding module/module connections.
+
+.. note::
+
+   The Control Connected Operation is currently defined under the
+   assumption that all Connections in the Greybus System are between
+   an AP Interface and another, non-AP Interface in the System.
+
+   The results in the case of Connections between two Interfaces,
+   neither or both of which are AP Interfaces, are undefined.
+
 The AP may establish Connections between Interfaces in the Greybus
 System. If the :ref:`Interface State
 <hardware-model-interface-states>` of an Interface has
@@ -436,10 +447,30 @@ The AP should not send a Control Connected Request to an Interface
 with a cport_id field if it has stored information indicating that the
 CPort is connected. If this occurs, the results are undefined.
 
+The AP Interface shall not transmit |unipro| Segments to a CPort
+identified by an Interface Manifest's CPort Descriptors unless it
+successfully exchanges a Control Connected Operation with the
+Interface as part of Greybus Connection establishment, as described in
+:ref:`lifecycles_connection_establishment`. After this successful
+exchange of a Control Connected Operation, the AP Interface may
+transmit Segments on the CPort at its end of the Connection, as
+described in :ref:`connection-tx-restrictions`.
+
 .. _control-disconnecting:
 
 Greybus Control Disconnecting Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. SW-4660 + any sub-tasks track adding module/module connections.
+
+.. note::
+
+   The Control Disconnected Operation is currently defined under the
+   assumption that all Connections in the Greybus System are between
+   an AP Interface and another, non-AP Interface in the System.
+
+   The results in the case of Connections between two Interfaces,
+   neither or both of which are AP Interfaces, are undefined.
 
 After establishing a Greybus Connection from an AP Interface to
 another Interface, the AP may later use the Greybus Control
@@ -471,12 +502,19 @@ receiving Interface that is being closed.
 ..
 
 After sending this request to notify the Interface that a Connection
-is closing, the AP may issue responses to requests it has already
-received on that Connection, but it shall not send additional requests
-on the Connection except for :ref:`Ping Operation
-<greybus-protocol-ping-operation>` requests.
+is closing, the AP Interface may transmit Segments on the CPort at its
+end of the Connection as defined in :ref:`connection-tx-restrictions`
+if one or more of the following conditions hold:
 
-The AP may send a Control Disconnecting Operation with a cport_id
+- when issuing responses to requests it has already received on the
+  Connection,
+- when exchanging :ref:`Ping Operations <greybus-protocol-ping-operation>`
+  with the Interface, or
+- when transmitting |unipro| Flow Control Tokens.
+
+The AP Interface shall otherwise halt Segment transmission on the CPort.
+
+The AP Interface may send a Control Disconnecting Operation with a cport_id
 field equal to zero when disconnecting a Control Connection, but
 should not do so if it has stored information indicating that other
 CPorts on that Interface are connected.
@@ -511,6 +549,17 @@ unless the Messages are well-formed Greybus Ping requests.
 
 Greybus Control Disconnected Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. SW-4660 + any sub-tasks track adding module/module connections.
+
+.. note::
+
+   The Control Disconnected Operation is currently defined under the
+   assumption that all Connections in the Greybus System are between
+   an AP Interface and another, non-AP Interface in the System.
+
+   The results in the case of Connections between two Interfaces,
+   neither or both of which are AP Interfaces, are undefined.
 
 The Greybus Control Disconnected Operation is sent to notify an
 Interface that a Greybus Connection has been closed. The users of the
@@ -560,6 +609,10 @@ Greybus Control Disconnected Response
 The Greybus Control Disconnected Response message contains no payload.
 
 The response status shall equal GB_OP_SUCCESS.
+
+After receiving the response, the AP shall halt Segment transmission
+on the CPort which was at its end of the Connection which is now
+closed, as defined in :ref:`connection-tx-restrictions`.
 
 .. _control-timesync-enable:
 
