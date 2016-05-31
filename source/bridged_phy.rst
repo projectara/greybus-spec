@@ -1187,7 +1187,7 @@ particular character.
 Greybus UART Receive Data Status Flags
 """"""""""""""""""""""""""""""""""""""
 
-Table :num:`table-uart-receive-data-request` defines the values supplied
+Table :num:`table-uart-receive-data-status-flags` defines the values supplied
 as flag values for the Greybus UART receive data request.
 Any combination of these values may be supplied in a single request.
 
