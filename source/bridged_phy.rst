@@ -1068,6 +1068,10 @@ conceptually:
 
    Receive transmit credits form the uart controller.
 
+.. c:function:: int flush_buffer(u8 flags);
+
+   Clear the internal uart queues.
+
 UART Protocol Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1101,7 +1105,8 @@ operation is a request or a response.
     Send Break                   0x06           0x86
     Serial State                 0x07           0x87
     Receive Credits              0x08           0x88
-    (all other values reserved)  0x09..0x7e     0x89..0xfe
+    Flush                        0x09           0x89
+    (all other values reserved)  0x10..0x7e     0x90..0xfe
     Invalid                      0x7f           0xff
     ===========================  =============  ==============
 
@@ -1498,6 +1503,62 @@ processed and that is now available to the peer for more output data.
     =======  ==============  ======  ==========      ===========================
 
 ..
+
+Greybus UART FLUSH Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus UART Flush operation requests the UART device to discard data
+that has been stored internally and is waiting to be processed.
+
+Greybus UART Flush Request
+""""""""""""""""""""""""""
+
+Table :num:`table-uart-flush-request` defines the Greybus UART flush
+request. This requests the UART device to discard data that has been
+queued.
+
+.. figtable::
+    :nofig:
+    :label: table-uart-flush-request
+    :caption: UART Protocol Flush Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ===========     ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ===========     ===========================
+    0        flags           1       Bit mask        :ref:`uart-flush-flags`
+    =======  ==============  ======  ===========     ===========================
+
+..
+
+.. _uart-flush-flags:
+
+Greybus UART Flush Flags
+""""""""""""""""""""""""
+
+Table :num:`table-uart-flush-flags` defines the Greybus UART flush flags
+bit mask.
+
+.. figtable::
+    :nofig:
+    :label: table-uart-flush-flags
+    :caption: UART Protocol Flush Flags
+    :spec: l l l
+
+    ============================    ==============  ===================
+    Flag                            Value           Description
+    ============================    ==============  ===================
+    FLUSH_TRANSMITTER               0x01            Flush transmitter queue(s)
+    FLUSH_RECEIVER                  0x02            Flush receiver queue(s)
+    (all other values reserved)     0x04..0x80
+    ============================    ==============  ===================
+
+..
+
+Greybus UART Flush Response
+"""""""""""""""""""""""""""
+
+The Greybus UART flush response message has no payload.
 
 PWM Protocol
 ------------
