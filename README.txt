@@ -18,5 +18,7 @@ $ make latexpdf # For generating pdf
 $ make html # For generating a hierarchy of html pages
 $ make singlehtml # For generating a single html page
 
-Output goes in build/latex. Build backends other than PDF are not
-currently tested.
+*************************************************************
+*   MAKE SURE "make html" BUILDS WITHOUT WARNINGS BEFORE    *
+*   SUBMITTING ANY PATCHES TO THE SPECIFICATION!            *
+*************************************************************
