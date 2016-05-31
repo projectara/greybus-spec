@@ -183,3 +183,45 @@ Common Greybus Protocol Ping Response
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The Greybus Ping response message contains no payload.
+
+.. _connection-tx-restrictions:
+
+Connection Transmission Restrictions
+------------------------------------
+
+Greybus Connections use |unipro| CPorts to exchange
+application-specific payload data and, when the |unipro| End-to-End
+Flow Control (E2EFC) feature is enabled, Flow Control Tokens.
+
+Within a Greybus System, this exchange of data and Flow Control Tokens
+is subject to certain restrictions and recommendations defined in this
+section.
+
+Specifically, when an Interface "**may transmit Segments on a
+CPort**", the following requirements and recommendations hold:
+
+- Interfaces shall transmit Segments on CPorts only when permitted or
+  required to do so by [MIPI01]_, including Segments carrying Flow
+  Control Tokens, regardless of whether the Segments carry payload
+  data.
+
+- Interfaces shall transmit Segments on CPorts involved in Greybus
+  Connections only when permitted or required to do so by the Greybus
+  Connection Protocol implemented by their respective CPort Users.
+
+- If the |unipro| E2EFC feature is enabled on a connected CPort,
+  Interfaces should ensure that Segments carrying Flow Control Tokens
+  are transmitted by that CPort as buffer space becomes available to
+  its CPort User.
+
+Additionally, when an Interface "**shall halt Segment transmission on
+a CPort**", the Interface shall ensure that the CPort's User shall
+subsequently neither:
+
+- request the transfer of a Message Fragment to its peer CPort User, nor
+- signal its ability to consume more data to its local CPort.
+
+The CPort User may terminate a currently ongoing |unipro| Message
+transmission or complete ongoing flow-control related transactions
+with its local CPort as a result of the Interface ensuring these
+conditions hold.

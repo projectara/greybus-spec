@@ -394,6 +394,20 @@ receiving Interface that has been connected.
 
 ..
 
+The AP should ensure that the CPort ID given by cport_id in the
+request payload was given in the id field of a :ref:`cport-descriptor`
+in the Interface's :ref:`Manifest <manifest-description>`. The results
+of this Operation under other circumstances are undefined.
+
+Interfaces shall not transmit any |unipro| Segments on any CPorts
+identified in their Manifests' CPort Descriptors before receiving a
+Control Connected Request indicating that the CPort is now connected,
+regardless of whether the Segments contain L4 payload.
+
+After receiving this request, the Interface may transmit Segments on
+the CPort given by cport_id, as described in
+:ref:`connection-tx-restrictions`.
+
 Greybus Control Connected Response
 """"""""""""""""""""""""""""""""""
 
@@ -467,20 +481,26 @@ field equal to zero when disconnecting a Control Connection, but
 should not do so if it has stored information indicating that other
 CPorts on that Interface are connected.
 
+After receiving the request, the Interface may transmit Segments on
+the CPort at its end of the Connection as defined in
+:ref:`connection-tx-restrictions` if one or more of the following
+conditions hold:
+
+- when issuing responses on the Connection to Operations whose
+  requests it received before the Control Disconnecting Operation
+  Request,
+- when exchanging Ping Operations with the AP, or
+- when transmitting |unipro| Flow Control Tokens.
+
+The receiving Interface shall otherwise halt Segment transmission on
+the CPort.
+
 Greybus Control Disconnecting Response
 """"""""""""""""""""""""""""""""""""""
 
 The Greybus Control Disconnecting response message contains no payload.
 
 The response status shall equal GB_OP_SUCCESS.
-
-The Interface may send responses on the Connection to Operations whose
-requests it received before the Control Disconnecting Operation
-Request. Additionally, after sending the Control Disconnecting
-Response, the Interface shall continue to send responses to :ref:`Ping
-<greybus-protocol-ping-operation>` requests. However, after sending
-the Control Disconnecting Response, the Interface shall not send any
-data on the Connection other than responses to Ping requests.
 
 Before issuing a response to a Disconnecting request, the Interface
 shall ensure that any further |unipro| Messages received on the CPort
@@ -529,6 +549,10 @@ Interface may set local |unipro| attributes related to that CPort to
 implementation-defined values as part of this process.  If such
 procedures are required by the Interface, it shall complete them
 before sending the response.
+
+Before sending the response, the receiving Interface shall halt
+Segment transmission on the CPort given by cport_id as described in
+:ref:`connection-tx-restrictions`.
 
 Greybus Control Disconnected Response
 """""""""""""""""""""""""""""""""""""
