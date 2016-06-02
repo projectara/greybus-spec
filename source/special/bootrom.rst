@@ -109,7 +109,7 @@ Greybus Bootrom Ping Operation
 
 The Greybus Bootrom Ping Operation is the
 :ref:`greybus-protocol-ping-operation` for the Bootrom Protocol.  It
-consists of a request containing no payload, and a response with no
+consists of a Request containing no payload, and a Response with no
 payload that indicates a successful result.
 
 Greybus Bootrom Protocol Version Operation
