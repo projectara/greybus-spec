@@ -272,15 +272,16 @@ header.
 Greybus Bootrom Ready to Boot Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus Bootrom Ready To Boot Operation allows the requesting Interface to notify
-the AP that it has successfully loaded the Connection's currently associated
-firmware blob, and is able to execute that blob, as well as
-indicate the status of its firmware blob.  The AP shall then send a Response
-empty of payload, indicating via the header's status byte whether or not it
-permits the Interface to continue booting.
+The Greybus Bootrom Ready To Boot Operation allows the requesting
+Interface to notify the AP that it has successfully loaded the
+Connection's currently associated firmware blob, and is able to
+execute that blob, as well as indicate the status of its firmware
+blob.  The AP shall then send a Response empty of payload, indicating
+via the header's status byte whether or not it permits the Interface
+to continue booting.
 
-The Interface shall send a Ready To Boot Request only when it has successfully
-loaded a firmware blob and can execute that firmware.
+The Interface shall send a Ready To Boot Request only when it has
+successfully loaded a firmware blob and can execute that firmware.
 
 Greybus Bootrom Ready to Boot Request
 """""""""""""""""""""""""""""""""""""
@@ -308,9 +309,9 @@ firmware blob.
 Greybus Bootrom Ready to Boot Firmware Blob Status
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
-Table :num:`table-firmware-blob-status` defines the constants by which the
-Interface can indicate the status of its firmware blob to the AP in a Greybus
-Bootrom Ready to Boot Request.
+Table :num:`table-firmware-blob-status` defines the constants by which
+the Interface can indicate the status of its firmware blob to the AP
+in a Greybus Bootrom Ready to Boot Request.
 
 .. figtable::
     :nofig:
