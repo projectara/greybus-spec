@@ -153,12 +153,14 @@ The Greybus Bootrom AP Ready Response Message has no payload.
 Greybus Bootrom Firmware Size Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus Bootrom firmware size operation allows the requestor to submit a
+The Greybus Bootrom Firmware Size Operation allows the Interface to submit a
 boot stage to the AP, so that the AP can associate a firmware blob with that
 boot stage and respond with its size.  The AP keeps the firmware blob associated
 with the boot stage until it receives another Firmware Size Request on the same
-connection, but is not required to send identical firmware blobs in response to
-different requests with identical boot stages, even to the same module.
+Connection, but is not required to send identical firmware blobs in Response to
+different Requests with identical boot stages, even to the same Interface.
+
+The boot stage parameter is fixed as a result of this Protocol's deprecation.
 
 .. _firmware-size-request:
 
@@ -166,8 +168,8 @@ Greybus Bootrom Firmware Size Request
 """""""""""""""""""""""""""""""""""""
 
 Table :num:`table-firmware-size-request` defines the Greybus Bootrom Firmware Size
-request payload.  The request supplies the boot stage of the module implementing
-the Protocol.
+Request payload.  The Request supplies the boot stage of the Interface implementing
+the Protocol. The stage shall equal two.
 
 .. figtable::
     :nofig:
@@ -178,33 +180,8 @@ the Protocol.
     ======  =========  ====  ======  ===============================================
     Offset  Field      Size  Value   Description
     ======  =========  ====  ======  ===============================================
-    0       stage      1     Number  :ref:`firmware-boot-stages`
+    0       stage      1     2       Stage is fixed to two.
     ======  =========  ====  ======  ===============================================
-
-..
-
-.. _firmware-boot-stages:
-
-Greybus Bootrom Firmware Boot Stages
-""""""""""""""""""""""""""""""""""""
-
-Table :num:`table-firmware-boot-stages` defines the boot stages whose firmware
-can be requested from the AP via the Protocol.
-
-.. figtable::
-    :nofig:
-    :label: table-firmware-boot-stages
-    :caption: Bootrom Protocol Firmware Boot Stages
-    :spec: l l l
-
-    ================  ======================================================  ==========
-    Boot Stage        Brief Description                                       Value
-    ================  ======================================================  ==========
-    BOOT_STAGE_ONE    Reserved for the boot ROM.                              0x01
-    BOOT_STAGE_TWO    Firmware package to be loaded by the boot ROM.          0x02
-    BOOT_STAGE_THREE  Module personality package loaded by Stage 2 firmware.  0x03
-    |_|               (Reserved Range)                                        0x04..0xFF
-    ================  ======================================================  ==========
 
 ..
 
@@ -213,9 +190,9 @@ can be requested from the AP via the Protocol.
 Greybus Bootrom Firmware Size Response
 """"""""""""""""""""""""""""""""""""""
 
-Table :num:`table-firmware-size-response` defines the Greybus firmware size
-response payload.  The response supplies the size of the AP's firmware blob for
-the module implementing the Protocol.
+Table :num:`table-firmware-size-response` defines the Greybus Firmware
+Size Response payload.  The Response supplies the size of the firmware
+blob which the AP has made available to the Interface for download.
 
 .. figtable::
     :nofig:
