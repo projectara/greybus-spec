@@ -229,11 +229,11 @@ the module implementing the Protocol.
 Greybus Bootrom Get Firmware Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus Bootrom get firmware operation allows the requester to retrieve a
+The Greybus Bootrom Get Firmware Operation allows the Interface to retrieve a
 stream of bytes at an offset within the firmware blob from the AP.  The AP
-responds with the requested number of bytes from the connection's associated
+responds with the requested number of bytes from the Connection's associated
 firmware blob at the requested offset, or with an error status without payload
-if no firmware blob has yet been associated with this connection or if the
+if no firmware blob has yet been associated with this Connection or if the
 requested stream size exceeds the firmware blob's size minus the requested
 offset.
 
@@ -241,11 +241,11 @@ Greybus Bootrom Get Firmware Request
 """"""""""""""""""""""""""""""""""""
 
 Table :num:`table-bootrom-get-firmware-request` defines the Greybus Bootrom
-get firmware request payload.  The request specifies an offset into the firmware
+Get Firmware Request payload.  The Request specifies an offset into the firmware
 blob, and the size of the stream of bytes requested.  The stream size requested
-must be less than or equal to the size given by the most recent firmware size
-response (:ref:`firmware-size-response`) minus the offset; when it is not, the
-AP shall signal an error in its response.  The module is responsible for
+must be less than or equal to the size given by the most recent Firmware Size
+Response (:ref:`firmware-size-response`) minus the offset; when it is not, the
+AP shall signal an error in its Response.  The Interface is responsible for
 tracking its offset into the firmware blob as needed.
 
 .. figtable::
@@ -267,10 +267,10 @@ Greybus Bootrom Get Firmware Response
 """""""""""""""""""""""""""""""""""""
 
 Table :num:`table-bootrom-get-firmware-response` defines the Greybus Bootrom
-get firmware response payload.  The response includes the stream of bytes
-requested by the module.  In the case that the AP cannot fulfill the request,
+Get Firmware Response payload.  The Response includes the stream of bytes
+requested by the Interface.  In the case that the AP cannot fulfill the Request,
 such as when the requested stream size was greater than the total size of the
-firmware blob, it shall signal an error in the status byte of the response
+firmware blob, it shall signal an error in the status byte of the Response
 header.
 
 .. figtable::
