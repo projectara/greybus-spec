@@ -30,6 +30,31 @@ The Greybus Bootrom Protocol may be used by an Interface to download
 Interface Firmware via |unipro| when the Interface does not have
 suitable Interface Firmware already available.
 
+If an Interface implements this Greybus Protocol, the following
+additional requirements or exceptions hold:
+
+- Any :ref:`manifest-description` the Interface transmits to the AP via
+  the :ref:`control-protocol` shall contain exactly one CPort Descriptor
+  with id field different than zero.  The protocol field in that CPort
+  Descriptor shall equal "Bootrom" (0x15), as described in Table
+  :num:`table-cport-protocol`.
+
+  As a special exception, the Manifest may also contain one additional
+  CPort Descriptor with id field equal to zero. This descriptor, if
+  present, shall be ignored when received by the AP, along with any
+  Bundle Descriptors it refers to, if any.
+
+- The Interface shall implement the
+  :ref:`greybus-interface-attributes`.  The value of the Ara
+  Initialization Status attribute shall be set to one of 0x00000006 or
+  0x00000009 before any time the Interface sets the value of
+  :ref:`hardware-model-mailbox`.
+
+- If the AP detects one of these reserved Ara Initialization Status
+  attribute values has been set, it shall not enable |unipro|
+  End-to-End Flow Control on any Connections it establishes with the
+  Interface.
+
 The Operations in the Greybus Bootrom Protocol are:
 
 .. c:function:: int ping(void);
@@ -208,6 +233,8 @@ blob which the AP has made available to the Interface for download.
 
 ..
 
+.. _firmware-get-firmware:
+
 Greybus Bootrom Get Firmware Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -304,6 +331,14 @@ firmware blob.
 
 ..
 
+Before sending this Request, the Interface should ensure that all
+outstanding :ref:`Get Firmware <firmware-get-firmware>` Operation
+Requests it has sent have received Responses from the AP. The
+Interface should also not transmit any additional |unipro| Segments
+with nonempty L4 payload on any Connection after those containing this
+Request payload. The effect of sending this Request under other
+conditions are undefined.
+
 .. _firmware-blob-status:
 
 Greybus Bootrom Ready to Boot Firmware Blob Status
@@ -339,3 +374,60 @@ In the case that the AP forbids the Interface from booting, it shall
 signal an error in the status byte of the Response Message's
 header. Otherwise, the status byte shall equal GB_OP_SUCCESS,
 indicating permission to boot.
+
+Before sending the Response, the AP should ensure that all outstanding
+Control Protocol Requests to the Interface have received Responses.
+The effect of sending this Request under other conditions is undefined.
+
+Provided that the recommendations for the Interface and the AP defined
+in this Protocol are followed, the Request and Response of the single
+Ready to Boot Operation exchanged between the Interface and the AP are
+the final |unipro| Messages exchanged between the two.
+
+When this occurs, the Interface may execute the downloaded firmware
+blob previously retrieved using this Protocol, and the following is
+permitted as a special case exception to restrictions made elsewhere
+in this Specification.
+
+1. The Interface may treat its Control and Bootrom Connections as
+   though they had been closed as described in
+   :ref:`lifecycles_connection_management`.
+
+2. The Interface may, at most once, make a new Manifest available for
+   retrieval to the AP, and thus send different Response payloads to
+   the :ref:`control-get-manifest-size` and
+   :ref:`control-get-manifest` Requests, should new Requests on the
+   Control Connection be received later.
+
+   The new Manifest shall not contain any CPort Descriptors whose
+   protocol field equals "Bootrom" (0x15).
+
+3. The Interface shall set the Ara Initialization Status attribute to
+   a value different than 0x00000006 or 0x00000009.
+
+4. The Interface may subsequently set :ref:`hardware-model-mailbox` to
+   MAILBOX_GREYBUS, causing the SVC to exchange a
+   :ref:`svc-interface-mailbox-event` with the AP. If the
+   Interface does so, it shall:
+
+        - ensure that if its Control CPort is subsequently
+          reconnected, |unipro| Flow Control Tokens shall subsequently
+          be transmitted to the AP as buffer space for receiving
+          Control Protocol Requests becomes available, and
+
+        - subsequently respond to incoming :ref:`control-protocol`
+          Operation Requests as defined in that section if the Control
+          CPort is connected and used for Greybus communication.
+
+5. The AP should, after exchanging the Interface Mailbox Event
+   Operation with the SVC, attempt to release system resources
+   associated with the Control and Bootrom Connections to the
+   Interface.
+
+6. The AP should then attempt to open a Control Connection with the
+   Interface, and retrieve its Manifest once more.
+
+This sequence, when possible, is a **Legacy Mode Switch**. Though the
+Interface remains in the ENUMERATED Interface Lifecycle State
+throughout a Legacy Mode Switch and afterwards, its Manifest may
+change at most once as a result.

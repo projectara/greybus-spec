@@ -473,4 +473,8 @@ are implementation-defined.
   chapters.
 
   If supported, the values of the Ara Initialization Status attribute
-  are implementation-defined.
+  are implementation-defined, with one exception: the values
+  0x00000006 and 0x00000009 are reserved for Interfaces implementing
+  the :ref:`bootrom-protocol`. Unless an Interface implements that
+  Protocol, the Interface shall not set its Ara Initialization Status
+  attribute to either of those values.
