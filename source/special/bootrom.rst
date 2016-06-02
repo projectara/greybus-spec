@@ -3,23 +3,34 @@
 Bootrom Protocol
 ----------------
 
-.. note:: Bootrom Protocol is deprecated for new designs requiring
-          Firmware download to the Module.  It doesn't support
-          downloading device processor firmware images and updating them
-          on the Module.  Also, it doesn't include proper sequence of
-          closing the CPorts, while switching from one Firmware stage to
-          another.  It is already part of chips that went into
-          production, and so its support can't be dropped from Greybus
-          Specifications.
+.. note:: **The Bootrom Protocol is deprecated for new Greybus
+          implementations**.  The :ref:`firmware-download-protocol`
+          should be used instead.
 
-          The :ref:`firmware-download-protocol` should be used for any
-          new designs.
+          While the Bootrom Protocol supports downloading
+          :ref:`Interface Firmware <glossary-interface-firmware>` via
+          Greybus, it lacks support for other features provided by the
+          :ref:`firmware-management-protocol` and other related
+          Protocols, such as:
 
-The Greybus Bootrom Protocol is used by a module's bootloader to communicate
-with the AP and download firmware executables via |unipro| when a module does
-not have its own firmware pre-loaded.
+          - Proper :ref:`lifecycles_connection_management`
 
-The operations in the Greybus Bootrom Protocol are:
+          - Downloading :ref:`Interface Backend Firmware
+            <glossary-interface-backend-firmware>`
+
+          - Indicating to an Interface that it should store downloaded
+            firmware on a non-volatile medium for later use
+
+          However, an implementation of this Protocol is part of a
+          Greybus implementation which can no longer be
+          changed. Because of this, AP Modules should maintain legacy
+          compatibility for this protocol.
+
+The Greybus Bootrom Protocol may be used by an Interface to download
+Interface Firmware via |unipro| when the Interface does not have
+suitable Interface Firmware already available.
+
+The Operations in the Greybus Bootrom Protocol are:
 
 .. c:function:: int ping(void);
 
@@ -31,37 +42,37 @@ The operations in the Greybus Bootrom Protocol are:
 
 .. c:function:: int ap_ready(void);
 
-    The AP sends a request to the module in order to confirm that the AP
-    is now ready to receive requests over its bootrom cport and the
-    module can start firmware download process.  Until this request is
-    received by the module, it shall not send any requests on the
-    bootrom cport.
+    The AP may send this Request to the Interface to confirm that the AP
+    is now ready to receive Requests over the Connection, and the
+    Interface can start the firmware download process.  Until this Request is
+    received by the Interface, it shall not send any Requests on the
+    Connection.
 
 .. c:function:: int firmware_size(u8 stage, u32 *size);
 
-    The module requests from the AP the size of the firmware it must
-    load, specifying the stage of the boot sequence for which the module is
-    requesting firmware.  The AP then locates a suitable firmware blob,
+    The Interface requests from the AP the size of the Interface Firmware to
+    load, specifying the stage of the boot sequence for which the Interface is
+    requesting firmware.  The AP then locates a suitable firmware blob, and
     associates that firmware blob with the requested boot stage until it next
-    receives a firmware size request, and responds with the blob's size in
+    receives a Firmware Size Request, and responds with the blob's size in
     bytes, which must be nonzero.
 
 .. c:function:: int get_firmware(u32 offset, u32 size, void *data);
 
-    The module requests a finite stream of bytes in the firmware blob
+    The Interface requests a finite stream of bytes in the firmware blob
     from the AP, passing its current offset into the firmware blob, and the size
     of the stream it currently needs.  The AP responds with exactly the number
     of bytes requested, taken from the firmware blob currently associated with
-    this connection at the specified offset.
+    this Connection at the specified offset.
 
 .. c:function:: int ready_to_boot(u8 status);
 
-    The module implementing the Protocol requests permission from the AP to jump
-    into the firmware blob it has loaded.  The request sent to the AP includes a
+    The Interface implementing the Protocol requests permission from the AP to jump
+    into the firmware blob it has loaded.  The Request sent to the AP includes a
     status indicating whether the retrieved firmware blob is valid and secure,
     valid but insecure, or invalid.  The AP decides whether to permit the module
     to boot in its current condition: if so, it sends a success code in its
-    response's status byte, otherwise it sends an error code in its response's
+    Response's status byte, otherwise, it sends an error code in its Response's
     status byte.
 
 Greybus Bootrom Operations
