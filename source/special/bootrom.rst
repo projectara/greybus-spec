@@ -77,10 +77,11 @@ The Operations in the Greybus Bootrom Protocol are:
 
 Greybus Bootrom Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Table :num:`table-bootrom-operation-type` describes the Greybus Bootrom
-operation types and their values.  A message type consists of an operation type
-combined with a flag (0x80) indicating whether the operation is a request or a
-response.
+Operation Types and their values.  A Message Type consists of an Operation Type
+combined with a flag (0x80) indicating whether the Operation is a Request or a
+Response.
 
 .. figtable::
     :nofig:
