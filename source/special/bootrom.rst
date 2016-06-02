@@ -290,21 +290,21 @@ header.
 Greybus Bootrom Ready to Boot Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus Bootrom ready to boot operation lets the requesting module notify
-the AP that it has successfully loaded the connection's currently associated
-firmware blob and is able to hand over control of the processor to that blob,
-indicating the status of its firmware blob.  The AP shall then send a response
+The Greybus Bootrom Ready To Boot Operation allows the requesting Interface to notify
+the AP that it has successfully loaded the Connection's currently associated
+firmware blob, and is able to execute that blob, as well as
+indicate the status of its firmware blob.  The AP shall then send a Response
 empty of payload, indicating via the header's status byte whether or not it
-permits the module to continue booting.
+permits the Interface to continue booting.
 
-The module shall send a ready to boot request only when it has successfully
+The Interface shall send a Ready To Boot Request only when it has successfully
 loaded a firmware blob and can execute that firmware.
 
 Greybus Bootrom Ready to Boot Request
 """""""""""""""""""""""""""""""""""""
 
 Table :num:`table-bootrom-ready-to-boot-request` defines the Greybus Bootrom
-ready to boot request payload.  The request gives the security status of its
+Ready To Boot Request payload.  The Request gives the security status of its
 firmware blob.
 
 .. figtable::
@@ -327,7 +327,7 @@ Greybus Bootrom Ready to Boot Firmware Blob Status
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
 Table :num:`table-firmware-blob-status` defines the constants by which the
-module can indicate the status of its firmware blob to the AP in a Greybus
+Interface can indicate the status of its firmware blob to the AP in a Greybus
 Bootrom Ready to Boot Request.
 
 .. figtable::
@@ -350,7 +350,9 @@ Bootrom Ready to Boot Request.
 Greybus Bootrom Ready to Boot Response
 """"""""""""""""""""""""""""""""""""""
 
-If the AP permits the module to boot in its current status, the Greybus Bootrom
-Ready to Boot response message shall have no payload.  In the case that the AP
-forbids the module from booting, it shall signal an error in the status byte of
-the response message's header.
+The Greybus Bootrom Ready to Boot Response has no payload.
+
+In the case that the AP forbids the Interface from booting, it shall
+signal an error in the status byte of the Response Message's
+header. Otherwise, the status byte shall equal GB_OP_SUCCESS,
+indicating permission to boot.
