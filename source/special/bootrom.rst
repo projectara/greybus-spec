@@ -119,9 +119,14 @@ The Greybus Bootrom Protocol Version Operation is the
 :ref:`greybus-protocol-version-operation` for the Bootrom Protocol.
 
 Greybus implementations adhering to the Protocol specified herein
-shall specify the value |gb-major| for the version_major and
-|gb-minor| for the version_minor fields found in this Operation's
-request and response messages.
+shall specify the value zero (0) for the version_major and
+one (1) for the version_minor fields found in this Operation's
+Request and Response messages.
+
+The Greybus Bootrom Protocol definition shall not change the required
+values for the version_major or version_minor fields in the
+future. This Protocol's Operations are fixed and shall not change in
+future versions of the Greybus Specification.
 
 
 Greybus Bootrom Protocol AP Ready Operation
