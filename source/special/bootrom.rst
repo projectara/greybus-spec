@@ -127,20 +127,23 @@ request and response messages.
 Greybus Bootrom Protocol AP Ready Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus Bootrom Protocol AP Ready operation allows the AP to
-indicate that it is ready to receive requests from the module over the
-bootrom cport. Only after the module has received this request may it
-start sending requests on the bootrom cport.
+The Greybus Bootrom Protocol AP Ready Operation allows the AP to
+indicate that it is ready to receive Requests from the Interface over the
+Bootrom Connection.
 
 Greybus Bootrom Protocol AP Ready Request
 """""""""""""""""""""""""""""""""""""""""
 
-The Greybus Bootrom AP Ready request message has no payload.
+The Greybus Bootrom AP Ready Request Message has no payload.
+
+Before receiving this Request, the Interface shall not send any
+Requests on the Bootrom Connection. After receiving this Request, the
+Interface may send Requests on the Bootrom Connection.
 
 Greybus Bootrom Protocol AP Ready Response
 """"""""""""""""""""""""""""""""""""""""""
 
-The Greybus Bootrom AP Ready response message has no payload.
+The Greybus Bootrom AP Ready Response Message has no payload.
 
 Greybus Bootrom Firmware Size Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
