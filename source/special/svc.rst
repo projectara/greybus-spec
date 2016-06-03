@@ -62,7 +62,7 @@ Conceptually, the operations in the Greybus SVC Protocol are:
 .. c:function:: int intf_device_id(u8 intf_id, u8 device_id);
 
     This operation is used by the AP Module to request that the SVC
-    associate a device ID with the given Interface.
+    associate a Device ID with the given Interface.
 
 .. c:function:: int intf_hotplug(u8 intf_id, u32 ddbl1_mfr_id, u32 ddbl1_prod_id, u32 ara_vend_id, u32 ara_prod_id, u64 serial_number);
 
@@ -628,7 +628,7 @@ Greybus SVC Route Create Request
 """"""""""""""""""""""""""""""""
 
 Table :num:`table-svc-route-create-request` defines the Greybus SVC
-Route Create request payload. The request supplies the Interface IDs and device
+Route Create request payload. The request supplies the Interface IDs and Device
 IDs of two Interfaces to be connected.
 
 .. figtable::
@@ -641,9 +641,9 @@ IDs of two Interfaces to be connected.
     Offset   Field           Size    Value       Description
     =======  ==============  ======  ==========  ===========================
     0        intf1_id        1       Number      First Interface
-    1        dev1_id         1       Number      First Interface device ID
+    1        dev1_id         1       Number      First Interface Device ID
     2        intf2_id        1       Number      Second Interface
-    3        dev2_id         1       Number      Second Interface device ID
+    3        dev2_id         1       Number      Second Interface Device ID
     =======  ==============  ======  ==========  ===========================
 
 ..
@@ -762,10 +762,10 @@ device id is used by the |unipro| switch to determine how packets
 should be routed through the network.  The AP Module is responsible
 for managing the mapping between Interfaces and |unipro| device ids.
 
-Greybus supports 5-bit |unipro| device IDs. Device ID 0 and 1 are reserved
+Greybus supports 5-bit |unipro| Device IDs. Device ID 0 and 1 are reserved
 for the SVC and primary AP Interface respectively.
 
-The AP shall manage DeviceIDs of any attached Modules using this
+The AP shall manage Device IDs of any attached Modules using this
 operation during :ref:`lifecycles_connection_management`.
 
 Greybus SVC Interface Device ID Request
@@ -775,17 +775,17 @@ Table :num:`table-svc-device-id-request` defines the Greybus SVC
 Interface Device ID Request payload.
 
 The Greybus SVC Interface Device ID Request shall only be sent by the
-AP Module to the SVC.  It supplies the 5-bit device ID that the SVC will
+AP Module to the SVC.  It supplies the 5-bit Device ID that the SVC will
 associate with the indicated Interface.  The AP Module can remove the
-association of an Interface with a device ID by assigning device ID
-value 0. The AP shall not assign a (non-zero) device ID to an
+association of an Interface with a Device ID by assigning Device ID
+value 0. The AP shall not assign a (non-zero) Device ID to an
 Interface that the SVC has already associated with an Interface, and
-shall not clear the device ID of an Interface that has no device ID
+shall not clear the Device ID of an Interface that has no Device ID
 assigned.
 
-Note that assigning a device ID to an Interface does not cause
-the SVC to set up any routes for that device ID.  Routes are
-set up only as needed when a connection involving a device ID
+Note that assigning a Device ID to an Interface does not cause
+the SVC to set up any routes for that Device ID.  Routes are
+set up only as needed when a connection involving a Device ID
 are created, and removed when an Interface's last connection is
 destroyed.
 
@@ -798,8 +798,8 @@ destroyed.
     =======  ==============  ======  ============    ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ============    ===========================
-    0        intf_id         1       Number          Interface ID whose device ID is being assigned
-    1        device_id       1       Number          5-bit |unipro| device ID for Interface
+    0        intf_id         1       Number          Interface ID whose Device ID is being assigned
+    1        device_id       1       Number          5-bit |unipro| Device ID for Interface
     =======  ==============  ======  ============    ===========================
 
 ..
@@ -814,9 +814,9 @@ and shall send a response signaling an error as described below. The
 SVC shall take no further action related to such an unsatisfiable
 request beyond sending the response.
 
-Otherwise, the SVC shall attempt to set the |unipro| DeviceID of the
+Otherwise, the SVC shall attempt to set the |unipro| Device ID of the
 UniPort connected to corresponding Interface Block to device_id, and
-to mark the |unipro| DeviceID as valid. This sequence may change the
+to mark the |unipro| Device ID as valid. This sequence may change the
 values of |unipro| DME attributes on the UniPort the Interface Block
 identified in the request.
 

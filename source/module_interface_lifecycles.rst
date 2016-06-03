@@ -1735,7 +1735,7 @@ Early Power Down (ACTIVATED → OFF)
 Make sure cleanup when jumping from failure to enumerate is covered:
 
 - tear down routes
-- destroy device ID
+- destroy Device ID
 - unipro, refclk, vsys from activation -> off
 
 .. _lifecycles_mode_switch_fail:
