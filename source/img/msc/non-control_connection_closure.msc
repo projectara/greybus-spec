@@ -1,0 +1,16 @@
+# MSC for Non-Control Connection Closure Sequence
+
+msc {
+  hscale = "1.5", arcgradient = "0";
+
+  AP, Control [ label = "Control Connection" ];
+
+  |||;
+  AP rbox Control [ label = "Connection Closure Prologue" ];
+  |||;
+  AP->Control [ label = "gb_control_disconnected(CPID)" ];
+  Control->AP [ label = "gb_control_disconnected_rsp[GB_OP_SUCCESS]" ];
+  |||;
+  AP rbox Control [ label = "Connection Closure Epilogue" ];
+  |||;
+}

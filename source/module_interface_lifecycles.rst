@@ -502,6 +502,9 @@ the AP can subsequently close the Connection to the Interface.
 The following sequence may be used to close such a Connection to an
 Interface.
 
+.. image:: /img/msc/non-control_connection_closure.png
+   :align: center
+
 Though the AP may follow this sequence at any time, the AP should only
 do so if the Interface whose Connection is being closed is ENUMERATED,
 or during one of the following Interface Lifecycle state machine
