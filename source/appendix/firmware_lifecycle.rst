@@ -14,12 +14,12 @@ Firmware Types and Protocols
 Firmware images required for an Interface can be classified broadly into
 two categories:
 
-- :ref:`Interface Firmware <glossary-interface-firmware>`
+- :term:`Interface Firmware`
 
   These are the Firmware Images that run on the bridge ASIC present on
   the ARA Phone Module.
 
-- :ref:`Interface Backend Firmware <glossary-interface-backend-firmware>`
+- :term:`Interface Backend Firmware`
 
   These are the Firmware Images that run on a Device Processor sitting
   behind the bridge ASIC, for example Camera.

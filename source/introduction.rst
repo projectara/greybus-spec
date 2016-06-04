@@ -32,8 +32,7 @@ reference.
 The Greybus Specification is included within the MDK; its purpose is
 to define software interfaces whose data and control flow cross
 Module boundaries. This is required to ensure software compatibility
-and interoperability between Modules and the :ref:`Frame
-<glossary-frame>`.
+and interoperability between Modules and the :term:`Frame`.
 
 Project Ara utilizes the |unipro| protocol for inter-Module
 communication. The |unipro| specification is defined by the |mipi|

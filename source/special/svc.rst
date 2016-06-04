@@ -10,8 +10,8 @@ reserved Control CPort ID. At initial power-on, the SVC sets up a
 |unipro| connection from one of its CPorts to the AP Module
 Interface's SVC CPort.
 
-The SVC has direct control over and responsibility for the :ref:`Frame
-<glossary-frame>`, including detecting when modules are present,
+The SVC has direct control over and responsibility for the
+:term:`Frame`, including detecting when modules are present,
 configuring the |unipro| switch, powering module Interfaces, providing
 the frame-time and attaching and detaching modules.  The AP Module
 controls the Frame through operations sent over the SVC connection.
@@ -379,8 +379,8 @@ Table :num:`table-svc-hello-request` defines the Greybus SVC Hello
 Request payload. This Operation is used at initial power-on, sent by
 the SVC to inform the AP of its environment. After version
 negotiation, it is the next Operation sent by the SVC sent at
-initialization. The descriptor describes details of the :ref:`Frame
-<glossary-frame>` environment and location of the AP interface.
+initialization. The descriptor describes details of the :term:`Frame`
+environment and location of the AP interface.
 
 .. figtable::
     :nofig:
@@ -1799,9 +1799,9 @@ If the Response message header status field :ref:`greybus-operation-status`
 is equal to GB_OP_SUCCESS the SVC shall set the
 :ref:`hardware-model-timesync-pulse` sub-state for the indicated set of
 Interfaces to WAKE_ASSERTED and WAKE_DEASSERTED repeatedly to indicate
-'count' number of :ref:`TimeSync Pulse <glossary-timesync-pulse>` events.
+'count' number of :term:`TimeSync Pulse` events.
 The SVC may send the response before initiating or completing the set of
-:ref:`TimeSync Pulse <glossary-timesync-pulse>` events.
+:term:`TimeSync Pulse` events.
 
 .. _svc-timesync-disable:
 
@@ -2429,11 +2429,11 @@ Greybus SVC Module Inserted Request
 
 Table :num:`table-svc-module-inserted-request` defines the Greybus SVC
 Module Inserted request payload.  The request specifies the location
-of the :ref:`Primary Interface <glossary-primary-interface>` to the
+of the :term:`Primary Interface` to the
 newly inserted Module in the primary_intf_id field.  It also specifies
 the number of Interfaces covered by the Module in the intf_count
 field; this includes the Primary Interface, plus the total number of
-:ref:`Secondary Interfaces <glossary-secondary-interface>` to the
+:term:`Secondary Interface`\s to the
 Module, if any. The size of a Module (the value of the intf_count
 field in the Module Inserted request payload) is thus always one or more.
 
@@ -2520,7 +2520,7 @@ Modules. The intf_count field in each such request shall thus equal
 one plus the number of consecutive Interface States in the Greybus
 System whose ORDER is ORDER_SECONDARY, starting from the Primary
 Interfaces to each attached Module, up to the final Interface Block in
-the :ref:`Slot <glossary-slot>`. This follows from the definitions of
+the :term:`Slot`. This follows from the definitions of
 the ORDER sub-state and the intf_count request field.
 
 The SVC may also send additional Module Inserted Requests with the

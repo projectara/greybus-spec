@@ -13,26 +13,26 @@ Greybus Specification is a *Greybus System*.
 
 A Greybus System has the following physical components:
 
-- A :ref:`Frame <glossary-frame>`, which contains at least one
-  :ref:`Slot <glossary-slot>`.  The Slots on a Frame are separated
+- A :term:`Frame`, which contains at least one
+  :term:`Slot`.  The Slots on a Frame are separated
   by the Frame's spine and ribs.
 
 - A collection of Slots on the Frame, each of which contains at least
-  one :ref:`Interface Block <glossary-interface>`. Each Interface
+  one :term:`Interface Block`. Each Interface
   Block contains several pins, which allow for power distribution,
   Module hotplug detection, time synchronization and communication
   between the Frame and  attached Modules.
 
-- Zero or more attached :ref:`Modules <glossary-module>`, which mate
+- Zero or more attached :term:`Module`\s, which mate
   with the Frame via one or more Interface Blocks.  All Interface
   Blocks used by an individual Module are in the same Slot on the
   Frame.  An Interface Block on the Frame can be used by at most one
   Module at a time.
 
-The Frame contains the :ref:`SVC <glossary-svc>`, which, in
-collaboration with the :ref:`AP Module <glossary-ap-module>`,
+The Frame contains the :term:`SVC`, which, in
+collaboration with the :term:`AP Module`,
 manages physical signals present on the Interface Blocks.  The Frame
-also contains a :ref:`Switch <glossary-switch>`, which can be
+also contains a :term:`Switch`, which can be
 directly configured by the SVC.
 
 Each Interface Block contains connections for |m-phy| [MIPI02]_ LINK
@@ -81,7 +81,7 @@ Interface Block it is associated with share the same Interface ID.
 .. Blocks to which they are attached.
 
 Subsequent definitions within the Greybus Specification define how
-certain Greybus :ref:`Operations <glossary-operation>` affect
+certain Greybus :term:`Operation`\s affect
 Interface States and Interface Lifecycle States in a Greybus System.
 
 .. _hardware-model-interface-states:
@@ -133,9 +133,8 @@ along with an overview of their meaning within a Greybus System.
   the Interface communicating with the Interface Block.
 - ORDER: If the SVC has determined the Interface Block is attached to
   a Module, this indicates whether the SVC has determined the
-  Interface Block is the ":ref:`Primary Interface
-  <glossary-primary-interface>`" or a ":ref:`Secondary Interface
-  <glossary-secondary-interface>`" to the Module.
+  Interface Block is the ":term:`Primary Interface`" or a
+  ":term:`Secondary Interface`" to the Module.
 - MAILBOX: the value of a special-purpose and Greybus
   implementation-specific |unipro| DME attribute within the Switch
   used by Modules as a non-CPort based means of communication with the
@@ -382,7 +381,7 @@ Wake Pins Acquire Operation <svc-timesync-wake-pins-acquire>`
 and completion of a :ref:`Greybus SVC TimeSync Wake Pins Release
 Operation <svc-timesync-wake-pins-release>` the SVC may toggle
 WAKE_ASSERTED and WAKE_DEASSERTED to an Interface Block to indicate a
-:ref:`Greybus SVC TimeSync Pulse <glossary-timesync-pulse>` event. The
+Greybus SVC :term:`TimeSync Pulse` event. The
 SVC is required to ensure the duration of the WAKE_ASSERTED signal is
 sufficiently short that it cannot be misinterpreted as any type of
 :ref:`WAKE Pulse <hardware-model-wake-pulse>`.
@@ -394,11 +393,9 @@ Assuming WAKE is WAKE_UNSET:
 3. Set WAKE to WAKE_DEASSERTED
 4. Set WAKE to WAKE_UNSET
 
-This is called a :ref:`TimeSync Pulse <glossary-timesync-pulse>`. The
-duration of the :ref:`TimeSync Pulse <glossary-timesync-pulse>` is
-implementation-defined but must be less than the
-implementation-defined :ref:`WAKE Pulse Cold Boot Threshold
-<glossary-wake-pulse-cold-boot>`.
+This is called a :term:`TimeSync Pulse`. The duration of the
+:term:`TimeSync Pulse` is implementation-defined but must be less than
+the implementation-defined :term:`WAKE Pulse Cold Boot Threshold`.
 
 .. _hardware-model-unipro:
 
@@ -676,7 +673,7 @@ The values of the ORDER sub-state are given in Table
 
 The value of the ORDER sub-state is set by the SVC.
 
-A :ref:`Module <glossary-module>` may attach to one or more Interface
+A :term:`Module` may attach to one or more Interface
 Blocks on a Slot in the Frame. Exactly one of these Interface Blocks
 is the "Primary Interface" to the Module; signaling on this Interface
 Block may be used to physically eject the Module from the Frame. All
@@ -859,13 +856,12 @@ consequences of a :ref:`forcible removal <hardware-model-detect>`.
 The Interface Lifecycle States are introduced, and their associated
 Interface States are defined, in the following sections.
 
-Subsequent chapters define Greybus :ref:`Protocols
-<glossary-protocol>`, of which the :ref:`control-protocol` and
-:ref:`svc-protocol` are especially significant in terms of their
-impact on an Interface's Lifecycle State. Following those chapters, a
-detailed description of the actions taken by the AP, SVC, and each
-Interface is given describing how transitions between Lifecycle States
-are managed.
+Subsequent chapters define Greybus :term:`Protocol`\s, of which the
+:ref:`control-protocol` and :ref:`svc-protocol` are especially
+significant in terms of their impact on an Interface's Lifecycle State.
+Following those chapters, a detailed description of the actions taken
+by the AP, SVC, and each Interface is given describing how transitions
+between Lifecycle States are managed.
 
 .. FIXME The following "Interface States are allowed" language is
    ugly and a better definition should be developed.
@@ -879,10 +875,8 @@ In the ATTACHED Lifecycle State, the SVC has:
 
 - determined that a Module is attached to the Interface Block, setting
   DETECT to DETECT_ACTIVE
-- determined whether this is the :ref:`Primary
-  <glossary-primary-interface>` or a :ref:`Secondary
-  <glossary-secondary-interface>` Interface to the Module, setting
-  ORDER.
+- determined whether this is the :term:`Primary Interface`
+  or a :term:`Secondary Interface` to the Module, setting ORDER.
 
 No actions have been taken to boot the Module, communicate with it via
 |unipro|, etc. That is, in the ATTACHED Lifecycle State, the Interface
@@ -928,7 +922,7 @@ link between Frame and Module has been made.
 As a consequence, it is known whether the Module supports |unipro|, so
 UNIPRO is either UNIPRO_DOWN or UNIPRO_UP. If UNIPRO is UNIPRO_UP, then the
 Module may signal readiness for communication via Greybus
-:ref:`Protocols <glossary-protocol>` by setting MAILBOX. Thus, MAILBOX
+:term:`Protocol`\s by setting MAILBOX. Thus, MAILBOX
 either remains its initial value, MAILBOX_NONE, or is set by the
 Module to MAILBOX_GREYBUS.
 
@@ -986,7 +980,7 @@ ENUMERATED
 """"""""""
 
 The ENUMERATED Lifecycle State can only be reached when an Interface
-signals readiness for Greybus :ref:`Protocol <glossary-protocol>`
+signals readiness for Greybus :term:`Protocol`
 communication during the transition to ACTIVATED. Thus,
 INTF_TYPE is IFT_GREYBUS, and MAILBOX is MAILBOX_GREYBUS.
 
@@ -1065,7 +1059,7 @@ allow for re-enumeration of an Interface without physically removing
 it from, and attaching it to, a Greybus System.
 
 As part of entering the MODE_SWITCHING Lifecycle State, all Greybus
-:ref:`Connections <glossary-connection>` involving the Interface are
+:term:`Connection`\s involving the Interface are
 closed. The Interface may then perform internal re-initialization, and
 subsequently signal to the Frame when this is complete by setting
 MAILBOX. The Frame can then attempt to re-enumerate the Interface,
@@ -1114,19 +1108,18 @@ TIME_SYNCING
 The TIME_SYNCING Lifecycle State represents the Interface state as the
 frame-time is being synchronized to an Interface from the SVC. For the
 duration of the TIME_SYNCING state it is not valid to generate a
-:ref:`WAKE Pulse <glossary-wake-pulse>` to an Interface.
+:term:`WAKE Pulse` to an Interface.
 
 A Greybus Operation :ref:`TimeSync Wake Pins Acquire Operation
 <svc-timesync-wake-pins-acquire>` is responsible for
 transitioning an Interface into the TIME_SYNCING state.
 
 Once an Interface has entered the TIME_SYNCING state it will wait for
-the SVC to generate a known number of :ref:`TimeSync Pulses
-<glossary-timesync-pulse>`. The Interface will have been informed of
-how many :ref:`TimeSync Pulses <glossary-timesync-pulse>` to expect
-emanating from the SVC and shall mark the local time of the incoming
-:ref:`TimeSync Pulse <glossary-timesync-pulse>` on the rising-edge of
-the :ref:`TimeSync Pulse <glossary-timesync-pulse>`.
+the SVC to generate a known number of :term:`TimeSync Pulse`\s.
+The Interface will have been informed of how many :term:`TimeSync Pulse`\s
+to expect emanating from the SVC and shall mark the local time of
+the incoming :term:`TimeSync Pulse` on the rising-edge of the
+:term:`TimeSync Pulse`.
 
 The :ref:`Greybus SVC TimeSync Wake Pins Release Operation
 <svc-timesync-wake-pins-release>` is responsible for
@@ -1363,7 +1356,7 @@ This section defines special requirements related to these components.
 - The AP Module shall be connected to the Frame via Interface Blocks
   whose Interface IDs are known to the SVC. The AP Module shall
   contain Interfaces as other Modules do, but these Interfaces shall
-  not provide :ref:`Control CPorts <glossary-control-cport>`.
+  not provide :term:`Control CPort`\s.
 
   For convenience, the Interface States with these Interface IDs are
   the *AP Interface States*, the corresponding Interface Blocks are
@@ -1371,8 +1364,8 @@ This section defines special requirements related to these components.
   Interfaces*.
 
   Each AP Interface shall provide a CPort whose user can be configured
-  to communicate with the SVC over a :ref:`Greybus Connection
-  <glossary-connection>` implementing the :ref:`svc-protocol`.
+  to communicate with the SVC over a :term:`Greybus Connection`
+  implementing the :ref:`svc-protocol`.
 
 - The Interface Blocks by which the AP Module connects to the Frame
   may differ from those by which other Modules attach to the Frame,

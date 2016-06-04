@@ -8,15 +8,14 @@ Bootrom Protocol
           should be used instead.
 
           While the Bootrom Protocol supports downloading
-          :ref:`Interface Firmware <glossary-interface-firmware>` via
+          :term:`Interface Firmware` via
           Greybus, it lacks support for other features provided by the
           :ref:`firmware-management-protocol` and other related
           Protocols, such as:
 
           - Proper :ref:`lifecycles_connection_management`
 
-          - Downloading :ref:`Interface Backend Firmware
-            <glossary-interface-backend-firmware>`
+          - Downloading :term:`Interface Backend Firmware`
 
           - Indicating to an Interface that it should store downloaded
             firmware on a non-volatile medium for later use

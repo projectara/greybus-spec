@@ -341,15 +341,14 @@ Firmware Management Protocol
 The Firmware Management Protocol can be used by the Application
 Processor (AP) to communicate with an Interface to:
 
-- Load and Validate an :ref:`Interface Firmware
-  <glossary-interface-firmware>` package for an Interface.
+- Load and Validate an :term:`Interface Firmware`
+  package for an Interface.
 - Prepare the Interface to enter the
   :ref:`hardware-model-lifecycle-mode-switching` :ref:`Interface
   Lifecycle State <hardware-model-lifecycle-states>`.
-- Update :ref:`Interface Backend Firmware
-  <glossary-interface-backend-firmware>` packages on an Interface.
+- Update :term:`Interface Backend Firmware` packages on an Interface.
 
-The :ref:`Interface Firmware <glossary-interface-firmware>` that
+The :term:`Interface Firmware` that
 requires the capability to enter the
 :ref:`hardware-model-lifecycle-mode-switching`
 :ref:`Interface Lifecycle State <hardware-model-lifecycle-states>`, may
@@ -397,8 +396,8 @@ are:
     See :ref:`greybus-protocol-ping-operation`.
 
 .. note::
-    Below Operations are specific to the :ref:`Interface Firmware
-    <glossary-interface-firmware>` for an Interface.
+    Below Operations are specific to the :term:`Interface Firmware`
+    for an Interface.
 
 .. c:function:: int interface_firmware_version(u8 firmware_tag[10], u16 *major, u16 *minor);
 
@@ -420,8 +419,8 @@ are:
     validated by the Interface.
 
 .. note::
-    Below Operations are specific to the :ref:`Interface Backend
-    Firmware <glossary-interface-backend-firmware>` for an Interface.
+    Below Operations are specific to the :term:`Interface Backend
+    Firmware` for an Interface.
 
 .. c:function:: int interface_backend_firmware_version(u8 firmware_tag[10], u16 *major, u16 *minor);
 

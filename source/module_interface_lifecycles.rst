@@ -6,12 +6,11 @@ Module and Interface Lifecycles
 ===============================
 
 Chapters :ref:`hardware_model` and :ref:`special_protocols` have
-respectively defined the :ref:`Interface Lifecycle
-<glossary-interface-lifecycle>` and various :ref:`Operations
-<glossary-operation>` which affect the related :ref:`Interfaces
+respectively defined the :term:`Interface Lifecycle`
+and various :term:`Operation`\s which affect the related :ref:`Interfaces
 <hardware-model-interfaces>` within Modules and :ref:`Interface States
-<hardware-model-interface-states>` within the Frame in a :ref:`Greybus
-System <glossary-greybus-system>`.
+<hardware-model-interface-states>` within the Frame in a
+:term:`Greybus System`.
 
 Using these definitions, this chapter describes an additional state
 machine, the *Module Lifecycle*, as well as the transitions between
@@ -25,17 +24,16 @@ The Module Lifecycle state machine diagram is as follows.
 .. image:: /img/dot/module-lifecycle.png
    :align: center
 
-A :ref:`Module's <glossary-module>` relationship with the
-:ref:`Greybus System <glossary-greybus-system>` is simple: the module
-is either attached to the :ref:`Frame <glossary-frame>` via one or
-more :ref:`Interface Blocks <glossary-interface-block>` in exactly one
-:ref:`Slot <glossary-slot>`, in which case the entire Module is in the
+A :term:`Module`'s relationship with the
+:term:`Greybus System` is simple: the module
+is either attached to the :term:`Frame` via one or
+more :term:`Interface Block`\s in exactly one
+:term:`Slot`, in which case the entire Module is in the
 MODULE_ATTACHED state, or it has been detached entirely, in which case
 it is not considered a part of the Greybus System.
 
 The following sections describe the relationship between these states,
-the transitions between them, and certain Greybus :ref:`Operations
-<glossary-operation>`.
+the transitions between them, and certain Greybus :term:`Operation`\s.
 
 .. _lifecycles_module_attach:
 
@@ -273,8 +271,8 @@ The following values are used in this sub-sequence:
    equal interface_id and interface_cport_id. The tc field in the
    request payload shall equal zero.
 
-   The flags field in the request payload is :ref:`Protocol
-   <glossary-connection-protocol>`\-specific.
+   The flags field in the request payload is :term:`Protocol`
+   \-specific.
 
    If this Operation fails, the sequence is complete and has
    failed. Go directly to step 4.
@@ -951,7 +949,7 @@ The following values are used in this procedure:
    failed. Go directly to step 9.
 
 2. The AP shall initiate a :ref:`svc-route-create` to establish a
-   route within the :ref:`Switch <glossary-switch>` between an AP
+   route within the :term:`Switch` between an AP
    Interface and the Interface.
 
    The intf1_id and dev1_id fields in the request payload shall

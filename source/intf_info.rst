@@ -168,7 +168,7 @@ Interface descriptor describes an access point for a Module to the
 |unipro| network. Each interface represents a single physical port
 through which |unipro| packets are transferred. Every Module shall have
 at least one interface. Each interface has a unique ID within the
-:ref:`Frame <glossary-frame>`.
+:term:`Frame`.
 
 This descriptor describes Interface-specific values as set by the vendor who
 created the Interface. Every Manifest shall have exactly one Interface
@@ -355,8 +355,8 @@ Descriptor declares the Greybus Protocol implemented by that CPort's
 User. This information may be used by the AP Module to interact with
 the CPort User.
 
-Greybus Interfaces shall contain a special :ref:`Control CPort
-<glossary-control-cport>`, which as CPort ID zero; the CPort User of
+Greybus Interfaces shall contain a special :term:`Control CPort`,
+which as CPort ID zero; the CPort User of
 this CPort shall implement the :ref:`control-protocol`. An Interface
 Manifest shall not contain a CPort Descriptor with id field equal to
 zero.

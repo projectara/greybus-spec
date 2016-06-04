@@ -5,9 +5,8 @@ Control Protocol
 
 Interfaces with :ref:`hardware-model-intf-type` equal to IFT_GREYBUS
 shall provide a CPort that responds to the Operations defined in this
-section. Such a CPort is a :ref:`Control CPort
-<glossary-control-cport>`.  If an Interface provides a Control CPort,
-its CPort ID shall be zero.
+section. Such a CPort is a :term:`Control CPort`.
+If an Interface provides a Control CPort, its CPort ID shall be zero.
 
 Such Interfaces shall be prepared to receive Operation requests on
 that CPort under conditions defined later in this chapter.  In
@@ -20,7 +19,7 @@ Also using a sequence of SVC Protocol Operations, the AP may establish
 a Greybus Connection to a Control CPort if it has determined that the
 Interface is prepared for incoming Operations on that CPort, and the
 Connection is not already established. Any such Connection is a
-:ref:`Control Connection <glossary-control-connection>`. This sequence
+:term:`Control Connection`. This sequence
 is defined in :ref:`lifecycles_control_establishment`.
 
 Interfaces are not notified when Control Connections are
@@ -294,7 +293,7 @@ response status is GB_OP_SUCCESS, the following shall hold:
    the AP establishes Greybus Connections using those CPorts as
    described in :ref:`lifecycles_connection_management`.
 
-2. The Greybus :ref:`Protocols <glossary-connection-protocol>`
+2. The Greybus :term:`Protocol`\s
    implemented by the CPort users of any such CPorts shall be as
    defined in the Manifest.
 
