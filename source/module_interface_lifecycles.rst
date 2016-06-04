@@ -238,6 +238,9 @@ the existing Control Connection.
 The following sequence may be used to establish such a Connection to
 an Interface for subsequent use.
 
+.. image:: /img/msc/non-control_connection_establishment_success.png
+   :align: center
+
 Though the AP may follow this sequence at any time, the AP should only
 do so if the Interface is ENUMERATED. If the AP follows this sequence
 at other times, the results are undefined.

@@ -1,0 +1,12 @@
+# MSC for Successful Non-Control Connection Establishment Sequence
+
+msc {
+  hscale = "1.5", arcgradient = "0";
+
+  AP, SVC, Control [ label = "Control Connection" ];
+
+  AP->SVC [ label = "gb_svc_connection_create(AP_IID, AP_CPID, IID, CPID, 0, flags)"];
+  SVC->AP [ label = "gb_svc_connection_create_rsp[GB_OP_SUCCESS]"];
+  AP->Control [ label = "gb_control_connected(CPID)"];
+  Control->AP [ label = "gb_control_connected_rsp[GB_OP_SUCCESS]"];
+}
