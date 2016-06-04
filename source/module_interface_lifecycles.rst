@@ -1284,6 +1284,9 @@ The following procedure can be initiated by the AP when an Interface
 is ENUMERATED, in order to attempt to follow the "power_down" transition
 from ENUMERATED to OFF.
 
+.. image:: /img/msc/power_management_power_down.png
+   :align: center
+
 To perform this procedure, the following conditions shall hold.
 
 - The AP Interface and SVC shall have established a Connection
