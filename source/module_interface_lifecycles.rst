@@ -1744,6 +1744,9 @@ Early Eject (ATTACHED → DETACHED)
 
 .. TODO add an MSC here for the successful case
 
+.. image:: /img/msc/module_early_eject.png
+   :align: center
+
 .. _lifecycles_early_power_down:
 
 Early Power Down (ACTIVATED → OFF)

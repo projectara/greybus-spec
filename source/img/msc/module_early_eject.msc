@@ -1,0 +1,20 @@
+# MSC for Module Early Eject Procedure
+
+msc {
+  hscale = "1.5", arcgradient = "0";
+
+  AP, SVC, Comments [ linecolor = "white", textcolor = "white" ];
+
+  |||;
+  Comments abox Comments [ label = "ATTACHED" ];
+  |||;
+  AP->SVC [ label = "gb_svc_module_eject(PRIMARY_IID)" ];
+  SVC->AP [ label = "gb_svc_module_eject_rsp[GB_OP_SUCCESS]" ];
+  |||;
+  AP box SVC [ label = "------------ Implementation-dependent eject time
+  ------------", linecolor = "white" ];
+  |||;
+  SVC->AP [ label = "gb_svc_module_removed(PRIMARY_IID)" ];
+  AP->SVC [ label = "gb_svc_module_removed_rsp[GB_OP_SUCCESS]" ];
+  Comments abox Comments [ label = "DETACHED" ];
+}
