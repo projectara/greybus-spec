@@ -1,0 +1,30 @@
+# MSC for Power Managemenet Suspend Procedure
+
+msc {
+  hscale = "1.5", arcgradient = "0";
+
+  AP, SVC, Comments [ linecolor = "white", textcolor = "white" ];
+
+  |||;
+  Comments abox Comments [ label = "ENUMERATED" ];
+  |||;
+  AP rbox SVC [ label = "Protocol-specific Suspend Procedure" ];
+  |||;
+  AP rbox SVC [ label = "Non-Control Connection Closure Sequence" ];
+  |||;
+  AP rbox SVC [ label = "Control Connection Closure for Suspend Sequence" ];
+  |||;
+  AP->SVC [ label = "gb_svc_route_destroy(AP_IID, IID)"];
+  SVC->AP [ label = "gb_svc_route_destroy_rsp[GB_OP_SUCCESS]"];
+  AP->SVC [ label = "gb_svc_intf_set_power_mode(IID, UPRO_HIBERNATE_MODE, UPRO_HIBERNATE_MODE)" ];
+  SVC->AP [ label = "gb_svc_intf_set_power_mode_rsp[GB_SVC_OP_SUCCESS]" ],
+  Comments note Comments [ label = "UNIPRO = UPRO_HIBERNATE" ];
+  AP->SVC [ label = "gb_svc_intf_unipro_disable(IID)" ];
+  SVC->AP [ label = "gb_svc_intf_unipro_disable_rsp[UPRO_OK]" ],
+  Comments note Comments [ label = "UNIPRO = UPRO_OFF" ];
+  AP->SVC [ label = "gb_svc_intf_refclk_disable(IID)" ];
+  SVC->AP [ label = "gb_svc_intf_refclk_disable_rsp[REFCLK_OK]" ],
+  Comments note Comments [ label = "REFCLK = REFCLK_OFF" ];
+  |||;
+  Comments abox Comments [ label = "SUSPENDED" ];
+}
