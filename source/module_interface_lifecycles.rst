@@ -1491,6 +1491,9 @@ The following procedure can be initiated by the AP when an Interface
 is OFF, in order to attempt to follow the "eject" transition from
 OFF to DETACHED.
 
+.. image:: /img/msc/module_eject.png
+   :align: center
+
 To perform this procedure, the following conditions shall hold.
 
 - The AP Interface and SVC shall have established a Connection
