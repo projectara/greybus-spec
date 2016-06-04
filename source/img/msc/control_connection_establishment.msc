@@ -1,0 +1,11 @@
+# MSC for Control Connection Establishment Sequence
+
+msc {
+  hscale = "1.5", arcgradient = "0";
+
+  AP, SVC;
+
+  |||;
+  AP->SVC [ label = "gb_svc_connection_create(AP_IID, AP_CPID, IID, 0, 0, E2EFC | CSD_N | CSV_N)"];
+  SVC->AP [ label = "gb_svc_connection_create_rsp[GB_OP_SUCCESS]"];
+}

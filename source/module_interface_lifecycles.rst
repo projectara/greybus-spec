@@ -150,6 +150,9 @@ processing of a :ref:`control-mode-switch`.
 The following sequence may be used to establish a Control Connection
 to an Interface for subsequent use.
 
+.. image:: /img/msc/control_connection_establishment.png
+   :align: center
+
 Though the AP may follow this sequence at any time, the AP should only
 do so during one of the following transitions in the Interface
 Lifecycle state machine:
