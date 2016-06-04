@@ -188,45 +188,9 @@ The following values are used in this sub-sequence:
 - The AP Interface ID is ap_interface_id.
 - The CPort ID of a CPort on the AP Interface which is used to
   establish the Control Connection is ap_cport_id.
-- The AP Interface Device ID is ap_device_id.
 - The Interface ID of the other Interface is interface_id.
 
-1. The AP shall initiate a :ref:`svc-interface-device-id` to assign a
-   Device ID to the Interface.
-
-   The intf_id in the request payload shall equal interface_id.
-
-   The device_id field in the request payload shall be unique among
-   all values assigned to Interfaces in the Greybus System.
-
-   Additionally, the AP shall ensure that no other Interface shall
-   currently have been assigned a Device ID within the following
-   inclusive range::
-
-       device_id, device_id + 1, ..., device_id + (max_conn / 32)
-
-   Where max_conn is the maximum value of the Interface's CPort ID for
-   any Connection the AP subsequently intends to establish with the
-   Interface, including the Control Connection, and "/" denotes
-   division with remainder truncated towards zero.
-
-   If this Operation fails, the sequence is complete and has
-   failed. Go directly to step 4.
-
-2. The AP shall initiate a :ref:`svc-route-create` to establish a
-   route within the :ref:`Switch <glossary-switch>` between an AP
-   Interface and the Interface.
-
-   The intf1_id and dev1_id fields in the request payload shall
-   respectively equal ap_interface_id and ap_device_id. The intf2_id
-   field in the request payload shall equal interface_id.  The dev2_id
-   field in the request payload shall have the same value as the
-   device_id field from step 1.
-
-   If this Operation fails, the sequence is complete and has
-   failed. Go directly to step 4.
-
-3. The AP shall initiate a :ref:`svc-connection-create` to establish the
+1. The AP shall initiate a :ref:`svc-connection-create` to establish the
    Control Connection.
 
    The intf1_id and cport1_id fields in the request payload shall
@@ -241,7 +205,7 @@ The following values are used in this sub-sequence:
    The sequence is complete.  If this Operation fails, the sequence
    has failed. If it succeeds, the sequence has succeeded.
 
-4. The sequence is now complete and has succeeded or failed.
+2. The sequence is now complete and has succeeded or failed.
 
 If the sequence succeeds, the AP Interface may inititate
 :ref:`control-protocol` Operations with the Interface by sending
@@ -940,49 +904,85 @@ If these conditions do not all hold, the procedure shall not be
 followed. The results of following this procedure in this case are
 undefined.
 
-The following value is used in this procedure:
+The following values are used in this procedure:
 
+- The AP Interface Device ID is ap_device_id.
 - The Interface ID of the Interface being enumerated is interface_id.
 
 .. TODO add an MSC here for the successful case
 
-1. The sequence to establish a Control Connection to the Interface
+1. The AP shall initiate a :ref:`svc-interface-device-id` to assign a
+   Device ID to the Interface.
+
+   The intf_id in the request payload shall equal interface_id.
+
+   The device_id field in the request payload shall be unique among
+   all values assigned to Interfaces in the Greybus System.
+
+   Additionally, the AP shall ensure that no other Interface shall
+   currently have been assigned a Device ID within the following
+   inclusive range::
+
+       device_id, device_id + 1, ..., device_id + (max_conn / 32)
+
+   Where max_conn is the maximum value of the Interface's CPort ID for
+   any Connection the AP subsequently intends to establish with the
+   Interface, including the Control Connection, and "/" denotes
+   division with remainder truncated towards zero.
+
+   If this Operation fails, the sequence is complete and has
+   failed. Go directly to step 9.
+
+2. The AP shall initiate a :ref:`svc-route-create` to establish a
+   route within the :ref:`Switch <glossary-switch>` between an AP
+   Interface and the Interface.
+
+   The intf1_id and dev1_id fields in the request payload shall
+   respectively equal ap_interface_id and ap_device_id. The intf2_id
+   field in the request payload shall equal interface_id.  The dev2_id
+   field in the request payload shall have the same value as the
+   device_id field from step 1.
+
+   If this Operation fails, the sequence is complete and has
+   failed. Go directly to step 9.
+
+3. The sequence to establish a Control Connection to the Interface
    described in :ref:`lifecycles_control_establishment` shall be
    followed.
 
-   If the sequence fails, this procedure has failed. Go to step 6.
+   If the sequence fails, this procedure has failed. Go to step 8.
 
-2. The AP shall exchange a :ref:`control-get-manifest-size` via the
+4. The AP shall exchange a :ref:`control-get-manifest-size` via the
    Control Connection. If the Operation is successful, the value of
    the manifest_size field in the response payload is
    interface_manifest_size.
 
-   If the Operation fails, this procedure has failed. Go to step 5.
+   If the Operation fails, this procedure has failed. Go to step 7.
 
-3. The AP shall exchange a :ref:`control-get-manifest` via the Control
+5. The AP shall exchange a :ref:`control-get-manifest` via the Control
    Connection. If the Operation is successful, the Manifest's value is
    interface_manifest.
 
-   If the Operation fails, this procedure has failed. Go to step 5.
+   If the Operation fails, this procedure has failed. Go to step 7.
 
-4. The AP shall perform implementation-defined procedures to parse the
+6. The AP shall perform implementation-defined procedures to parse the
    :ref:`components of the Manifest <manifest-description>`.
 
-   The Interface is now ENUMERATED. Go to step 7.
+   The Interface is now ENUMERATED. Go to step 9.
 
-5. The AP shall attempt to close the Control Connection to the
+7. The AP shall attempt to close the Control Connection to the
    Interface as described in
    :ref:`lifecycles_control_closure_power_down`. Regardless of the
    Operation's success or failure, go to the next step.
 
-6. The AP shall perform the procedure described in below in
+8. The AP shall perform the procedure described in below in
    :ref:`lifecycles_early_power_down`. If the Early Power Down procedure
-   succeeds, and step 5 succeeded if it was reached, the Interface is
+   succeeds, and step 7 succeeded if it was reached, the Interface is
    :ref:`hardware-model-lifecycle-off`. Its Interface State's INTF_TYPE
    is still IFT_GREYBUS, and its ORDER has not changed its value
    since before this Enumerate procedure was followed.
 
-7. The procedure is complete and has succeeded or failed.
+9. The procedure is complete and has succeeded or failed.
 
 If the Interface is now ENUMERATED, additional Connections to the
 Interface may be established using the sequence defined in
@@ -1219,19 +1219,11 @@ The following values are used in this procedure:
    If the Operation fails, this procedure has failed. The results are
    undefined.
 
-5. The AP shall initiate a :ref:`svc-connection-create` to establish the
-   Control Connection.
+5. The sequence to establish a Control Connection to the Interface
+   described in :ref:`lifecycles_control_establishment` shall be
+   followed.
 
-   The intf1_id and cport1_id fields in the request payload shall
-   respectively equal ap_interface_id and ap_cport_id. The intf2_id
-   and cport2_id fields in the request payload shall respectively
-   equal interface_id and zero.
-
-   The tc field in the request payload shall equal zero.  The
-   :ref:`flags field <svc-connection-create-flags>` in the request
-   payload should equal 0x7 (E2EFC | CSD_N | CSV_N).
-
-   If this Operation fails, the procedure has failed.  The results are
+   If the sequence fails, this procedure has failed.  The results are
    undefined.
 
    If it succeeds, the procedure has succeeded. The Interface is
@@ -1673,19 +1665,11 @@ The following values are used in this procedure:
    If the sub-sequence fails, this procedure has failed. The results
    are undefined.
 
-4. The AP shall initiate a :ref:`svc-connection-create` to establish a
-   new Control Connection to the Interface.
+4. The sequence to establish a Control Connection to the Interface
+   described in :ref:`lifecycles_control_establishment` shall be
+   followed.
 
-   The intf1_id and cport1_id fields in the request payload shall
-   respectively equal ap_interface_id and ap_cport_id. The intf2_id
-   and cport2_id fields in the request payload shall respectively
-   equal interface_id and zero.
-
-   The tc field in the request payload shall equal zero.  The
-   :ref:`flags field <svc-connection-create-flags>` in the request
-   payload shall equal 0x7 (E2EFC | CSD_N | CSV_N).
-
-   If this Operation fails, this procedure has failed. The results are
+   If the sequence fails, this procedure has failed. The results are
    undefined.
 
 5. The AP shall exchange a :ref:`control-get-manifest-size` via the
