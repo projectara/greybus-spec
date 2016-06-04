@@ -1,0 +1,17 @@
+# MSC for Mode Switching Enter
+
+msc {
+  hscale = "1.5", arcgradient = "0";
+
+  AP, SVC, Control [ label = "Control Connection" ], Comments [ linecolor = "white", textcolor = "white" ];
+
+  |||;
+  Comments abox Comments [ label = "ENUMERATED" ];
+  |||;
+  AP rbox Control [ label = "Non-Control Connection Closure Sequence" ];
+  |||;
+  AP rbox Control [ label = "Control Connection Closure for ms_enter Sequence" ];
+  |||;
+  Comments abox Comments [ label = "MODE_SWITCHING" ];
+  |||;
+}
