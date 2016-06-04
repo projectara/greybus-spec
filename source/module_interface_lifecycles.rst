@@ -1057,7 +1057,7 @@ The following values are used in this procedure:
    Protocol-specific Operations which inform the Interface the
    subsequent steps in this Procedure shall be performed next.
 
-2. The sequence defined :ref:`lifecycles_connection_closure` shall be
+2. The sequence defined in :ref:`lifecycles_connection_closure` shall be
    followed to attempt to close all of the provided Non-Control
    Connections.
 
@@ -1292,7 +1292,7 @@ The following values are used in this procedure:
    Bundles and the Interface itself in the right places when those
    proposed operations are merged.
 
-1. The sequence defined :ref:`lifecycles_connection_closure` shall be
+1. The sequence defined in :ref:`lifecycles_connection_closure` shall be
    followed to attempt to close all of the provided Non-Control
    Connections.
 
