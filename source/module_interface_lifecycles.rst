@@ -902,6 +902,9 @@ is ACTIVATED and its :ref:`hardware-model-intf-type` is IFT_GREYBUS,
 in order to attempt to follow the "enumerate" transition from
 ACTIVATED to ENUMERATED.
 
+.. image:: /img/msc/interface_enumerate.png
+   :align: center
+
 To perform this procedure, the following conditions shall hold.
 
 - The AP Interface and SVC shall have established a Connection

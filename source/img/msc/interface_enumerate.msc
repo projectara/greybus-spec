@@ -1,0 +1,23 @@
+# MSC for Comments Enumerate Procedure
+
+msc {
+  hscale = "1.5", arcgradient = "0";
+
+  AP, SVC, Control [ label = "Control Connection" ], Comments [ linecolor = "white", textcolor = "white" ];
+
+  |||;
+  Comments abox Comments [ label = "ACTIVATED" ];
+  |||;
+  AP->SVC [ label = "gb_svc_intf_device_id(IID, DEVID)"];
+  SVC->AP [ label = "gb_svc_intf_device_id_rsp[GB_OP_SUCCESS]"];
+  AP->SVC [ label = "gb_svc_route_create(AP_IID, AP_DEVID, IID, DEVID)"];
+  SVC->AP [ label = "gb_svc_route_create_rsp[GB_OP_SUCCESS]"];
+  |||;
+  AP rbox Control [ label = "Control Connection Establishment Sequence" ];
+  |||;
+  AP->Control [ label = "gb_control_get_manifest_size()" ];
+  Control->AP [ label = "gb_control_get_manifest_size_rsp[manifest_size]" ];
+  AP->Control [ label = "gb_control_get_manifest()" ];
+  Control->AP [ label = "gb_control_get_manifest_rsp[manifest]" ];
+  Comments abox Comments [ label = "ENUMERATED" ];
+}
