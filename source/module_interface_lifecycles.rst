@@ -1164,6 +1164,9 @@ The following procedure can be initiated by the AP when an Interface
 is SUSPENDED, in order to attempt to follow the "resume" transition
 from SUSPENDED to ENUMERATED.
 
+.. image:: /img/msc/power_management_resume.png
+   :align: center
+
 To perform this procedure, the following conditions shall hold.
 
 - The AP Interface and SVC shall have established a Connection

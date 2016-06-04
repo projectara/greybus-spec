@@ -1,0 +1,26 @@
+# MSC for Power Managemenet Suspend Procedure
+
+msc {
+  hscale = "1.5", arcgradient = "0";
+
+  AP, SVC, Comments [ linecolor = "white", textcolor = "white" ];
+
+  |||;
+  Comments abox Comments [ label = "SUSPENDED" ];
+  |||;
+  AP->SVC [ label = "gb_svc_intf_refclk_enable(IID)" ];
+  SVC->AP [ label = "gb_svc_intf_refclk_enable_rsp[REFCLK_OK]" ],
+  Comments note Comments [ label = "REFCLK = REFCLK_ON" ];
+  AP->SVC [ label = "gb_svc_intf_unipro_enable(IID)" ];
+  SVC->AP [ label = "gb_svc_intf_unipro_enable_rsp[UPRO_OK]" ],
+  Comments note Comments [ label = "UNIPRO = UPRO_UP" ];
+  AP->SVC [ label = "gb_svc_intf_resume(IID)" ];
+  SVC->AP [ label = "gb_svc_intf_resume_rsp[intf_type]" ],
+  Comments note Comments [ label = "\nINTF_TYPE = <IFT_UNIPRO or IFT_GREYBUS>\n" ];
+  AP->SVC [ label = "gb_svc_route_create(AP_IID, AP_DEVID, IID, DEVID)"];
+  SVC->AP [ label = "gb_svc_route_create_rsp[GB_OP_SUCCESS]"];
+  |||;
+  AP rbox SVC [ label = "Control Connection Establishment Sequence" ];
+  |||;
+  Comments abox Comments [ label = "ENUMERATED" ];
+}
