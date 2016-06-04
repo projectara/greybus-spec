@@ -1,0 +1,11 @@
+# MSC for Common Connection Closure Epiloque
+
+msc {
+  hscale = "1.5", arcgradient = "0";
+
+  AP, SVC;
+
+  AP->SVC [ label = "gb_svc_connection_destroy(AP_IID, AP_CPID, IID, CPID)" ];
+  SVC->AP [ label = "gb_svc_connection_destroy_rsp[GB_OP_SUCCESS]" ];
+  AP note AP [ label = "Reset AP_CPID" ];
+}

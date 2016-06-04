@@ -420,6 +420,9 @@ This section defines a common sub-sequence, the connection closure
 epilogue sub-sequence, which is used by following sections in order
 to close a Greybus Connection.
 
+.. image:: /img/msc/common_connection_closure_epilogue.png
+   :align: center
+
 To perform this sub-sequence, the following conditions shall hold.
 
 - The AP Interface and SVC shall have established a Connection
