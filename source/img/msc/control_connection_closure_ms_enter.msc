@@ -1,0 +1,12 @@
+# MSC for Control Connection Closure for Mode Switching Enter Sequence
+
+msc {
+  hscale = "1.5", arcgradient = "0";
+
+  AP, SVC, Control [ label = "Control Connection" ];
+
+  |||;
+  AP rbox Control [ label = "Connection Closure Prologue" ];
+  |||;
+  AP->Control [ label = "gb_control_mode_switch()" ];
+}

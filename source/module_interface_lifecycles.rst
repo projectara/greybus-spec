@@ -582,6 +582,9 @@ an Interface while the Interface is entering the MODE_SWITCHING state,
 and also to signal to the Interface that its Control Connection is
 closing and it has entered MODE_SWITCHING.
 
+.. image:: /img/msc/control_connection_closure_ms_enter.png
+   :align: center
+
 Though the AP may follow this sequence at any time, the AP should only
 do so if the Interface is ENUMERATED, during the "ms_enter" Interface
 Lifecycle state machine transition, which causes the Interface to exit
