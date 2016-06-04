@@ -777,8 +777,8 @@ Interface Device ID Request payload.
 The Greybus SVC Interface Device ID Request shall only be sent by the
 AP Module to the SVC.  It supplies the 5-bit Device ID that the SVC will
 associate with the indicated Interface.  The AP Module can remove the
-association of an Interface with a Device ID by assigning Device ID
-value 0. The AP shall not assign a (non-zero) Device ID to an
+association of an Interface with a Device ID by setting the device_id field
+in the request payload to zero. The AP shall not assign a (non-zero) Device ID to an
 Interface that the SVC has already associated with an Interface, and
 shall not clear the Device ID of an Interface that has no Device ID
 assigned.
