@@ -67,10 +67,12 @@ Conceptually, the operations in the Greybus SVC Protocol are:
 .. c:function:: int intf_hotplug(u8 intf_id, u32 ddbl1_mfr_id, u32 ddbl1_prod_id, u32 ara_vend_id, u32 ara_prod_id, u64 serial_number);
 
     This operation is deprecated, and should not be used in new designs.
+    See :ref:`lifecycles_boot` and :ref:`lifecycles_ms_exit`.
 
 .. c:function:: int intf_hotunplug(u8 intf_id);
 
     This operation is deprecated, and should not be used in new designs.
+    See the :ref:`svc-module-removed`.
 
 .. c:function:: int intf_reset(u8 intf_id);
 
@@ -865,6 +867,8 @@ Greybus SVC Interface Hotplug Operation (Deprecated)
 
 .. note:: This operation is deprecated, and should not be used in new designs.
 
+          :ref:`lifecycles_boot` and :ref:`lifecycles_ms_exit` should be used for any new designs.
+
 When the SVC first detects that a module is present on an Interface,
 it sends an Interface Hotplug Request to the AP Module.  The hotplug
 request is sent after the Interface's |unipro| link has been
@@ -916,6 +920,8 @@ Greybus SVC Interface Hot Unplug Operation (Deprecated)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. note:: This operation is deprecated, and should not be used in new designs.
+
+          The :ref:`svc-module-removed` should be used for any new designs.
 
 The SVC sends this to the AP Module to tell it that an Interface
 that was previously the subject of an Interface Hotplug Operation is
