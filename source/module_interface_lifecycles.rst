@@ -814,6 +814,9 @@ The following procedure can be initiated by the AP when an Interface
 is ATTACHED, in order to attempt to follow the "boot" transition from
 ATTACHED to ACTIVATED.
 
+.. image:: /img/msc/interface_boot.png
+   :align: center
+
 To perform this procedure, the following conditions shall hold.
 
 - The AP Interface and SVC shall have established a Connection
