@@ -1,0 +1,25 @@
+# MSC for Successful Comments Reboot Process
+
+msc {
+  hscale = "1.5", arcgradient = "0";
+
+  AP, SVC, Comments [ linecolor = "white", textcolor = "white" ];
+
+  |||;
+  Comments abox Comments [ label = "OFF" ];
+  |||;
+  AP->SVC [ label = "gb_svc_intf_v_sys_enable(IID)" ];
+  SVC->AP [ label = "gb_svc_intf_v_sys_enable_rsp[V_SYS_OK]" ],
+  Comments note Comments [ label = "V_SYS = V_SYS_ON" ];
+  AP->SVC [ label = "gb_svc_intf_refclk_enable(IID)" ];
+  SVC->AP [ label = "gb_svc_intf_refclk_enable_rsp[REFCLK_OK]" ],
+  Comments note Comments [ label = "REFCLK = REFCLK_ON" ];
+  AP->SVC [ label = "gb_svc_intf_unipro_enable(IID)" ];
+  SVC->AP [ label = "gb_svc_intf_unipro_enable_rsp[UPRO_OK]" ],
+  Comments note Comments [ label = "\nUNIPRO = <UPRO_DOWN or UPRO_UP>\n" ];
+  AP->SVC [ label = "gb_svc_intf_activate(IID)" ];
+  SVC->AP [ label = "gb_svc_intf_activate_rsp[intf_type]" ],
+  Comments note Comments [ label = "\nINTF_TYPE = <IFT_DUMMY, IFT_UNIPRO, or IFT_GREYBUS>\n" ];
+  |||;
+  Comments abox Comments [ label = "ACTIVATED" ];
+}
