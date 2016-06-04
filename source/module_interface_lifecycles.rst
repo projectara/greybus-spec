@@ -1258,8 +1258,8 @@ Power Down (ENUMERATED → OFF)
 .. TODO add an MSC here for the successful case
 
 The following procedure can be initiated by the AP when an Interface
-is ENUMERATED, in order to attempt to follow the "suspend" transition
-from ENUMERATED to SUSPENDED.
+is ENUMERATED, in order to attempt to follow the "power_down" transition
+from ENUMERATED to OFF.
 
 To perform this procedure, the following conditions shall hold.
 
