@@ -298,8 +298,9 @@ response status is GB_OP_SUCCESS, the following shall hold:
    implemented by the CPort users of any such CPorts shall be as
    defined in the Manifest.
 
-An Interface's Lifecycle State is ENUMERATED when the AP receives
-such a successful response. The enumeration procedure guarantees that
+When the AP receives a successful response, and parses the
+:ref:`manifest-description` successfully, the Interface's Lifecycle
+State is ENUMERATED. The enumeration procedure guarantees that
 the Interface State is in one of two possible values, as follows:
 
 .. figtable::
