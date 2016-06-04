@@ -81,46 +81,36 @@ reproduced here:
 .. image:: /img/dot/interface-lifecycle.png
    :align: center
 
-When an Interface is ATTACHED, the following Interface States are
-possible:
+The possible Interface States for when an Interface is ATTACHED are
+shown in Table :num:`table-lifecycle-state-attached-substates`.
 
-.. include:: lifecycle-states/attached.txt
+The possible Interface States for when an Interface is ACTIVATED are
+shown in Table :num:`table-lifecycle-state-activated-substates`.
 
-When an Interface is ACTIVATED, the following Interface States are
-possible:
 
-.. include:: lifecycle-states/activated.txt
+The possible Interface States for when an Interface is ENUMERATED are
+shown in Table :num:`table-lifecycle-state-enumerated-substates`.
 
-When an Interface is ENUMERATED, the following Interface States are
-possible:
 
-.. include:: lifecycle-states/enumerated.txt
+The possible Interface States for when an Interface is MODE_SWITCHING are
+shown in Table :num:`table-lifecycle-state-mode-switching-substates`.
 
-When an Interface is MODE_SWITCHING, the following Interface States are
-possible:
 
-.. include:: lifecycle-states/mode-switching.txt
+The possible Interface States for when an Interface is TIME_SYNCING are
+shown in Table :num:`table-lifecycle-state-time-syncing-substates`.
 
-When an Interface is TIME_SYNCING, the following Interface States are
-possible:
 
-.. include:: lifecycle-states/time-syncing.txt
+The possible Interface States for when an Interface is SUSPENDED are
+shown in Table :num:`table-lifecycle-state-suspended-substates`.
 
-When an Interface is SUSPENDED, the following Interface States are
-possible:
 
-.. include:: lifecycle-states/suspended.txt
+The possible Interface States for when an Interface is OFF are
+shown in Table :num:`table-lifecycle-state-off-substates`.
 
-When an Interface is OFF, the following Interface States are
-possible:
 
-.. include:: lifecycle-states/off.txt
+A Module is not attached to the Interface Block in the DETACHED
+Interface Lifecycle State, which has the unique Interface State shown in Table :num:`table-lifecycle-state-detached-substates`.
 
-In the DETACHED Interface Lifecycle State, no Module is attached to
-the Interface Block. The unique Interface State in this Lifecycle
-State is:
-
-.. include:: lifecycle-states/detached.txt
 
 .. _lifecycles_connection_management:
 

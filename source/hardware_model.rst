@@ -73,7 +73,7 @@ within the Greybus Specification.
 Each Interface Block in a Greybus System is given a unique identifier,
 its Interface ID.  Interface IDs increase consecutively, moving
 counter-clockwise around the Frame.  The Interface State and the
-Interface Block it is associated with share the same Interface ID.
+Interface Block it is associated with share the same Interface ID. 
 
 .. XXX Is the following even needed?  I'm commenting it out for now.
 .. Any Interfaces within Modules attached to those Interface
@@ -141,12 +141,31 @@ along with an overview of their meaning within a Greybus System.
   used by Modules as a non-CPort based means of communication with the
   Frame.
 
-An Interface State is written as a tuple as follows::
+An Interface State is written as a tuple as follows:
 
-  (DETECT=<detect>, V_SYS=<v_sys>, V_CHG=<v_chg>,
-   WAKE=<wake>, UNIPRO=<unipro>, REFCLK=<refclk>,
-   RELEASE=<release>, INTF_TYPE=<type>, ORDER=<ord>,
-   MAILBOX=<mbox>)
+.. figtable::
+   :nofig:
+   :label: table-interface-state-tuple
+   :caption: Interface State Tuple
+   :loc: H
+   :spec: l l
+
+   ===========  ================================================
+   Sub-State    Value
+   ===========  ================================================
+   DETECT       <detect>
+   V_SYS        <v_sys>
+   V_CHG        <v_chg>
+   WAKE         <wake>
+   UNIPRO       <unipro>
+   REFCLK       <refclk>
+   RELEASE      <release>
+   INTF_TYPE    <type>
+   ORDER        <ord>
+   MAILBOX      <mbox>
+   ===========  ================================================
+
+..
 
 Where in each case <detect>, <v_sys>, etc. are the values of the
 corresponding sub-states.
@@ -741,12 +760,31 @@ Initial Interface States
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 During the initialization of a Greybus System, the initial value of
-each Interface State is::
+each Interface State is:
 
-  (DETECT=DETECT_UNKNOWN, V_SYS=V_SYS_OFF, V_CHG=V_CHG_OFF,
-   WAKE=WAKE_UNSET, UNIPRO=UNIPRO_OFF, REFCLK=REFCLK_OFF,
-   RELEASE=RELEASE_DEASSERTED, INTF_TYPE=IFT_UNKNOWN, ORDER=ORDER_UNKNOWN,
-   MAILBOX=MAILBOX_NULL)
+.. figtable::
+   :nofig:
+   :label: table-lifecycle-state-initial-substates
+   :caption: Initial Interface States
+   :loc: H
+   :spec: l l
+
+   ===========  ================================================
+   Sub-State    Value
+   ===========  ================================================
+   DETECT       DETECT_UNKNOWN
+   V_SYS        V_SYS_OFF
+   V_CHG        V_CHG_OFF
+   WAKE         WAKE_UNSET
+   UNIPRO       UNIPRO_OFF
+   REFCLK       REFCLK_OFF
+   RELEASE      RELEASE_DEASSERTED
+   INTF_TYPE    IFT_UNKNOWN
+   ORDER        ORDER_UNKNOWN
+   MAILBOX      MAILBOX_NULL
+   ===========  ================================================
+
+..
 
 As a consequence of the reset sequence of a Greybus System, the SVC
 determines a value of DETECT for each Interface State in the
@@ -854,7 +892,29 @@ State is otherwise identical to its :ref:`initial state
 In the ATTACHED Lifecycle State, the following Interface States are
 allowed as described in later sections:
 
-.. include:: lifecycle-states/attached.txt
+.. figtable::
+   :nofig:
+   :label: table-lifecycle-state-attached-substates
+   :caption: ATTACHED Lifecyle State
+   :loc: H
+   :spec: l l
+
+   ===========  ================================================
+   Sub-State    Value
+   ===========  ================================================
+   DETECT       DETECT_ACTIVE
+   V_SYS        V_SYS_OFF
+   V_CHG        V_CHG_OFF
+   WAKE         WAKE_UNSET
+   UNIPRO       UPRO_OFF
+   REFCLK       REFCLK_OFF
+   RELEASE      RELEASE_DEASSERTED
+   INTF_TYPE    IFT_UNKNOWN
+   ORDER        ORDER_PRIMARY or ORDER_SECONDARY
+   MAILBOX      MAILBOX_NULL
+   ===========  ================================================
+
+..
 
 .. _hardware-model-lifecycle-activated:
 
@@ -896,7 +956,29 @@ between UNIPRO, MAILBOX, and INTF_TYPE is given in Table
 In the ACTIVATED Lifecycle State, the following Interface States are
 allowed as described in later sections:
 
-.. include:: lifecycle-states/activated.txt
+.. figtable::
+   :nofig:
+   :label: table-lifecycle-state-activated-substates
+   :caption: ACTIVATED Lifecyle State
+   :loc: H
+   :spec: l l
+
+   ==========  ================================================
+   Sub-State   Value
+   ==========  ================================================
+   DETECT      DETECT_ACTIVE
+   V_SYS       V_SYS_ON
+   V_CHG       V_CHG_OFF
+   WAKE        WAKE_UNSET
+   UNIPRO      UPRO_DOWN or UPRO_UP
+   REFCLK      REFCLK_ON
+   RELEASE     RELEASE_DEASSERTED
+   INTF_TYPE   IFT_DUMMY, IFT_UNIPRO, or IFT_GREYBUS
+   ORDER       ORDER_PRIMARY or ORDER_SECONDARY
+   MAILBOX     MAILBOX_NONE or MAILBOX_GREYBUS
+   ==========  ================================================
+
+..
 
 .. _hardware-model-lifecycle-enumerated:
 
@@ -949,7 +1031,29 @@ set to V_CHG_ON.
 In the ENUMERATED Lifecycle State, the following Interface States are
 allowed as described in later sections:
 
-.. include:: lifecycle-states/enumerated.txt
+.. figtable::
+   :nofig:
+   :label: table-lifecycle-state-enumerated-substates
+   :caption: ENUMERATED Lifecyle State
+   :loc: H
+   :spec: l l
+
+   ===========  ================================================
+   Sub-State    Value
+   ===========  ================================================
+   DETECT       DETECT_ACTIVE
+   V_SYS        V_SYS_ON
+   V_CHG        V_CHG_OFF or V_CHG_ON
+   WAKE         WAKE_UNSET
+   UNIPRO       UPRO_UP
+   REFCLK       REFCLK_ON or REFCLK_OFF
+   RELEASE      RELEASE_DEASSERTED
+   INTF_TYPE    IFT_GREYBUS
+   ORDER        ORDER_PRIMARY or ORDER_SECONDARY
+   MAILBOX      MAILBOX_GREYBUS
+   ===========  ================================================
+
+..
 
 .. _hardware-model-lifecycle-mode-switching:
 
@@ -978,7 +1082,29 @@ arbitrary number of times.
 In the MODE_SWITCHING Lifecycle State, the following Interface States
 are allowed as described in later sections:
 
-.. include:: lifecycle-states/mode-switching.txt
+.. figtable::
+   :nofig:
+   :label: table-lifecycle-state-mode-switching-substates
+   :caption: MODE_SWITCHING Lifecyle State
+   :loc: H
+   :spec: l l
+
+   ===========  ================================================
+   Sub-State    Value
+   ===========  ================================================
+   DETECT       DETECT_ACTIVE
+   V_SYS        V_SYS_ON
+   V_CHG        V_CHG_OFF
+   WAKE         WAKE_UNSET
+   UNIPRO       UPRO_UP
+   REFCLK       REFCLK_ON
+   RELEASE      RELEASE_DEASSERTED
+   INTF_TYPE    IFT_GREYBUS
+   ORDER        ORDER_PRIMARY or ORDER_SECONDARY
+   MAILBOX      MAILBOX_GREYBUS
+   ===========  ================================================
+
+..
 
 .. _hardware-model-lifecycle-time-syncing:
 
@@ -1012,7 +1138,29 @@ arbitrary number of times.
 In the TIME_SYNCING Lifecycle State, the following Interface States
 are allowed as described in later sections:
 
-.. include:: lifecycle-states/time-syncing.txt
+.. figtable::
+   :nofig:
+   :label: table-lifecycle-state-time-syncing-substates
+   :caption: TIME_SYNCING Lifecyle State
+   :loc: H
+   :spec: l l
+
+   ===========  ================================================
+   Sub-State    Value
+   ===========  ================================================
+   DETECT       DETECT_ACTIVE
+   V_SYS        V_SYS_ON
+   V_CHG        V_CHG_OFF or V_CHG_ON
+   WAKE         WAKE_UNSET or WAKE_ASSERTED or WAKE_DEASSERTED
+   UNIPRO       UPRO_UP
+   REFCLK       REFCLK_ON
+   RELEASE      RELEASE_DEASSERTED
+   INTF_TYPE    IFT_GREYBUS
+   ORDER        ORDER_PRIMARY or ORDER_SECONDARY
+   MAILBOX      MAILBOX_GREYBUS
+   ===========  ================================================
+
+..
 
 .. _hardware-model-lifecycle-suspended:
 
@@ -1035,7 +1183,29 @@ is entering, in, or exiting the SUSPENDED state.
 In the SUSPENDED Lifecycle State, the following Interface States are
 allowed as described in later sections:
 
-.. include:: lifecycle-states/suspended.txt
+.. figtable::
+   :nofig:
+   :label: table-lifecycle-state-suspended-substates
+   :caption: SUSPENDED Lifecyle State
+   :loc: H
+   :spec: l l
+
+   ===========  ================================================
+   Sub-State    Value
+   ===========  ================================================
+   DETECT       DETECT_ACTIVE
+   V_SYS        V_SYS_ON
+   V_CHG        V_CHG_OFF or V_CHG_ON
+   WAKE         WAKE_UNSET
+   UNIPRO       UPRO_HIBERNATE
+   REFCLK       REFCLK_OFF
+   RELEASE      RELEASE_DEASSERTED
+   INTF_TYPE    IFT_GREYBUS
+   ORDER        ORDER_PRIMARY or ORDER_SECONDARY
+   MAILBOX      MAILBOX_GREYBUS
+   ===========  ================================================
+
+..
 
 .. _hardware-model-lifecycle-off:
 
@@ -1054,7 +1224,29 @@ unless all bundles associated with it have entered the
 In the OFF Lifecycle State, the following Interface States are allowed
 as described in later sections:
 
-.. include:: lifecycle-states/off.txt
+.. figtable::
+   :nofig:
+   :label: table-lifecycle-state-off-substates
+   :caption: OFF Lifecyle State
+   :loc: H
+   :spec: l l
+
+   ===========  ================================================
+   Sub-State    Value
+   ===========  ================================================
+   DETECT       DETECT_ACTIVE
+   V_SYS        V_SYS_OFF
+   V_CHG        V_CHG_OFF
+   WAKE         WAKE_UNSET
+   UNIPRO       UPRO_OFF
+   REFCLK       REFCLK_OFF
+   RELEASE      RELEASE_DEASSERTED
+   INTF_TYPE    IFT_DUMMY, IFT_UNIPRO, or IFT_GREYBUS
+   ORDER        ORDER_PRIMARY or ORDER_SECONDARY
+   MAILBOX      MAILBOX_NULL
+   ===========  ================================================
+
+..
 
 .. _hardware-model-lifecycle-detached:
 
@@ -1070,7 +1262,29 @@ signaling to the Interface Block, as in the OFF Lifecycle State.
 The unique Interface State possible in the DETACHED Lifecycle State
 is:
 
-.. include:: lifecycle-states/detached.txt
+.. figtable::
+   :nofig:
+   :label: table-lifecycle-state-detached-substates
+   :caption: DETACHED Lifecyle State
+   :loc: H
+   :spec: l l
+
+   ===========  ================================================
+   Sub-State    Value
+   ===========  ================================================
+   DETECT       DETECT_INACTIVE
+   V_SYS        V_SYS_OFF
+   V_CHG        V_CHG_OFF
+   WAKE         WAKE_UNSET
+   UNIPRO       UPRO_OFF
+   REFCLK       REFCLK_OFF
+   RELEASE      RELEASE_DEASSERTED
+   INTF_TYPE    IFT_UNKNOWN
+   ORDER        ORDER_UNKNOWN
+   MAILBOX      MAILBOX_NULL
+   ===========  ================================================
+
+..
 
 Bundle Power States
 ^^^^^^^^^^^^^^^^^^^

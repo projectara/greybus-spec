@@ -300,16 +300,31 @@ response status is GB_OP_SUCCESS, the following shall hold:
 
 An Interface's Lifecycle State is ENUMERATED when the AP receives
 such a successful response. The enumeration procedure guarantees that
-the Interface State is in one of two possible values, as follows::
+the Interface State is in one of two possible values, as follows:
 
-  (DETECT=DETECT_ACTIVE, V_SYS=V_SYS_ON,
-   V_CHG=V_CHG_OFF,
-   WAKE=WAKE_UNSET, UNIPRO=UPRO_UP,
-   REFCLK=REFCLK_ON,
-   RELEASE=RELEASE_DEASSERTED,
-   INTF_TYPE=IFT_GREYBUS,
-   ORDER=<ORDER_PRIMARY or ORDER_SECONDARY>,
-   MAILBOX=MAILBOX_GREYBUS)
+.. figtable::
+   :nofig:
+   :label: table-interface-state-get-manifest-response
+   :caption: Interface States after Successful Greybus Control Get Manifest Response
+   :loc: H
+   :spec: l l
+
+   ===========  ================================================
+   Sub-State    Value
+   ===========  ================================================
+   DETECT       DETECT_ACTIVE
+   V_SYS        V_SYS_ON
+   V_CHG        V_CHG_OFF
+   WAKE         WAKE_UNSET
+   UNIPRO       UPRO_UP
+   REFCLK       REFCLK_ON
+   RELEASE      RELEASE_DEASSERTED
+   INTF_TYPE    IFT_GREYBUS
+   ORDER        ORDER_PRIMARY or ORDER_SECONDARY
+   MAILBOX      MAILBOX_GREYBUS
+   ===========  ================================================
+
+..
 
 The Interface shall ensure that as long as the Interface State remains
 this value, that the above list of two conditions in this section
