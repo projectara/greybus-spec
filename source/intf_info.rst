@@ -296,8 +296,9 @@ the network via one or more |unipro| CPorts.
 The *id* field uniquely identifies a Bundle within the Interface.  The first
 Bundle shall have ID 0, the second (if present) shall have value 1, and so on.
 The purpose of these Ids is to allow CPort descriptors to define which Bundle
-they are associated with.  The Bundle descriptor is defined in Table
-:num:`table-bundle-descriptor`.
+they are associated with.  The *id* field for a Bundle Descriptor
+shall not have value 0xff, as that is an invalid Bundle ID value.
+The Bundle descriptor is defined in Table :num:`table-bundle-descriptor`.
 
 The *class* field defines the class of the bundle. This shall be used by
 the AP to find what to expect from the bundle and how to configure/use
