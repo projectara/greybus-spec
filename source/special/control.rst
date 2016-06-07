@@ -137,6 +137,11 @@ Conceptually, the Operations in the Greybus Control Protocol are:
     This Operation may be used by the AP to request the Interface to
     prepare for the transition to a low-power state.
 
+.. c:function:: int intf_deactivate_prepare(void);
+
+    This Operation may be used by the AP to request the Interface to
+    prepare to be powered down.
+
 Greybus Control Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -155,32 +160,33 @@ type and response type values are shown.
     :caption: Control Operation Types
     :spec: l l l
 
-    ===========================  =============  ==============
-    Control Operation Type       Request Value  Response Value
-    ===========================  =============  ==============
-    Ping                         0x00           0x80
-    Protocol Version             0x01           0x81
-    Reserved                     0x02           0x82
-    Get Manifest Size            0x03           0x83
-    Get Manifest                 0x04           0x84
-    Connected                    0x05           0x85
-    Disconnected                 0x06           0x86
-    TimeSync enable              0x07           0x87
-    TimeSync disable             0x08           0x88
-    TimeSync authoritative       0x09           0x89
-    Reserved                     0x0a           0x8a
-    Bundle Version               0x0b           0x8b
-    Disconnecting                0x0c           0x8c
-    TimeSync get last event      0x0d           0x8d
-    Mode Switch                  0x0e           N/A
-    Bundle Suspend               0x0f           0x8f
-    Bundle Resume                0x10           0x90
-    Bundle Deactivate            0x11           0x91
-    Bundle Activate              0x12           0x92
-    Interface Suspend Prepare    0x13           0x93
-    (all other values reserved)  0x14..0x7e     0x94..0xfe
-    Invalid                      0x7f           0xff
-    ===========================  =============  ==============
+    ==============================  =============  ==============
+    Control Operation Type          Request Value  Response Value
+    ==============================  =============  ==============
+    Ping                            0x00           0x80
+    Protocol Version                0x01           0x81
+    Reserved                        0x02           0x82
+    Get Manifest Size               0x03           0x83
+    Get Manifest                    0x04           0x84
+    Connected                       0x05           0x85
+    Disconnected                    0x06           0x86
+    TimeSync enable                 0x07           0x87
+    TimeSync disable                0x08           0x88
+    TimeSync authoritative          0x09           0x89
+    Reserved                        0x0a           0x8a
+    Bundle Version                  0x0b           0x8b
+    Disconnecting                   0x0c           0x8c
+    TimeSync get last event         0x0d           0x8d
+    Mode Switch                     0x0e           N/A
+    Bundle Suspend                  0x0f           0x8f
+    Bundle Resume                   0x10           0x90
+    Bundle Deactivate               0x11           0x91
+    Bundle Activate                 0x12           0x92
+    Interface Suspend Prepare       0x13           0x93
+    Interface Deactivate Prepare    0x14           0x94
+    (all other values reserved)     0x15..0x7e     0x95..0xfe
+    Invalid                         0x7f           0xff
+    ==============================  =============  ==============
 
 ..
 
@@ -1275,6 +1281,83 @@ the :ref:`lifecycles_suspend` procedure shall be considered as failed.
     :nofig:
     :label: table-control-intf-suspend-response
     :caption: Control Protocol Interface Suspend Response
+    :spec: l l c c l
+
+    =======  ============  ======  ==========  ======================================================================================
+    Offset   Field         Size    Value       Description
+    =======  ============  ======  ==========  ======================================================================================
+    0        status        1       Number      Interface PM status (one of the values in Table :num:`table-control-intf-pm-retvals`)
+    =======  ============  ======  ==========  ======================================================================================
+..
+
+.. _control-interface-deactivate:
+
+Greybus Control Interface Deactivate Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The AP uses this Operation during the :ref:`lifecycles_power_down`
+transition to request the bridge to power down after it detects a
+subsequent |unipro| link hibernation (see
+:ref:`lifecycles_power_down`).
+
+The Interface Deactivate Request shall not be sent by the AP unless
+all Bundles associated with this Interface are in the
+:ref:`hardware-model-bundle-off` state.
+
+There is no Control Interface Activate Operation - the Activate Operation
+is handled by the SVC using the :ref:`svc-interface-activate`.
+
+Greybus Control Interface Deactivate Request
+""""""""""""""""""""""""""""""""""""""""""""
+
+The Control Interface Deactivate Request has no payload.
+
+Upon reception of this Request the Interface shall verify that it is
+not already being powered down or suspended, that all Bundles
+associated with it are in :ref:`hardware-model-bundle-off` state and
+that it is subsequently able to detect if its UniPort-M enters the
+Hibernate state.
+
+If all above conditions are met, the Interface shall respond with the
+GB_CONTROL_INTF_PM_OK status and ensure that if Hibernate entry occurs,
+it shall proceed with the Power Down process defined in
+:ref:`lifecycles_power_down`.
+
+The Interface shall still continue to respond to incoming Control
+Requests when waiting for the UniPort-M Hibernate.
+
+Greybus Control Interface Deactivate Response
+"""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-control-intf-deactivate-response` defines the Greybus
+Control Interface Deactivate Response payload. The Response contains
+a one-byte return value indicating the result of the Operation. Valid
+return values are defined in Table :num:`table-control-intf-pm-retvals`.
+
+The AP shall verify both the Greybus return value and the Bundle PM
+status upon reception of the Response. Only when the Greybus Operation
+returns GB_OP_SUCCESS and the Interface Deactivate Response contains
+GB_CONTROL_INTF_PM_OK may the AP commence with powering down the
+Interface. Any other combination indicates an error.
+
+If the returned PM status is different than GB_CONTROL_INTF_PM_OK, the
+Interface cannot be powered down at this time. If the returned status
+code is GB_CONTROL_INTF_PM_BUSY, the Interface is already being
+suspended or powered down in which case the AP shall not retry.
+
+If the status code is GB_CONTROL_INTF_PM_NA, one or more Bundles are
+still in the :ref:`hardware-model-bundle-active` or
+:ref:`hardware-model-bundle-suspended` state in which case the AP may
+retry after making sure all Bundles are suspended or deactivated or
+abandon the Deactivate Operation. If the Operation still fails after
+a finite, implementation-defined number of retries, then the AP may
+continue the :ref:`lifecycles_power_down` procedure, which will result
+in a forceful power down.
+
+.. figtable::
+    :nofig:
+    :label: table-control-intf-deactivate-response
+    :caption: Control Protocol Interface Deactivate Response
     :spec: l l c c l
 
     =======  ============  ======  ==========  ======================================================================================
