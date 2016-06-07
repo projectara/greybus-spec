@@ -132,6 +132,11 @@ Conceptually, the Operations in the Greybus Control Protocol are:
     This Operation may be used by the AP to request that a Bundle be
     powered on.
 
+.. c:function:: int intf_suspend_prepare(void);
+
+    This Operation may be used by the AP to request the Interface to
+    prepare for the transition to a low-power state.
+
 Greybus Control Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -172,7 +177,8 @@ type and response type values are shown.
     Bundle Resume                0x10           0x90
     Bundle Deactivate            0x11           0x91
     Bundle Activate              0x12           0x92
-    (all other values reserved)  0x13..0x7e     0x93..0xfe
+    Interface Suspend Prepare    0x13           0x93
+    (all other values reserved)  0x14..0x7e     0x94..0xfe
     Invalid                      0x7f           0xff
     ===========================  =============  ==============
 
@@ -1193,5 +1199,102 @@ described in :ref:`lifecycles_connection_establishment`.
    GB_CONTROL_BUNDLE_PM_BUSY       0x02         Request rejected due to concurrent operations
    GB_CONTROL_BUNDLE_PM_FAIL       0x03         Bundle power state change failed due to an internal error
    GB_CONTROL_BUNDLE_PM_NA         0x04         Operation not applicable e.g. requested suspend for an already suspended Bundle
+   =============================   =========    =================================================================================
+..
+
+.. _control-interface-suspend:
+
+Greybus Control Interface Suspend Prepare Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The AP uses this Operation during the :ref:`lifecycles_suspend`
+transition to request the Interface to enter a low-power mode after it
+detects a subsequent |unipro| link hibernation.
+
+In this mode, some internal context may be preserved in an
+implementation-defined way, allowing for a quick transition back to
+the :ref:`hardware-model-lifecycle-enumerated` state.
+
+The Interface Suspend Prepare Request shall not be sent by the AP
+unless all Bundles associated with this Interface are in the
+:ref:`hardware-model-bundle-suspended` or
+:ref:`hardware-model-bundle-off` state.
+
+There is no Control Interface Resume Prepare Operation - the Resume
+Operation is handled entirely by the :ref:`svc-interface-resume`.
+
+Greybus Control Interface Suspend Prepare Request
+"""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Control Interface Suspend Prepare Request has no payload.
+
+Upon reception of this Request the Interface shall verify that it is
+not already being suspended or powered down, that all Bundles
+associated with it are in the :ref:`hardware-model-bundle-suspended`
+or :ref:`hardware-model-bundle-off` state and that it is
+subsequently able to detect if its UniPort-M enters the Hibernate
+state.
+
+If all above conditions are met, the Interface shall respond with the
+GB_CONTROL_INTF_PM_OK status and ensure that if Hibernate entry occurs,
+it shall proceed with the Suspend process defined in
+:ref:`lifecycles_suspend`.
+
+The Interface shall still continue to respond to incoming Control
+Requests when waiting for the UniPort-M Hibernate.
+
+Greybus Control Interface Suspend Prepare Response
+""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-control-intf-suspend-response` defines the Greybus
+Control Interface Suspend Response payload. The Response contains
+a one-byte return value indicating the result of the Operation. Valid
+return values are defined in Table
+:num:`table-control-intf-pm-retvals`.
+
+The AP shall verify both the Greybus return value and the Bundle PM
+status upon reception of the Response. Only when the Greybus Operation
+returns GB_OP_SUCCESS and the Interface Suspend Response contains
+GB_CONTROL_INTF_PM_OK may the AP continue suspending the Interface.
+Any other combination indicates an error.
+
+If the returned PM status is different than GB_CONTROL_INTF_PM_OK, the
+Interface cannot be suspended at this time. If the returned status code
+is GB_CONTROL_INTF_PM_BUSY, the Interface is already being suspended or
+powered down in which case the AP shall not retry.
+
+If the status code is GB_CONTROL_INTF_PM_NA, one or more Bundles are
+still in the :ref:`hardware-model-bundle-active` state in which case
+the AP may retry after making sure all Bundles are suspended or
+deactivated or abandon the Suspend Operation. If the Operations still
+fails after a finite, implementation-defined number of retries, then
+the :ref:`lifecycles_suspend` procedure shall be considered as failed.
+
+
+.. figtable::
+    :nofig:
+    :label: table-control-intf-suspend-response
+    :caption: Control Protocol Interface Suspend Response
+    :spec: l l c c l
+
+    =======  ============  ======  ==========  ======================================================================================
+    Offset   Field         Size    Value       Description
+    =======  ============  ======  ==========  ======================================================================================
+    0        status        1       Number      Interface PM status (one of the values in Table :num:`table-control-intf-pm-retvals`)
+    =======  ============  ======  ==========  ======================================================================================
+..
+
+.. figtable::
+   :nofig:
+   :label: table-control-intf-pm-retvals
+   :caption: Control Protocol Interface Power Management Return Values
+   :spec: l r l
+
+   =============================   =========    =================================================================================
+   Mode                            Value        Description
+   =============================   =========    =================================================================================
+   GB_CONTROL_INTF_PM_OK           0x00         The AP can continue with the Interface power mode change
+   GB_CONTROL_INTF_PM_BUSY         0x01         Request rejected due to concurrent operations
+   GB_CONTROL_INTF_PM_NA           0x02         Some bundles associated with this Interface are in a wrong state
    =============================   =========    =================================================================================
 ..
