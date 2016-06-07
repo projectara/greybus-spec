@@ -127,6 +127,11 @@ Conceptually, the Operations in the Greybus Control Protocol are:
     This Operation may be used by the AP to request that a Bundle be
     powered off.
 
+.. c:function:: int bundle_activate(u8 bundle_id);
+
+    This Operation may be used by the AP to request that a Bundle be
+    powered on.
+
 Greybus Control Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -166,7 +171,8 @@ type and response type values are shown.
     Bundle Suspend               0x0f           0x8f
     Bundle Resume                0x10           0x90
     Bundle Deactivate            0x11           0x91
-    (all other values reserved)  0x12..0x7e     0x92..0xfe
+    Bundle Activate              0x12           0x92
+    (all other values reserved)  0x13..0x7e     0x93..0xfe
     Invalid                      0x7f           0xff
     ===========================  =============  ==============
 
@@ -1095,6 +1101,75 @@ Bundle shall not be considered powered off.
     :nofig:
     :label: table-control-bundle-deactivate-response
     :caption: Control Protocol Bundle Deactivate Response
+    :spec: l l c c l
+
+    =======  ============  ======  ==========  =============================================================================================
+    Offset   Field         Size    Value       Description
+    =======  ============  ======  ==========  =============================================================================================
+    0        status        1       Number      Bundle PM status (one of the values defined in Table :num:`table-control-bundle-pm-retvals`)
+    =======  ============  ======  ==========  =============================================================================================
+..
+
+.. _control-bundle-activate:
+
+Greybus Control Bundle Activate Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The AP may use this Operation to request a specific Bundle to
+transition from the :ref:`hardware-model-bundle-off` state to
+the :ref:`hardware-model-bundle-active` state.
+
+The AP shall not send this Request unless the Bundle specified in the
+Request Payload is in the :ref:`hardware-model-bundle-off` state.
+
+Greybus Control Bundle Activate Request
+"""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-control-bundle-activate-request` defines the Greybus
+Control Bundle Activate Request payload. The Request contains a
+one-byte Bundle ID corresponding with the Bundle IDs received in the
+Manifest as described in :ref:`manifest-description`.
+
+Upon reception of this Request the Bundle indicated by the bundle_id
+field in the Request payload shall perform implementation-defined
+procedures needed to exit the :ref:`hardware-model-bundle-off` state.
+
+.. figtable::
+    :nofig:
+    :label: table-control-bundle-activate-request
+    :caption: Control Protocol Bundle Activate Request
+    :spec: l l c c l
+
+    =======  ============  ======  ==========  ===========================
+    Offset   Field         Size    Value       Description
+    =======  ============  ======  ==========  ===========================
+    0        bundle_id     1       Number      Bundle ID
+    =======  ============  ======  ==========  ===========================
+..
+
+Greybus Control Bundle Activate Response
+""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-control-bundle-activate-response` defines the
+Greybus Control Bundle Activate Response payload. The Response
+contains a one-byte return value indicating the result of the
+Operation. Valid return values are defined in Table
+:num:`table-control-bundle-pm-retvals`.
+
+The AP shall verify both the Greybus return value and the Bundle PM
+status upon reception of the Response. Only when the Greybus Operation
+returns GB_OP_SUCCESS and the Bundle Resume Response contains
+GB_CONTROL_BUNDLE_PM_OK may the Bundle be considered active. Any
+other combination indicates an error.
+
+If the Response does not indicate an error, the AP may establish
+Greybus Connections on all CPorts associated with this Bundle as
+described in :ref:`lifecycles_connection_establishment`.
+
+.. figtable::
+    :nofig:
+    :label: table-control-bundle-activate-response
+    :caption: Control Protocol Bundle Activate Response
     :spec: l l c c l
 
     =======  ============  ======  ==========  =============================================================================================
