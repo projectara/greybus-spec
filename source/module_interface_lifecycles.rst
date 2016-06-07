@@ -1655,6 +1655,9 @@ The following procedure can be initiated by the Interface when it is
 is MODE_SWITCHING, in order to attempt to follow the "ms_exit"
 transition from MODE_SWITCHING to ENUMERATED.
 
+.. image:: /img/msc/mode_switching_exit_success.png
+   :align: center
+
 To perform this procedure, the following condition shall hold.
 
 - An Interface shall be provided, whose Interface Lifecycle State is

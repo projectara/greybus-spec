@@ -1,0 +1,28 @@
+# MSC for Successful Mode Switching Exit Procedure
+
+msc {
+  hscale = "1.5", arcgradient = "0";
+
+  AP, SVC, Control [ label = "Control Connection" ], Interface, Comments [ linecolor = "white", textcolor = "white" ];
+
+  |||;
+  Comments abox Comments [ label = "MODE_SWITCHING" ];
+  |||;
+  Interface->SVC [ label = "tsb_unipro_mbox_send(MAILBOX_GREYBUS)" ];
+  SVC->Interface [ label = "svc_mailbox_poke(TSB_MAIL_RESET)" ],
+  Comments note Comments [ label = "\nMAILBOX = MAILBOX_GREYBUS\n" ];
+  SVC->AP [ label = "gb_svc_intf_mailbox_event(IID,
+  SUCCESS, MAILBOX_GREYBUS)"];
+  AP->SVC [ label = "gb_svc_intf_mailbox_event_rsp[MBOX_EVENT_SUCCESS]"];
+  |||;
+  AP rbox Control [ label = "Connection Closure Epilogue" ];
+  |||;
+  AP rbox Control [ label = "Control Connection Establishment Sequence" ];
+  |||;
+  AP->Control [ label = "gb_control_get_manifest_size()" ];
+  Control->AP [ label = "gb_control_get_manifest_size_rsp[manifest_size]" ];
+  AP->Control [ label = "gb_control_get_manifest()" ];
+  Control->AP [ label = "gb_control_get_manifest_rsp[manifest]" ];
+  |||;
+  Comments abox Comments [ label = "ENUMERATED" ];
+}
