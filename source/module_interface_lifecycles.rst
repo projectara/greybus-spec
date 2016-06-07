@@ -719,6 +719,9 @@ Control Connection to the Interface.
 The following sequence may be used to close the control Connection to
 an Interface while the Interface is entering the SUSPENDED state.
 
+.. image:: /img/msc/control_connection_closure_suspend.png
+   :align: center
+
 Though the AP may follow this sequence at any time, the AP should only
 do so if the Interface is ENUMERATED, during the "suspend" Interface
 Lifecycle state machine transition, which causes the Interface to exit
