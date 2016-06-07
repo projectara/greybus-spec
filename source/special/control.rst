@@ -112,6 +112,11 @@ Conceptually, the Operations in the Greybus Control Protocol are:
     previously described to the AP by sending it an Interface
     :ref:`Manifest <manifest-description>`.
 
+.. c:function:: int bundle_suspend(u8 bundle_id);
+
+    This Operation may be used by the AP to request the Bundle to
+    enter a low-power state.
+
 Greybus Control Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -148,7 +153,8 @@ type and response type values are shown.
     Disconnecting                0x0c           0x8c
     TimeSync get last event      0x0d           0x8d
     Mode Switch                  0x0e           N/A
-    (all other values reserved)  0x0f..0x7e     0x8f..0xfe
+    Bundle Suspend               0x0f           0x8f
+    (all other values reserved)  0x10..0x7e     0x90..0xfe
     Invalid                      0x7f           0xff
     ===========================  =============  ==============
 
@@ -854,3 +860,100 @@ subsequently respond to incoming :ref:`control-protocol` Operation
 Requests if its Control Connection is reestablished. If the Interface
 cannot ensure this, it shall not set the MAILBOX state as a result of
 receiving this request.
+
+.. _control-bundle-suspend:
+
+Greybus Control Bundle Suspend Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The AP may use this Operation to request a Bundle to enter the
+:ref:`hardware-model-bundle-suspended` state in which all Connections
+associated with this Bundle are closed by the AP but the Bundle's
+context may be preserved in an implementation-defined way.
+
+The AP shall not send this Request unless the concerned Bundle is in
+the :ref:`hardware-model-bundle-active` state.
+
+The AP shall close all Connections associated with this Bundle (as
+described in :ref:`lifecycles_connection_closure`) before sending the
+Bundle Suspend Request.
+
+The Bundle shall be considered :ref:`hardware-model-bundle-suspended`
+after the AP receives a Response indicating the Operation has
+completed successfully.
+
+Greybus Control Bundle Suspend Request
+""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-control-bundle-suspend-request` defines the Greybus
+Control Bundle Suspend Request payload. The Request contains a
+one-byte Bundle ID corresponding with the Bundle IDs received in the
+Manifest as described in :ref:`manifest-description`.
+
+Upon reception of this Request the Bundle indicated by the bundle_id
+field in the Request payload should perform implementation-defined
+procedures required to enter the :ref:`hardware-model-bundle-suspended`
+state.
+
+.. figtable::
+    :nofig:
+    :label: table-control-bundle-suspend-request
+    :caption: Control Protocol Bundle Suspend Request
+    :spec: l l c c l
+
+    =======  ============  ======  ==========  ===========================
+    Offset   Field         Size    Value       Description
+    =======  ============  ======  ==========  ===========================
+    0        bundle_id     1       Number      Bundle ID
+    =======  ============  ======  ==========  ===========================
+..
+
+Greybus Control Bundle Suspend Response
+"""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-control-bundle-suspend-response` defines the Greybus
+Control Bundle Suspend Response payload. The Response contains
+a one-byte status value indicating the result of the Operation. Valid
+status values are defined in Table
+:num:`table-control-bundle-pm-retvals`.
+
+The AP shall verify both the Greybus return value and the Bundle PM
+status upon reception of the Response. Only when the Greybus Operation
+returns GB_OP_SUCCESS and the Bundle Suspend Response contains
+GB_CONTROL_BUNDLE_PM_OK may the Bundle be considered suspended. Any
+other combination indicates an error.
+
+The AP shall re-establish the Connections (as described in
+:ref:`lifecycles_connection_establishment`) if a status code
+indicating an error was returned in the Response in which case the
+Bundle shall not be considered suspended.
+
+.. figtable::
+    :nofig:
+    :label: table-control-bundle-suspend-response
+    :caption: Control Protocol Bundle Suspend Response
+    :spec: l l c c l
+
+    =======  ============  ======  ==========  =============================================================================================
+    Offset   Field         Size    Value       Description
+    =======  ============  ======  ==========  =============================================================================================
+    0        status        1       Number      Bundle PM status (one of the values defined in Table :num:`table-control-bundle-pm-retvals`)
+    =======  ============  ======  ==========  =============================================================================================
+..
+
+.. figtable::
+   :nofig:
+   :label: table-control-bundle-pm-retvals
+   :caption: Control Protocol Bundle Power Management Status Values
+   :spec: l r l
+
+   =============================   =========    =================================================================================
+   Mode                            Value        Description
+   =============================   =========    =================================================================================
+   GB_CONTROL_BUNDLE_PM_OK         0x00         Bundle power state change was successful
+   GB_CONTROL_BUNDLE_PM_INVAL      0x01         Invalid Bundle ID
+   GB_CONTROL_BUNDLE_PM_BUSY       0x02         Request rejected due to concurrent operations
+   GB_CONTROL_BUNDLE_PM_FAIL       0x03         Bundle power state change failed due to an internal error
+   GB_CONTROL_BUNDLE_PM_NA         0x04         Operation not applicable e.g. requested suspend for an already suspended Bundle
+   =============================   =========    =================================================================================
+..
