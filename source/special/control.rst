@@ -142,6 +142,11 @@ Conceptually, the Operations in the Greybus Control Protocol are:
     This Operation may be used by the AP to request the Interface to
     prepare to be powered down.
 
+.. c:function:: void intf_hibernate_abort(void);
+
+    This Operation may be used by the AP to abort a previously issued
+    Interface Suspend Prepare or Interface Deactivate Prepare request.
+
 Greybus Control Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -184,10 +189,10 @@ type and response type values are shown.
     Bundle Activate                 0x12           0x92
     Interface Suspend Prepare       0x13           0x93
     Interface Deactivate Prepare    0x14           0x94
-    (all other values reserved)     0x15..0x7e     0x95..0xfe
+    Interface Hibernate Abort       0x15           0x95
+    (all other values reserved)     0x16..0x7e     0x96..0xfe
     Invalid                         0x7f           0xff
     ==============================  =============  ==============
-
 ..
 
 .. _control-ping:
@@ -1381,3 +1386,37 @@ in a forceful power down.
    GB_CONTROL_INTF_PM_NA           0x02         Some bundles associated with this Interface are in a wrong state
    =============================   =========    =================================================================================
 ..
+
+.. _control-interface-hibernate-abort:
+
+Greybus Control Interface Hibernate Abort Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The AP may use this Operation to abort a previous Control Interface
+Suspend or Control Interface Deactivate Operation.
+
+Greybus Control Interface Hibernate Abort Request
+"""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus Control Interface Hibernate Abort Request has no payload.
+
+The AP shall not send this request to an Interface which is not
+currently being suspended or powered down. The AP shall also not send
+this Request to an Interface for which it already requested the SVC to
+hibernate the |unipro| link.
+
+Upon reception of this Request the Interface shall stop waiting for
+the UniPort-M Hibernate and undo any implementation-defined
+procedures it performed in order to prepare for the power state
+transition.
+
+This Operation halts both the Suspend and Power Down process.
+
+Greybus Control Interface Hibernate Abort Response
+""""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus Control Interface Hibernate Abort Response has no payload.
+
+Upon reception of this Response the AP may re-establish any Non-Control
+Connections it may have closed before issuing the Suspend or Deactivate
+Request.
