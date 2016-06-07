@@ -122,6 +122,11 @@ Conceptually, the Operations in the Greybus Control Protocol are:
     This Operation may be used by the AP to request the Bundle to
     exit the low-power state.
 
+.. c:function:: int bundle_deactivate(u8 bundle_id);
+
+    This Operation may be used by the AP to request that a Bundle be
+    powered off.
+
 Greybus Control Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -160,7 +165,8 @@ type and response type values are shown.
     Mode Switch                  0x0e           N/A
     Bundle Suspend               0x0f           0x8f
     Bundle Resume                0x10           0x90
-    (all other values reserved)  0x11..0x7e     0x91..0xfe
+    Bundle Deactivate            0x11           0x91
+    (all other values reserved)  0x12..0x7e     0x92..0xfe
     Invalid                      0x7f           0xff
     ===========================  =============  ==============
 
@@ -1008,6 +1014,87 @@ described in :ref:`lifecycles_connection_establishment`.
     :nofig:
     :label: table-control-bundle-resume-response
     :caption: Control Protocol Bundle Resume Response
+    :spec: l l c c l
+
+    =======  ============  ======  ==========  =============================================================================================
+    Offset   Field         Size    Value       Description
+    =======  ============  ======  ==========  =============================================================================================
+    0        status        1       Number      Bundle PM status (one of the values defined in Table :num:`table-control-bundle-pm-retvals`)
+    =======  ============  ======  ==========  =============================================================================================
+..
+
+.. _control-bundle-deactivate:
+
+Greybus Control Bundle Deactivate Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The AP may use this Operation to request a Bundle to enter the
+:ref:`hardware-model-bundle-off` state in which all Connections
+associated with this Bundle are closed by the AP, the underlying
+hardware is powered off and the Bundle implementation-defined context
+is lost.
+
+The AP shall not send this Request unless the concerned Bundle is in
+the :ref:`hardware-model-bundle-active` state.
+
+The AP shall close all Connections associated with this Bundle (as
+described in :ref:`lifecycles_connection_closure`) before sending the
+Bundle Deactivate Request.
+
+The Bundle shall be considered :ref:`hardware-model-bundle-off`
+after the AP receives a Response indicating the Operation has
+completed successfully.
+
+Greybus Control Bundle Deactivate Request
+"""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-control-bundle-deactivate-request` defines the
+Greybus Control Bundle Deactivate Request payload. The Request
+contains a one-byte Bundle ID corresponding with the Bundle IDs
+received in the Manifest as described in :ref:`manifest-description`.
+
+Upon reception of this Request the Bundle indicated by the bundle_id
+field in the Request payload should perform implementation-defined
+procedures required to enter the :ref:`hardware-model-bundle-off`
+state.
+
+.. figtable::
+    :nofig:
+    :label: table-control-bundle-deactivate-request
+    :caption: Control Protocol Bundle Deactivate Request
+    :spec: l l c c l
+
+    =======  ============  ======  ==========  ===========================
+    Offset   Field         Size    Value       Description
+    =======  ============  ======  ==========  ===========================
+    0        bundle_id     1       Number      Bundle ID
+    =======  ============  ======  ==========  ===========================
+..
+
+Greybus Control Bundle Deactivate Response
+""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-control-bundle-deactivate-response` defines the
+Greybus Control Bundle Deactivate Response payload. The Response
+contains a one-byte status value indicating the result of the
+Operation. Valid status values are defined in Table
+:num:`table-control-bundle-pm-retvals`.
+
+The AP shall verify both the Greybus return value and the Bundle PM
+status upon reception of the Response. Only when the Greybus Operation
+returns GB_OP_SUCCESS and the Bundle Deactivate Response contains
+GB_CONTROL_BUNDLE_PM_OK may the Bundle be considered powered off. Any
+other combination indicates an error.
+
+The AP shall re-establish the Connections (as described in
+:ref:`lifecycles_connection_establishment`) if a status code
+indicating an error was returned in the Response in which case the
+Bundle shall not be considered powered off.
+
+.. figtable::
+    :nofig:
+    :label: table-control-bundle-deactivate-response
+    :caption: Control Protocol Bundle Deactivate Response
     :spec: l l c c l
 
     =======  ============  ======  ==========  =============================================================================================
