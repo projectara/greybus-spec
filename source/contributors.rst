@@ -19,6 +19,7 @@ this specification:
 * David Fishman      -- Google
 * Greg Kielian       -- Google
 * Elwin Ong          -- Google
+* Robert C Johnson   -- GTG Productions
 * Johan Hovold       -- Hovold Consulting
 * Laurent Pinchart   -- Ideas On Board
 * Marti Bolivar      -- LeafLabs
