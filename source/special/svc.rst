@@ -2687,7 +2687,7 @@ Request in any other combination of these two fields.
     Result Code       Value     Description
     ================  ========  ======================================================================
     V_SYS_OK          0         V_SYS enable/disable operation was successful.
-    V_SYS_BUSY        1         V_SYS enable/disable operation cannot be attempted as the SVC is busy.
+    (Reserved)        1         (Reserved for future use)
     V_SYS_FAIL        2         V_SYS enable/disable was attempted and failed.
     (Reserved)        3-255     (Reserved for future use)
     ================  ========  ======================================================================
@@ -2890,7 +2890,7 @@ two fields.
     Result Code       Value     Description
     ================  ========  ======================================================================
     REFCLK_OK         0         REFCLK enable/disable operation was successful.
-    REFCLK_BUSY       1         REFCLK enable/disable operation cannot be attempted as the SVC is busy.
+    (Reserved)        1         (Reserved for future use)
     REFCLK_FAIL       2         REFCLK enable/disable was attempted and failed.
     (Reserved)        3-255     (Reserved for future use)
     ================  ========  ======================================================================
@@ -3100,7 +3100,7 @@ In particular, if the Response message header has
 :ref:`greybus-operation-status` equal to GB_OP_SUCCESS:
 
 - UNIPRO is UPRO_DOWN if the result_code is UPRO_OK.
-- UNIPRO shall not have changed value if the result_code is UPRO_BUSY or UPRO_NOT_OFF.
+- UNIPRO shall not have changed value if the result_code is UPRO_NOT_OFF.
 - UNIPRO is unpredictable if the result_code is UPRO_FAIL.
 
 .. figtable::
@@ -3113,7 +3113,7 @@ In particular, if the Response message header has
     Result Code       Value     Description
     ================  ========  ======================================================================
     UPRO_OK           0         UNIPRO enable/disable operation was successful.
-    UPRO_BUSY         1         UNIPRO enable/disable operation cannot be attempted as the SVC is busy.
+    (Reserved)        1         (Reserved for future use)
     UPRO_FAIL         2         UNIPRO enable/disable was attempted and failed.
     UPRO_NOT_OFF      3         UNIPRO was not UPRO_OFF, attempt to set to UPRO_DOWN was not made.
     (Reserved)        4-255     (Reserved for future use)
@@ -3207,7 +3207,6 @@ particular, if the Response message header has
 the :ref:`greybus-operation-status` equal to GB_OP_SUCCESS:
 
 - UNIPRO is UPRO_OFF if the result_code is UPRO_OK.
-- UNIPRO shall not have changed value if the result_code is UPRO_BUSY.
 - UNIPRO is unpredictable if the result_code is UPRO_FAIL.
 
 .. _svc-interface-activate:
