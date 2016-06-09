@@ -42,6 +42,8 @@ this specification:
 * Greg Kroah-Hartman -- Linux Solutions
 * Jean Pihet         -- NewOldBits
 * Bryan O'Donoghue   -- Nexus Software
+* Ara Knaian         -- NK Labs, LLC
+* Seth Newburg       -- NK Labs, LLC
 * Karim Yaghmour     -- Opersys
 * Olin Sibert        -- Oxford Systems
 * Tony Carosa        -- Protocol Insight
