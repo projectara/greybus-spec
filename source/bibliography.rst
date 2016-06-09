@@ -26,3 +26,17 @@
 
 .. [CSI-3]     MIPI Alliance Specification for CSI-3, version 1.1, MIPI
                Alliance, Inc., 2012.
+
+.. [FIPS180]   FIPS PUB 180-4, Secure Hash Standard,
+               National Institute of Standards and Technology,
+               August 2015
+
+.. [RSA]       Internet RFC 3447, Public-Key Cryptography Standards
+               (PKCS) #1: RSA Cryptography Specifications Version 2.1
+               https://tools.ietf.org/html/rfc3447
+
+.. [ED25519]   Internet RFC 7748, Elliptic Curves for Security,
+               section 4.1, https://tools.ietf.org/html/rfc7748
+
+.. [ED448]     Internet RFC 7748, Elliptic Curves for Security,
+               section 4.2, https://tools.ietf.org/html/rfc7748
