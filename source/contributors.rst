@@ -13,6 +13,7 @@ this specification:
 * Axel Haslam        -- BayLibre
 * Fabien Parent      -- BayLibre
 * Patrick Titiano    -- BayLibre
+* Jun Li             -- BSquare
 * Phong Tran         -- BSquare
 * Winnie Wang        -- BSquare
 * Paul Eremenko      -- Google
