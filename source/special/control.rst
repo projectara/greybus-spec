@@ -554,6 +554,10 @@ conditions hold:
 The receiving Interface shall otherwise halt Segment transmission on
 the CPort.
 
+If the receiving Interface issues any Responses on the Connection to
+Operations whose Requests it received before this Request, it shall do
+so before sending the Control Disconnecting Response.
+
 Greybus Control Disconnecting Response
 """"""""""""""""""""""""""""""""""""""
 
