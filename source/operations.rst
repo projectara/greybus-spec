@@ -159,7 +159,7 @@ interpreted only by its respective protocol handler.
 .. figtable::
     :nofig:
     :label: table-operation-status-values
-    :caption: Connection Status Values
+    :caption: Operation Status Values
     :spec: l c l
 
     ============================  ===============  =======================
