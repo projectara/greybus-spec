@@ -177,10 +177,8 @@ using the same Virtual Channel number as the image frames and set the Data Type
 to User Defined 8-bit Data Type 8 (0x37).
 
 Camera Modules should encode metadata using the properties and serialization
-format defined in the Properties section of Greybus Camera Device Class
-specifications.
-
-.. TODO: jmondi: insert reference to that section, once added
+format defined in the :ref:`Properties Section <camera-properties>` of Greybus
+Camera Device Class specifications.
 
 However, when this isn’t possible or practical (for instance, when the Module
 hardware dictates the metadata format), Modules may choose to encode metadata
@@ -200,10 +198,8 @@ per image frame.
 
 Metadata transmitted over Camera Management Connection using the
 :ref:`Greybus Camera Management Metadata Request <camera-metadata-operation>`
-shall always be encoded as specified in the Properties section of this
-specification.
-
-.. TODO: jmondi: insert reference to that section, once added
+shall always be encoded as specified in the
+:ref:`Properties Section <camera-properties>` of this specification.
 
 Operational Model
 ^^^^^^^^^^^^^^^^^
@@ -367,7 +363,8 @@ Greybus Camera Management Capabilities Response
 
 The Greybus Camera Management Capabilities Response contains a variable-size
 capabilities block that shall conform to the format described in the Greybus
-Camera Device Class Properties section of this specification.
+Camera Device Class :ref:`Properties Section <camera-properties>` of this
+specification.
 
 The Response payload is shown in Table
 :num:`table-camera-operations-capabilities-response`.
@@ -652,12 +649,10 @@ The Camera Module shall set the Response status to GB_OP_INVALID_STATE in all
 other states.
 
 The Capture Streams Request also contains a variable-size settings block that
-shall conform to the format described in the Properties section of this
-specification.
+shall conform to the format described in the
+:ref:`Properties Section <camera-properties>`  of this specification.
 If no settings need to be applied for the Request the settings block size shall
 be zero.
-
-.. TODO: jmondi: Add reference to the properties section once added
 
 Parameters for the Capture Stream Request are shown in Table
 :num:`table-camera-operations-capture-request`
@@ -769,9 +764,8 @@ Greybus Camera Metadata Streams Operation Request
 The Greybus Camera Management Metadata Request is sent by the Camera Module
 over the Camera Management Connection.
 It contains a variable-size metadata block that shall conform to the format
-described in the Properties section of this specification.
-
-.. FIXME: jmondi: add reference to the properties section once added
+described in the :ref:`Properties Section <camera-properties>` of this
+specification.
 
 If no metadata needs to be reported for a particular frame the metadata block
 size shall be zero.
@@ -795,6 +789,570 @@ The Greybus Camera Metadata Streams Operation Request is defined in Table
     7           padding        1       0            Shall be set to zero
     8           metadata       n       metadata     Metadata block
     =========   =============  ======  ===========  ===========================
+..
+
+.. _camera-properties:
+
+Greybus Camera Properties
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Capabilities, Capture and Metadata operations modify or report the value of
+a set of Camera Module properties.
+Properties are defined as parameters that can report or modify the nature,
+state or operation of the Camera Module.
+
+This section defines the structure of a property and a simple and efficient
+method to encode a set of property values in a binary data block that can be
+transmitted over Greybus.
+
+Properties Definition
+"""""""""""""""""""""
+
+The Camera Class Protocol specifications defines properties through the
+following information.
+
+* *name*
+
+  A human readable string used to refer to the property in documentation.
+
+* *key*
+
+  An integer value that uniquely identifies the property.
+
+* *data type*
+
+  Type of the property value data that determines how the value is
+  to be interpreted.
+
+* *values*
+
+  List, range or otherwise description of acceptable values for the property.
+
+Properties defined in this specification are considered as standard Greybus
+Camera Device Class properties.
+Camera Module vendors are allowed to define additional properties to the extent
+allowed by the specification.
+If they chose to do so they shall define such additional properties using the
+mechanism described in this specification.
+
+Property keys range from 0x0000 to 0xffff organized as follows:
+
+* 0x0000 - 0x7fff: Standard Greybus Camera properties
+* 0x8000 - 0x8fff: Vendor-specific properties
+* 0x9000 - 0xffff: Reserved
+
+A property stores a value using one of the following data types.
+
+* int8: a signed 8-bit integer
+* uint8: an unsigned 8-bit integer
+* int32: a signed 32-bit integer
+* uint32: an unsigned 32-bit integer
+* int64: a signed 64-bit integer
+* uint64: an unsigned 64-bit integer
+* float: a single-precision (32-bit) IEEE 754 floating-point value, as defined
+  in [IEEE745]_
+* double: a double-precision (64-bit) IEEE 754 floating-point value, as defined
+  in [IEEE745]_
+* rational: a rational expressed as a 32-bit integer numerator and a 32-bit
+  integer denominator. The denominator shall not be zero
+
+Properties can also store an array of values of the same data type.
+In that case the property data type is postfixed with ‘[]’ to denote the array
+nature of the data.
+For instance the data type of an array of 32-bit integers would be described
+as ‘int32[]’.
+
+When the property is directed to (or comes from) the Android Camera framework,
+only its name and TAG value are shown.
+
+When a property, instead, is Greybus Camera specific, and not directed to
+the Android camera framework, a more detailed description and a range of
+accepted values (when applicable) is provided, as shown in figure
+:num:`table-camera-properties-example`.
+
+.. figtable::
+   :nofig:
+   :label: table-camera-properties-example
+   :caption: Camera Class Property Example
+   :spec: l l c l
+
+    ========================  =======  ==========  ============================
+    Property Name             TAG      Type        Description
+    ========================  =======  ==========  ============================
+    GB_CAM_SAMPLE_PROPERTY    0xXXXX   type[]      Description of property and
+    \                                              intended use-cases
+    ========================  =======  ==========  ============================
+..
+
+Properties Value Encoding
+"""""""""""""""""""""""""
+
+Greybus Camera Device Class Operations need to transmit a set of property
+values.
+
+A Property values set is an unordered list of property keys associated with
+values.
+To transport it over Greybus the set shall be serialized into an array of
+bytes called Properties Packets as follows.
+
+Unless stated otherwise, all numerical fields shall be stored in little-endian
+format.
+Signed integers shall be encoded using a two's complement representation.
+
+The memory of a Greybus Camera Device Class defined property is shown in Figure
+:num:`camera-prop-layout`.
+
+.. _camera-prop-layout:
+.. figure:: /img/svg/ara-camera-properties-layout.png
+    :align: center
+
+    Memory layout of a Greybus Camera Device Class Property Packet
+..
+
+The packet starts with a fixed-size header that contains the payload size and
+the number of Properties it contains, as shown in Table
+:num:`table-camera-properties-packet-header`.
+
+.. figtable::
+   :nofig:
+   :label: table-camera-properties-packet-header
+   :caption: Camera Class Property Packet Header
+   :spec: l l c l l
+
+    =========   =============  ======  ===========  ===========================
+    Offset      Field          Size    Value        Description
+    =========   =============  ======  ===========  ===========================
+    0           size           2       number       Size of the payload, header excluded
+    2           nprops         2       number       Number of properties in the packet
+    =========   =============  ======  ===========  ===========================
+..
+
+The header is followed by a payload that stores Property value entries.
+Each entry contains the Property key, the Property value length and the
+Property value, as shown in table :num:`table-camera-properties-prop`.
+
+.. figtable::
+   :nofig:
+   :label: table-camera-properties-prop
+   :caption: Camera Class Property Entry
+   :spec: l l c l l
+
+    =========   =============  ======  ===========  ===========================
+    Offset      Field          Size    Value        Description
+    =========   =============  ======  ===========  ===========================
+    0           key            2       number       Property key
+    2           length         2       number       Property length in bytes,
+    \                                               padding excluded
+    4           value          n       property     Value of the property
+                                       specific
+    =========   =============  ======  ===========  ===========================
+..
+
+The packet shall not contain multiple entries with the same key.
+The order of payload entries is unspecified and shall not be relied upon when
+interpreting the content of the packet.
+
+All value fields shall be padded to a multiple of 4 bytes.
+The size of the defined data types makes padding needed for int8 values only.
+
+Values of array data type properties shall be encoded by storing the array
+elements sequentially without any space or padding between elements.
+
+Padding is only required at the end of the array to align its size to a
+multiple of 4 bytes.
+
+.. FIXME: jmondi: need to check when the JPEG_ information shall come from:
+          Camera Module or HAL...
+
+Capabilities
+""""""""""""
+
+Capabilities tags are reported by Camera Modules in order to describe
+their characteristics and their available features.
+
+Capabilities tags defined in Table :num:`table-camera-capabilities-tags` are
+directed to the Android framework, for this reason their types, supported
+values and detailed description are documented by the Android system
+documentation.
+
+.. figtable::
+    :label: table-camera-capabilities-tags
+    :caption: Camera Device Class Capababilities IDs
+    :spec: l l
+
+    ==================================================   =======
+    Property Name                                        TAG
+    ==================================================   =======
+    COLOR_CORRECTION_AVAILABLE_ABERRATION_MODES          0x0004
+    CONTROL_AE_AVAILABLE_ANTIBANDING_MODES               0x0112
+    CONTROL_AE_AVAILABLE_MODES                           0x0113
+    CONTROL_AE_AVAILABLE_TARGET_FPS_RANGES               0x0114
+    CONTROL_AE_COMPENSATION_RANGE                        0x0115
+    CONTROL_AE_COMPENSATION_STEP                         0x0116
+    CONTROL_AF_AVAILABLE_MODES                           0x0117
+    CONTROL_AVAILABLE_EFFECTS                            0x0118
+    CONTROL_AVAILABLE_SCENE_MODES                        0x0119
+    CONTROL_AVAILABLE_VIDEO_STABILIZATION_MODES          0x011a
+    CONTROL_AWB_AVAILABLE_MODES                          0x011b
+    CONTROL_MAX_REGIONS                                  0x011c
+    CONTROL_SCENE_MODE_OVERRIDES                         0x011d
+    CONTROL_AVAILABLE_HIGH_SPEED_VIDEO_CONFIGURATIONS    0x0123
+    CONTROL_AE_LOCK_AVAILABLE                            0x0124
+    CONTROL_AWB_LOCK_AVAILABLE                           0x0125
+    CONTROL_AVAILABLE_MODES                              0x0126
+    FLASH_INFO_AVAILABLE                                 0x0500
+    HOT_PIXEL_AVAILABLE_HOT_PIXEL_MODES                  0x0601
+    JPEG_AVAILABLE_THUMBNAIL_SIZES                       0x0707
+    JPEG_MAX_SIZE                                        0x0708
+    LENS_FACING                                          0x0805
+    LENS_POSE_ROTATION                                   0x0806
+    LENS_POSE_TRANSLATION                                0x0807
+    LENS_INFO_AVAILABLE_APERTURES                        0x0900
+    LENS_INFO_AVAILABLE_FILTER_DENSITIES                 0x0901
+    LENS_INFO_AVAILABLE_FOCAL_LENGTHS                    0x0902
+    LENS_INFO_AVAILABLE_OPTICAL_STABILIZATION            0x0903
+    LENS_INFO_HYPERFOCAL_DISTANCE                        0x0904
+    LENS_INFO_MINIMUM_FOCUS_DISTANCE                     0x0905
+    LENS_INFO_SHADING_MAP_SIZE                           0x0906
+    LENS_INFO_FOCUS_DISTANCE_CALIBRATION                 0x0907
+    LENS_INTRINSIC_CALIBRATION                           0x080a
+    LENS_RADIAL_DISTORTION                               0x080b
+    QUIRKS_METERING_CROP_REGION                          0x0b00
+    QUIRKS_TRIGGER_AF_WITH_AUTO                          0x0b01
+    QUIRKS_USE_ZSL_FORMAT                                0x0b02
+    QUIRKS_USE_PARTIAL_RESULT                            0x0b03
+    REQUEST_MAX_NUM_OUTPUT_STREAMS                       0x0c06
+    REQUEST_MAX_NUM_REPROCESS_STREAMS                    0x0c07
+    REQUEST_PIPELINE_MAX_DEPTH                           0x0c0a
+    REQUEST_PARTIAL_RESULT_COUNT                         0x0c0b
+    REQUEST_AVAILABLE_CAPABILITIES                       0x0c0c
+    REQUEST_AVAILABLE_REQUEST_KEYS                       0x0c0d
+    REQUEST_AVAILABLE_RESULT_KEYS                        0x0c0e
+    REQUEST_AVAILABLE_CHARACTERISTICS_KEYS               0x0c0f
+    SCALER_AVAILABLE_FORMATS                             0x0d01
+    SCALER_AVAILABLE_JPEG_MIN_DURATIONS                  0x0d02
+    SCALER_AVAILABLE_JPEG_SIZES                          0x0d03
+    SCALER_AVAILABLE_MAX_DIGITAL_ZOOM                    0x0d04
+    SCALER_AVAILABLE_PROCESSED_MIN_DURATIONS             0x0d05
+    SCALER_AVAILABLE_PROCESSED_SIZES                     0x0d06
+    SCALER_AVAILABLE_RAW_MIN_DURATIONS                   0x0d07
+    SCALER_AVAILABLE_RAW_SIZES                           0x0d08
+    SCALER_AVAILABLE_INPUT_OUTPUT_FORMATS_MAP            0x0d09
+    SCALER_AVAILABLE_STREAM_CONFIGURATIONS               0x0d0a
+    SCALER_AVAILABLE_MIN_FRAME_DURATIONS                 0x0d0b
+    SCALER_AVAILABLE_STALL_DURATIONS                     0x0d0c
+    SCALER_CROPPING_TYPE                                 0x0d0d
+    SENSOR_INFO_ACTIVE_ARRAY_SIZE                        0x0f00
+    SENSOR_INFO_SENSITIVITY_RANGE                        0x0f01
+    SENSOR_INFO_COLOR_FILTER_ARRANGEMENT                 0x0f02
+    SENSOR_INFO_EXPOSURE_TIME_RANGE                      0x0f03
+    SENSOR_INFO_MAX_FRAME_DURATION                       0x0f04
+    SENSOR_INFO_PHYSICAL_SIZE                            0x0f05
+    SENSOR_INFO_PIXEL_ARRAY_SIZE                         0x0f06
+    SENSOR_INFO_WHITE_LEVEL                              0x0f07
+    SENSOR_INFO_TIMESTAMP_SOURCE                         0x0f08
+    SENSOR_INFO_LENS_SHADING_APPLIED                     0x0f09
+    SENSOR_INFO_PRE_CORRECTION_ACTIVE_ARRAY_SIZE         0x0f0a
+    SENSOR_CALIBRATION_TRANSFORM1                        0x0e05
+    SENSOR_CALIBRATION_TRANSFORM2                        0x0e06
+    SENSOR_COLOR_TRANSFORM1                              0x0e07
+    SENSOR_COLOR_TRANSFORM2                              0x0e08
+    SENSOR_FORWARD_MATRIX1                               0x0e09
+    SENSOR_FORWARD_MATRIX2                               0x0e0a
+    SENSOR_BLACK_LEVEL_PATTERN                           0x0e0c
+    SENSOR_MAX_ANALOG_SENSITIVITY                        0x0e0d
+    SENSOR_ORIENTATION                                   0x0e0e
+    SENSOR_PROFILE_HUE_SAT_MAP_DIMENSIONS                0x0e0f
+    SENSOR_AVAILABLE_TEST_PATTERN_MODES                  0x0e19
+    SHADING_AVAILABLE_MODES                              0x1002
+    STATISTICS_INFO_AVAILABLE_FACE_DETECT_MODES          0x1200
+    STATISTICS_INFO_MAX_FACE_COUNT                       0x1202
+    STATISTICS_INFO_AVAILABLE_HOT_PIXEL_MAP_MODES        0x1206
+    STATISTICS_INFO_AVAILABLE_LENS_SHADING_MAP_MODES     0x1207
+    TONEMAP_MAX_CURVE_POINTS                             0x1304
+    TONEMAP_AVAILABLE_TONE_MAP_MODES                     0x1305
+    LED_AVAILABLE_LEDS                                   0x1401
+    INFO_SUPPORTED_HARDWARE_LEVEL                        0x1500
+    SYNC_MAX_LATENCY                                     0x1701
+    DEPTH_MAX_DEPTH_SAMPLES                              0x1900
+    DEPTH_AVAILABLE_DEPTH_STREAM_CONFIGURATIONS          0x1901
+    DEPTH_AVAILABLE_DEPTH_MIN_FRAME_DURATIONS            0x1902
+    DEPTH_AVAILABLE_DEPTH_STALL_DURATIONS                0x1903
+    DEPTH_DEPTH_IS_EXCLUSIVE                             0x1904
+    ==================================================   =======
+..
+
+Greybus Camera Device Class specific capabilities tags are defined in Table
+:num:`table-camera-ara-tags`.
+Greybus Camera Device Class tags are used to describe Greybus Camera specific
+attributes and Camera Module shall include all of them in their reported
+Capabilities packets.
+
+.. figtable::
+    :label: table-camera-ara-tags
+    :caption: Camera Device Class Capabilities IDs
+    :spec: l l l l
+
+    ==========================   =======  ====  =================================
+    Property Name                TAG      Type  Description
+    ==========================   =======  ====  =================================
+    GB_CAM_FEATURE_JPEG          0X7f00   bool  The Camera Module supports on-board
+    \                                           JPEG encoding
+    GB_CAM_FEATURE_SCALER        0X7f01   bool  The Camera Module supports on-board
+    \                                           image scaling
+    GB_CAM_METADATA_FORMAT       0x7f02   int8  Supported metadata format as defined
+    \                                           in Table :num:`table-camera-metadata-fmt`
+    GB_CAM_METADATA_TRANSPORT    0x7f03   int8  Supported metadata transport as defined
+    \                                           in Table :num:`table-camera-metadata-trans`
+    GB_CAM_PER_FRAME_CONTROL     0x7f04   bool  The Camera Module support per-frame Control
+    ==========================   =======  ====  =================================
+..
+
+The accepted values for the reported GB_CAM_METADATA_FORMAT tag are listed in
+Table :num:`table-camera-metadata-fmt`.
+
+.. figtable::
+    :nofig:
+    :label: table-camera-metadata-fmt
+    :caption: Camera Device Class Accepted Metadata Format
+    :spec: l l l
+
+    =========================  =======  =================================
+    Property Name              Value    Description
+    =========================  =======  =================================
+    METADATA_TRANSPORT_GB      0        The Camera Module sends metadata encoded
+    \                                   as prescribed by this Specifications
+    METADATA_TRANSPORT_CUSTOM  1        The Camera Module sends metadata encoded
+    \                                   in custom format
+    =========================  =======  =================================
+..
+
+The accepted values for the reported GB_CAM_METADATA_TRANSPORT tag are listed in
+Table :num:`table-camera-metadata-trans`.
+
+.. figtable::
+    :nofig:
+    :label: table-camera-metadata-trans
+    :caption: Camera Device Class Accepted Metadata Transport Methods
+    :spec: l l l
+
+    ========================   =======  =================================
+    Property Name              Value    Description
+    ========================   =======  =================================
+    METADATA_TRANSPORT_NONE    0        The Camera Module does not send metadata
+    METADATA_TRANSPORT_CSI     1        The Camera Module sends metadata interleaved
+    \                                   to image frames on the CSI-2 transport
+    METADATA_TRANSPORT_OP      2        The Camera Module sends metadata using the
+    \                                   :ref:`Greybus Camera Device Class Metadata
+                                        Operation <camera-metadata-operation>`
+    ========================   =======  =================================
+..
+
+Capture Settings
+""""""""""""""""
+
+Capture Setting tags are used to provide to the Camera Module the desired image
+processing settings it shall apply to the next captured frames.
+Camera Modules should minimize the delay required to apply the received settings
+as much as possible.
+
+Capture Settings are generated by the Android framework, and sent on the wire
+along with each :ref:`Greybus Camera Device Class Capture Request <camera-capture-streams-operation>`.
+For this reason, their types, accepted values and detailed description are
+provided by the Android system documentation.
+
+.. figtable::
+    :nofig:
+    :label: table-camera-capture-tags
+    :caption: Camera Device Class Capture Settings IDs
+    :spec: l l
+
+    ==================================================   =======
+    Property Name                                        TAG
+    ==================================================   =======
+    COLOR_CORRECTION_MODE                                0x0000
+    COLOR_CORRECTION_TRANSFORM                           0x0001
+    COLOR_CORRECTION_GAINS                               0x0002
+    COLOR_CORRECTION_ABERRATION_MODE                     0x0003
+    CONTROL_AE_ANTIBANDING_MODE                          0x0100
+    CONTROL_AE_EXPOSURE_COMPENSATION                     0x0101
+    CONTROL_AE_LOCK                                      0x0102
+    CONTROL_AE_MODE                                      0x0103
+    CONTROL_AE_REGIONS                                   0x0104
+    CONTROL_AE_TARGET_FPS_RANGE                          0x0105
+    CONTROL_AE_PRECAPTURE_TRIGGER                        0x0106
+    CONTROL_AF_MODE                                      0x0107
+    CONTROL_AF_REGIONS                                   0x0108
+    CONTROL_AF_TRIGGER                                   0x0109
+    CONTROL_AWB_LOCK                                     0x010a
+    CONTROL_AWB_MODE                                     0x010b
+    CONTROL_AWB_REGIONS                                  0x010c
+    CONTROL_CAPTURE_INTENT                               0x010d
+    CONTROL_EFFECT_MODE                                  0x010e
+    CONTROL_MODE                                         0x010f
+    CONTROL_SCENE_MODE                                   0x0110
+    CONTROL_VIDEO_STABILIZATION_MODE                     0x0111
+    FLASH_MODE                                           0x0402
+    HOT_PIXEL_MODE                                       0x0600
+    JPEG_GPS_COORDINATES                                 0x0700
+    JPEG_GPS_PROCESSING_METHOD                           0x0701
+    JPEG_GPS_TIMESTAMP                                   0x0702
+    JPEG_ORIENTATION                                     0x0703
+    JPEG_QUALITY                                         0x0704
+    JPEG_THUMBNAIL_QUALITY                               0x0705
+    JPEG_THUMBNAIL_SIZE                                  0x0706
+    LENS_APERTURE                                        0x0800
+    LENS_FILTER_DENSITY                                  0x0801
+    LENS_FOCAL_LENGTH                                    0x0802
+    LENS_FOCUS_DISTANCE                                  0x0803
+    LENS_OPTICAL_STABILIZATION_MODE                      0x0804
+    REQUEST_FRAME_COUNT                                  0x0c00
+    REQUEST_ID                                           0x0c01
+    REQUEST_INPUT_STREAMS                                0x0c02
+    REQUEST_OUTPUT_STREAMS                               0x0c04
+    REQUEST_TYPE                                         0x0c05
+    SCALER_CROP_REGION                                   0x0d00
+    SENSOR_EXPOSURE_TIME                                 0x0e00
+    SENSOR_FRAME_DURATION                                0x0e01
+    SENSOR_SENSITIVITY                                   0x0e02
+    SENSOR_TEST_PATTERN_DATA                             0x0e17
+    SENSOR_TEST_PATTERN_MODE                             0x0e18
+    SHADING_MODE                                         0x1000
+    STATISTICS_FACE_DETECT_MODE                          0x1100
+    STATISTICS_HOT_PIXEL_MAP_MODE                        0x1103
+    STATISTICS_LENS_SHADING_MAP_MODE                     0x1110
+    TONEMAP_CURVE_BLUE                                   0x1300
+    TONEMAP_CURVE_GREEN                                  0x1301
+    TONEMAP_CURVE_RED                                    0x1302
+    TONEMAP_MODE                                         0x1303
+    TONEMAP_GAMMA                                        0x1306
+    TONEMAP_PRESET_CURVE                                 0x1307
+    LED_TRANSMIT                                         0x1400
+    BLACK_LEVEL_LOCK                                     0x1600
+    ==================================================   =======
+..
+
+Metadata
+""""""""
+
+Camera Modules should encode metadata using the properties and serialization
+format defined in this section.
+
+However, when this isn’t possible or practical (for instance when the module
+hardware dictates the metadata format), modules may chose to encode metadata
+using a custom method for metadata transmitted over CSI-2.
+
+Metadata transmitted over Greybus using the
+:ref:`Greybus Camera Device Class Metadata Request <camera-metadata-operation>`
+shall always be encoded as specified in this section.
+
+Metadata transmitted over CSI-2 using a custom encoding shall at minimum
+contain the ID of the associated request.
+
+.. jmondi: FIXME: expand the list of minimum required field for custom metadata
+           formats
+
+Table :num:`table-camera-metadata-tags` define the IDs of metadata tags
+accepted by the Greybus Camera Device Class.
+Metadata tags are sent to the Android framework, for this reason their types,
+accepted values and detailed description are provided by the Android system
+documentation.
+
+.. figtable::
+    :nofig:
+    :label: table-camera-metadata-tags
+    :caption: Camera Device Class Metadata IDs
+    :spec: l l
+
+    ==================================================   =======
+    Property Name                                        TAG
+    ==================================================   =======
+    COLOR_CORRECTION_MODE                                0x0000
+    COLOR_CORRECTION_TRANSFORM                           0x0001
+    COLOR_CORRECTION_GAINS                               0x0002
+    COLOR_CORRECTION_ABERRATION_MODE                     0x0003
+    CONTROL_AE_PRECAPTURE_ID                             0x011e
+    CONTROL_AE_ANTIBANDING_MODE                          0x0100
+    CONTROL_AE_EXPOSURE_COMPENSATION                     0x0101
+    CONTROL_AE_LOCK                                      0x0102
+    CONTROL_AE_MODE                                      0x0103
+    CONTROL_AE_REGIONS                                   0x0104
+    CONTROL_AE_TARGET_FPS_RANGE                          0x0105
+    CONTROL_AE_PRECAPTURE_TRIGGER                        0x0106
+    CONTROL_AE_STATE                                     0x011f
+    CONTROL_AF_MODE                                      0x0107
+    CONTROL_AF_REGIONS                                   0x0108
+    CONTROL_AF_TRIGGER                                   0x0109
+    CONTROL_AF_STATE                                     0x0120
+    CONTROL_AF_TRIGGER_ID                                0x0121
+    CONTROL_AWB_LOCK                                     0x010a
+    CONTROL_AWB_MODE                                     0x010b
+    CONTROL_AWB_REGIONS                                  0x010c
+    CONTROL_CAPTURE_INTENT                               0x010d
+    CONTROL_AWB_STATE                                    0x0122
+    CONTROL_EFFECT_MODE                                  0x010e
+    CONTROL_MODE                                         0x010f
+    CONTROL_SCENE_MODE                                   0x0110
+    CONTROL_VIDEO_STABILIZATION_MODE                     0x0111
+    FLASH_MODE                                           0x0402
+    FLASH_STATE                                          0x0405
+    HOT_PIXEL_MODE                                       0x0600
+    JPEG_GPS_COORDINATES                                 0x0700
+    JPEG_GPS_PROCESSING_METHOD                           0x0701
+    JPEG_GPS_TIMESTAMP                                   0x0702
+    JPEG_ORIENTATION                                     0x0703
+    JPEG_QUALITY                                         0x0704
+    JPEG_THUMBNAIL_QUALITY                               0x0705
+    JPEG_THUMBNAIL_SIZE                                  0x0706
+    LENS_APERTURE                                        0x0800
+    LENS_FILTER_DENSITY                                  0x0801
+    LENS_FOCAL_LENGTH                                    0x0802
+    LENS_FOCUS_DISTANCE                                  0x0803
+    LENS_OPTICAL_STABILIZATION_MODE                      0x0804
+    LENS_POSE_ROTATION                                   0x0806
+    LENS_POSE_TRANSLATION                                0x0807
+    LENS_INTRINSIC_CALIBRATION                           0x080a
+    LENS_RADIAL_DISTORTION                               0x080b
+    QUIRKS_PARTIAL_RESULT                                0x0b04
+    REQUEST_ID                                           0x0c01
+    REQUEST_OUTPUT_STREAMS                               0x0c04
+    REQUEST_PIPELINE_DEPTH                               0x0c09
+    SCALER_CROP_REGION                                   0x0d00
+    SENSOR_EXPOSURE_TIME                                 0x0e00
+    SENSOR_FRAME_DURATION                                0x0e01
+    SENSOR_SENSITIVITY                                   0x0e02
+    SENSOR_TIMESTAMP                                     0x0e10
+    SENSOR_NEUTRAL_COLOR_POINT                           0x0e12
+    SENSOR_NOISE_PROFILE                                 0x0e13
+    SENSOR_PROFILE_HUE_SAT_MAP                           0x0e14
+    SENSOR_PROFILE_TONE_CURVE                            0x0e15
+    SENSOR_TEST_PATTERN_DATA                             0x0e17
+    SENSOR_TEST_PATTERN_MODE                             0x0e18
+    SENSOR_ROLLING_SHUTTER_SKEW                          0x0e1a
+    SHADING_MODE                                         0x1000
+    STATISTICS_FACE_DETECT_MODE                          0x1100
+    STATISTICS_FACE_LANDMARKS                            0x1105
+    STATISTICS_FACE_RECTANGLES                           0x1106
+    STATISTICS_FACE_SCORES                               0x1107
+    STATISTICS_LENS_SHADING_CORRECTION_MAP               0x110a
+    STATISTICS_LENS_SHADING_MAP                          0x110b
+    STATISTICS_PREDICTED_COLOR_GAINS                     0x110c
+    STATISTICS_PREDICTED_COLOR_TRANSFORM                 0x110d
+    STATISTICS_SCENE_FLICKER                             0x110e
+    STATISTICS_HOT_PIXEL_MAP_MODE                        0x1103
+    STATISTICS_HOT_PIXEL_MAP                             0x110f
+    STATISTICS_LENS_SHADING_MAP_MODE                     0x1110
+    TONEMAP_CURVE_BLUE                                   0x1300
+    TONEMAP_CURVE_GREEN                                  0x1301
+    TONEMAP_CURVE_RED                                    0x1302
+    TONEMAP_MODE                                         0x1303
+    TONEMAP_GAMMA                                        0x1306
+    TONEMAP_PRESET_CURVE                                 0x1307
+    LED_TRANSMIT                                         0x1400
+    BLACK_LEVEL_LOCK                                     0x1600
+    SYNC_FRAME_NUMBER                                    0x1700
+    REPROCESS_EFFECTIVE_EXPOSURE_FACTOR                  0x1800
+    ==================================================   =======
 ..
 
 Greybus Camera Image Formats (Informative)

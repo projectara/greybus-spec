@@ -40,3 +40,6 @@
 
 .. [ED448]     Internet RFC 7748, Elliptic Curves for Security,
                section 4.2, https://tools.ietf.org/html/rfc7748
+
+.. [IEEE745]   IEEE Standard for Floating-Point Arithmetic," in IEEE Std
+               754-2008 , vol., no., pp.1-70, Aug. 29 2008.
