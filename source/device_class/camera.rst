@@ -317,3 +317,13 @@ Message Types and their values.
    mbolivar: If you all decide to keep this as a unidirectional Operation,
    please make the response value column just "N/A" -- it's not reserved, it
    just doesn't exist.
+
+Greybus Camera Management Ping Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Camera Management Ping Operation is the
+:ref:`greybus-protocol-ping-operation` for the Greybus Camera Device Class
+Protocol.
+It consists of a Request containing no payload, and a Response
+with no payload that indicates a successful result.
+
