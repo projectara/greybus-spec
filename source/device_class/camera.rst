@@ -796,3 +796,434 @@ The Greybus Camera Metadata Streams Operation Request is defined in Table
     8           metadata       n       metadata     Metadata block
     =========   =============  ======  ===========  ===========================
 ..
+
+Greybus Camera Image Formats (Informative)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Introduction
+""""""""""""
+
+Image formats specify how image data is structured to be sent over CSI-2.
+
+A format defines the following properties.
+
+* *The color encoding*
+
+    Colors are encoded as three integer values called components.
+    The components most frequently represent RGB or YUV values.
+
+    In RGB encoding each pixel is described by Red, Green and Blue components.
+    For sensors using a color filter array such as a Bayer filter, only one of
+    the components is available for a given pixel.
+
+    In YUV encoding each pixel is described by its Luma (Y), Blue Chroma (Cb
+    or U) and Red Chroma (Cr or V).
+    The red and blue chroma are collectively called chroma components or chroma
+    and abbreviated UV.
+
+* *The color depth*
+
+    Also known as bit depth, the color depth is the number of bits used for
+    each color component of a pixel.
+
+    The Camera Class Protocol uses the same number of bits of all color
+    components of a pixel. Typical values are 8, 10 and 12.
+
+* *The components interleaving method*
+
+    Components of a pixel may be transmitted together or separately.
+    A format that transmits all components together is called a packed format.
+    Figure :num:`camera-imgfmt-rgb-example` shows how the first three pixels
+    of an image are transmitted in a packed RGB format.
+
+.. _camera-imgfmt-rgb-example:
+.. figure:: /img/svg/ara-camera-image-rgb-example.png
+    :align: center
+
+    Three pixels encoded in packed RGB format
+..
+
+    The same component arrangement is repeated for the remaining pixels of the
+    image, line after line.
+
+    A format that transmit components separately is called a planar format.
+    Figure :num:`camera-imgfmt-yuv-example` shows how an image may be transmitted in a planar YUV
+    format.
+
+.. _camera-imgfmt-yuv-example:
+.. figure:: /img/svg/ara-camera-image-yuv-example.png
+    :align: center
+
+    Planar YUV image encoding
+..
+
+    The ellipsis patterns (...) denote the rest of all luma, blue chroma and red
+    chroma components respectively.
+
+    A format may also combine planar and packed components arrangements.
+    Such a format is called semi-planar.
+    In practice semi-planar formats are used with YUV encoding only and split
+    components in a Y plane and a packed UV plane, as shown in Figure
+    :num:`camera-imgfmt-yuv-semiplanar-example`.
+
+.. _camera-imgfmt-yuv-semiplanar-example:
+.. figure:: /img/svg/ara-camera-image-yuv-example2.png
+    :align: center
+
+    Semi-planar YUV image encoding
+..
+
+    In full planar YUV formats luma and chroma components are separated in three
+    planes, one for each component.
+
+    In semi-planar YUV formats luma and chroma components are separated in two
+    planes.
+    The luma plane contains the luma components only, and the chroma plane
+    contains the blue and red chroma components interleaved.
+    Every semi-planar format comes in two chroma interleaving variants, in the
+    UV or VU order.
+
+* *The components ordering*
+
+    Within a given interleaving method components may be arranged differently.
+    For instance, a packed RGB format may transmit the three pixel components
+    in the (R, G, B) or (B, G, R) order.
+    Similarly, a planar YUV format may transfer the U plane before the V plane
+    or the V plane before the U plane.
+
+* *The components subsampling ratios*
+
+    In YUV formats the chroma components may be sub-sampled horizontally and/or
+    vertically to reduce bandwidth.
+
+    The most common subsampling ratios are:
+
+    - 4:4:4 - No subsampling, every pixel has three color components
+    - 4:2:2 - Horizontal subsampling by 1/2
+    - 4:2:0 - Horizontal and vertical subsampling by 1/2
+
+    Figure :num:`camera-imgfmt-sampling` shows the relationship between pixels
+    and luma and chroma components in a 8x2 pixels image.
+
+.. _camera-imgfmt-sampling:
+.. figure:: /img/svg/ara-camera-image-sampling.png
+    :align: center
+
+    YUV4:2:2 and YUV4:2:0 sampling examples
+..
+
+When subsampling chroma components the location of the components relatively to
+the pixels must be specified.
+
+Data Transmission
+"""""""""""""""""
+
+Unless otherwise noted all image frames shall be transmitted in accordance with
+section 9 of [CSI-2]_.
+
+Camera Modules shall transmit all streams multiplexed over a single CSI-2 port
+and a single Virtual Channel, using the Data Type Interleaving method defined
+by CSI-2.
+The modules shall use Packet Level Interleaving as defined in section 9.13.1 of
+[CSI-2]_.
+
+Each format defined in this specification may add specific requirements.
+
+In the following figures symbols shall be interpreted as follows.
+
+* FS: Frame Start
+* FE: Frame End
+* PH: Packet Header
+* PF: Packet Footer
+
+Packed Formats
+""""""""""""""
+
+All packed formats are sent using a single CSI-2 Data Type
+
+**Packed YUV4:2:2 Image Format**
+
+This format transmits pixels encoded in YUV with 8 bits per component and a
+4:2:2 subsampling.
+The image width shall be a multiple of two pixels.
+
+Packed YUV 4:2:2 shall be transmitted as specified in section 11.2.4 of
+[CSI-2]_.
+
+Figure :num:`camera-imgfmt-packed-yuv422` illustrates how to transmit one line
+of the image.
+
+.. _camera-imgfmt-packed-yuv422:
+.. figure:: /img/svg/ara-camera-image-packed422.png
+    :align: center
+
+    Packed YUV4:2:2 image transmission format
+..
+
+Chroma components are spatially sampled at the same location as the luma
+components with a corresponding sample number.
+
+**Packed YUV4:2:0 Image Format**
+
+This format transmits pixels encoded in YUV with 8 bits per component and a
+4:2:0 subsampling.
+The image width and height shall be multiples of two pixels.
+
+Packed YUV 4:2:0 shall be transmitted as specified in sections 11.2.2 and
+11.2.1 (legacy format) of [CSI-2]_.
+
+Figure :num:`camera-imgfmt-packed-yuv420` and
+:num:`camera-imgfmt-packed-yuv420l` illustrate how to transmit image lines in
+YUV4:2:0 non-legacy and legacy format respectively.
+
+.. _camera-imgfmt-packed-yuv420:
+.. figure:: /img/svg/ara-camera-image-packed420.png
+    :align: center
+
+    Packed YUV4:2:0 Non-Legacy image transmission format
+..
+
+.. _camera-imgfmt-packed-yuv420l:
+.. figure:: /img/svg/ara-camera-image-packed420l.png
+    :align: center
+
+    Packed YUV4:2:0 Legacy image transmission format
+..
+
+In the non-legacy format even lines are twice as long as odd lines.
+
+Chroma components x transmitted on odd line y and even line y+1 are spatially
+sampled in the middle of the four pixels at locations (x,y), (x+1,y), (x,y+1),
+(x+1,y+1).
+
+Planar and Semi-Planar Formats
+""""""""""""""""""""""""""""""
+
+Planar and semi-planar formats separate pixel components in two or more planes.
+
+Planes from one image frame shall be transmitted using line interleaving or
+plane sequential mode.
+
+* In line interleaving mode, samples from a single line of a plane shall be
+  transmitted in one or more consecutive CSI-2 packets.
+  Lines shall then be interleaved as specified by each format.
+  All samples from a line are thus transmitted contiguously relatively to
+  samples from different planes of the same frame.
+* In plane sequential mode, samples from a single plane shall be transmitted in
+  consecutive CSI-2 packets.
+  All samples from a plane are thus transmitted contiguously relatively to
+  samples from different planes of the same frame.
+
+In both modes packets from multiple streams may be interleaved freely.
+
+Planar formats can come in two variants, one with all planes transmitted using
+a single Data Type, and one with planes transmitted using separate Data Types.
+
+**Semi-Planar YUV4:2:2 Image Format**
+
+These formats transmit pixels encoded in YUV with 8 bits per component and a
+4:2:2 subsampling.
+The image width shall be a multiple of two pixels.
+The number of chroma line is equal to the number of luma lines.
+
+The semi-planar YUV 4:2:2 formats are Ara-specific, they are not defined in
+[CSI-2]_.
+They come in eight variants with all combinations of number of Data Types,
+U/V ordering and interleaving mode.
+
+In line-interleaved mode a luma line is sent first followed by one chroma line.
+The chroma line contains samples related to the same pixels as the luma line.
+The same pattern repeats until the end of the frame.
+Figure :num:`camera-imgfmt-line-interleaving` illustrates how to transmit one
+frame in line-interleaved mode with the UV chroma interleaving order.
+
+.. _camera-imgfmt-line-interleaving:
+.. figure:: /img/svg/ara-camera-image-line-interleaving.png
+    :align: center
+
+    Example of image transmission using line interleaving mode and YUV4:2:2
+    semi-planar sampling mode
+..
+
+In plane-interleaved mode all luma lines are sent first followed by all chroma
+lines.
+Figure :num:`camera-imgfmt-plane-interleaving` illustrates how to transmit one
+frame in plane sequential mode with the UV chroma interleaving order.
+
+.. _camera-imgfmt-plane-interleaving:
+.. figure:: /img/svg/ara-camera-image-plane-interleaving.png
+    :align: center
+
+    Example of image transmission using plane interleaving mode and YUV4:2:2
+    semi-planar sampling mode
+..
+
+Chroma components are spatially sampled at the same location as the luma
+components with a corresponding sample number.
+
+**Semi-Planar YUV4:2:0 Image Format**
+
+These formats transmit pixels encoded in YUV with 8 bits per component and a
+4:2:0 subsampling.
+The image width and height shall be multiples of two pixels.
+The number of chroma lines is half the number of luma lines.
+Each chroma line stores values related to two lines of pixels.
+
+The semi-planar YUV 4:2:0 formats are Ara-specific, they are not defined in
+[CSI-2]_.
+They come in eight variants with all combinations of number of Data Types,
+U/V ordering and interleaving mode.
+
+In line-interleaved mode lines are sent in groups of two luma lines and one
+chroma line.
+The group starts with an odd luma line, followed by one chroma line,
+followed by an even luma line.
+The chroma line contains samples related to the same pixels as the two luma
+lines.
+The same pattern repeats until the end of the frame.
+
+Figure :num:`camera-imgfmt-420-line-interleaved` illustrates how to transmit
+one frame in line-interleaved mode with the UV chroma interleaving order.
+
+.. _camera-imgfmt-420-line-interleaved:
+.. figure:: /img/svg/ara-camera-image-sp420.png
+    :align: center
+
+    Example of image transmission using line interleaving mode and YUV4:2:0
+    semi-planar sampling mode
+..
+
+In plane-interleaved mode all luma lines are sent first followed by all chroma
+lines.
+Figure :num:`camera-imgfmt-420-plane-interleaved` illustrates how to transmit
+one frame in plane sequential mode with the UV chroma interleaving order.
+
+.. _camera-imgfmt-420-plane-interleaved:
+.. figure:: /img/svg/ara-camera-image-p420.png
+    :align: center
+
+    Example of image transmission using plane interleaving mode and YUV4:2:0
+    semi-planar sampling mode
+..
+
+Chroma components x transmitted on odd line y and even line y+1 are spatially
+sampled in the middle of the four pixels at locations (x,y), (x+1,y), (x,y+1),
+(x+1,y+1).
+
+**Planar YUV4:2:2 Image Format**
+
+These formats transmit pixels encoded in YUV with 8 bits per component and a
+4:2:2 subsampling.
+The image width shall be a multiple of two pixels.
+The number of chroma line is equal to the number of luma lines.
+
+The planar YUV 4:2:2 formats are Ara-specific, they are not defined in
+[CSI-2]_.
+They come in two variants for U/V ordering.
+
+Only plane-interleaved is supported.
+All luma lines are sent first, followed by all blue or red chroma lines,
+followed by all remaining (red or blue) chroma lines.
+Figure :num:`camera-img-fmt-planar-422` illustrates how to transmit one frame
+in plane sequential mode with the UV chroma order.
+
+.. _camera-img-fmt-planar-422:
+.. figure:: /img/svg/ara-camera-image-p422.png
+    :align: center
+
+    Example of image transmission using plane interleaving mode and YUV4:2:2
+    planar sampling mode
+..
+
+Chroma components are spatially sampled at the same location as the luma
+components with a corresponding sample number.
+
+**Planar YUV4:2:0 Image Format**
+
+These formats transmit pixels encoded in YUV with 8 bits per component and a
+4:2:0 subsampling.
+The image width and height shall be multiples of two pixels.
+The number of chroma lines is half the number of luma lines.
+Each chroma line stores values related to two lines of pixels.
+
+The planar YUV 4:2:0 formats are Ara-specific, they are not defined in
+[CSI-2]_.
+They come in two variants for U\/V ordering.
+
+Only plane-interleaved is supported. All luma lines are sent first, followed
+by all blue or red chroma lines, followed by all remaining (red or blue)
+chroma lines.
+
+Figure :num:`camera-img-fmt-planar-420` illustrates how to transmit one frame
+in plane sequential mode with the UV chroma order.
+
+.. _camera-img-fmt-planar-420:
+.. figure:: /img/svg/ara-camera-image-p420-2.png
+    :align: center
+
+    Example of image transmission using plane interleaving mode and YUV4:2:2
+    planar sampling mode
+..
+
+Chroma components x transmitted on odd line y and even line y+1 are spatially
+sampled in the middle of the four pixels at locations (x,y), (x+1,y), (x,y+1),
+(x+1,y+1).
+
+Image Format Identifiers
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Image formats are identified by a numeric ID, as reported in table
+:num:`table-camera-image-formats`.
+
+.. figtable::
+    :nofig:
+    :label: table-camera-image-formats
+    :caption: Camera Device Class Image Format Identifiers
+
+     ===========================  ====  ===========  ===  =====
+     Format                       ID    Packing      DT   UV
+     ===========================  ====  ===========  ===  =====
+     Reserved shall not be used   0x00  \            \    \
+     \
+
+     *YUV Formats*
+     ----------------------------------------------------------
+
+     UYVY422_PACKED               0x01  Packed       1    \
+     UYVY420_PACKED               0x02  Packed       1    \
+     UYYVYY420_PACKED             0x03  Packed       1    \
+     YUV422_SEMIPLANAR_LINE_1DT   0x04  Semi Planar  1    UV
+     YVU422_SEMIPLANAR_LINE_1DT   0x05  Semi Planar  1    VU
+     YUV422_SEMIPLANAR_LINE_2DT   0x06  Semi Planar  2    UV
+     YVU422_SEMIPLANAR_LINE_2DT   0x07  Semi Planar  2    VU
+     YUV422_SEMIPLANAR_PLANE_1DT  0x08  Semi Planar  1    UV
+     YVU422_SEMIPLANAR_PLANE_1DT  0x09  Semi Planar  1    VU
+     YUV422_SEMIPLANAR_PLANE_2DT  0x0A  Semi Planar  2    UV
+     YVU422_SEMIPLANAR_PLANE_2DT  0x0B  Semi Planar  2    VU
+     YUV422_PLANAR_PLANE_1DT      0x0C  Planar       1    UV
+     YVU422_PLANAR_PLANE_1DT      0x0D  Planar       1    VU
+     YUV420_SEMIPLANAR_LINE_1DT   0x0E  Semi Planar  1    UV
+     YVU420_SEMIPLANAR_LINE_1DT   0x0F  Semi Planar  1    VU
+     YUV420_SEMIPLANAR_LINE_2DT   0x10  Semi Planar  2    UV
+     YVU420_SEMIPLANAR_LINE_2DT   0x11  Semi Planar  2    VU
+     YUV420_SEMIPLANAR_PLANE_1DT  0x12  Semi Planar  1    UV
+     YVU420_SEMIPLANAR_PLANE_1DT  0x13  Semi Planar  1    VU
+     YUV420_SEMIPLANAR_PLANE_2DT  0x14  Semi Planar  2    UV
+     YVU420_SEMIPLANAR_PLANE_2DT  0x15  Semi Planar  2    VU
+     YUV420_PLANAR_PLANE_1DT      0x16  Planar       1    UV
+     YVU420_PLANAR_PLANE_1DT      0x17  Planar       1    VU
+     \
+
+     *Binary Formats*
+     ----------------------------------------------------------
+
+     JPEG                         0x40  \            \    \
+     Metadata                     0x41  \            \    \
+     \
+
+     *Raw Formats*
+     ----------------------------------------------------------
+
+     RAW1 (FIXME)                 0x80  \            \    \
+     ===========================  ====  ===========  ===  =====
+..
