@@ -148,7 +148,8 @@ according to this specification.
 The Greybus Camera Device Class Protocol defines two transport methods for
 metadata:
 
-* using the Metadata Operation explicitly, through the Camera Management
+* using the :ref:`Greybus Camera Management Metadata Operation
+  <camera-metadata-operation>` explicitly, through the Camera Management
   Connection.
 * sending metadata along with image frames over the CSI-2 interface, through
   the Camera Data Connection.
@@ -193,11 +194,14 @@ contain the ID of the associated request.
 **Metadata Operation**
 
 When transmitting metadata through the dedicated Operation, the Camera Module
-shall send a single Metadata Request per image frame.
+shall send a single
+:ref:`Greybus Camera Management Metadata Request <camera-metadata-operation>`
+per image frame.
 
-Metadata transmitted over a Camera Management Connection using the Metadata
-Operation shall be encoded as specified in the Properties section of
-this specification.
+Metadata transmitted over Camera Management Connection using the
+:ref:`Greybus Camera Management Metadata Request <camera-metadata-operation>`
+shall always be encoded as specified in the Properties section of this
+specification.
 
 .. TODO: jmondi: insert reference to that section, once added
 
@@ -292,8 +296,8 @@ Conceptually, the Operations in the Greybus Camera Management Protocol are:
     Send image metadata to the AP.
 
 All the above Operations shall be initiated by the AP Module, except for the
-Greybus Camera Device Class Metadata Operation, which is, instead, initiated
-by the Camera Module.
+:ref:`Greybus Camera Management Metadata Operation <camera-metadata-operation>`
+which is, instead, initiated by the Camera Module.
 
 Greybus Camera Management Message Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -743,3 +747,52 @@ Payload description for Flush Operation Response is reported in Table
     =========   =============  ======  ===========  ===========================
 ..
 
+.. _camera-metadata-operation:
+
+Greybus Camera Metadata Streams Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. pinchartl: TODO: Describe metadata operation with multiple streams.
+             We can't have one metadata stream per video stream.
+             The "stream" field thus doesn't make sense.
+
+The Greybus Camera Management Metadata Operation allows the Camera Module to
+transmit metadata associated with a frame though the Camera Management
+Connection.
+
+The frame the delivered metadata is associated with is identified by the
+request_id field, the frame_number field and the stream_id field.
+
+Greybus Camera Metadata Streams Operation Request
+"""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus Camera Management Metadata Request is sent by the Camera Module
+over the Camera Management Connection.
+It contains a variable-size metadata block that shall conform to the format
+described in the Properties section of this specification.
+
+.. FIXME: jmondi: add reference to the properties section once added
+
+If no metadata needs to be reported for a particular frame the metadata block
+size shall be zero.
+
+The Greybus Camera Metadata Streams Operation Request is defined in Table
+:num:`table-camera-operations-metadata-request`
+
+.. figtable::
+   :nofig:
+   :label: table-camera-operations-metadata-request
+   :caption: Camera Class Metadata Request
+   :spec: l l c c l
+
+    =========   =============  ======  ===========  ===========================
+    Offset      Field          Size    Value        Description
+    =========   =============  ======  ===========  ===========================
+    0           request_id     4       Number       The ID of the corresponding
+                                                    frame request
+    4           frame_number   2       Number       The CSI-2 frame number
+    6           stream_id      1       Number       The stream number
+    7           padding        1       0            Shall be set to zero
+    8           metadata       n       metadata     Metadata block
+    =========   =============  ======  ===========  ===========================
+..
