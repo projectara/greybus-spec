@@ -101,8 +101,8 @@ Operations, split in three categories:
 
 * The Image Processing Operations, which control all the Camera Module image
   capture and processing algorithms and their parameters.
-  Currently, the only defined Image Processing Operation is the Capture
-  Operation.
+  Currently, the only defined image processing Operation is the :ref:`Greybus
+  Camera Management Capture Operation <camera-capture-streams-operation>`.
 
 Camera Modules shall implement all the Operations defined in this
 specification.
@@ -245,7 +245,8 @@ The states that define the Camera Device Class state machine are:
   * The Module fully support the requested streams configuration;
 
 * **CONFIGURED:**
-  In this state the Bundle shall be ready to process Capture Stream Requests
+  In this state the module shall be ready to process ref:`Greybus Camera
+  Management Capture Requests <camera-capture-streams-operation>`
   immediately as it receives them and then move to STREAMING state.
   Reception of a :ref:`Greybus Camera Management Configure Streams Request
   <camera-configure-streams-operation>` with a zero stream count returns
@@ -391,7 +392,7 @@ reply with an empty payload and set the status to GB_OP_INVALID_STATE in all
 other states.
 
 Up to four streams are supported. A Request with a number of streams higher
-than four shall be answered by an error response with the status set to
+than four shall be answered by an error Response with the status set to
 GB_OP_INVALID.
 
 If the requested streams configuration is supported by the Camera Module it
@@ -567,3 +568,120 @@ formats if possible, and may be set to a User Defined 8-bit Data Type
     1\-7           Reserved     Shall be set to 0
     =============  ===========  =============================================
 ..
+
+.. _camera-capture-streams-operation:
+
+Greybus Camera Management Capture Streams Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. pinchartl: TODO: Explain the bitmask in more details.
+              In particular, what's the behavior for a request with 0 bitmask?
+
+.. pinchartl: TODO: Define the behaviour for concurrent requests affecting
+              separate streams.
+   binchen:   What does concurrent thread means here? From Android side, for
+              one single camera, all the requests from camera service will be
+              serialized (sending from one thread).
+   pinchartl: What happens if request n is received from stream 1 and request
+              n + 1 for stream 2 ? Can they complete out of order ?
+              Are they added to separate queues ? What if request n + 2 then
+              targets both streams 1 and 2 ? All the corner cases need to be
+              documented explicitly. The current text is too vague
+   pinchartl: For reference: concurrent requests that affect separate streams
+              should not block each other, and thus somehow need separate
+              queues.
+
+The Capture Streams Operation is used to submit a request for a new image frame
+transmission on the Camera Data Connection.
+
+Upon receiving a valid Greybus Camera Management Capture Streams Request, the
+Camera Bundle shall return a Response immediately. The capture and
+transmission of the resulting frames via the Camera Data Connection
+occurs asynchronously to the processing of this Operation. These
+Requests shall be processed in the order they are received.
+
+Camera Modules should minimize the delay between Requests by pre-processing
+pending Requests ahead of time as necessary.
+
+When the first Request is queued, the Camera Module moves to the STREAMING
+state and starts transmitting frames as soon as possible. When the last
+Request completes the Bundle moves to the CONFIGURED state and stops
+transmitting frames immediately.
+Modules shall not transmit any |unipro| Segment on the
+Camera Data Connection except as result of receiving a new Capture Request.
+
+Greybus Camera Management Capture Streams Request
+"""""""""""""""""""""""""""""""""""""""""""""""""
+
+Each Camera Management Capture Stream Request contains an incrementing ID,
+a bitmask of the streams it affects, a number of frames to capture for all the
+streams in the bitmask and a list of settings to be applied to the transmitted
+image.
+
+The AP shall set the request_id field in the Request payload to
+zero for the first Capture Streams Request it sends, and shall
+increment the value in this payload by one in each subsequent Request.
+If the value of the request_id field is not higher than the ID of the previous
+Request the Camera Bundle shall ignore the Request and set the reply status to
+GB_OP_INVALID.
+
+Modules shall not use the value of the request_id field number for any purpose
+other than synchronizing the Capture Operation with the Flush and Metadata
+Operations.
+In particular, Camera Bundle shall accept Requests with IDs higher than the
+previous one by more than one.
+
+.. TODO: jmondi: properly define the streams bitmaks
+
+The num_frames field contains the number of times the Request shall be
+repeated for all affected streams.
+Camera Modules shall capture and transmit one frame per stream for every
+repetition of the image capture request using the same capture settings.
+When the num_frames field is set to zero the image capture request shall be
+repeated indefinitely until the next Capture Operations Request, or a Flush
+Operation Request, is received.
+
+The Capture Streams Request is only valid in the CONFIGURED and STREAMING
+states.
+The Camera Module shall set the Response status to GB_OP_INVALID_STATE in all
+other states.
+
+The Capture Streams Request also contains a variable-size settings block that
+shall conform to the format described in the Properties section of this
+specification.
+If no settings need to be applied for the Request the settings block size shall
+be zero.
+
+.. TODO: jmondi: Add reference to the properties section once added
+
+Parameters for the Capture Stream Request are shown in Table
+:num:`table-camera-operations-capture-request`
+
+.. figtable::
+   :nofig:
+   :label: table-camera-operations-capture-request
+   :caption: Camera Class Capture response
+   :spec: l l c c l
+
+    ======  =============  ======  ===========  ===============================
+    Offset  Field          Size    Value        Description
+    ======  =============  ======  ===========  ===============================
+    0       request_id     4       number       An incrementing integer to
+                                                uniquely identify the capture
+                                                request
+    4       streams        1       bitmask      Bitmask of the streams included
+                                                in the capture request
+    5       padding        1       0            Shall be set to 0
+    6       num_frames     2       number       Number of frames to capture
+                                                (0 for infinite)
+    8       settings       n       data         Capture Request settings
+    ======  =============  ======  ===========  ===============================
+..
+
+Greybus Camera Management Capture Streams Respose
+"""""""""""""""""""""""""""""""""""""""""""""""""
+
+The Camera Management Operation Capture Response message has no payload.
+
+If the Capture Request streams bitmask field contains non-configured streams
+the Camera Module shall set the Response status to GB_OP_INVALID.
