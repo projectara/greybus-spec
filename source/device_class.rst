@@ -20,6 +20,7 @@ are said to be *device class conformant*.
     :maxdepth: 2
 
     device_class/audio.rst
+    device_class/camera.rst
     device_class/component_authentication.rst
     device_class/firmware.rst
     device_class/hid.rst
