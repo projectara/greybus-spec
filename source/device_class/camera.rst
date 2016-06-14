@@ -96,8 +96,8 @@ Operations, split in three categories:
 * The Video Streaming Operations, which control the video streams and their
   parameters such as image resolution and image format.
   Currently, the two defined video streaming Operations are the
-  :ref:`Greybus Camera Management Configure Streams Operation
-  <camera-configure-streams-operation>` and Flush Operations.
+  <camera-configure-streams-operation>` and :ref:`Greybus Camera Management
+  Flush Operation   <camera-flush-operation>`.
 
 * The Image Processing Operations, which control all the Camera Module image
   capture and processing algorithms and their parameters.
@@ -258,7 +258,8 @@ The states that define the Camera Device Class state machine are:
   Connection.
   Greybus Capture Stream Requests can be queued, and once there
   are no active or queued Requests, the Bundle moves back to CONFIGURED state.
-  Reception of a Flush Operation Request clears the queue of pending capture
+  Reception of a :ref:`Greybus Camera Management Flush Operation Request
+  <camera-flush-operation>` clears the queue of pending capture
   requests and also moves the Bundle to the CONFIGURED state.
 
 Greybus Camera Management Protocol
@@ -685,3 +686,60 @@ The Camera Management Operation Capture Response message has no payload.
 
 If the Capture Request streams bitmask field contains non-configured streams
 the Camera Module shall set the Response status to GB_OP_INVALID.
+
+.. _camera-flush-operation:
+
+Greybus Camera Flush Streams Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Camera Management Flush Operation removes all Capture requests
+from the queue and stops frame transmission as soon as possible.
+
+Delays are permitted to the extent they are necessary to flush hardware
+pipelines.
+
+After finishing processing of that Request the module moves to the CONFIGURED
+state and shall not transmit any more frames.
+
+The Request is only valid in the CONFIGURED and STREAMING states,
+the Camera Bundle shall reply with an empty payload and set the status
+to GB_OP_INVALID_STATE in all other states.
+
+Greybus Camera Flush Streams Operation Request
+""""""""""""""""""""""""""""""""""""""""""""""
+
+The Camera Flush Request Message has no payload.
+
+Greybus Camera Flush Streams Operation Respose
+""""""""""""""""""""""""""""""""""""""""""""""
+
+In order to allow synchronization, the Greybus Camera Management Flush
+Response reports the ID contained in the request_id field of the
+last processed :ref:`Greybus Camera Management Capture Operation Request
+<camera-capture-streams-operation>`
+
+When the Flush Operation is invoked while the Bundle is in the CONFIGURED
+state, the request_id field shall report the ID of the last frame transmitted
+over the Camera Data Connection.
+If no frames have been transmitted yet, the response_id field shall be set to
+zero.
+
+Payload description for Flush Operation Response is reported in Table
+:num:`table-camera-operations-flush-response`
+
+.. figtable::
+   :nofig:
+   :label: table-camera-operations-flush-response
+   :caption: Camera Class Flush response
+   :spec: l l c c l
+
+    =========   =============  ======  ===========  ===========================
+    Offset      Field          Size    Value        Description
+    =========   =============  ======  ===========  ===========================
+    0           request_id     4       Number       The last Request that will
+    \                                               be processed before the
+    \                                               module stops transmitting
+    \                                               frames
+    =========   =============  ======  ===========  ===========================
+..
+
