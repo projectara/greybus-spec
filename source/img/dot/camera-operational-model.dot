@@ -1,0 +1,28 @@
+digraph {
+    graph [compound=true];
+    node [group=trunk];
+
+    "UNCONFIGURED";
+    "GHOST1" [style=invisible];
+    "CONFIGURED";
+    "GHOST2" [style=invisible];
+    "STREAMING";
+    "GHOST3" [style=invisible];
+
+    UNCONFIGURED:sw -> CONFIGURED:nw [xlabel="  configure_stream(n)  "]
+
+    UNCONFIGURED -> GHOST1 [style = invis]
+    GHOST1 -> CONFIGURED [style = invis]
+
+    CONFIGURED:ne -> UNCONFIGURED:se [xlabel="  configure_stream(0)  "]
+    CONFIGURED -> CONFIGURED   [xlabel="  flush()  "]
+    CONFIGURED:sw -> STREAMING:nw    [xlabel="  capture()  "]
+
+    CONFIGURED -> GHOST2 [style = invis]
+    GHOST2 -> STREAMING [style = invis]
+
+    STREAMING:ne -> CONFIGURED:se    [xlabel="  flush() /\n Empty Capture request queue  " labeldistance=10]
+    STREAMING -> STREAMING     [xlabel="  capture()  "]
+
+    STREAMING -> GHOST3 [style = invis]
+}

@@ -198,3 +198,122 @@ Operation shall be encoded as specified in the Properties section of
 this specification.
 
 .. TODO: jmondi: insert reference to that section, once added
+
+Operational Model
+^^^^^^^^^^^^^^^^^
+
+Figure :num:`image-camera-operational-model` describes the operational model of
+a Greybus Camera Bundle.
+
+.. _image-camera-operational-model:
+.. figure:: /img/dot/camera-operational-model.png
+   :align: center
+
+   Operational State Machine of a Greybus Camera Bundle
+
+Upon a :ref:`Greybus Control Protocol Connected Operation <control-connected>`,
+that notifies the Camera Interface that a Connection to its Camera Management
+CPort has been successfully established, the Greybus Camera Device Class
+Protocol state machine is entered, in the UNCONFIGURED state.
+
+The Camera Device Class state machine is exited when the Camera Management
+Connection is closed, either as notified by a :ref:`Greybus Control Protocol
+Disonnected Operation <control-disconnected>` referring to the Camera
+Management CPort, or as a consequence of forced removal.
+
+The Greybus Camera Device Class state machine has 3 states: UNCONFIGURED,
+CONFIGURED, and STREAMING.  Certain operations
+are only valid in specific states, but the Capabilities
+Operation may be used in any state, and shall always return
+the same set of camera capabilities.
+
+The states that define the Camera Device Class state machine are:
+
+* **UNCONFIGURED:**
+  In this state the Camera Management Connection is operational.
+  The state transitions to CONFIGURED state happens upon receipt of a
+  Configure Streams Request if the following conditions are respected:
+
+  * The Configure Streams Operation return GB_SUCCESS;
+  * The Configure Streams Request does not contain any flag that explicitly
+    require the Module to remain in UNCONFIGURED state;
+  * The Module fully support the requested streams configuration;
+
+* **CONFIGURED:**
+  In this state the Bundle shall be ready to process Capture Stream Requests
+  immediately as it receives them and then move to STREAMING state.
+  Reception of a Configure Streams Request with a zero stream count returns
+  the Bundle to the UNCONFIGURED state.
+
+* **STREAMING:**
+  In this state the Bundle transmits video frames in |unipro| Messages
+  encapsulating CSI-2 packets, sent over the Greybus Camera Device Class Data
+  Connection.
+  Greybus Capture Stream Requests can be queued, and once there
+  are no active or queued Requests, the Bundle moves back to CONFIGURED state.
+  Reception of a Flush Operation Request clears the queue of pending capture
+  requests and also moves the Bundle to the CONFIGURED state.
+
+Greybus Camera Management Protocol
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Conceptually, the Operations in the Greybus Camera Management Protocol are:
+
+.. c:function:: int ping(void);
+
+    See :ref:`greybus-protocol-ping-operation`.
+
+.. c:function:: int capabilities(u8 *capabilities);
+
+   Retrieve the list of camera capabilities.
+
+.. c:function:: int configure_streams(u8 num_streams, u8 *flags, struct stream_config *streams);
+
+   Prepares for or halts video streams.
+
+.. c:function:: int capture(u32 request_id, u8 streams, u16 num_frames, const u8 *settings, u16 size);
+
+   Enqueue a frame capture request.
+
+.. c:function:: int flush(u32 *request_id);
+
+   Removes all capture requests from the request queue.
+
+.. c:function:: void metadata(u8 *metadata);
+
+    Send image metadata to the AP.
+
+All the above Operations shall be initiated by the AP Module, except for the
+Greybus Camera Device Class Metadata Operation, which is, instead, initiated
+by the Camera Module.
+
+Greybus Camera Management Message Types
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Table :num:`table-camera-operations` describes the Greybus Camera Management
+Message Types and their values.
+
+.. figtable::
+   :nofig:
+   :label: table-camera-operations
+   :caption: Camera Device Class operations
+   :spec: l l l
+
+    ===========================  =============  ==============
+    Camera Operation Type        Request Value  Response Value
+    ===========================  =============  ==============
+    Ping                         0x00           0x80
+    Reserved                     0x01           0x81
+    Capabilities                 0x02           0x82
+    Configure Streams            0x03           0x83
+    Capture                      0x04           0x84
+    Flush                        0x05           0x85
+    Metadata                     0x06           N/A
+    (all other values reserved)  0x07..0x7f     0x87..0xff
+    ===========================  =============  ==============
+..
+
+.. FIXME: jmondi: the 0x86 Response Value shall be Reserved or N/A
+   mbolivar: If you all decide to keep this as a unidirectional Operation,
+   please make the response value column just "N/A" -- it's not reserved, it
+   just doesn't exist.
