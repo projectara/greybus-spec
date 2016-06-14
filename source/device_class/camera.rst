@@ -90,8 +90,8 @@ Operations, split in three categories:
 * The Video Setup Operations, which handle capability enumeration and generally
   any retrieval of information from the Camera Interface, for the purpose of
   initializing the peer.
-  Currently, the only defined Video Setup Operation is the Capabilities
-  Operation.
+  Currently, the only defined Video Setup Operation is the :ref:`Greybus Camera
+  Management Capabilities Operation <camera-capabilities-operation>`.
 
 * The Video Streaming Operations, which control the video streams and their
   parameters such as image resolution and image format.
@@ -156,8 +156,9 @@ Whenever possible, Camera Modules should use the CSI-2 transport to deliver
 metadata.
 
 Camera Modules may implement neither, one or both of these transport methods.
-The supported methods shall be reported through the Camera Capabilities
-Operation.
+The supported methods shall be reported through the
+:ref:`Greybus Camera Management Capabilities Operation
+<camera-capabilities-operation>`
 
 Camera Modules that support metadata transmission shall implement the
 CSI-2 frame number counter for all streams that can generate metadata.
@@ -222,10 +223,11 @@ Disonnected Operation <control-disconnected>` referring to the Camera
 Management CPort, or as a consequence of forced removal.
 
 The Greybus Camera Device Class state machine has 3 states: UNCONFIGURED,
-CONFIGURED, and STREAMING.  Certain operations
-are only valid in specific states, but the Capabilities
-Operation may be used in any state, and shall always return
-the same set of camera capabilities.
+CONFIGURED, and STREAMING.  Certain operations are only valid in specific
+states, but the :ref:`Greybus Camera Management Capabilities Operation
+<camera-capabilities-operation>`
+may be used in any state, and shall always return the same set of camera
+capabilities.
 
 The states that define the Camera Device Class state machine are:
 
@@ -327,3 +329,48 @@ Protocol.
 It consists of a Request containing no payload, and a Response
 with no payload that indicates a successful result.
 
+.. _camera-capabilities-operation:
+
+Greybus Camera Management Capabilities Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To allow support for various features and levels of complexity, the
+Greybus Camera Device Class defines optional features, which may be
+implemented by Camera Bundles.
+
+Using this Operation the sender can dynamically query the Camera Module for its
+capabilities.
+
+Once the Camera Management Connection has been set up, the Camera Module shall
+respond to all Camera Management Capabilities Requests with the same set of
+capabilities.
+The capabilities may only change if the Module's Firmware gets changed.
+
+Greybus Camera Management Capabilities Request
+""""""""""""""""""""""""""""""""""""""""""""""
+
+The Greybus Camera Management Capabilities Request has no payload.
+
+Greybus Camera Management Capabilities Response
+"""""""""""""""""""""""""""""""""""""""""""""""
+.. FIXME: jmondi Insert link to properties section
+
+The Greybus Camera Management Capabilities Response contains a variable-size
+capabilities block that shall conform to the format described in the Greybus
+Camera Device Class Properties section of this specification.
+
+The Response payload is shown in Table
+:num:`table-camera-operations-capabilities-response`.
+
+.. figtable::
+   :nofig:
+   :label: table-camera-operations-capabilities-response
+   :caption: Camera Class Capabilities response
+   :spec: l l c c l
+
+    ======  =============  ======  ===========  ===========================
+    Offset  Field          Size    Value        Description
+    ======  =============  ======  ===========  ===========================
+    0       capabilities   n       Data         Capabilities of Camera Module
+    ======  =============  ======  ===========  ===========================
+..
