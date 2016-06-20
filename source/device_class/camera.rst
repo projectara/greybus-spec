@@ -90,19 +90,19 @@ Operations, split in three categories:
 * The Video Setup Operations, which handle capability enumeration and generally
   any retrieval of information from the Camera Interface, for the purpose of
   initializing the peer.
-  Currently, the only defined Video Setup Operation is the :ref:`Greybus Camera
-  Management Capabilities Operation <camera-capabilities-operation>`.
+  Currently, the only defined Video Setup Operation is the
+  :ref:`camera-capabilities-operation`.
 
 * The Video Streaming Operations, which control the video streams and their
   parameters such as image resolution and image format.
   Currently, the two defined video streaming Operations are the
-  <camera-configure-streams-operation>` and :ref:`Greybus Camera Management
-  Flush Operation   <camera-flush-operation>`.
+  :ref:`camera-configure-streams-operation` and
+  :ref:`camera-flush-operation`.
 
 * The Image Processing Operations, which control all the Camera Module image
   capture and processing algorithms and their parameters.
-  Currently, the only defined image processing Operation is the :ref:`Greybus
-  Camera Management Capture Operation <camera-capture-streams-operation>`.
+  Currently, the only defined image processing Operation is the
+  :ref:`camera-capture-streams-operation`.
 
 Camera Modules shall implement all the Operations defined in this
 specification.
@@ -148,9 +148,8 @@ according to this specification.
 The Greybus Camera Device Class Protocol defines two transport methods for
 metadata:
 
-* using the :ref:`Greybus Camera Management Metadata Operation
-  <camera-metadata-operation>` explicitly, through the Camera Management
-  Connection.
+* using the :ref:`camera-metadata-operation` explicitly, through the Camera
+  Management Connection.
 * sending metadata along with image frames over the CSI-2 interface, through
   the Camera Data Connection.
 
@@ -159,8 +158,7 @@ metadata.
 
 Camera Modules may implement neither, one or both of these transport methods.
 The supported methods shall be reported through the
-:ref:`Greybus Camera Management Capabilities Operation
-<camera-capabilities-operation>`
+:ref:`camera-capabilities-operation`
 
 Camera Modules that support metadata transmission shall implement the
 CSI-2 frame number counter for all streams that can generate metadata.
@@ -177,7 +175,7 @@ using the same Virtual Channel number as the image frames and set the Data Type
 to User Defined 8-bit Data Type 8 (0x37).
 
 Camera Modules should encode metadata using the properties and serialization
-format defined in the :ref:`Properties Section <camera-properties>` of Greybus
+format defined in the :ref:`camera-properties` section of Greybus
 Camera Device Class specifications.
 
 However, when this isn’t possible or practical (for instance, when the Module
@@ -193,13 +191,11 @@ contain the ID of the associated request.
 
 When transmitting metadata through the dedicated Operation, the Camera Module
 shall send a single
-:ref:`Greybus Camera Management Metadata Request <camera-metadata-operation>`
-per image frame.
+:ref:`camera-metadata-request` per image frame.
 
 Metadata transmitted over Camera Management Connection using the
-:ref:`Greybus Camera Management Metadata Request <camera-metadata-operation>`
-shall always be encoded as specified in the
-:ref:`Properties Section <camera-properties>` of this specification.
+:ref:`camera-metadata-request` shall always be encoded as specified in the
+:ref:`camera-properties` section of this specification.
 
 Operational Model
 ^^^^^^^^^^^^^^^^^
@@ -213,20 +209,19 @@ a Greybus Camera Bundle.
 
    Operational State Machine of a Greybus Camera Bundle
 
-Upon a :ref:`Greybus Control Protocol Connected Operation <control-connected>`,
+Upon a :ref:`control-connected`,
 that notifies the Camera Interface that a Connection to its Camera Management
 CPort has been successfully established, the Greybus Camera Device Class
 Protocol state machine is entered, in the UNCONFIGURED state.
 
 The Camera Device Class state machine is exited when the Camera Management
-Connection is closed, either as notified by a :ref:`Greybus Control Protocol
-Disonnected Operation <control-disconnected>` referring to the Camera
-Management CPort, or as a consequence of forced removal.
+Connection is closed, either as notified by a
+:ref:`control-disconnected` referring to the Camera Management CPort, or as a
+consequence of forced removal.
 
 The Greybus Camera Device Class state machine has 3 states: UNCONFIGURED,
 CONFIGURED, and STREAMING.  Certain operations are only valid in specific
-states, but the :ref:`Greybus Camera Management Capabilities Operation
-<camera-capabilities-operation>`
+states, but the :ref:`camera-capabilities-operation`
 may be used in any state, and shall always return the same set of camera
 capabilities.
 
@@ -235,8 +230,7 @@ The states that define the Camera Device Class state machine are:
 * **UNCONFIGURED:**
   In this state the Camera Management Connection is operational.
   The state transitions to CONFIGURED state happens upon receipt of a
-  :ref:`Greybus Camera Management Configure Streams Request
-  <camera-configure-streams-operation>` if the following conditions are
+  :ref:`camera-configure-streams-request` if the following conditions are
   respected:
 
   * The Configure Streams Operation return GB_SUCCESS;
@@ -245,12 +239,11 @@ The states that define the Camera Device Class state machine are:
   * The Module fully support the requested streams configuration;
 
 * **CONFIGURED:**
-  In this state the module shall be ready to process ref:`Greybus Camera
-  Management Capture Requests <camera-capture-streams-operation>`
+  In this state the module shall be ready to process
+  :ref:`camera-capture-streams-request`
   immediately as it receives them and then move to STREAMING state.
-  Reception of a :ref:`Greybus Camera Management Configure Streams Request
-  <camera-configure-streams-operation>` with a zero stream count returns
-  the Bundle to the UNCONFIGURED state.
+  Reception of a :ref:`camera-configure-streams-request` with a zero stream
+  count returns the Bundle to the UNCONFIGURED state.
 
 * **STREAMING:**
   In this state the Bundle transmits video frames in |unipro| Messages
@@ -258,9 +251,8 @@ The states that define the Camera Device Class state machine are:
   Connection.
   Greybus Capture Stream Requests can be queued, and once there
   are no active or queued Requests, the Bundle moves back to CONFIGURED state.
-  Reception of a :ref:`Greybus Camera Management Flush Operation Request
-  <camera-flush-operation>` clears the queue of pending capture
-  requests and also moves the Bundle to the CONFIGURED state.
+  Reception of a :ref:`camera-flush-request` clears the queue of pending
+  capture requests and also moves the Bundle to the CONFIGURED state.
 
 Greybus Camera Management Protocol
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -292,8 +284,8 @@ Conceptually, the Operations in the Greybus Camera Management Protocol are:
     Send image metadata to the AP.
 
 All the above Operations shall be initiated by the AP Module, except for the
-:ref:`Greybus Camera Management Metadata Operation <camera-metadata-operation>`
-which is, instead, initiated by the Camera Module.
+:ref:`camera-metadata-operation` which is, instead, initiated by the Camera
+Module.
 
 Greybus Camera Management Message Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -352,19 +344,22 @@ respond to all Camera Management Capabilities Requests with the same set of
 capabilities.
 The capabilities may only change if the Module's Firmware gets changed.
 
+.. _camera-capabilities-request:
+
 Greybus Camera Management Capabilities Request
 """"""""""""""""""""""""""""""""""""""""""""""
 
 The Greybus Camera Management Capabilities Request has no payload.
+
+.. _camera-capabilities-response:
 
 Greybus Camera Management Capabilities Response
 """""""""""""""""""""""""""""""""""""""""""""""
 .. FIXME: jmondi Insert link to properties section
 
 The Greybus Camera Management Capabilities Response contains a variable-size
-capabilities block that shall conform to the format described in the Greybus
-Camera Device Class :ref:`Properties Section <camera-properties>` of this
-specification.
+capabilities block that shall conform to the format described in the
+:ref:`camera-properties` section of this specification.
 
 The Response payload is shown in Table
 :num:`table-camera-operations-capabilities-response`.
@@ -442,6 +437,7 @@ All replies to Requests with the same set of parameters shall be identical.
    blanking included. This [and possibly other parameters] will be used for
    the end-2-end configuration of the image transmission system.
 
+.. _camera-configure-streams-request:
 
 Greybus Camera Configure Streams Operation Request
 """"""""""""""""""""""""""""""""""""""""""""""""""
@@ -496,6 +492,8 @@ without modifying the device state.
     1\-7           Reserved     Shall be set to 0
     =============  ===========  =============================================
 ..
+
+.. _camera-configure-streams-response:
 
 Greybus Camera Configure Streams Operation Response
 """""""""""""""""""""""""""""""""""""""""""""""""""
@@ -612,6 +610,8 @@ transmitting frames immediately.
 Modules shall not transmit any |unipro| Segment on the
 Camera Data Connection except as result of receiving a new Capture Request.
 
+.. _camera-capture-streams-request:
+
 Greybus Camera Management Capture Streams Request
 """""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -678,6 +678,8 @@ Parameters for the Capture Stream Request are shown in Table
     ======  =============  ======  ===========  ===============================
 ..
 
+.. _camera-capture-streams-response:
+
 Greybus Camera Management Capture Streams Respose
 """""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -704,18 +706,21 @@ The Request is only valid in the CONFIGURED and STREAMING states,
 the Camera Bundle shall reply with an empty payload and set the status
 to GB_OP_INVALID_STATE in all other states.
 
+.. _camera-flush-request:
+
 Greybus Camera Flush Streams Operation Request
 """"""""""""""""""""""""""""""""""""""""""""""
 
 The Camera Flush Request Message has no payload.
+
+.. _camera-flush-response:
 
 Greybus Camera Flush Streams Operation Respose
 """"""""""""""""""""""""""""""""""""""""""""""
 
 In order to allow synchronization, the Greybus Camera Management Flush
 Response reports the ID contained in the request_id field of the
-last processed :ref:`Greybus Camera Management Capture Operation Request
-<camera-capture-streams-operation>`
+last processed :ref:`camera-capture-streams-request`
 
 When the Flush Operation is invoked while the Bundle is in the CONFIGURED
 state, the request_id field shall report the ID of the last frame transmitted
@@ -758,13 +763,15 @@ Connection.
 The frame the delivered metadata is associated with is identified by the
 request_id field, the frame_number field and the stream_id field.
 
+.. _camera-metadata-request:
+
 Greybus Camera Metadata Streams Operation Request
 """""""""""""""""""""""""""""""""""""""""""""""""
 
 The Greybus Camera Management Metadata Request is sent by the Camera Module
 over the Camera Management Connection.
 It contains a variable-size metadata block that shall conform to the format
-described in the :ref:`Properties Section <camera-properties>` of this
+described in the :ref:`camera-properties` section of this
 specification.
 
 If no metadata needs to be reported for a particular frame the metadata block
@@ -1143,8 +1150,7 @@ Table :num:`table-camera-metadata-trans`.
     METADATA_TRANSPORT_CSI     1        The Camera Module sends metadata interleaved
     \                                   to image frames on the CSI-2 transport
     METADATA_TRANSPORT_OP      2        The Camera Module sends metadata using the
-    \                                   :ref:`Greybus Camera Device Class Metadata
-                                        Operation <camera-metadata-operation>`
+    \                                   :ref:`camera-metadata-operation`
     ========================   =======  =================================
 ..
 
@@ -1157,7 +1163,7 @@ Camera Modules should minimize the delay required to apply the received settings
 as much as possible.
 
 Capture Settings are generated by the Android framework, and sent on the wire
-along with each :ref:`Greybus Camera Device Class Capture Request <camera-capture-streams-operation>`.
+along with each :ref:`camera-capture-streams-request`.
 For this reason, their types, accepted values and detailed description are
 provided by the Android system documentation.
 
@@ -1243,8 +1249,8 @@ hardware dictates the metadata format), modules may chose to encode metadata
 using a custom method for metadata transmitted over CSI-2.
 
 Metadata transmitted over Greybus using the
-:ref:`Greybus Camera Device Class Metadata Request <camera-metadata-operation>`
-shall always be encoded as specified in this section.
+:ref:`camera-metadata-request` shall always be encoded as specified in this
+section.
 
 Metadata transmitted over CSI-2 using a custom encoding shall at minimum
 contain the ID of the associated request.
