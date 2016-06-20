@@ -220,7 +220,7 @@ Connection is closed, either as notified by a
 consequence of forced removal.
 
 The Greybus Camera Device Class state machine has 3 states: UNCONFIGURED,
-CONFIGURED, and STREAMING.  Certain operations are only valid in specific
+CONFIGURED, and STREAMING.  Certain Operations are only valid in specific
 states, but the :ref:`camera-capabilities-operation`
 may be used in any state, and shall always return the same set of camera
 capabilities.
@@ -239,7 +239,7 @@ The states that define the Camera Device Class state machine are:
   * The Module fully support the requested streams configuration;
 
 * **CONFIGURED:**
-  In this state the module shall be ready to process
+  In this state the Bundle shall be ready to process
   :ref:`camera-capture-streams-request`
   immediately as it receives them and then move to STREAMING state.
   Reception of a :ref:`camera-configure-streams-request` with a zero stream
@@ -342,7 +342,8 @@ capabilities.
 Once the Camera Management Connection has been set up, the Camera Module shall
 respond to all Camera Management Capabilities Requests with the same set of
 capabilities.
-The capabilities may only change if the Module's Firmware gets changed.
+The Interface shall ensure identical capabilities are available as
+long as its Interface Lifecycle State remains ENUMERATED.
 
 .. _camera-capabilities-request:
 
@@ -651,8 +652,8 @@ other states.
 The Capture Streams Request also contains a variable-size settings block that
 shall conform to the format described in the
 :ref:`Properties Section <camera-properties>`  of this specification.
-If no settings need to be applied for the Request the settings block size shall
-be zero.
+If no settings need to be applied for the Request the settings block shall
+have zero size.
 
 Parameters for the Capture Stream Request are shown in Table
 :num:`table-camera-operations-capture-request`
@@ -775,7 +776,7 @@ described in the :ref:`camera-properties` section of this
 specification.
 
 If no metadata needs to be reported for a particular frame the metadata block
-size shall be zero.
+shall have zero size.
 
 The Greybus Camera Metadata Streams Operation Request is defined in Table
 :num:`table-camera-operations-metadata-request`
