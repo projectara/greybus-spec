@@ -383,36 +383,24 @@ The Response payload is shown in Table
 Greybus Camera Management Configure Streams Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When called with a non-zero number of streams the Operation configures the
+The Greybus Camera Management Configure Streams Operation is used to prepare
+the Camera Bundle for image transmission.
+When applied to a non-zero number of streams the Operation configures the
 Camera Module for capture with a list of stream parameters.
-The Request is only valid in the UNCONFIGURED state, the Camera Bundle shall
-reply with an empty payload and set the status to GB_OP_INVALID_STATE in all
-other states.
+A non-zero streams Request is only valid in the UNCONFIGURED state, the Camera
+Bundle shall reply with an empty payload and set the status to
+GB_OP_INVALID_STATE in all other states.
 
-Up to four streams are supported. A Request with a number of streams higher
-than four shall be answered by an error Response with the status set to
-GB_OP_INVALID.
+When instead applied to zero streams, the Operation removes the existing stream
+configuration, and moves back the Camera Bundle to the UNCONFIGURED state.
 
-If the requested streams configuration is supported by the Camera Module it
-shall copy the configuration in its Response and additionally set the
-virtual_channel, data_types and max_size for each stream.
-As a result the Camera Bundle moves to the CONFIGURED state and shall be ready
-to process Capture Requests with as little delay as possible.
+If the requested streams configuration is supported the Camera Bundle moves to
+the CONFIGURED state and shall be ready to process Capture Requests with as
+little delay as possible.
 In particular any time-consuming procedure which implements Module's specific
 power management shall be performed when moving to the CONFIGURED
 state.
 Camera Modules shall not be kept in the CONFIGURED state unnecessarily.
-
-In order to support negotiation of the stream configuration, the Module may
-modify the requested configuration to match its capabilities.
-This includes lowering the number of requested streams and modifying the width,
-height and format of each stream. The Module shall, in that case, reply to the
-Configure Streams Request with the configuration it can support according
-to the Request and set the ADJUSTED bit in the Response flags field.
-As a result the Camera Bundle shall stay in the UNCONFIGURED state without
-modifying the device state.
-
-.. TODO: pinchartl: "best configuration" needs to be defined.
 
 Streams shall be transmitted over CSI-2 using the reported Virtual Channels
 and Data Types.
@@ -443,16 +431,32 @@ All replies to Requests with the same set of parameters shall be identical.
 Greybus Camera Configure Streams Operation Request
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
-The Request supplies a set of stream configurations with the desired image
-width, height and format for each stream as show in Table
-:num:`table-camera-operations-configure-streams-request`
-Both the width and height shall be multiples of 2.
+The Request specifies the number of streams to be configured. Up to four
+streams are supported. A Request with a number of streams higher
+than four shall be answered by an error Response with the status set to
+GB_OP_INVALID.
+A request with a zero number of streams, remove the existing configuration and
+moves the Camera Bundle to the UNCONFIGURED state.
 
-The TEST_ONLY flag allows the AP to test a configuration without applying it.
+The flag field allows the AP Module to inform the Camera Bundle about special
+requirements applied to the Request.
+Accepted values for the Request flag field are listed in Table
+:num:`table-camera-configure-streams-request-flag-bitmask`.
+
+The TEST_ONLY bit of the Request flag field allows the AP to test a
+configuration without applying it.
 When the flag is set the Camera Module shall process the Request normally but
 stop from applying the configuration. The Module shall send the same Response
 as it would if the TEST_ONLY flag wasn’t set and stay in the UNCONFIGURED state
 without modifying the device state.
+
+The Request supplies a set of stream configurations with the desired image
+width, height and format for each stream, as show in Table
+:num:`table-camera-operations-configure-streams-request`.
+Both the width and height shall be multiples of 2.
+For each supplied stream configuration, the width, height and format fields
+shall be copied in the :ref:`camera-configure-streams-response` payload.
+
 
 .. figtable::
    :nofig:
@@ -499,16 +503,37 @@ without modifying the device state.
 Greybus Camera Configure Streams Operation Response
 """""""""""""""""""""""""""""""""""""""""""""""""""
 
-The Camera Module reports its configuration in the Response message as shown
-in Table :num:`table-camera-operations-configure-streams-response`.
-If the Response configuration isn’t identical to the one supplied in the
-Operation Request, the flag ADJUSTED shall be set.
+The Camera Module reports its stream configuration in the Response message as
+shown in Table :num:`table-camera-operations-configure-streams-response`.
+The value of the num_streams field, report the exact number of actually
+configured streams.
 
-The Camera Module shall report in the Response the Virtual Channel number
-and Data Types for each stream regardless of whether the requested
-configuration was supported. All Virtual Channel numbers shall be identical
-and between zero and three inclusive.
+The flag field allows the Camera Bundle to provide additional information on
+the delivered Response.
+Accepted values for the Response flag filed are listed in Table
+:num:`table-camera-configure-streams-response-flag-bitmask`.
 
+.. TODO: pinchartl: "best configuration" needs to be defined.
+
+The ADJUSTED bit of the Response flag field, is used to support
+negotiation of the stream configuration.
+The Camera Module may modify the requested configuration to match its
+capabilities.
+This includes lowering the number of requested streams, originally reported in
+the num_streams Request field, and modifying the width, height and format of
+each stream.
+The Module shall, in that case, reply with a configuration it can
+support, and set the ADJUSTED bit in the Response flags field.
+As a result the Camera Bundle shall stay in the UNCONFIGURED state without
+modifying the device state.
+
+The Camera Module shall report in the Response, along with the (eventually
+adjusted) image format, width and height, the Virtual Channel number
+and Data Types for each stream, regardless of whether the requested
+configuration was supported or not.
+
+All Virtual Channel numbers shall be identical and between zero and three
+inclusive.
 All Data Types shall be different.
 
 Up to two data types can be used to identify different components of the same
