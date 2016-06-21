@@ -10,7 +10,7 @@ Requirements:
 
 On Ubuntu:
 
-# apt-get install python-sphinx texlive texlive-latex-extra texlive-humanities graphviz mscgen imagemagick
+# apt-get install python-sphinx texlive texlive-latex-extra texlive-humanities graphviz mscgen imagemagick librsvg2-bin
 
 Then:
 
