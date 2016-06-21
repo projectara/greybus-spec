@@ -1301,25 +1301,25 @@ the :ref:`lifecycles_suspend` procedure shall be considered as failed.
 
 .. _control-interface-deactivate:
 
-Greybus Control Interface Deactivate Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus Control Interface Deactivate Prepare Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The AP uses this Operation during the :ref:`lifecycles_power_down`
 transition to request the bridge to power down after it detects a
 subsequent |unipro| link hibernation (see
 :ref:`lifecycles_power_down`).
 
-The Interface Deactivate Request shall not be sent by the AP unless
-all Bundles associated with this Interface are in the
+The Interface Deactivate Prepare Request shall not be sent by the AP unless all
+Bundles associated with this Interface are in the
 :ref:`hardware-model-bundle-off` state.
 
 There is no Control Interface Activate Operation - the Activate Operation
 is handled by the SVC using the :ref:`svc-interface-activate`.
 
-Greybus Control Interface Deactivate Request
-""""""""""""""""""""""""""""""""""""""""""""
+Greybus Control Interface Deactivate Prepare Request
+""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-The Control Interface Deactivate Request has no payload.
+The Control Interface Deactivate Prepare Request has no payload.
 
 Upon reception of this Request the Interface shall verify that it is
 not already being powered down or suspended, that all Bundles
@@ -1335,17 +1335,17 @@ it shall proceed with the Power Down process defined in
 The Interface shall still continue to respond to incoming Control
 Requests when waiting for the UniPort-M Hibernate.
 
-Greybus Control Interface Deactivate Response
-"""""""""""""""""""""""""""""""""""""""""""""
+Greybus Control Interface Deactivate Prepare Response
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Table :num:`table-control-intf-deactivate-response` defines the Greybus
-Control Interface Deactivate Response payload. The Response contains
-a one-byte return value indicating the result of the Operation. Valid
-return values are defined in Table :num:`table-control-intf-pm-retvals`.
+Control Interface Deactivate Prepare Response payload. The Response contains a
+one-byte return value indicating the result of the Operation. Valid return
+values are defined in Table :num:`table-control-intf-pm-retvals`.
 
 The AP shall verify both the Greybus return value and the Bundle PM
 status upon reception of the Response. Only when the Greybus Operation
-returns GB_OP_SUCCESS and the Interface Deactivate Response contains
+returns GB_OP_SUCCESS and the Interface Deactivate Prepare Response contains
 GB_CONTROL_INTF_PM_OK may the AP commence with powering down the
 Interface. Any other combination indicates an error.
 
@@ -1366,7 +1366,7 @@ in a forceful power down.
 .. figtable::
     :nofig:
     :label: table-control-intf-deactivate-response
-    :caption: Control Protocol Interface Deactivate Response
+    :caption: Control Protocol Interface Deactivate Prepare Response
     :spec: l l c c l
 
     =======  ============  ======  ==========  ======================================================================================
@@ -1397,7 +1397,7 @@ Greybus Control Interface Hibernate Abort Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The AP may use this Operation to abort a previous Control Interface
-Suspend or Control Interface Deactivate Operation.
+Suspend or Control Interface Deactivate Prepare Operation.
 
 Greybus Control Interface Hibernate Abort Request
 """""""""""""""""""""""""""""""""""""""""""""""""
