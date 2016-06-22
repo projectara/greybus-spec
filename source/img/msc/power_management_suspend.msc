@@ -3,16 +3,17 @@
 msc {
   hscale = "1.5", arcgradient = "0";
 
-  AP, SVC, Comments [ linecolor = "white", textcolor = "white" ];
+  AP, SVC, Control [ label = "Control Connection" ], Comments [ linecolor = "white", textcolor = "white" ];
 
   |||;
   Comments abox Comments [ label = "ENUMERATED" ];
   |||;
-  AP rbox SVC [ label = "Protocol-specific Suspend Procedure" ];
+  AP rbox Control [ label = "Non-Control Closure Sequence" ];
   |||;
-  AP rbox SVC [ label = "Non-Control Connection Closure Sequence" ];
+  AP->Control [ label = "gb_control_intf_suspend_prepare()" ];
+  Control->AP [ label = "gb_control_intf_suspend_prepare_rsp[INTF_PM_OK]" ];
   |||;
-  AP rbox SVC [ label = "Control Connection Closure for Suspend Sequence" ];
+  AP rbox Control [ label = "Control Closure for Suspend Sequence" ];
   |||;
   AP->SVC [ label = "gb_svc_intf_refclk_disable(IID)" ];
   SVC->AP [ label = "gb_svc_intf_refclk_disable_rsp[REFCLK_OK]" ],

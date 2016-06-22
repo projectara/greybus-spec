@@ -1057,6 +1057,9 @@ To perform this procedure, the following conditions shall hold.
   Interface, and shall each have been established by following the
   sequence defined in :ref:`lifecycles_connection_establishment`.
 
+- For every non-Control Connection: a set of zero or more Bundles
+  shall be provided.
+
 If these conditions do not all hold, the procedure shall not be
 followed. The results of following this procedure in this case are
 undefined.
@@ -1066,24 +1069,27 @@ The following values are used in this procedure:
 - The AP Interface's ID is ap_interface_id.
 - The Interface ID of the Interface being suspended is interface_id.
 
-.. XXX input from the power management team is required to better
-   define the error handling here.
+1. For every Bundle associated with the Interface being suspended
+   which is in the :ref:`hardware-model-bundle-active` state the AP
+   shall:
+     a) follow the :ref:`lifecycles_connection_closure` procedure for
+        every CPort for which a Connection is established. If the
+        procedure fails for any CPort, the whole Interface Suspend
+        procedure is failed,
+     b) exchange a :ref:`control-bundle-suspend` with the Interface
+        being suspended. If any Request fails, the whole Interface
+        Suspend is failed.
 
-.. XXX input from the power management team is required to add calls
-   to other proposed Control Operations which act on the Interface's
-   Bundles and the Interface itself in the right places when those
-   proposed operations are merged.
+     If any step above fails, the AP Interface should re-establish
+     all Connections previously closed following the
+     :ref:`lifecycles_connection_establishment` procedure in order
+     to return to the previous state.
 
-1. The AP Interface and the Interface being suspended shall exchange
-   Protocol-specific Operations which inform the Interface the
-   subsequent steps in this Procedure shall be performed next.
-
-2. The sequence defined in :ref:`lifecycles_connection_closure` shall be
-   followed to attempt to close all of the provided Non-Control
-   Connections.
-
-   If any attempt fails, this procedure has failed. The results are
-   undefined.
+2. The AP Interface shall exchange a :ref:`control-interface-suspend`
+   with the Interface being suspended. If the Operation fails
+   (including the cases where the AP may retry sending the Control
+   Suspend Request as defined in the Operation description), this
+   procedure has failed.
 
 3. The sequence defined in
    :ref:`lifecycles_control_closure_suspend` shall be followed to
