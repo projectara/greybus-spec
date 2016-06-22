@@ -1092,27 +1092,12 @@ The following values are used in this procedure:
    If the sequence fails, this procedure has failed. The results are
    undefined.
 
-4. The AP shall exchange an :ref:`svc-interface-set-power-mode` with
-   the SVC.
-
-   The intf_id field in the request payload shall equal interface_id.
-   The tx_mode and rx_mode fields shall both equal
-   UNIPRO_HIBERNATE_MODE.
-
-   If the Operation fails, this procedure has failed. The results are
-   undefined.
-
-   If it succeeds, the SVC shall set the UNIPRO Interface State to
-   UPRO_HIBERNATE. The SVC shall wait an implementation-defined
-   duration in this step to allow the Interface to enter a low-power
-   state in the next step.
-
-5. The Interface shall be capable of receiving notification that
+4. The Interface shall be capable of receiving notification that
    UNIPRO became UPRO_HIBERNATE. The Interface shall now enter an
    implementation-defined suspend state, during which it should
    attempt to draw minimal power from the Frame.
 
-6. The AP shall exchange an :ref:`svc-interface-refclk-disable` with
+5. The AP shall exchange an :ref:`svc-interface-refclk-disable` with
    the SVC.  The intf_id field in the request payload shall equal
    interface_id.
 
@@ -1121,7 +1106,7 @@ The following values are used in this procedure:
    If the Operation fails, this procedure has failed. The results are
    undefined.
 
-7. This procedure is now complete, and has either succeeded or
+6. This procedure is now complete, and has either succeeded or
    failed. If it succeeded, the Interface is now SUSPENDED.
 
 .. _lifecycles_resume:

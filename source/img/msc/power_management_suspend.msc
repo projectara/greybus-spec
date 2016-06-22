@@ -14,9 +14,6 @@ msc {
   |||;
   AP rbox SVC [ label = "Control Connection Closure for Suspend Sequence" ];
   |||;
-  AP->SVC [ label = "gb_svc_intf_set_power_mode(IID, UPRO_HIBERNATE_MODE, UPRO_HIBERNATE_MODE)" ];
-  SVC->AP [ label = "gb_svc_intf_set_power_mode_rsp[GB_SVC_OP_SUCCESS]" ],
-  Comments note Comments [ label = "UNIPRO = UPRO_HIBERNATE" ];
   AP->SVC [ label = "gb_svc_intf_refclk_disable(IID)" ];
   SVC->AP [ label = "gb_svc_intf_refclk_disable_rsp[REFCLK_OK]" ],
   Comments note Comments [ label = "REFCLK = REFCLK_OFF" ];
