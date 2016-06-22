@@ -1092,14 +1092,7 @@ The following values are used in this procedure:
    If the sequence fails, this procedure has failed. The results are
    undefined.
 
-4. The AP shall exchange an :ref:`svc-route-destroy` with the SVC. The
-   intf1_id and intf2_id fields in the request payload shall
-   respectively equal ap_interface_id and interface_id.
-
-   If the Operation fails, this procedure has failed. The results are
-   undefined.
-
-5. The AP shall exchange an :ref:`svc-interface-set-power-mode` with
+4. The AP shall exchange an :ref:`svc-interface-set-power-mode` with
    the SVC.
 
    The intf_id field in the request payload shall equal interface_id.
@@ -1114,19 +1107,12 @@ The following values are used in this procedure:
    duration in this step to allow the Interface to enter a low-power
    state in the next step.
 
-6. The Interface shall be capable of receiving notification that
+5. The Interface shall be capable of receiving notification that
    UNIPRO became UPRO_HIBERNATE. The Interface shall now enter an
    implementation-defined suspend state, during which it should
    attempt to draw minimal power from the Frame.
 
-7. The AP shall exchange an :ref:`svc-interface-unipro-disable` with
-   the SVC.  The intf_id field in the request payload shall equal
-   interface_id.
-
-   If the Operation fails, this procedure has failed. The results are
-   undefined.
-
-8. The AP shall exchange an :ref:`svc-interface-refclk-disable` with
+6. The AP shall exchange an :ref:`svc-interface-refclk-disable` with
    the SVC.  The intf_id field in the request payload shall equal
    interface_id.
 
@@ -1135,7 +1121,7 @@ The following values are used in this procedure:
    If the Operation fails, this procedure has failed. The results are
    undefined.
 
-9. This procedure is now complete, and has either succeeded or
+7. This procedure is now complete, and has either succeeded or
    failed. If it succeeded, the Interface is now SUSPENDED.
 
 .. _lifecycles_resume:
@@ -1220,30 +1206,14 @@ The following values are used in this procedure:
    If the Operation fails, this procedure has failed. The results are
    undefined.
 
-2. The AP shall exchange an :ref:`svc-interface-unipro-enable` with the
+2. The AP shall exchange an :ref:`svc-interface-resume` with the
    SVC. The intf_id field in the request payload shall equal
    interface_id.
 
    If the Operation fails, this procedure has failed. The results are
    undefined.
 
-3. The AP shall exchange an :ref:`svc-interface-resume` with the
-   SVC. The intf_id field in the request payload shall equal
-   interface_id.
-
-   If the Operation fails, this procedure has failed. The results are
-   undefined.
-
-4. The AP shall exchange an :ref:`svc-route-create` with the SVC.  The
-   intf1_id and dev1_id fields in the request payload shall
-   respectively equal ap_interface_id and ap_device_id. The intf2_id
-   and dev2_id fields in the request payload shall respectively equal
-   interface_id and interface_device_id.
-
-   If the Operation fails, this procedure has failed. The results are
-   undefined.
-
-5. The sequence to establish a Control Connection to the Interface
+3. The sequence to establish a Control Connection to the Interface
    described in :ref:`lifecycles_control_establishment` shall be
    followed.
 
@@ -1256,7 +1226,7 @@ The following values are used in this procedure:
    same Manifest defined as that it made available to the AP Interface
    the most recent time it was ENUMERATED.
 
-6. The procedure is complete and has succeeded or failed.
+4. The procedure is complete and has succeeded or failed.
 
 .. _lifecycles_power_down:
 
