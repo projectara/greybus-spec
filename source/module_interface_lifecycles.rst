@@ -1263,6 +1263,9 @@ To perform this procedure, the following conditions shall hold.
   Interface, and shall each have been established by following the
   sequence defined in :ref:`lifecycles_connection_establishment`.
 
+- For every non-Control Connection: a set of zero or more Bundles
+  shall be provided.
+
 If these conditions do not all hold, the procedure shall not be
 followed. The results of following this procedure in this case are
 undefined.
@@ -1272,42 +1275,52 @@ The following values are used in this procedure:
 - The AP Interface's ID is ap_interface_id.
 - The Interface ID of the Interface being powered off is interface_id.
 
-.. XXX input from the power management team is required to better
-   define the error handling here.
+1. For every Bundle associated with the Interface being powered off
+   which is not in the :ref:`hardware-model-bundle-off` state:
+     a) if the Bundle is in the :ref:`hardware-model-bundle-active`
+        state, the AP shall follow the
+        :ref:`lifecycles_connection_closure` procedure for every CPort
+        for which a Connection is established,
+     b) if the Bundle is in the :ref:`hardware-model-bundle-suspended`
+        state, the AP exchange the :ref:`control-bundle-resume` with
+        the Bundle in order to bring it back to the
+        :ref:`hardware-model-bundle-active` state and then follow
+        step a),
+     c) exchange a :ref:`control-bundle-deactivate` with the
+        Interface being powered down,
 
-.. XXX input from the power management team is required to add calls
-   to other proposed Control Operations which act on the Interface's
-   Bundles and the Interface itself in the right places when those
-   proposed operations are merged.
+     If any step above fails, this step shall be considered failed,
+     but the AP should still forcibly power down the Interface by
+     continuing from step 3.
 
-1. The sequence defined in :ref:`lifecycles_connection_closure` shall be
-   followed to attempt to close all of the provided Non-Control
-   Connections.
+2. The AP Interface shall exchange a
+   :ref:`control-interface-deactivate` with the Interface being
+   powered down. If the Operation fails (including the cases where the
+   AP may retry sending the Greybus Control Interface Deactivate
+   Prepare Operation as defined in the Operation description), this
+   procedure has failed.
 
-   If any attempt fails, this procedure has failed. The results are
-   undefined.
-
-2. The sequence defined in
+3. The sequence defined in
    :ref:`lifecycles_control_closure_power_down` shall be followed to
    close the Control Connection to the Interface.
 
    If the sequence fails, this procedure has failed. The results are
    undefined.
 
-3. The AP shall exchange a :ref:`svc-route-destroy` with the SVC. The
+4. The AP shall exchange a :ref:`svc-route-destroy` with the SVC. The
    intf1_id and intf2_id fields in the request payload shall
    respectively equal ap_interface_id and interface_id.
 
    If the Operation fails, this procedure has failed. The results are
    undefined.
 
-4. The AP shall exchange an :ref:`svc-interface-unipro-disable` with
+5. The AP shall exchange an :ref:`svc-interface-unipro-disable` with
    the SVC to disable UNIPRO within the Switch.
 
    If the Operation fails, this procedure has failed. The results are
    undefined.
 
-5. The AP shall exchange an :ref:`svc-interface-refclk-disable` with
+6. The AP shall exchange an :ref:`svc-interface-refclk-disable` with
    the SVC.  The intf_id field in the request payload shall equal
    interface_id.
 
@@ -1316,7 +1329,7 @@ The following values are used in this procedure:
    If the Operation fails, this procedure has failed. The results are
    undefined.
 
-6. The AP shall exchange an :ref:`svc-interface-vsys-disable` with
+7. The AP shall exchange an :ref:`svc-interface-vsys-disable` with
    the SVC.  The intf_id field in the request payload shall equal
    interface_id.
 
@@ -1326,7 +1339,7 @@ The following values are used in this procedure:
    undefined.
 
 
-7. This procedure is now complete, and has either succeeded or
+8. This procedure is now complete, and has either succeeded or
    failed. If it succeeded, the Interface is now OFF.
 
 .. _lifecycles_reboot:

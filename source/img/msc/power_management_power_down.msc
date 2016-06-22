@@ -3,14 +3,17 @@
 msc {
   hscale = "1.5", arcgradient = "0";
 
-  AP, SVC, Comments [ linecolor = "white", textcolor = "white" ];
+  AP, SVC, Control [ label = "Control Connection" ], Comments [ linecolor = "white", textcolor = "white" ];
 
   |||;
   Comments abox Comments [ label = "ENUMERATED" ];
   |||;
-  AP rbox SVC [ label = "Non-Control Connection Closure Sequence" ];
+  AP rbox Control [ label = "Non-Control Closure Sequence" ];
   |||;
-  AP rbox SVC [ label = "Control Connection Closure for Power Down Sequence" ];
+  AP->Control [ label = "gb_control_intf_deactivate_prepare()" ];
+  Control->AP [ label = "gb_control_intf_deactivate_prepare_rsp[INTF_PM_OK]" ];
+  |||;
+  AP rbox Control [ label = "Control Closure for Power Down Sequence" ];
   |||;
   AP->SVC [ label = "gb_svc_route_destroy(AP_IID, IID)"];
   SVC->AP [ label = "gb_svc_route_destroy_rsp[GB_OP_SUCCESS]"];
