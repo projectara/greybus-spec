@@ -14,9 +14,6 @@ msc {
   |||;
   AP->SVC [ label = "gb_svc_route_destroy(AP_IID, IID)"];
   SVC->AP [ label = "gb_svc_route_destroy_rsp[GB_OP_SUCCESS]"];
-  AP->SVC [ label = "gb_svc_intf_set_power_mode(IID, UPRO_HIBERNATE_MODE, UPRO_HIBERNATE_MODE)" ];
-  SVC->AP [ label = "gb_svc_intf_set_power_mode_rsp[GB_SVC_OP_SUCCESS]" ],
-  Comments note Comments [ label = "UNIPRO = UPRO_HIBERNATE" ];
   AP->SVC [ label = "gb_svc_intf_unipro_disable(IID)" ];
   SVC->AP [ label = "gb_svc_intf_unipro_disable_rsp[UPRO_OK]" ],
   Comments note Comments [ label = "UNIPRO = UPRO_OFF" ];
