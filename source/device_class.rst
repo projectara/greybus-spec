@@ -25,6 +25,7 @@ are said to be *device class conformant*.
     device_class/firmware.rst
     device_class/hid.rst
     device_class/lights.rst
+    device_class/log.rst
     device_class/loopback.rst
     device_class/power.rst
     device_class/raw.rst
