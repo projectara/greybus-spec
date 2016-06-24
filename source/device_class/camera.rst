@@ -435,7 +435,7 @@ The Request specifies the number of streams to be configured. Up to four
 streams are supported. A Request with a number of streams higher
 than four shall be answered by an error Response with the status set to
 GB_OP_INVALID.
-A request with a zero number of streams, remove the existing configuration and
+A request with a zero number of streams remove the existing configuration and
 moves the Camera Bundle to the UNCONFIGURED state.
 
 The flag field allows the AP Module to inform the Camera Bundle about special
@@ -445,9 +445,9 @@ Accepted values for the Request flag field are listed in Table
 
 The TEST_ONLY bit of the Request flag field allows the AP to test a
 configuration without applying it.
-When the flag is set the Camera Module shall process the Request normally but
+When the bit is set the Camera Module shall process the Request normally but
 stop from applying the configuration. The Module shall send the same Response
-as it would if the TEST_ONLY flag wasn’t set and stay in the UNCONFIGURED state
+as it would if the TEST_ONLY bit wasn’t set and stay in the UNCONFIGURED state
 without modifying the device state.
 
 The Request supplies a set of stream configurations with the desired image
@@ -505,17 +505,17 @@ Greybus Camera Configure Streams Operation Response
 
 The Camera Module reports its stream configuration in the Response message as
 shown in Table :num:`table-camera-operations-configure-streams-response`.
-The value of the num_streams field, report the exact number of actually
-configured streams.
+The value of the num_streams field report the number of actually configured
+streams.
 
 The flag field allows the Camera Bundle to provide additional information on
 the delivered Response.
-Accepted values for the Response flag filed are listed in Table
+Accepted values for the Response flag field are listed in Table
 :num:`table-camera-configure-streams-response-flag-bitmask`.
 
 .. TODO: pinchartl: "best configuration" needs to be defined.
 
-The ADJUSTED bit of the Response flag field, is used to support
+The ADJUSTED bit of the Response flag field is used to support
 negotiation of the stream configuration.
 The Camera Module may modify the requested configuration to match its
 capabilities.
@@ -527,10 +527,10 @@ support, and set the ADJUSTED bit in the Response flags field.
 As a result the Camera Bundle shall stay in the UNCONFIGURED state without
 modifying the device state.
 
-The Camera Module shall report in the Response, along with the (eventually
+The Camera Module shall report in the Response, along with the (optionally
 adjusted) image format, width and height, the Virtual Channel number
-and Data Types for each stream, regardless of whether the requested
-configuration was supported or not.
+and Data Types for each stream, regardless of whether the  response
+was adjusted or not
 
 All Virtual Channel numbers shall be identical and between zero and three
 inclusive.
