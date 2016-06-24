@@ -429,11 +429,11 @@ than four shall be answered by an error Response with the status set to
 GB_OP_INVALID. A request with a zero number of streams remove the existing
 configuration and moves the Camera Bundle to the UNCONFIGURED state.
 
-The flag field allows the AP Module to inform the Camera Bundle about special
-requirements applied to the Request. Accepted values for the Request flag field
+The flags field allows the AP Module to inform the Camera Bundle about special
+requirements applied to the Request. Accepted values for the Request flags field
 are listed in Table :num:`table-camera-configure-streams-request-flag-bitmask`.
 
-The TEST_ONLY bit of the Request flag field allows the AP to test a
+The TEST_ONLY bit of the Request flags field allows the AP to test a
 configuration without applying it. When the bit is set the Camera Module shall
 process the Request normally but stop from applying the configuration. The
 Module shall send the same Response as it would if the TEST_ONLY bit wasn’t set
@@ -473,7 +473,7 @@ configuration, the width, height and format fields shall be copied in the
 .. figtable::
    :nofig:
    :label: table-camera-configure-streams-request-flag-bitmask
-   :caption: The flag bitmask in Camera Class Configure Stream Request
+   :caption: The flags bitmask in Camera Class Configure Stream Request
    :spec: l l c c l
 
     =============  ===========  =============================================
@@ -496,13 +496,13 @@ shown in Table :num:`table-camera-operations-configure-streams-response`.
 The value of the num_streams field report the number of actually configured
 streams.
 
-The flag field allows the Camera Bundle to provide additional information on
-the delivered Response. Accepted values for the Response flag field are listed
+The flags field allows the Camera Bundle to provide additional information on
+the delivered Response. Accepted values for the Response flags field are listed
 in Table :num:`table-camera-configure-streams-response-flag-bitmask`.
 
 .. TODO: pinchartl: "best configuration" needs to be defined.
 
-The ADJUSTED bit of the Response flag field is used to support
+The ADJUSTED bit of the Response flags field is used to support
 negotiation of the stream configuration. The Camera Module may modify the
 requested configuration to match its capabilities.
 This includes lowering the number of requested streams, originally reported in
@@ -566,7 +566,7 @@ matching the streams formats if possible, and may be set to a User Defined
 .. figtable::
    :nofig:
    :label: table-camera-configure-streams-response-flag-bitmask
-   :caption: The flag bitmask in Camera Class Configure Stream Response
+   :caption: The flags bitmask in Camera Class Configure Stream Response
    :spec: l l c c l
 
     =============  ===========  =============================================
