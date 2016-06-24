@@ -1099,19 +1099,23 @@ of them in their reported Capabilities packets.
     :caption: Camera Device Class Capabilities IDs
     :spec: l l l l
 
-    ==========================   =======  ====  =================================
-    Property Name                TAG      Type  Description
-    ==========================   =======  ====  =================================
-    GB_CAM_FEATURE_JPEG          0X7f00   bool  The Camera Module supports on-board
-    \                                           JPEG encoding
-    GB_CAM_FEATURE_SCALER        0X7f01   bool  The Camera Module supports on-board
-    \                                           image scaling
-    GB_CAM_METADATA_FORMAT       0x7f02   int8  Supported metadata format as defined
-    \                                           in Table :num:`table-camera-metadata-fmt`
-    GB_CAM_METADATA_TRANSPORT    0x7f03   int8  Supported metadata transport as defined
-    \                                           in Table :num:`table-camera-metadata-trans`
-    GB_CAM_PER_FRAME_CONTROL     0x7f04   bool  The Camera Module support per-frame Control
-    ==========================   =======  ====  =================================
+    ==========================   =======  ========  =================================
+    Property Name                TAG      Type      Description
+    ==========================   =======  ========  =================================
+    GB_CAM_FEATURE_JPEG          0X7f00   bool      The Camera Module supports on-board
+    \                                               JPEG encoding
+    GB_CAM_FEATURE_SCALER        0X7f01   bool      The Camera Module supports on-board
+    \                                               image scaling
+    GB_CAM_METADATA_FORMAT       0x7f02   int8      Supported metadata format as defined
+    \                                               in Table :num:`table-camera-metadata-fmt`
+    GB_CAM_METADATA_TRANSPORT    0x7f03   int8      Supported metadata transport as defined
+    \                                               in Table :num:`table-camera-metadata-trans`
+    GB_CAM_PER_FRAME_CONTROL     0x7f04   bool      The Camera Module support per-frame Control
+    GB_CAM_PRE_CROP_REGIONS      0x7f05   uint32[]  Field of view cropping, applied by Camera
+    \                                               Module on its full pixel array size.
+    \                                               Array members are shown in Table
+    \                                               :num:`table-camera-metadata-crop`
+    ==========================   =======  ========  =================================
 ..
 
 The accepted values for the reported GB_CAM_METADATA_FORMAT tag are listed in
@@ -1151,6 +1155,56 @@ Table :num:`table-camera-metadata-trans`.
     METADATA_TRANSPORT_OP      2        The Camera Module sends metadata using the
     \                                   :ref:`camera-metadata-operation`
     ========================   =======  =================================
+..
+
+The GB_CAM_PRE_CROP_REGIONS specifies  an array of uint32_t fields,
+whose values are listed in Table :num:`table-camera-metadata-crop`.
+
+Camera Modules can crop and/or scale the full sensor's field of view to
+achieve desired output resolutions. This property is used to describe, for
+each supported stream configuration, the associated cropping applied to the
+sensor's pixel array.
+
+Camera Modules shall report, for each stream configuration listed in the
+SCALER_AVAILABLE_STREAM_CONFIGURATIONS property, the coordinates of the top-left
+corner of the associated cropping rectangle, expressed as displacement (in
+pixels) from the top-left corner of the sensor's active pixel array, and the
+cropping rectangle horizontal and vertical dimensions.
+
+The data transported by GB_CAM_PRE_CROP_REGIONS property shall have an exact
+multiple of twenty-eight bytes as size, being composed by a number of tuples of
+seven elements, each of them four bytes long.
+
+The number of seven element tuples reported in this property shall correspond
+to the number of elements reported in the SCALER_AVAILABLE_STREAM_CONFIGURATIONS
+property, one for each supported stream configuration.
+The elements shall be stored in the same order as the
+SCALER_AVAILABLE_STREAM_CONFIGURATIONS entries.
+
+.. figtable::
+    :nofig:
+    :label: table-camera-metadata-crop
+    :caption: Camera Device Class Pre Crop Region Array
+    :spec: c l l
+
+    =================   ==============  =================================
+    Array Entry Index   Name            Description
+    =================   ==============  =================================
+    0                   Stream Format   Greybus wire image format, as defined
+    \                                   in Table :num:`table-camera-image-formats`
+    1                   Stream Width    Width, in pixels, of the video stream
+    2                   Stream Height   Height, in pixels, of the video stream
+    3                   Crop Top        Vertical offset, in pixels, of the
+    \                                   top-left corner of the cropping
+    \                                   rectangle
+    4                   Crop Left       Horizontal offset, in pixels, of the
+    \                                   top-left corner of the cropping
+    \                                   rectangle
+    5                   Crop Width      Width, in pixels, of the cropping
+    \                                   rectangle
+    6                   Crop Height     Height, in pixels, of the cropping
+    \                                   rectangle
+    =================   ==============  =================================
 ..
 
 Capture Settings
