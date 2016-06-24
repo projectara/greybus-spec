@@ -5,9 +5,8 @@ System Architecture (Informative)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus Camera Device Class Protocol defines how Camera Modules communicate
-with AP Modules in an Ara system.
-MIPI has specified two interface protocols for camera integration relevant
-to Ara systems, CSI-2 and CSI-3.
+with AP Modules in an Ara system. MIPI has specified two interface protocols
+for camera integration relevant to Ara systems, CSI-2 and CSI-3.
 
 CSI-2 is a high-speed point-to-point unidirectional data transfer protocol.
 It defines an interface between a camera peripheral device and a host processor.
@@ -16,9 +15,9 @@ most mobile Application Processors.
 
 CSI-3 is a high-speed bidirectional communication protocol for camera systems.
 Based on |unipro|, it specifies communication between camera sensors, image
-signal processors, bridge devices and host processors.
-The Greybus Camera Device Class Specification currently does not support CSI-3
-devices within Modules.
+signal processors, bridge devices and host processors. The Greybus Camera
+Device Class Specification currently does not support CSI-3 devices within
+Modules.
 
 The current Greybus Camera Device Class Protocol assumes that the AP Module and
 any Camera Modules in the system tunnel CSI-2 protocol data through the
@@ -37,10 +36,10 @@ to the application processor.
 
 The Greybus Camera Device Class Protocol describes transmission of image
 frames on the Greybus Camera Device Class Data Connections in terms of the
-CSI-2 interface on each side of the CSI-2 over |unipro| tunnel.
-Control messages exchanged over |unipro| outside of this are be
-described in terms of Greybus Camera Management Operations as for all other
-Greybus Device Class Protocols.
+CSI-2 interface on each side of the CSI-2 over |unipro| tunnel. Control
+messages exchanged over |unipro| outside of this are be described in terms of
+Greybus Camera Management Operations as for all other Greybus Device Class
+Protocols.
 
 The specific protocol used to communicate between the Camera AP Bridge
 and the components internal to the Camera Module is considered to be
@@ -89,19 +88,18 @@ Operations, split in three categories:
 
 * The Video Setup Operations, which handle capability enumeration and generally
   any retrieval of information from the Camera Interface, for the purpose of
-  initializing the peer.
-  Currently, the only defined Video Setup Operation is the
-  :ref:`camera-capabilities-operation`.
+  initializing the peer. Currently, the only defined Video Setup Operation is
+  the :ref:`camera-capabilities-operation`.
 
 * The Video Streaming Operations, which control the video streams and their
-  parameters such as image resolution and image format.
-  Currently, the two defined video streaming Operations are the
+  parameters such as image resolution and image format. Currently, the two
+  defined video streaming Operations are the
   :ref:`camera-configure-streams-operation` and
   :ref:`camera-flush-operation`.
 
 * The Image Processing Operations, which control all the Camera Module image
-  capture and processing algorithms and their parameters.
-  Currently, the only defined image processing Operation is the
+  capture and processing algorithms and their parameters. Currently, the only
+  defined image processing Operation is the
   :ref:`camera-capture-streams-operation`.
 
 Camera Modules shall implement all the Operations defined in this
@@ -126,9 +124,8 @@ or resized images.
 
 Camera Modules shall transmit all streams multiplexed over a single CSI-2 port
 and a single Virtual Channel using the Data Type Interleaving method defined
-by CSI-2.
-The Camera Module shall use Packet Level Interleaving as defined in section
-9.13.1 of [CSI-2]_.
+by CSI-2. The Camera Module shall use Packet Level Interleaving as defined in
+section 9.13.1 of [CSI-2]_.
 
 .. pinchartl:
    TODO: What are the minimum demultiplexing requirements of the AP
@@ -138,9 +135,9 @@ Metadata Transmission
 """""""""""""""""""""
 
 Metadata is defined as data other than image content that relates to a
-particular image frame.
-Metadata is used by Camera Modules to inform the image receiver about the
-characteristics of the transmitted frames, and the applied capture settings.
+particular image frame. Metadata is used by Camera Modules to inform the image
+receiver about the characteristics of the transmitted frames, and the applied
+capture settings.
 
 Metadata support is optional. However, when supported, it shall be implemented
 according to this specification.
@@ -248,8 +245,7 @@ The states that define the Camera Device Class state machine are:
 * **STREAMING:**
   In this state the Bundle transmits video frames in |unipro| Messages
   encapsulating CSI-2 packets, sent over the Greybus Camera Device Class Data
-  Connection.
-  Greybus Capture Stream Requests can be queued, and once there
+  Connection. Greybus Capture Stream Requests can be queued, and once there
   are no active or queued Requests, the Bundle moves back to CONFIGURED state.
   Reception of a :ref:`camera-flush-request` clears the queue of pending
   capture requests and also moves the Bundle to the CONFIGURED state.
@@ -323,8 +319,7 @@ Greybus Camera Management Ping Operation
 
 The Greybus Camera Management Ping Operation is the
 :ref:`greybus-protocol-ping-operation` for the Greybus Camera Device Class
-Protocol.
-It consists of a Request containing no payload, and a Response
+Protocol. It consists of a Request containing no payload, and a Response
 with no payload that indicates a successful result.
 
 .. _camera-capabilities-operation:
@@ -341,8 +336,7 @@ capabilities.
 
 Once the Camera Management Connection has been set up, the Camera Module shall
 respond to all Camera Management Capabilities Requests with the same set of
-capabilities.
-The Interface shall ensure identical capabilities are available as
+capabilities. The Interface shall ensure identical capabilities are available as
 long as its Interface Lifecycle State remains ENUMERATED.
 
 .. _camera-capabilities-request:
@@ -384,11 +378,10 @@ Greybus Camera Management Configure Streams Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus Camera Management Configure Streams Operation is used to prepare
-the Camera Bundle for image transmission.
-When applied to a non-zero number of streams the Operation configures the
-Camera Module for capture with a list of stream parameters.
-A non-zero streams Request is only valid in the UNCONFIGURED state, the Camera
-Bundle shall reply with an empty payload and set the status to
+the Camera Bundle for image transmission. When applied to a non-zero number of
+streams the Operation configures the Camera Module for capture with a list of
+stream parameters. A non-zero streams Request is only valid in the UNCONFIGURED
+state, the Camera Bundle shall reply with an empty payload and set the status to
 GB_OP_INVALID_STATE in all other states.
 
 When instead applied to zero streams, the Operation removes the existing stream
@@ -396,11 +389,10 @@ configuration, and moves back the Camera Bundle to the UNCONFIGURED state.
 
 If the requested streams configuration is supported the Camera Bundle moves to
 the CONFIGURED state and shall be ready to process Capture Requests with as
-little delay as possible.
-In particular any time-consuming procedure which implements Module's specific
-power management shall be performed when moving to the CONFIGURED
-state.
-Camera Modules shall not be kept in the CONFIGURED state unnecessarily.
+little delay as possible. In particular any time-consuming procedure which
+implements Module's specific power management shall be performed when moving to
+the CONFIGURED state. Camera Modules shall not be kept in the CONFIGURED state
+unnecessarily.
 
 Streams shall be transmitted over CSI-2 using the reported Virtual Channels
 and Data Types.
@@ -434,29 +426,25 @@ Greybus Camera Configure Streams Operation Request
 The Request specifies the number of streams to be configured. Up to four
 streams are supported. A Request with a number of streams higher
 than four shall be answered by an error Response with the status set to
-GB_OP_INVALID.
-A request with a zero number of streams remove the existing configuration and
-moves the Camera Bundle to the UNCONFIGURED state.
+GB_OP_INVALID. A request with a zero number of streams remove the existing
+configuration and moves the Camera Bundle to the UNCONFIGURED state.
 
 The flag field allows the AP Module to inform the Camera Bundle about special
-requirements applied to the Request.
-Accepted values for the Request flag field are listed in Table
-:num:`table-camera-configure-streams-request-flag-bitmask`.
+requirements applied to the Request. Accepted values for the Request flag field
+are listed in Table :num:`table-camera-configure-streams-request-flag-bitmask`.
 
 The TEST_ONLY bit of the Request flag field allows the AP to test a
-configuration without applying it.
-When the bit is set the Camera Module shall process the Request normally but
-stop from applying the configuration. The Module shall send the same Response
-as it would if the TEST_ONLY bit wasn’t set and stay in the UNCONFIGURED state
-without modifying the device state.
+configuration without applying it. When the bit is set the Camera Module shall
+process the Request normally but stop from applying the configuration. The
+Module shall send the same Response as it would if the TEST_ONLY bit wasn’t set
+and stay in the UNCONFIGURED state without modifying the device state.
 
 The Request supplies a set of stream configurations with the desired image
 width, height and format for each stream, as show in Table
 :num:`table-camera-operations-configure-streams-request`.
-Both the width and height shall be multiples of 2.
-For each supplied stream configuration, the width, height and format fields
-shall be copied in the :ref:`camera-configure-streams-response` payload.
-
+Both the width and height shall be multiples of 2. For each supplied stream
+configuration, the width, height and format fields shall be copied in the
+:ref:`camera-configure-streams-response` payload.
 
 .. figtable::
    :nofig:
@@ -509,23 +497,20 @@ The value of the num_streams field report the number of actually configured
 streams.
 
 The flag field allows the Camera Bundle to provide additional information on
-the delivered Response.
-Accepted values for the Response flag field are listed in Table
-:num:`table-camera-configure-streams-response-flag-bitmask`.
+the delivered Response. Accepted values for the Response flag field are listed
+in Table :num:`table-camera-configure-streams-response-flag-bitmask`.
 
 .. TODO: pinchartl: "best configuration" needs to be defined.
 
 The ADJUSTED bit of the Response flag field is used to support
-negotiation of the stream configuration.
-The Camera Module may modify the requested configuration to match its
-capabilities.
+negotiation of the stream configuration. The Camera Module may modify the
+requested configuration to match its capabilities.
 This includes lowering the number of requested streams, originally reported in
 the num_streams Request field, and modifying the width, height and format of
-each stream.
-The Module shall, in that case, reply with a configuration it can
-support, and set the ADJUSTED bit in the Response flags field.
-As a result the Camera Bundle shall stay in the UNCONFIGURED state without
-modifying the device state.
+each stream. The Module shall, in that case, reply with a configuration it can
+support, and set the ADJUSTED bit in the Response flags field. As a result the
+Camera Bundle shall stay in the UNCONFIGURED state without modifying the device
+state.
 
 The Camera Module shall report in the Response, along with the (optionally
 adjusted) image format, width and height, the Virtual Channel number
@@ -533,16 +518,14 @@ and Data Types for each stream, regardless of whether the  response
 was adjusted or not
 
 All Virtual Channel numbers shall be identical and between zero and three
-inclusive.
-All Data Types shall be different.
+inclusive. All Data Types shall be different.
 
 Up to two data types can be used to identify different components of the same
 stream sent by a Camera Module. At least one data type shall be provided by the
 Camera Module, the second is optional and shall be set to the reserved 0x00
-value if not used.
-The Data Types should be set to the CSI-2 Data Type value matching the streams
-formats if possible, and may be set to a User Defined 8-bit Data Type
-(0x30 to 0x37).
+value if not used. The Data Types should be set to the CSI-2 Data Type value
+matching the streams formats if possible, and may be set to a User Defined
+8-bit Data Type (0x30 to 0x37).
 
 .. TODO: pinchartl: This requires a more detailed description.
 
@@ -632,9 +615,9 @@ pending Requests ahead of time as necessary.
 When the first Request is queued, the Camera Module moves to the STREAMING
 state and starts transmitting frames as soon as possible. When the last
 Request completes the Bundle moves to the CONFIGURED state and stops
-transmitting frames immediately.
-Modules shall not transmit any |unipro| Segment on the
-Camera Data Connection except as result of receiving a new Capture Request.
+transmitting frames immediately. Modules shall not transmit any |unipro|
+Segment on the Camera Data Connection except as result of receiving a new
+Capture Request.
 
 .. _camera-capture-streams-request:
 
@@ -648,35 +631,32 @@ image.
 
 The AP shall set the request_id field in the Request payload to
 zero for the first Capture Streams Request it sends, and shall
-increment the value in this payload by one in each subsequent Request.
-If the value of the request_id field is not higher than the ID of the previous
+increment the value in this payload by one in each subsequent Request. If the
+value of the request_id field is not higher than the ID of the previous
 Request the Camera Bundle shall ignore the Request and set the reply status to
 GB_OP_INVALID.
 
 Modules shall not use the value of the request_id field number for any purpose
 other than synchronizing the Capture Operation with the Flush and Metadata
-Operations.
-In particular, Camera Bundle shall accept Requests with IDs higher than the
-previous one by more than one.
+Operations. In particular, Camera Bundle shall accept Requests with IDs higher
+than the previous one by more than one.
 
 .. TODO: jmondi: properly define the streams bitmaks
 
 The num_frames field contains the number of times the Request shall be
-repeated for all affected streams.
-Camera Modules shall capture and transmit one frame per stream for every
-repetition of the image capture request using the same capture settings.
-When the num_frames field is set to zero the image capture request shall be
-repeated indefinitely until the next Capture Operations Request, or a Flush
-Operation Request, is received.
+repeated for all affected streams. Camera Modules shall capture and transmit
+one frame per stream for every repetition of the image capture request using
+the same capture settings. When the num_frames field is set to zero the image
+capture request shall be repeated indefinitely until the next Capture
+Operations Request, or a Flush Operation Request, is received.
 
 The Capture Streams Request is only valid in the CONFIGURED and STREAMING
-states.
-The Camera Module shall set the Response status to GB_OP_INVALID_STATE in all
-other states.
+states. The Camera Module shall set the Response status to GB_OP_INVALID_STATE
+in all other states.
 
 The Capture Streams Request also contains a variable-size settings block that
 shall conform to the format described in the
-:ref:`Properties Section <camera-properties>`  of this specification.
+:ref:`Properties Section <camera-properties>` of this specification.
 If no settings need to be applied for the Request the settings block shall
 have zero size.
 
@@ -750,9 +730,8 @@ last processed :ref:`camera-capture-streams-request`
 
 When the Flush Operation is invoked while the Bundle is in the CONFIGURED
 state, the request_id field shall report the ID of the last frame transmitted
-over the Camera Data Connection.
-If no frames have been transmitted yet, the response_id field shall be set to
-zero.
+over the Camera Data Connection. If no frames have been transmitted yet, the
+response_id field shall be set to zero.
 
 Payload description for Flush Operation Response is reported in Table
 :num:`table-camera-operations-flush-response`
@@ -795,10 +774,9 @@ Greybus Camera Metadata Streams Operation Request
 """""""""""""""""""""""""""""""""""""""""""""""""
 
 The Greybus Camera Management Metadata Request is sent by the Camera Module
-over the Camera Management Connection.
-It contains a variable-size metadata block that shall conform to the format
-described in the :ref:`camera-properties` section of this
-specification.
+over the Camera Management Connection. It contains a variable-size metadata
+block that shall conform to the format described in the :ref:`camera-properties`
+section of this specification.
 
 If no metadata needs to be reported for a particular frame the metadata block
 shall have zero size.
@@ -830,9 +808,8 @@ Greybus Camera Properties
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Capabilities, Capture and Metadata operations modify or report the value of
-a set of Camera Module properties.
-Properties are defined as parameters that can report or modify the nature,
-state or operation of the Camera Module.
+a set of Camera Module properties. Properties are defined as parameters that can
+report or modify the nature, state or operation of the Camera Module.
 
 This section defines the structure of a property and a simple and efficient
 method to encode a set of property values in a binary data block that can be
@@ -862,9 +839,8 @@ following information.
   List, range or otherwise description of acceptable values for the property.
 
 Properties defined in this specification are considered as standard Greybus
-Camera Device Class properties.
-Camera Module vendors are allowed to define additional properties to the extent
-allowed by the specification.
+Camera Device Class properties. Camera Module vendors are allowed to define
+additional properties to the extent allowed by the specification.
 If they chose to do so they shall define such additional properties using the
 mechanism described in this specification.
 
@@ -891,9 +867,8 @@ A property stores a value using one of the following data types.
 
 Properties can also store an array of values of the same data type.
 In that case the property data type is postfixed with ‘[]’ to denote the array
-nature of the data.
-For instance the data type of an array of 32-bit integers would be described
-as ‘int32[]’.
+nature of the data. For instance the data type of an array of 32-bit integers
+would be described as ‘int32[]’.
 
 When the property is directed to (or comes from) the Android Camera framework,
 only its name and TAG value are shown.
@@ -924,13 +899,12 @@ Greybus Camera Device Class Operations need to transmit a set of property
 values.
 
 A Property values set is an unordered list of property keys associated with
-values.
-To transport it over Greybus the set shall be serialized into an array of
-bytes called Properties Packets as follows.
+values. To transport it over Greybus the set shall be serialized into an array
+of bytes called Properties Packets as follows.
 
 Unless stated otherwise, all numerical fields shall be stored in little-endian
-format.
-Signed integers shall be encoded using a two's complement representation.
+format. Signed integers shall be encoded using a two's complement
+representation.
 
 The memory of a Greybus Camera Device Class defined property is shown in Figure
 :num:`camera-prop-layout`.
@@ -981,12 +955,12 @@ Property value, as shown in table :num:`table-camera-properties-prop`.
     =========   =============  ======  ===========  ===========================
 ..
 
-The packet shall not contain multiple entries with the same key.
-The order of payload entries is unspecified and shall not be relied upon when
-interpreting the content of the packet.
+The packet shall not contain multiple entries with the same key. The order of
+payload entries is unspecified and shall not be relied upon when interpreting
+the content of the packet.
 
-All value fields shall be padded to a multiple of 4 bytes.
-The size of the defined data types makes padding needed for int8 values only.
+All value fields shall be padded to a multiple of 4 bytes. The size of the
+defined data types makes padding needed for int8 values only.
 
 Values of array data type properties shall be encoded by storing the array
 elements sequentially without any space or padding between elements.
@@ -1116,10 +1090,9 @@ documentation.
 ..
 
 Greybus Camera Device Class specific capabilities tags are defined in Table
-:num:`table-camera-ara-tags`.
-Greybus Camera Device Class tags are used to describe Greybus Camera specific
-attributes and Camera Module shall include all of them in their reported
-Capabilities packets.
+:num:`table-camera-ara-tags`. Greybus Camera Device Class tags are used to
+describe Greybus Camera specific attributes and Camera Module shall include all
+of them in their reported Capabilities packets.
 
 .. figtable::
     :label: table-camera-ara-tags
@@ -1184,14 +1157,14 @@ Capture Settings
 """"""""""""""""
 
 Capture Setting tags are used to provide to the Camera Module the desired image
-processing settings it shall apply to the next captured frames.
-Camera Modules should minimize the delay required to apply the received settings
-as much as possible.
+processing settings it shall apply to the next captured frames. Camera Modules
+should minimize the delay required to apply the received settings as much as
+possible.
 
 Capture Settings are generated by the Android framework, and sent on the wire
-along with each :ref:`camera-capture-streams-request`.
-For this reason, their types, accepted values and detailed description are
-provided by the Android system documentation.
+along with each :ref:`camera-capture-streams-request`. For this reason, their
+types, accepted values and detailed description are provided by the Android
+system documentation.
 
 .. figtable::
     :nofig:
@@ -1285,10 +1258,9 @@ contain the ID of the associated request.
            formats
 
 Table :num:`table-camera-metadata-tags` define the IDs of metadata tags
-accepted by the Greybus Camera Device Class.
-Metadata tags are sent to the Android framework, for this reason their types,
-accepted values and detailed description are provided by the Android system
-documentation.
+accepted by the Greybus Camera Device Class. Metadata tags are sent to the
+Android framework, for this reason their types, accepted values and detailed
+description are provided by the Android system documentation.
 
 .. figtable::
     :nofig:
@@ -1407,9 +1379,8 @@ A format defines the following properties.
     the components is available for a given pixel.
 
     In YUV encoding each pixel is described by its Luma (Y), Blue Chroma (Cb
-    or U) and Red Chroma (Cr or V).
-    The red and blue chroma are collectively called chroma components or chroma
-    and abbreviated UV.
+    or U) and Red Chroma (Cr or V). The red and blue chroma are collectively
+    called chroma components or chroma and abbreviated UV.
 
 * *The color depth*
 
@@ -1421,10 +1392,10 @@ A format defines the following properties.
 
 * *The components interleaving method*
 
-    Components of a pixel may be transmitted together or separately.
-    A format that transmits all components together is called a packed format.
-    Figure :num:`camera-imgfmt-rgb-example` shows how the first three pixels
-    of an image are transmitted in a packed RGB format.
+    Components of a pixel may be transmitted together or separately. A format
+    that transmits all components together is called a packed format. Figure
+    :num:`camera-imgfmt-rgb-example` shows how the first three pixels of an
+    image are transmitted in a packed RGB format.
 
 .. _camera-imgfmt-rgb-example:
 .. figure:: /img/svg/ara-camera-image-rgb-example.png
@@ -1437,8 +1408,8 @@ A format defines the following properties.
     image, line after line.
 
     A format that transmit components separately is called a planar format.
-    Figure :num:`camera-imgfmt-yuv-example` shows how an image may be transmitted in a planar YUV
-    format.
+    Figure :num:`camera-imgfmt-yuv-example` shows how an image may be
+    transmitted in a planar YUV format.
 
 .. _camera-imgfmt-yuv-example:
 .. figure:: /img/svg/ara-camera-image-yuv-example.png
@@ -1451,10 +1422,9 @@ A format defines the following properties.
     chroma components respectively.
 
     A format may also combine planar and packed components arrangements.
-    Such a format is called semi-planar.
-    In practice semi-planar formats are used with YUV encoding only and split
-    components in a Y plane and a packed UV plane, as shown in Figure
-    :num:`camera-imgfmt-yuv-semiplanar-example`.
+    Such a format is called semi-planar. In practice semi-planar formats are
+    used with YUV encoding only and split components in a Y plane and a packed
+    UV plane, as shown in Figure :num:`camera-imgfmt-yuv-semiplanar-example`.
 
 .. _camera-imgfmt-yuv-semiplanar-example:
 .. figure:: /img/svg/ara-camera-image-yuv-example2.png
@@ -1467,19 +1437,17 @@ A format defines the following properties.
     planes, one for each component.
 
     In semi-planar YUV formats luma and chroma components are separated in two
-    planes.
-    The luma plane contains the luma components only, and the chroma plane
-    contains the blue and red chroma components interleaved.
-    Every semi-planar format comes in two chroma interleaving variants, in the
-    UV or VU order.
+    planes. The luma plane contains the luma components only, and the chroma
+    plane contains the blue and red chroma components interleaved. Every
+    semi-planar format comes in two chroma interleaving variants, in the UV or
+    VU order.
 
 * *The components ordering*
 
     Within a given interleaving method components may be arranged differently.
     For instance, a packed RGB format may transmit the three pixel components
-    in the (R, G, B) or (B, G, R) order.
-    Similarly, a planar YUV format may transfer the U plane before the V plane
-    or the V plane before the U plane.
+    in the (R, G, B) or (B, G, R) order. Similarly, a planar YUV format may
+    transfer the U plane before the V plane or the V plane before the U plane.
 
 * *The components subsampling ratios*
 
@@ -1513,9 +1481,8 @@ section 9 of [CSI-2]_.
 
 Camera Modules shall transmit all streams multiplexed over a single CSI-2 port
 and a single Virtual Channel, using the Data Type Interleaving method defined
-by CSI-2.
-The modules shall use Packet Level Interleaving as defined in section 9.13.1 of
-[CSI-2]_.
+by CSI-2. The modules shall use Packet Level Interleaving as defined in section
+9.13.1 of [CSI-2]_.
 
 Each format defined in this specification may add specific requirements.
 
@@ -1534,8 +1501,7 @@ All packed formats are sent using a single CSI-2 Data Type
 **Packed YUV4:2:2 Image Format**
 
 This format transmits pixels encoded in YUV with 8 bits per component and a
-4:2:2 subsampling.
-The image width shall be a multiple of two pixels.
+4:2:2 subsampling. The image width shall be a multiple of two pixels.
 
 Packed YUV 4:2:2 shall be transmitted as specified in section 11.2.4 of
 [CSI-2]_.
@@ -1556,8 +1522,7 @@ components with a corresponding sample number.
 **Packed YUV4:2:0 Image Format**
 
 This format transmits pixels encoded in YUV with 8 bits per component and a
-4:2:0 subsampling.
-The image width and height shall be multiples of two pixels.
+4:2:0 subsampling. The image width and height shall be multiples of two pixels.
 
 Packed YUV 4:2:0 shall be transmitted as specified in sections 11.2.2 and
 11.2.1 (legacy format) of [CSI-2]_.
@@ -1595,14 +1560,13 @@ Planes from one image frame shall be transmitted using line interleaving or
 plane sequential mode.
 
 * In line interleaving mode, samples from a single line of a plane shall be
-  transmitted in one or more consecutive CSI-2 packets.
-  Lines shall then be interleaved as specified by each format.
-  All samples from a line are thus transmitted contiguously relatively to
-  samples from different planes of the same frame.
+  transmitted in one or more consecutive CSI-2 packets. Lines shall then be
+  interleaved as specified by each format. All samples from a line are thus
+  transmitted contiguously relatively to samples from different planes of the
+  same frame.
 * In plane sequential mode, samples from a single plane shall be transmitted in
-  consecutive CSI-2 packets.
-  All samples from a plane are thus transmitted contiguously relatively to
-  samples from different planes of the same frame.
+  consecutive CSI-2 packets. All samples from a plane are thus transmitted
+  contiguously relatively to samples from different planes of the same frame.
 
 In both modes packets from multiple streams may be interleaved freely.
 
@@ -1612,19 +1576,17 @@ a single Data Type, and one with planes transmitted using separate Data Types.
 **Semi-Planar YUV4:2:2 Image Format**
 
 These formats transmit pixels encoded in YUV with 8 bits per component and a
-4:2:2 subsampling.
-The image width shall be a multiple of two pixels.
+4:2:2 subsampling. The image width shall be a multiple of two pixels.
 The number of chroma line is equal to the number of luma lines.
 
 The semi-planar YUV 4:2:2 formats are Ara-specific, they are not defined in
-[CSI-2]_.
-They come in eight variants with all combinations of number of Data Types,
-U/V ordering and interleaving mode.
+[CSI-2]_. They come in eight variants with all combinations of number of Data
+Types, U/V ordering and interleaving mode.
 
 In line-interleaved mode a luma line is sent first followed by one chroma line.
 The chroma line contains samples related to the same pixels as the luma line.
-The same pattern repeats until the end of the frame.
-Figure :num:`camera-imgfmt-line-interleaving` illustrates how to transmit one
+The same pattern repeats until the end of the frame. Figure
+:num:`camera-imgfmt-line-interleaving` illustrates how to transmit one
 frame in line-interleaved mode with the UV chroma interleaving order.
 
 .. _camera-imgfmt-line-interleaving:
@@ -1636,9 +1598,9 @@ frame in line-interleaved mode with the UV chroma interleaving order.
 ..
 
 In plane-interleaved mode all luma lines are sent first followed by all chroma
-lines.
-Figure :num:`camera-imgfmt-plane-interleaving` illustrates how to transmit one
-frame in plane sequential mode with the UV chroma interleaving order.
+lines. Figure :num:`camera-imgfmt-plane-interleaving` illustrates how to
+transmit one frame in plane sequential mode with the UV chroma interleaving
+order.
 
 .. _camera-imgfmt-plane-interleaving:
 .. figure:: /img/svg/ara-camera-image-plane-interleaving.png
@@ -1654,23 +1616,19 @@ components with a corresponding sample number.
 **Semi-Planar YUV4:2:0 Image Format**
 
 These formats transmit pixels encoded in YUV with 8 bits per component and a
-4:2:0 subsampling.
-The image width and height shall be multiples of two pixels.
-The number of chroma lines is half the number of luma lines.
-Each chroma line stores values related to two lines of pixels.
+4:2:0 subsampling. The image width and height shall be multiples of two pixels.
+The number of chroma lines is half the number of luma lines. Each chroma line
+stores values related to two lines of pixels.
 
 The semi-planar YUV 4:2:0 formats are Ara-specific, they are not defined in
-[CSI-2]_.
-They come in eight variants with all combinations of number of Data Types,
-U/V ordering and interleaving mode.
+[CSI-2]_. They come in eight variants with all combinations of number of Data
+Types, U/V ordering and interleaving mode.
 
 In line-interleaved mode lines are sent in groups of two luma lines and one
-chroma line.
-The group starts with an odd luma line, followed by one chroma line,
-followed by an even luma line.
-The chroma line contains samples related to the same pixels as the two luma
-lines.
-The same pattern repeats until the end of the frame.
+chroma line. The group starts with an odd luma line, followed by one chroma
+line, followed by an even luma line. The chroma line contains samples related
+to the same pixels as the two luma lines. The same pattern repeats until the
+end of the frame.
 
 Figure :num:`camera-imgfmt-420-line-interleaved` illustrates how to transmit
 one frame in line-interleaved mode with the UV chroma interleaving order.
@@ -1684,9 +1642,9 @@ one frame in line-interleaved mode with the UV chroma interleaving order.
 ..
 
 In plane-interleaved mode all luma lines are sent first followed by all chroma
-lines.
-Figure :num:`camera-imgfmt-420-plane-interleaved` illustrates how to transmit
-one frame in plane sequential mode with the UV chroma interleaving order.
+lines. Figure :num:`camera-imgfmt-420-plane-interleaved` illustrates how to
+transmit one frame in plane sequential mode with the UV chroma interleaving
+order.
 
 .. _camera-imgfmt-420-plane-interleaved:
 .. figure:: /img/svg/ara-camera-image-p420.png
@@ -1703,19 +1661,16 @@ sampled in the middle of the four pixels at locations (x,y), (x+1,y), (x,y+1),
 **Planar YUV4:2:2 Image Format**
 
 These formats transmit pixels encoded in YUV with 8 bits per component and a
-4:2:2 subsampling.
-The image width shall be a multiple of two pixels.
-The number of chroma line is equal to the number of luma lines.
+4:2:2 subsampling. The image width shall be a multiple of two pixels. The
+number of chroma line is equal to the number of luma lines.
 
 The planar YUV 4:2:2 formats are Ara-specific, they are not defined in
-[CSI-2]_.
-They come in two variants for U/V ordering.
+[CSI-2]_. They come in two variants for U/V ordering.
 
-Only plane-interleaved is supported.
-All luma lines are sent first, followed by all blue or red chroma lines,
-followed by all remaining (red or blue) chroma lines.
-Figure :num:`camera-img-fmt-planar-422` illustrates how to transmit one frame
-in plane sequential mode with the UV chroma order.
+Only plane-interleaved is supported. All luma lines are sent first, followed
+by all blue or red chroma lines, followed by all remaining (red or blue) chroma
+lines. Figure :num:`camera-img-fmt-planar-422` illustrates how to transmit one
+frame in plane sequential mode with the UV chroma order.
 
 .. _camera-img-fmt-planar-422:
 .. figure:: /img/svg/ara-camera-image-p422.png
@@ -1731,14 +1686,12 @@ components with a corresponding sample number.
 **Planar YUV4:2:0 Image Format**
 
 These formats transmit pixels encoded in YUV with 8 bits per component and a
-4:2:0 subsampling.
-The image width and height shall be multiples of two pixels.
-The number of chroma lines is half the number of luma lines.
-Each chroma line stores values related to two lines of pixels.
+4:2:0 subsampling. The image width and height shall be multiples of two pixels.
+The number of chroma lines is half the number of luma lines. Each chroma line
+stores values related to two lines of pixels.
 
 The planar YUV 4:2:0 formats are Ara-specific, they are not defined in
-[CSI-2]_.
-They come in two variants for U\/V ordering.
+[CSI-2]_. They come in two variants for U\/V ordering.
 
 Only plane-interleaved is supported. All luma lines are sent first, followed
 by all blue or red chroma lines, followed by all remaining (red or blue)
