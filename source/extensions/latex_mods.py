@@ -26,6 +26,7 @@ class DocTranslator(BaseTranslator):
         BaseTranslator.__init__(self, *args, **kwargs)
         self.verbatim = None
         self.previous_spanning_row = 0
+        self.next_figure_ids = set()
     def visit_caption(self, node):
         caption_idx = node.parent.index(node)
         if caption_idx > 0:
