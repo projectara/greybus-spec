@@ -6,7 +6,7 @@ Greybus Log Protocol. This Protocol allows an Interface to send human-readable
 debug log messages to the AP. These messages are typically meant to be displayed
 by the AP's system logger (e.g. ``dmesg``).
 
-The Operations in the Greybus log Protocol are:
+The Operations in the Greybus Log Protocol are:
 
 .. c:function:: int ping(void);
 
