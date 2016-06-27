@@ -45,14 +45,25 @@ wouldn't be able to load another firmware and boot into it.
 ARA Boot Stages
 ~~~~~~~~~~~~~~~
 
-The current design of Interface Firmware stages for an Interface on ARA
-Phone forces the Interface to have three or four stages:
+The current design of Interface Firmware stages for an Interface on ARA Phone
+forces the Interface to have three or four stages as defined by Table
+:num:`table-ara-boot-stages`.
 
-- boot ROM (Stage 1 or S1)
-- Stage 2 Loader (S2L)
-- Stage 3 Firmware (S3F)
-- Stage 3 Backend Firmware Updater (S3-BFU, Used for updating backend
-  device processor firmware packages).
+.. figtable::
+    :nofig:
+    :label: table-ara-boot-stages
+    :caption: ARA Boot Stages and Firmware-tag
+    :spec: l l
+
+    =================================   ===============
+    Boot Stage Name                     Firmware Tag
+    =================================   ===============
+    boot ROM (S1)                       Not Applicable
+    Stage 2 Loader                      "s2l"
+    Stage 3 Firmware                    "s3f"
+    Stage 3 Backend Firmware Updater    "s3-bfu"
+    =================================   ===============
+..
 
 
 One of the main purpose of the S2 Loader stage is to get the Interface
