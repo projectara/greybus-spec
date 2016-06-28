@@ -188,6 +188,7 @@ Conceptually, the operations in the Greybus SVC Protocol are:
 
     The SVC uses this operation to notify the AP Module that a
     Module that was previously the subject of a Greybus SVC Module
+    Inserted Operation has been removed.
 
 .. c:function:: int intf_vsys_enable(u8 intf_id, u8 *result);
 
