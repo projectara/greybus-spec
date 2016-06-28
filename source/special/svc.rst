@@ -142,11 +142,6 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     the necessary action to eject a Module having the given primary
     interface id.
 
-.. c:function:: int key_event(u16 key_code, u8 key_event);
-
-    The SVC sends this to inform the AP that a key with a specific code has
-    generated an event.
-
 .. c:function:: int pwrmon_rail_count_get(u8 *rail_count);
 
     The AP uses this operation to retrieve the number of power rails
@@ -275,7 +270,7 @@ response type values are shown.
     TimeSync Authoritative              0x0f           0x8f
     Interface Set Power Mode            0x10           0x90
     Module Eject                        0x11           0x91
-    Key Event                           0x12           N/A
+    Reserved                            0x12           N/A
     Reserved                            0x13           0x93
     Power Monitor Get Rail Count        0x14           0x94
     Power Monitor Get Rail Names        0x15           0x95
@@ -2050,83 +2045,6 @@ the RELEASE pulse may fail to eject the Module.
 If the release pulse is successful, the AP will receive a subsequent
 notification from the SVC in the form of a :ref:`svc-module-removed`
 request.
-
-.. _svc-key-event:
-
-Greybus SVC Key Event Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The SVC uses this operation to indicate that a key connected to the SVC
-generated an event.
-
-Greybus SVC Key Event Request
-"""""""""""""""""""""""""""""
-
-The Greybus SVC Protocol Key Event Request signals to the recipient that an
-event has occurred on a Key attached to SVC.
-Table :num:`table-svc-key-event-request` defines the request, in which it
-supplies a key code and an event type.
-
-.. figtable::
-    :nofig:
-    :label: table-svc-key-event-request
-    :caption: SVC Protocol Key Event Request
-    :spec: l l c c l
-
-    =======  ============  ======  ==========  ======================================
-    Offset   Field         Size    Value       Description
-    =======  ============  ======  ==========  ======================================
-    0        key_code      2       Number      :ref:`svc-key-code`
-    2        key_event     1       Number      :ref:`svc-key-events`
-    =======  ============  ======  ==========  ======================================
-
-..
-
-.. _svc-key-code:
-
-Greybus SVC Key Codes
-"""""""""""""""""""""
-
-Table :num:`table-svc-key-codes` defines the values of allowed key codes to be
-included in Key Event Request.
-
-.. figtable::
-    :nofig:
-    :label: table-svc-key-codes
-    :caption: SVC key codes
-    :spec: l l l
-
-    ====================  ====================================  ============
-    Key Codes             Brief Description                     Value
-    ====================  ====================================  ============
-    GB_KEYCODE_ARA        Key code for Ara specific key         0x00
-    |_|                   (all other values reserved)           0x01..0xFF
-    ====================  ====================================  ============
-
-..
-
-.. _svc-key-events:
-
-Greybus SVC Key Events
-""""""""""""""""""""""
-
-Table :num:`table-svc-key-events` defines the values of allowed key events to be
-included in Key Event Request.
-
-.. figtable::
-    :nofig:
-    :label: table-svc-key-events
-    :caption: SVC key events
-    :spec: l l l
-
-    ====================  ====================================  ============
-    Key Events            Brief Description                     Value
-    ====================  ====================================  ============
-    GB_SVC_KEY_RELEASED   Key event representing key release    0x00
-    GB_SVC_KEY_PRESSED    Key event representing key pressed    0x01
-    |_|                   (all other values reserved)           0x02..0xFF
-    ====================  ====================================  ============
-..
 
 .. _svc-power-monitor-get-rail-count:
 
