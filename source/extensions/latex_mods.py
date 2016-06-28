@@ -26,7 +26,6 @@ class DocTranslator(BaseTranslator):
         BaseTranslator.__init__(self, *args, **kwargs)
         self.verbatim = None
         self.previous_spanning_row = 0
-        self.next_figure_ids = set()
     def visit_caption(self, node):
         caption_idx = node.parent.index(node)
         if caption_idx > 0:
@@ -155,31 +154,6 @@ class DocTranslator(BaseTranslator):
         hlcode = hlcode[:begin_bracket] + '[]' + hlcode[end_bracket+1:]
         self.body.append(hlcode)
         self.verbatim = None
-
-    def visit_figure(self, node):
-        ids = ''
-        for id in self.next_figure_ids:
-            ids += self.hypertarget(id, anchor=False)
-        self.next_figure_ids.clear()
-        if 'width' in node and node.get('align', '') in ('left', 'right'):
-            self.body.append('\\begin{wrapfigure}{%s}{%s}\n\\centering' %
-                             (node['align'] == 'right' and 'r' or 'l',
-                              node['width']))
-            self.context.append(ids + '\\end{wrapfigure}\n')
-        else:
-            if (not 'align' in node.attributes or
-                node.attributes['align'] == 'center'):
-                # centering does not add vertical space like center.
-                align = '\n\\centering'
-                align_end = ''
-            else:
-                # TODO non vertical space for other alignments.
-                align = '\\begin{flush%s}' % node.attributes['align']
-                align_end = '\\end{flush%s}' % node.attributes['align']
-            self.body.append('\\begin{figure}[tbp]%s\n' % align)
-            if any(isinstance(child, nodes.caption) for child in node):
-                self.body.append('\\capstart\n')
-            self.context.append(ids + align_end + '\\end{figure}\n')
 
 sphinx.writers.latex.LaTeXTranslator = DocTranslator
 
