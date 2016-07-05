@@ -512,6 +512,9 @@ support, and set the ADJUSTED bit in the Response flags field. As a result the
 Camera Bundle shall stay in the UNCONFIGURED state without modifying the device
 state.
 
+The data_rate field shall contain the total CSI-2 data rate expressed
+in Mbits per second, rounded up.
+
 The Camera Module shall report in the Response, along with the (optionally
 adjusted) image format, width and height, the Virtual Channel number
 and Data Types for each stream, regardless of whether the  response
@@ -529,6 +532,24 @@ matching the streams formats if possible, and may be set to a User Defined
 
 .. TODO: pinchartl: This requires a more detailed description.
 
+The Camera Module shall report in the max_pkt_size field the size in bytes of
+the largest CSI-2 Long Packet payload for the stream. CSI-2 Long packets are
+defined in section 9.1 of [CSI-2]_.
+
+For non-binary image formats Camera Modules shall transmit each line of the
+image individually in a single CSI-2 Long Packet. Image lines may have different
+sizes depending on the image format. The max_pkt_size is the size in bytes of
+the largest line of the image.
+
+Binary image formats do not split the image in lines but encode it as a single
+block of bytes. Binary non-image formats transmit arbitrary non-image data in a
+single block of bytes. Camera Modules shall split the data in chunks in an
+implementation-defined way and send each chunk in a separate CSI-2 Long Packet.
+The max_pkt_size is then the size in bytes of the largest data chunk.
+
+Binary and non-binary formats IDs are defined in the :ref:`camera-imgfmt-ids`
+section of this specifications.
+
 .. figtable::
    :nofig:
    :label: table-camera-operations-configure-streams-response
@@ -541,25 +562,23 @@ matching the streams formats if possible, and may be set to a User Defined
     0           num_streams    1       Number       Number of streams. Between 0
                                                     and 4
     1           flags          1       Number       Table :num:`table-camera-configure-streams-response-flag-bitmask`
-    2           num_lanes      1       Number       The number of data lanes configured
-    \                                               for the CSI-2 interface on the legacy
-    \                                               side of the AP bridge
-    3           padding        1       0            Shall be set to 0
-    4           bus_freq       4       Number       The CSI-2 bus frequency in HZ
-    8           lines_per_sec  4       Number       The total number of lines sent
-    \                                               in a second of transmission
-    \                                               (blankings included)
+    2           padding        2       0            Shall be set to 0
+    4           data_rate      4       Number       The CSI-2 data rate, expressed
+    \                                               in Mbits per second (rounded up)
 
     *The following block appears num_streams times*
     ---------------------------------------------------------------------------
 
-    12+(i*16)    width          2       Number      Image width in pixels
-    14+(i*16)    height         2       Number      Image height in pixels
-    16+(i*16)    format         2       Number      Image Format
-    18+(i*16)    virtual_chan   1       Number      Virtual channel number
-    19+(i*16)    data_type[2]   2       Number      Data types for the stream
-    21+(i*16)    padding        3       0           Shall be set to 0
-    24+(i*16)    max_size       4       Number      Maximum frame size in Bytes
+    8+(i*16)     width          2       Number      Image width in pixels
+    10+(i*16)    height         2       Number      Image height in pixels
+    12+(i*16)    format         2       Number      Image Format
+    14+(i*16)    virtual_chan   1       Number      Virtual channel number
+    15+(i*16)    data_type[2]   2       Number      Data types for the stream
+    17+(i*16)    max_pkt_size   2       Number      The length in bytes of largets CSI
+    \                                               Long Packet that transmits frame
+    \                                               lines
+    19+(i*16)    padding        1       0           Shall be set to 0
+    20+(i*16)    max_size       4       Number      Maximum frame size in Bytes
     =========   =============  ======  ===========  ===========================
 ..
 
@@ -1765,6 +1784,8 @@ in plane sequential mode with the UV chroma order.
 Chroma components x transmitted on odd line y and even line y+1 are spatially
 sampled in the middle of the four pixels at locations (x,y), (x+1,y), (x,y+1),
 (x+1,y+1).
+
+.. _camera-imgfmt-ids:
 
 Image Format Identifiers
 ^^^^^^^^^^^^^^^^^^^^^^^^
