@@ -231,6 +231,11 @@ Conceptually, the operations in the Greybus SVC Protocol are:
    The SVC uses this Operation to inform the AP that an Interface
    State's :ref:`hardware-model-mailbox` has changed value.
 
+.. c:function:: int intf_oops(u8 intf_id, u8 reason);
+
+   The SVC uses this Operation to inform the AP that an Interface
+   has experienced a fatal error.
+
 Greybus SVC Operations
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -292,7 +297,8 @@ response type values are shown.
     Interface Activate                  0x27           0xa7
     Interface Resume                    0x28           0xa8
     Interface Mailbox Event             0x29           0xa9
-    (all other values reserved)         0x2a..0x7e     0xaa..0xfe
+    Interface Oops                      0x2a           0xaa
+    (all other values reserved)         0x2b..0x7e     0xab..0xfe
     Invalid                             0x7f           0xff
     ==================================  =============  ==============
 
@@ -3643,3 +3649,63 @@ Greybus SVC Interface Mailbox Event Response
 """"""""""""""""""""""""""""""""""""""""""""
 
 The Greybus SVC Interface Mailbox Event Response has no payload.
+
+.. _svc-interface-oops:
+
+Greybus SVC Interface Oops Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The SVC sends this to the AP Module to notify it that an Interface
+has experienced a fatal error.
+
+.. _svc-interface-oops-request:
+
+Greybus SVC Interface Oops Request
+""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-oops-request` defines the Greybus SVC Interface
+Oops Request payload.
+
+The Greybus SVC Interface Oops Request shall be sent only by the SVC to
+the AP Module. The Interface ID informs the AP Module which Interface
+has experienced a fatal error. The reason field specifies the cause of
+the fatal error. Presently, the only cause is ESHUTDOWN, which
+indicates the Interface has caused an overconsumption event on the
+V_SYS power bus.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-oops-request
+    :caption: SVC Protocol Oops Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ============    ===========================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ============    ===========================
+    0        intf_id         1       Number          Interface to reset
+    1        reason          1       108             Reason for notification
+    =======  ==============  ======  ============    ===========================
+
+
+..
+
+.. figtable::
+    :nofig:
+    :label: table-svc-oops-reasons
+    :caption: SVC Oops reasons
+    :spec: l l l
+
+    ============================  =================================================  ================
+    reason                        Brief Description                                  Value
+    ============================  =================================================  ================
+    ESHUTDOWN                     Interface shut down due to V_SYS overconsumption   108
+    |_|                           (all other values reserved)                        0..107, 109..255
+    ============================  =================================================  ================
+
+
+..
+
+Greybus SVC Interface Oops Response
+"""""""""""""""""""""""""""""""""""
+
+The Greybus SVC Interface Oops Response Message contains no payload.
