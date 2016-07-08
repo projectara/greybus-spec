@@ -1556,7 +1556,7 @@ completed, allowing both users of the connection to later release any
 resources consumed by that connection.
 
 Greybus SVC Connection Quiescing Request
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+""""""""""""""""""""""""""""""""""""""""
 
 Table :num:`table-svc-connection-quiescing-request` defines the Greybus
 SVC Connection Quiescing Request payload.  The Greybus SVC
@@ -1622,7 +1622,7 @@ reconfiguring them as follows before reconnecting them:
   to send.
 
 Greybus SVC Connection Quiescing Response
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""""""""""""""""""""""""
 
 Table :num:`table-svc-connection-quiescing-response` defines the Greybus SVC
 Connection Quiescing Response payload. If the Response message header as the
@@ -1936,7 +1936,7 @@ shall abandon further TimeSync activities.
 .. _svc-timesync-wake-pins-release:
 
 Greybus SVC TimeSync Wake Pins Release Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The AP Module uses this operation to request the SVC to release ownership of any
 previously allocated wake pins. The SVC shall release all pins allocated for
 wake purposes in a previous successful Greybus SVC TimeSync Wake Pins Acquire
@@ -2365,7 +2365,7 @@ as well as during initialization of a Greybus System, to inform the AP
 of Modules which were already attached to the Frame.
 
 Greybus SVC Module Inserted Request
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""""""""""""""""""
 
 Table :num:`table-svc-module-inserted-request` defines the Greybus SVC
 Module Inserted request payload.  The request specifies the location
@@ -2467,7 +2467,7 @@ The SVC may also send additional Module Inserted Requests with the
 NO_PRIMARY_INTERFACE flag set, as described above.
 
 Greybus SVC Module Inserted Response
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+""""""""""""""""""""""""""""""""""""
 
 The Greybus SVC Module Inserted response message contains no payload.
 
@@ -2483,7 +2483,7 @@ ID shall have been the subject of a previous
 :ref:`svc-module-inserted`.
 
 Greybus SVC Module Removed Request
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+""""""""""""""""""""""""""""""""""
 
 Table :num:`table-svc-module-removed-request` defines the Greybus SVC
 Module Removed request payload.  The request specifies the Primary
@@ -2527,7 +2527,7 @@ The Module is now in the MODULE_DETACHED state, as described in
 :ref:`lifecycles_module_detach`.
 
 Greybus SVC Module Removed Response
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""""""""""""""""""
 
 The Greybus SVC Module Removed response message contains no payload.
 
