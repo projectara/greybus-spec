@@ -3663,43 +3663,52 @@ has experienced a fatal error.
 Greybus SVC Interface Oops Request
 """"""""""""""""""""""""""""""""""
 
-Table :num:`table-svc-oops-request` defines the Greybus SVC Interface
-Oops Request payload.
+Table :num:`table-svc-intf-oops-request` defines the Greybus SVC
+Interface Oops Request payload.
 
 The Greybus SVC Interface Oops Request shall be sent only by the SVC to
 the AP Module. The Interface ID informs the AP Module which Interface
 has experienced a fatal error. The reason field specifies the cause of
-the fatal error. Presently, the only cause is ESHUTDOWN, which
-indicates the Interface has caused an overconsumption event on the
+the fatal error. Presently, the only cause is GB_OOPS_REASON_OVERCURRENT,
+which indicates the Interface has caused an overconsumption event on the
 V_SYS power bus.
 
 .. figtable::
     :nofig:
-    :label: table-svc-oops-request
-    :caption: SVC Protocol Oops Request
+    :label: table-svc-intf-oops-request
+    :caption: SVC Protocol Interface Oops Request
     :spec: l l c c l
 
     =======  ==============  ======  ============    ===========================
     Offset   Field           Size    Value           Description
     =======  ==============  ======  ============    ===========================
     0        intf_id         1       Number          Interface to reset
-    1        reason          1       108             Reason for notification
+    1        reason          1       Number          :ref:`svc-intf-oops-reason`
     =======  ==============  ======  ============    ===========================
 
 
 ..
 
+.. _svc-intf-oops-reason:
+
+Greybus SVC Interface Oops Reason
+"""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-intf-oops-reason` defines the constants used to
+indicate the reason in an Interface Oops Request.
+
 .. figtable::
     :nofig:
-    :label: table-svc-oops-reasons
+    :label: table-svc-intf-oops-reason
     :caption: SVC Oops reasons
     :spec: l l l
 
     ============================  =================================================  ================
     reason                        Brief Description                                  Value
     ============================  =================================================  ================
-    ESHUTDOWN                     Interface shut down due to V_SYS overconsumption   108
-    |_|                           (all other values reserved)                        0..107, 109..255
+    GB_OOPS_REASON_INVALID        Invalid reason value                               0x00
+    GB_OOPS_REASON_OVERCURRENT    Interface shut down due to V_SYS overconsumption   0x01
+    |_|                           (all other values reserved)                        0x02..0xff
     ============================  =================================================  ================
 
 
