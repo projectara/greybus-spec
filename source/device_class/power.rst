@@ -368,6 +368,9 @@ seconds and tenths of degrees Celsius unless otherwise stated.
     GB_POWER_SUPPLY_PROP_SCOPE                          0x3B   :ref:`power-supply-scope`
     GB_POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT            0x3C   Charge Termination current
     GB_POWER_SUPPLY_PROP_CALIBRATE                      0x3D   Calibration status
+    GB_POWER_SUPPLY_PROP_USB_HC                         0x3E   High Current USB
+    GB_POWER_SUPPLY_PROP_USB_OTG                        0x3F   OTG boost property
+    GB_POWER_SUPPLY_PROP_CHARGE_ENABLED                 0x40   Control charging status
     =================================================== ====== ========================
 
 ..
