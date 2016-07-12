@@ -1072,18 +1072,19 @@ The following values are used in this procedure:
 1. For every Bundle associated with the Interface being suspended
    which is in the :ref:`hardware-model-bundle-active` state the AP
    shall:
-     a) follow the :ref:`lifecycles_connection_closure` procedure for
-        every CPort for which a Connection is established. If the
-        procedure fails for any CPort, the whole Interface Suspend
-        procedure is failed,
-     b) exchange a :ref:`control-bundle-suspend` with the Interface
-        being suspended. If any Request fails, the whole Interface
-        Suspend is failed.
 
-     If any step above fails, the AP Interface should re-establish
-     all Connections previously closed following the
-     :ref:`lifecycles_connection_establishment` procedure in order
-     to return to the previous state.
+   a) follow the :ref:`lifecycles_connection_closure` procedure for
+      every CPort for which a Connection is established. If the
+      procedure fails for any CPort, the whole Interface Suspend
+      procedure is failed,
+   b) exchange a :ref:`control-bundle-suspend` with the Interface
+      being suspended. If any Request fails, the whole Interface
+      Suspend is failed.
+
+   If any step above fails, the AP Interface should re-establish
+   all Connections previously closed following the
+   :ref:`lifecycles_connection_establishment` procedure in order
+   to return to the previous state.
 
 2. The AP Interface shall exchange a :ref:`control-interface-suspend`
    with the Interface being suspended. If the Operation fails
@@ -1277,21 +1278,22 @@ The following values are used in this procedure:
 
 1. For every Bundle associated with the Interface being powered off
    which is not in the :ref:`hardware-model-bundle-off` state:
-     a) if the Bundle is in the :ref:`hardware-model-bundle-active`
-        state, the AP shall follow the
-        :ref:`lifecycles_connection_closure` procedure for every CPort
-        for which a Connection is established,
-     b) if the Bundle is in the :ref:`hardware-model-bundle-suspended`
-        state, the AP exchange the :ref:`control-bundle-resume` with
-        the Bundle in order to bring it back to the
-        :ref:`hardware-model-bundle-active` state and then follow
-        step a),
-     c) exchange a :ref:`control-bundle-deactivate` with the
-        Interface being powered down,
 
-     If any step above fails, this step shall be considered failed,
-     but the AP should still forcibly power down the Interface by
-     continuing from step 3.
+   a) if the Bundle is in the :ref:`hardware-model-bundle-active`
+      state, the AP shall follow the
+      :ref:`lifecycles_connection_closure` procedure for every CPort
+      for which a Connection is established,
+   b) if the Bundle is in the :ref:`hardware-model-bundle-suspended`
+      state, the AP exchange the :ref:`control-bundle-resume` with
+      the Bundle in order to bring it back to the
+      :ref:`hardware-model-bundle-active` state and then follow
+      step a),
+   c) exchange a :ref:`control-bundle-deactivate` with the
+      Interface being powered down,
+
+   If any step above fails, this step shall be considered failed,
+   but the AP should still forcibly power down the Interface by
+   continuing from step 3.
 
 2. The AP Interface shall exchange a
    :ref:`control-interface-deactivate` with the Interface being
