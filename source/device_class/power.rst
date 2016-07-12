@@ -188,25 +188,25 @@ types defined for Greybus power supply adapters.
     :nofig:
     :label: table-power-supply-type
     :caption: Power Supply Type
-    :spec: l l
+    :spec: l l l
 
-    ================================   ======
-    Power Supply Type                  Value
-    ================================   ======
-    GB_POWER_SUPPLY_UNKNOWN_TYPE       0x0000
-    GB_POWER_SUPPLY_BATTERY_TYPE       0x0001
-    GB_POWER_SUPPLY_UPS_TYPE           0x0002
-    GB_POWER_SUPPLY_MAINS_TYPE         0x0003
-    GB_POWER_SUPPLY_USB_TYPE           0x0004
-    GB_POWER_SUPPLY_USB_DCP_TYPE       0x0005
-    GB_POWER_SUPPLY_USB_CDP_TYPE       0x0006
-    GB_POWER_SUPPLY_USB_ACA_TYPE       0x0007
-    GB_POWER_SUPPLY_USB_HVDCP_TYPE     0x0008
-    GB_POWER_SUPPLY_USB_TYPE_C_TYPE    0x0009
-    GB_POWER_SUPPLY_USB_PD_TYPE        0x000A
-    GB_POWER_SUPPLY_USB_PD_DRP_TYPE    0x000B
-    GB_POWER_SUPPLY_WIRELESS_TYPE      0x000C
-    ================================   ======
+    ================================   ======   ==================================
+    Power Supply Type                  Value    Description
+    ================================   ======   ==================================
+    GB_POWER_SUPPLY_UNKNOWN_TYPE       0x0000   Unknown Type
+    GB_POWER_SUPPLY_BATTERY_TYPE       0x0001   Battery Type
+    GB_POWER_SUPPLY_UPS_TYPE           0x0002   Uninterruptible Power Supply Type
+    GB_POWER_SUPPLY_MAINS_TYPE         0x0003   AC Power Supply Type
+    GB_POWER_SUPPLY_USB_TYPE           0x0004   USB Standard Downstream Port
+    GB_POWER_SUPPLY_USB_DCP_TYPE       0x0005   USB Dedicated Charging Port
+    GB_POWER_SUPPLY_USB_CDP_TYPE       0x0006   USB Charging Downstream Port
+    GB_POWER_SUPPLY_USB_ACA_TYPE       0x0007   USB Accessory Charger Adapters
+    GB_POWER_SUPPLY_USB_HVDCP_TYPE     0x0008   USB High Voltage DCP
+    GB_POWER_SUPPLY_USB_TYPE_C_TYPE    0x0009   USB Type C Port
+    GB_POWER_SUPPLY_USB_PD_TYPE        0x000A   USB Power Delivery Port
+    GB_POWER_SUPPLY_USB_PD_DRP_TYPE    0x000B   USB Power Delivery Dual Role Port
+    GB_POWER_SUPPLY_WIRELESS_TYPE      0x000C   Wireless Power Supply Type
+    ================================   ======   ==================================
 
 ..
 
