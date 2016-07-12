@@ -236,6 +236,19 @@ Conceptually, the operations in the Greybus SVC Protocol are:
    The SVC uses this Operation to inform the AP that an Interface
    has experienced a fatal error.
 
+.. c:function:: int intf_vchg_enable(u8 intf_id, u8 *result);
+
+   The AP uses this Operation to request the SVC to set
+   :ref:`hardware-model-vchg` sub-state of
+   :ref:`hardware-model-interface-states` for intf_id to V_CHG_ON.
+
+.. c:function:: int intf_vchg_disable(u8 intf_id, u8 *result);
+
+   The AP uses this Operation to request the SVC to set
+   :ref:`hardware-model-vchg` sub-state of
+   :ref:`hardware-model-interface-states` for intf_id to V_CHG_OFF.
+
+
 Greybus SVC Operations
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -298,7 +311,9 @@ response type values are shown.
     Interface Resume                    0x28           0xa8
     Interface Mailbox Event             0x29           0xa9
     Interface Oops                      0x2a           0xaa
-    (all other values reserved)         0x2b..0x7e     0xab..0xfe
+    Interface V_CHG Enable              0x2b           0xab
+    Interface V_CHG Disable             0x2c           0xac
+    (all other values reserved)         0x2d..0x7e     0xad..0xfe
     Invalid                             0x7f           0xff
     ==================================  =============  ==============
 
@@ -3718,3 +3733,174 @@ Greybus SVC Interface Oops Response
 """""""""""""""""""""""""""""""""""
 
 The Greybus SVC Interface Oops Response Message contains no payload.
+
+.. _svc-interface-vchg-enable:
+
+Greybus SVC Interface V_CHG Enable Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The AP uses this Operation to request the SVC to set an
+:ref:`hardware-model-vchg` sub-state of
+:ref:`Interface State's <hardware-model-interface-states>` to V_CHG_ON.
+
+The SVC shall not set V_CHG to V_CHG_ON except as a result of
+receiving a Greybus V_CHG Enable Request.
+
+Greybus SVC Interface V_CHG Enable Request
+""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-interface-vchg-enable-request` defines the Greybus SVC
+Interface V_CHG Enable Request payload.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-interface-vchg-enable-request
+    :caption: SVC Protocol Interface V_CHG Enable Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ============    ============
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ============    ============
+    0        intf_id         1       Interface ID    Interface ID
+    =======  ==============  ======  ============    ============
+..
+
+The SVC, on receiving this request, shall attempt to set the V_CHG
+sub-state of the Interface State specified by the intf_id field to
+V_CHG_ON.
+
+.. _svc-interface-vchg-enable-response:
+
+Greybus SVC Interface V_CHG Enable Response
+"""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-interface-vchg-enable-response` defines the Greybus SVC
+Interface V_CHG Enable Response payload. The Operation Response payload
+contains a one-byte result_code field.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-interface-vchg-enable-response
+    :caption: SVC Protocol Interface V_CHG Enable Response
+    :spec: l l c c l
+
+    =======  ===========  ======  ==========  ===========
+    Offset   Field        Size    Value       Description
+    =======  ===========  ======  ==========  ===========
+    0        result_code  1       Number      Result Code
+    =======  ===========  ======  ==========  ===========
+..
+
+The :ref:`greybus-operation-status` in the Operation Response message
+header shall not be used to determine the value of V_CHG sub-state after the
+response is received. It shall only be used to indicate the result of the
+Greybus communication.  If the Greybus SVC Interface V_CHG Enable Response
+message header has the :ref:`greybus-operation-status` value different than
+GB_OP_SUCCESS, a Greybus communication error has occurred; the V_CHG
+sub-state identified in the Operation Request shall not have changed as a
+result of processing the Request. If the Greybus SVC Interface V_CHG Enable
+Response message header has the :ref:`greybus-operation-status` equal to
+GB_OP_SUCCESS, it shall indicate that no Greybus communication error was
+detected.
+
+However, a :ref:`greybus-operation-status` in the Response message header
+equal to GB_OP_SUCCESS alone does not imply the intended V_CHG is now V_CHG_ON.
+When the Response message header has the :ref:`greybus-operation-status`
+equal to GB_OP_SUCCESS, the value of V_CHG may be determined given the
+result_code field in the Operation Response payload, as described in Table
+:num:`table-svc-interface-vchg-result-code`. In particular, V_CHG is V_CHG_ON
+if the Response message header has :ref:`greybus-operation-status` equal to
+GB_OP_SUCCESS and the result_code in the Operation Response payload is
+V_CHG_OK. V_CHG shall not have changed value as a result of processing the
+Request in any other combination of these two fields.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-interface-vchg-result-code
+    :caption: Interface V_CHG Enable and Interface V_CHG Disable result_code
+    :spec: l l l
+
+    ================  ========  ======================================================================
+    Result Code       Value     Description
+    ================  ========  ======================================================================
+    V_CHG_OK          0         V_CHG enable/disable operation was successful.
+    V_CHG_FAIL        1         V_CHG enable/disable was attempted and failed.
+    (Reserved)        2-255     (Reserved for future use)
+    ================  ========  ======================================================================
+..
+
+.. _svc-interface-vchg-disable:
+
+Greybus SVC Interface V_CHG Disable Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The AP uses this Operation to request the SVC to set an
+:ref:`hardware-model-vchg` sub-state of
+:ref:`Interface State's <hardware-model-interface-states>` to V_CHG_OFF.
+
+The SVC shall set V_CHG to V_CHG_OFF without having received an
+Interface V_CHG Disable Request only under the conditions specified in
+:ref:`hardware-model-vchg`.
+
+Greybus SVC Interface V_CHG Disable Request
+"""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-interface-vchg-disable-request` defines the Greybus SVC
+Interface V_CHG Disable Request payload.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-interface-vchg-disable-request
+    :caption: SVC Protocol Interface V_CHG Disable Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ============    ============
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ============    ============
+    0        intf_id         1       Interface ID    Interface ID
+    =======  ==============  ======  ============    ============
+..
+
+The SVC, on receiving this request, shall attempt to set the V_CHG
+sub-state of the Interface State specified by the intf_id field to
+V_CHG_OFF.
+
+Greybus SVC Interface V_CHG Disable Response
+""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-interface-vchg-disable-response` defines the Greybus SVC
+Interface V_CHG Disable Response payload. The Operation Response payload
+contains a one-byte result_code field.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-interface-vchg-disable-response
+    :caption: SVC Protocol Interface V_CHG Disable Response
+    :spec: l l c c l
+
+    =======  ===========  ======  ==========  ===========
+    Offset   Field        Size    Value       Description
+    =======  ===========  ======  ==========  ===========
+    0        result_code  1       Number      Result Code
+    =======  ===========  ======  ==========  ===========
+..
+
+The meaning of the :ref:`greybus-operation-status` in the Operation
+Response message header and the result_code in the Operation Response payload
+are analogous to the corresponding :ref:`greybus-operation-status` in the
+Interface V_CHG Enable Response message header and the result_code field in the
+Interface V_CHG Enable Operation Response payload.
+
+That is, the :ref:`greybus-operation-status` of the Operation Response message
+header shall only be used to indicate the result of the Greybus communication,
+exactly as described in :ref:`svc-interface-vchg-enable-response`.
+
+Similarly, when the Interface V_CHG Disable Response message header has the
+:ref:`greybus-operation-status` equal to GB_OP_SUCCESS, the value of V_CHG
+may be determined given the result_code field in the Operation Response
+payload, as described in Table :num:`table-svc-interface-vchg-result-code`. In
+particular, V_CHG is V_CHG_OFF if Response message header has the
+:ref:`greybus-operation-status` equal to GB_OP_SUCCESS and the result_code
+field in the Operation Response payload is V_CHG_OK. V_CHG shall not have
+changed value as a result of processing the Request in any other combination of
+these two fields.
