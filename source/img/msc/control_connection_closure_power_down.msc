@@ -3,17 +3,17 @@
 msc {
   hscale = "1.5", arcgradient = "0";
 
-  AP, SVC, Comments [ linecolor = "white", textcolor = "white" ];
+  AP, SVC, Interface, Comments [ linecolor = "white", textcolor = "white" ];
 
   |||;
-  AP rbox SVC [ label = "Connection Closure Prologue" ];
+  AP rbox Interface [ label = "Connection Closure Prologue" ];
+  |||;
+  AP rbox Interface [ label = "Connection Closure Epilogue" ];
   |||;
   AP->SVC [ label = "gb_svc_intf_set_power_mode(IID, UPRO_HIBERNATE_MODE, UPRO_HIBERNATE_MODE)" ];
   SVC->AP [ label = "gb_svc_intf_set_power_mode_rsp[GB_SVC_OP_SUCCESS]" ],
   Comments note Comments [ label = "UNIPRO = UPRO_HIBERNATE" ];
   |||;
-  AP rbox SVC [ label = "[OPTIONAL] Power Down Procedure" ];
-  |||;
-  AP rbox SVC [ label = "Connection Closure Epilogue" ];
+  Interface rbox Interface [ label = "[OPTIONAL] Power Down Procedure" ];
   |||;
 }
