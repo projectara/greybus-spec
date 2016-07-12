@@ -190,18 +190,23 @@ types defined for Greybus power supply adapters.
     :caption: Power Supply Type
     :spec: l l
 
-    ==============================   ======
-    Power Supply Type                Value
-    ==============================   ======
-    GB_POWER_SUPPLY_UNKNOWN_TYPE     0x0000
-    GB_POWER_SUPPLY_BATTERY_TYPE     0x0001
-    GB_POWER_SUPPLY_UPS_TYPE         0x0002
-    GB_POWER_SUPPLY_MAINS_TYPE       0x0003
-    GB_POWER_SUPPLY_USB_TYPE         0x0004
-    GB_POWER_SUPPLY_USB_DCP_TYPE     0x0005
-    GB_POWER_SUPPLY_USB_CDP_TYPE     0x0006
-    GB_POWER_SUPPLY_USB_ACA_TYPE     0x0007
-    ==============================   ======
+    ================================   ======
+    Power Supply Type                  Value
+    ================================   ======
+    GB_POWER_SUPPLY_UNKNOWN_TYPE       0x0000
+    GB_POWER_SUPPLY_BATTERY_TYPE       0x0001
+    GB_POWER_SUPPLY_UPS_TYPE           0x0002
+    GB_POWER_SUPPLY_MAINS_TYPE         0x0003
+    GB_POWER_SUPPLY_USB_TYPE           0x0004
+    GB_POWER_SUPPLY_USB_DCP_TYPE       0x0005
+    GB_POWER_SUPPLY_USB_CDP_TYPE       0x0006
+    GB_POWER_SUPPLY_USB_ACA_TYPE       0x0007
+    GB_POWER_SUPPLY_USB_HVDCP_TYPE     0x0008
+    GB_POWER_SUPPLY_USB_TYPE_C_TYPE    0x0009
+    GB_POWER_SUPPLY_USB_PD_TYPE        0x000A
+    GB_POWER_SUPPLY_USB_PD_DRP_TYPE    0x000B
+    GB_POWER_SUPPLY_WIRELESS_TYPE      0x000C
+    ================================   ======
 
 ..
 
