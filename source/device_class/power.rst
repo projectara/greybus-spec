@@ -297,81 +297,102 @@ charges, energies, time and temperatures in micro-volt(|mu| V),
 micro-ampere(|mu| A), micro-ampere-hour(|mu| Ah), micro-watt-hour(|mu| Wh),
 seconds and tenths of degrees Celsius unless otherwise stated.
 
+In Table :num:`table-power-supply-property` the mandatory column indicates power
+supply properties that shall be supported by the Greybus Power Supply protocol.
+If a mandatory property is missing or advertises invalid mode the Greybus Power
+Supply Protocol connection shall be terminated.
+
+Following notation is used to show these mandatory properties and their
+corresponding modes for each Greybus Power Supply type.
+
+* [Mode][Type], where:
+
+  * Mode can be: R (read) / W (write)
+
+  * Type, based on values in :ref:`power-supply-type`, can be:
+
+    * B (Battery - GB_POWER_SUPPLY_BATTERY_TYPE)
+
+    * C (Charger - From GB_POWER_SUPPLY_USB_TYPE to
+      GB_POWER_SUPPLY_WIRELESS_TYPE types from the :ref:`power-supply-type`)
+
+    * O (Others - all other types)
+
 .. figtable::
     :nofig:
     :label: table-power-supply-property
     :caption: Power Supply Property Type
-    :spec: l l l
+    :spec: l l l l
 
-    =================================================== ====== ========================
-    Power Supply Property                               Value  Description
-    =================================================== ====== ========================
-    GB_POWER_SUPPLY_PROP_STATUS                         0x00   :ref:`power-supply-status`
-    GB_POWER_SUPPLY_PROP_CHARGE_TYPE                    0x01   :ref:`power-supply-charge`
-    GB_POWER_SUPPLY_PROP_HEALTH                         0x02   :ref:`power-supply-health`
-    GB_POWER_SUPPLY_PROP_PRESENT                        0x03   Presence indicator (1 is present, 0 is not present).
-    GB_POWER_SUPPLY_PROP_ONLINE                         0x04   Online indicator (1 is online, 0 is not online)
-    GB_POWER_SUPPLY_PROP_AUTHENTIC                      0x05   Authentic indicator (1 is authentic, 0 is not authentic)
-    GB_POWER_SUPPLY_PROP_TECHNOLOGY                     0x06   :ref:`power-supply-technology`
-    GB_POWER_SUPPLY_PROP_CYCLE_COUNT                    0x07   A complete charge cycle counter
-    GB_POWER_SUPPLY_PROP_VOLTAGE_MAX                    0x08   Value from measure and retain maximum Voltage
-    GB_POWER_SUPPLY_PROP_VOLTAGE_MIN                    0x09   Value from measure and retain minimum Voltage
-    GB_POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN             0x0A   Maximum value for Voltage by design
-    GB_POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN             0x0B   Minimum value for Voltage by design
-    GB_POWER_SUPPLY_PROP_VOLTAGE_NOW                    0x0C   Instantaneous Voltage value
-    GB_POWER_SUPPLY_PROP_VOLTAGE_AVG                    0x0D   Average Voltage value
-    GB_POWER_SUPPLY_PROP_VOLTAGE_OCV                    0x0E   Open Circuit Voltage
-    GB_POWER_SUPPLY_PROP_VOLTAGE_BOOT                   0x0F   Voltage during boot
-    GB_POWER_SUPPLY_PROP_CURRENT_MAX                    0x10   Maximum Current Value
-    GB_POWER_SUPPLY_PROP_CURRENT_NOW                    0x11   Instantaneous Current Value
-    GB_POWER_SUPPLY_PROP_CURRENT_AVG                    0x12   Average Current value
-    GB_POWER_SUPPLY_PROP_CURRENT_BOOT                   0x13   Current measured at boot
-    GB_POWER_SUPPLY_PROP_POWER_NOW                      0x14   Instantaneous Power consumption
-    GB_POWER_SUPPLY_PROP_POWER_AVG                      0x15   Average Power consumption
-    GB_POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN             0x16   Threshold for full charge by design
-    GB_POWER_SUPPLY_PROP_CHARGE_EMPTY_DESIGN            0x17   Threshold for empty charge value by design
-    GB_POWER_SUPPLY_PROP_CHARGE_FULL                    0x18   Value from measure and retain maximum charge
-    GB_POWER_SUPPLY_PROP_CHARGE_EMPTY                   0x19   Value from measure and retain minimum charge
-    GB_POWER_SUPPLY_PROP_CHARGE_NOW                     0x1A   Instantaneous charge value
-    GB_POWER_SUPPLY_PROP_CHARGE_AVG                     0x1B   Average charge value
-    GB_POWER_SUPPLY_PROP_CHARGE_COUNTER                 0x1C   Charge counter
-    GB_POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT        0x1D   Charge Current programmed by charger
-    GB_POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX    0x1E   Maximum charge current supported
-    GB_POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE        0x1F   Charge Voltage programmed by charger
-    GB_POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX    0x20   Maximum charge voltage supported
-    GB_POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT           0x21   Current charge control limit
-    GB_POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT_MAX       0x22   Maximum charge control limit
-    GB_POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT            0x23   Input current limit programmed by charger
-    GB_POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN             0x24   Threshold for full energy by design
-    GB_POWER_SUPPLY_PROP_ENERGY_EMPTY_DESIGN            0x25   Threshold for empty energy by design
-    GB_POWER_SUPPLY_PROP_ENERGY_FULL                    0x26   Value from measure and retain maximum energy
-    GB_POWER_SUPPLY_PROP_ENERGY_EMPTY                   0x27   Value from measure and retain minimum energy
-    GB_POWER_SUPPLY_PROP_ENERGY_NOW                     0x28   Instantaneous energy value
-    GB_POWER_SUPPLY_PROP_ENERGY_AVG                     0x29   Average energy value
-    GB_POWER_SUPPLY_PROP_CAPACITY                       0x2A   Capacity in percents
-    GB_POWER_SUPPLY_PROP_CAPACITY_ALERT_MIN             0x2B   Minimum capacity alert value in percents
-    GB_POWER_SUPPLY_PROP_CAPACITY_ALERT_MAX             0x2C   Maximum capacity alert value in percents
-    GB_POWER_SUPPLY_PROP_CAPACITY_LEVEL                 0x2D   :ref:`power-supply-capacity`
-    GB_POWER_SUPPLY_PROP_TEMP                           0x2E   Temperature
-    GB_POWER_SUPPLY_PROP_TEMP_MAX                       0x2F   Maximum operable temperature
-    GB_POWER_SUPPLY_PROP_TEMP_MIN                       0x30   Minimum operable temperature
-    GB_POWER_SUPPLY_PROP_TEMP_ALERT_MIN                 0x31   Minimum temperature alert
-    GB_POWER_SUPPLY_PROP_TEMP_ALERT_MAX                 0x32   Maximum temperature alert
-    GB_POWER_SUPPLY_PROP_TEMP_AMBIENT                   0x33   Ambient temperature
-    GB_POWER_SUPPLY_PROP_TEMP_AMBIENT_ALERT_MIN         0x34   Minimum ambient temperature alert
-    GB_POWER_SUPPLY_PROP_TEMP_AMBIENT_ALERT_MAX         0x35   Maximum ambient temperature alert
-    GB_POWER_SUPPLY_PROP_TIME_TO_EMPTY_NOW              0x36   Instantaneous seconds left to be considered empty
-    GB_POWER_SUPPLY_PROP_TIME_TO_EMPTY_AVG              0x37   Average seconds left to be considered empty
-    GB_POWER_SUPPLY_PROP_TIME_TO_FULL_NOW               0x38   Instantaneous seconds left to be considered full
-    GB_POWER_SUPPLY_PROP_TIME_TO_FULL_AVG               0x39   Average seconds left to be considered full
-    GB_POWER_SUPPLY_PROP_TYPE                           0x3A   :ref:`power-supply-type`
-    GB_POWER_SUPPLY_PROP_SCOPE                          0x3B   :ref:`power-supply-scope`
-    GB_POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT            0x3C   Charge Termination current
-    GB_POWER_SUPPLY_PROP_CALIBRATE                      0x3D   Calibration status
-    GB_POWER_SUPPLY_PROP_USB_HC                         0x3E   High Current USB
-    GB_POWER_SUPPLY_PROP_USB_OTG                        0x3F   OTG boost property
-    GB_POWER_SUPPLY_PROP_CHARGE_ENABLED                 0x40   Control charging status
-    =================================================== ====== ========================
+    =================================================== ====== ============== ========================
+    Power Supply Property                               Value  Mandatory      Description Battery
+    =================================================== ====== ============== ========================
+    GB_POWER_SUPPLY_PROP_STATUS                         0x00   RB-RC-RO       :ref:`power-supply-status`
+    GB_POWER_SUPPLY_PROP_CHARGE_TYPE                    0x01   RC             :ref:`power-supply-charge`
+    GB_POWER_SUPPLY_PROP_HEALTH                         0x02   RB-RC-RO       :ref:`power-supply-health`
+    GB_POWER_SUPPLY_PROP_PRESENT                        0x03   RB-RC-RO       Presence indicator (1 is present, 0 is not present).
+    GB_POWER_SUPPLY_PROP_ONLINE                         0x04   RC-RO          Online indicator (1 is online, 0 is not online)
+    GB_POWER_SUPPLY_PROP_AUTHENTIC                      0x05                  Authentic indicator (1 is authentic, 0 is not authentic)
+    GB_POWER_SUPPLY_PROP_TECHNOLOGY                     0x06   RB             :ref:`power-supply-technology`
+    GB_POWER_SUPPLY_PROP_CYCLE_COUNT                    0x07                  A complete charge cycle counter
+    GB_POWER_SUPPLY_PROP_VOLTAGE_MAX                    0x08   RC,WC          Value from measure and retain maximum Voltage
+    GB_POWER_SUPPLY_PROP_VOLTAGE_MIN                    0x09                  Value from measure and retain minimum Voltage
+    GB_POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN             0x0A                  Maximum value for Voltage by design
+    GB_POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN             0x0B                  Minimum value for Voltage by design
+    GB_POWER_SUPPLY_PROP_VOLTAGE_NOW                    0x0C   RB             Instantaneous Voltage value
+    GB_POWER_SUPPLY_PROP_VOLTAGE_AVG                    0x0D                  Average Voltage value
+    GB_POWER_SUPPLY_PROP_VOLTAGE_OCV                    0x0E                  Open Circuit Voltage
+    GB_POWER_SUPPLY_PROP_VOLTAGE_BOOT                   0x0F                  Voltage during boot
+    GB_POWER_SUPPLY_PROP_CURRENT_MAX                    0x10   RC,WC          Maximum Current Value
+    GB_POWER_SUPPLY_PROP_CURRENT_NOW                    0x11   RB             Instantaneous Current Value
+    GB_POWER_SUPPLY_PROP_CURRENT_AVG                    0x12                  Average Current value
+    GB_POWER_SUPPLY_PROP_CURRENT_BOOT                   0x13                  Current measured at boot
+    GB_POWER_SUPPLY_PROP_POWER_NOW                      0x14                  Instantaneous Power consumption
+    GB_POWER_SUPPLY_PROP_POWER_AVG                      0x15                  Average Power consumption
+    GB_POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN             0x16   RB             Threshold for full charge by design
+    GB_POWER_SUPPLY_PROP_CHARGE_EMPTY_DESIGN            0x17   RB             Threshold for empty charge value by design
+    GB_POWER_SUPPLY_PROP_CHARGE_FULL                    0x18   RB             Value from measure and retain maximum charge
+    GB_POWER_SUPPLY_PROP_CHARGE_EMPTY                   0x19                  Value from measure and retain minimum charge
+    GB_POWER_SUPPLY_PROP_CHARGE_NOW                     0x1A   RB             Instantaneous charge value
+    GB_POWER_SUPPLY_PROP_CHARGE_AVG                     0x1B                  Average charge value
+    GB_POWER_SUPPLY_PROP_CHARGE_COUNTER                 0x1C                  Charge counter
+    GB_POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT        0x1D                  Charge Current programmed by charger
+    GB_POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX    0x1E                  Maximum charge current supported
+    GB_POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE        0x1F   RC,WC          Charge Voltage programmed by charger
+    GB_POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX    0x20                  Maximum charge voltage supported
+    GB_POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT           0x21                  Current charge control limit
+    GB_POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT_MAX       0x22                  Maximum charge control limit
+    GB_POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT            0x23   RC,WC          Input current limit programmed by charger
+    GB_POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN             0x24                  Threshold for full energy by design
+    GB_POWER_SUPPLY_PROP_ENERGY_EMPTY_DESIGN            0x25                  Threshold for empty energy by design
+    GB_POWER_SUPPLY_PROP_ENERGY_FULL                    0x26                  Value from measure and retain maximum energy
+    GB_POWER_SUPPLY_PROP_ENERGY_EMPTY                   0x27                  Value from measure and retain minimum energy
+    GB_POWER_SUPPLY_PROP_ENERGY_NOW                     0x28                  Instantaneous energy value
+    GB_POWER_SUPPLY_PROP_ENERGY_AVG                     0x29                  Average energy value
+    GB_POWER_SUPPLY_PROP_CAPACITY                       0x2A   RB             Capacity in percents
+    GB_POWER_SUPPLY_PROP_CAPACITY_ALERT_MIN             0x2B                  Minimum capacity alert value in percents
+    GB_POWER_SUPPLY_PROP_CAPACITY_ALERT_MAX             0x2C                  Maximum capacity alert value in percents
+    GB_POWER_SUPPLY_PROP_CAPACITY_LEVEL                 0x2D   RB             :ref:`power-supply-capacity`
+    GB_POWER_SUPPLY_PROP_TEMP                           0x2E   RB-RC          Temperature
+    GB_POWER_SUPPLY_PROP_TEMP_MAX                       0x2F   RB             Maximum operable temperature
+    GB_POWER_SUPPLY_PROP_TEMP_MIN                       0x30   RB             Minimum operable temperature
+    GB_POWER_SUPPLY_PROP_TEMP_ALERT_MIN                 0x31                  Minimum temperature alert
+    GB_POWER_SUPPLY_PROP_TEMP_ALERT_MAX                 0x32                  Maximum temperature alert
+    GB_POWER_SUPPLY_PROP_TEMP_AMBIENT                   0x33                  Ambient temperature
+    GB_POWER_SUPPLY_PROP_TEMP_AMBIENT_ALERT_MIN         0x34                  Minimum ambient temperature alert
+    GB_POWER_SUPPLY_PROP_TEMP_AMBIENT_ALERT_MAX         0x35                  Maximum ambient temperature alert
+    GB_POWER_SUPPLY_PROP_TIME_TO_EMPTY_NOW              0x36                  Instantaneous seconds left to be considered empty
+    GB_POWER_SUPPLY_PROP_TIME_TO_EMPTY_AVG              0x37                  Average seconds left to be considered empty
+    GB_POWER_SUPPLY_PROP_TIME_TO_FULL_NOW               0x38                  Instantaneous seconds left to be considered full
+    GB_POWER_SUPPLY_PROP_TIME_TO_FULL_AVG               0x39                  Average seconds left to be considered full
+    GB_POWER_SUPPLY_PROP_TYPE                           0x3A   RB-RC-RO       :ref:`power-supply-type`
+    GB_POWER_SUPPLY_PROP_SCOPE                          0x3B                  :ref:`power-supply-scope`
+    GB_POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT            0x3C   RC,WC          Charge Termination current
+    GB_POWER_SUPPLY_PROP_CALIBRATE                      0x3D                  Calibration status
+    GB_POWER_SUPPLY_PROP_USB_HC                         0x3E                  High Current USB
+    GB_POWER_SUPPLY_PROP_USB_OTG                        0x3F   RC,WC          OTG boost property
+    GB_POWER_SUPPLY_PROP_CHARGE_ENABLED                 0x40   RC,WC          Control charging status
+    =================================================== ====== ============== ========================
 
 ..
 
