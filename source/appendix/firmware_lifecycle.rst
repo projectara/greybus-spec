@@ -61,7 +61,7 @@ forces the Interface to have three or four stages as defined by Table
     boot ROM (S1)                       Not Applicable
     Stage 2 Loader                      "s2l"
     Stage 3 Firmware                    "s3f"
-    Stage 3 Backend Firmware Updater    "s3-bfu"
+    Stage 3 Backend Firmware Updater    "s3_bfu"
     =================================   ===============
 ..
 
@@ -142,7 +142,7 @@ This can be retrieved by the AP from the Interface using
 :ref:`interface-firmware-version-operation`.  The Interface shall return
 an implementation defined "firmware_tag" to the AP, which can be used by
 the AP to know the current boot stage.  For example, in the current
-implementation we can keep its values as "s2l", "s3f", "s3-bfu".
+implementation we can keep its values as "s2l", "s3f", "s3_bfu".
 
 .. _prepare-to-mode-switch:
 
