@@ -408,9 +408,8 @@ environment and location of the AP interface.
     =======  ================  ===========  ===============  ===========================
     Offset   Field             Size         Value            Description
     =======  ================  ===========  ===============  ===========================
-    0        frame_generation  2            Number           Frame Generation ID
-    2        frame_variant     2            Number           Frame Variant within the Generation
-    4        intf_id           1            Number           AP Interface ID
+    0        frame_variant     2            Number           Frame Variant within the Generation
+    2        intf_id           1            Number           AP Interface ID
     =======  ================  ===========  ===============  ===========================
 
 ..
