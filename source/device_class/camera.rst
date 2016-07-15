@@ -1004,108 +1004,60 @@ documentation.
 .. figtable::
     :label: table-camera-capabilities-tags
     :caption: Camera Device Class Capababilities IDs
-    :spec: l l
+    :spec: l l l l
 
-    ==================================================   =======
-    Property Name                                        TAG
-    ==================================================   =======
-    COLOR_CORRECTION_AVAILABLE_ABERRATION_MODES          0x0004
-    CONTROL_AE_AVAILABLE_ANTIBANDING_MODES               0x0112
-    CONTROL_AE_AVAILABLE_MODES                           0x0113
-    CONTROL_AE_AVAILABLE_TARGET_FPS_RANGES               0x0114
-    CONTROL_AE_COMPENSATION_RANGE                        0x0115
-    CONTROL_AE_COMPENSATION_STEP                         0x0116
-    CONTROL_AF_AVAILABLE_MODES                           0x0117
-    CONTROL_AVAILABLE_EFFECTS                            0x0118
-    CONTROL_AVAILABLE_SCENE_MODES                        0x0119
-    CONTROL_AVAILABLE_VIDEO_STABILIZATION_MODES          0x011a
-    CONTROL_AWB_AVAILABLE_MODES                          0x011b
-    CONTROL_MAX_REGIONS                                  0x011c
-    CONTROL_SCENE_MODE_OVERRIDES                         0x011d
-    CONTROL_AVAILABLE_HIGH_SPEED_VIDEO_CONFIGURATIONS    0x0123
-    CONTROL_AE_LOCK_AVAILABLE                            0x0124
-    CONTROL_AWB_LOCK_AVAILABLE                           0x0125
-    CONTROL_AVAILABLE_MODES                              0x0126
-    FLASH_INFO_AVAILABLE                                 0x0500
-    HOT_PIXEL_AVAILABLE_HOT_PIXEL_MODES                  0x0601
-    JPEG_AVAILABLE_THUMBNAIL_SIZES                       0x0707
-    JPEG_MAX_SIZE                                        0x0708
-    LENS_FACING                                          0x0805
-    LENS_POSE_ROTATION                                   0x0806
-    LENS_POSE_TRANSLATION                                0x0807
-    LENS_INFO_AVAILABLE_APERTURES                        0x0900
-    LENS_INFO_AVAILABLE_FILTER_DENSITIES                 0x0901
-    LENS_INFO_AVAILABLE_FOCAL_LENGTHS                    0x0902
-    LENS_INFO_AVAILABLE_OPTICAL_STABILIZATION            0x0903
-    LENS_INFO_HYPERFOCAL_DISTANCE                        0x0904
-    LENS_INFO_MINIMUM_FOCUS_DISTANCE                     0x0905
-    LENS_INFO_SHADING_MAP_SIZE                           0x0906
-    LENS_INFO_FOCUS_DISTANCE_CALIBRATION                 0x0907
-    LENS_INTRINSIC_CALIBRATION                           0x080a
-    LENS_RADIAL_DISTORTION                               0x080b
-    QUIRKS_METERING_CROP_REGION                          0x0b00
-    QUIRKS_TRIGGER_AF_WITH_AUTO                          0x0b01
-    QUIRKS_USE_ZSL_FORMAT                                0x0b02
-    QUIRKS_USE_PARTIAL_RESULT                            0x0b03
-    REQUEST_MAX_NUM_OUTPUT_STREAMS                       0x0c06
-    REQUEST_MAX_NUM_REPROCESS_STREAMS                    0x0c07
-    REQUEST_PIPELINE_MAX_DEPTH                           0x0c0a
-    REQUEST_PARTIAL_RESULT_COUNT                         0x0c0b
-    REQUEST_AVAILABLE_CAPABILITIES                       0x0c0c
-    REQUEST_AVAILABLE_REQUEST_KEYS                       0x0c0d
-    REQUEST_AVAILABLE_RESULT_KEYS                        0x0c0e
-    REQUEST_AVAILABLE_CHARACTERISTICS_KEYS               0x0c0f
-    SCALER_AVAILABLE_FORMATS                             0x0d01
-    SCALER_AVAILABLE_JPEG_MIN_DURATIONS                  0x0d02
-    SCALER_AVAILABLE_JPEG_SIZES                          0x0d03
-    SCALER_AVAILABLE_MAX_DIGITAL_ZOOM                    0x0d04
-    SCALER_AVAILABLE_PROCESSED_MIN_DURATIONS             0x0d05
-    SCALER_AVAILABLE_PROCESSED_SIZES                     0x0d06
-    SCALER_AVAILABLE_RAW_MIN_DURATIONS                   0x0d07
-    SCALER_AVAILABLE_RAW_SIZES                           0x0d08
-    SCALER_AVAILABLE_INPUT_OUTPUT_FORMATS_MAP            0x0d09
-    SCALER_AVAILABLE_STREAM_CONFIGURATIONS               0x0d0a
-    SCALER_AVAILABLE_MIN_FRAME_DURATIONS                 0x0d0b
-    SCALER_AVAILABLE_STALL_DURATIONS                     0x0d0c
-    SCALER_CROPPING_TYPE                                 0x0d0d
-    SENSOR_INFO_ACTIVE_ARRAY_SIZE                        0x0f00
-    SENSOR_INFO_SENSITIVITY_RANGE                        0x0f01
-    SENSOR_INFO_COLOR_FILTER_ARRANGEMENT                 0x0f02
-    SENSOR_INFO_EXPOSURE_TIME_RANGE                      0x0f03
-    SENSOR_INFO_MAX_FRAME_DURATION                       0x0f04
-    SENSOR_INFO_PHYSICAL_SIZE                            0x0f05
-    SENSOR_INFO_PIXEL_ARRAY_SIZE                         0x0f06
-    SENSOR_INFO_WHITE_LEVEL                              0x0f07
-    SENSOR_INFO_TIMESTAMP_SOURCE                         0x0f08
-    SENSOR_INFO_LENS_SHADING_APPLIED                     0x0f09
-    SENSOR_INFO_PRE_CORRECTION_ACTIVE_ARRAY_SIZE         0x0f0a
-    SENSOR_CALIBRATION_TRANSFORM1                        0x0e05
-    SENSOR_CALIBRATION_TRANSFORM2                        0x0e06
-    SENSOR_COLOR_TRANSFORM1                              0x0e07
-    SENSOR_COLOR_TRANSFORM2                              0x0e08
-    SENSOR_FORWARD_MATRIX1                               0x0e09
-    SENSOR_FORWARD_MATRIX2                               0x0e0a
-    SENSOR_BLACK_LEVEL_PATTERN                           0x0e0c
-    SENSOR_MAX_ANALOG_SENSITIVITY                        0x0e0d
-    SENSOR_ORIENTATION                                   0x0e0e
-    SENSOR_PROFILE_HUE_SAT_MAP_DIMENSIONS                0x0e0f
-    SENSOR_AVAILABLE_TEST_PATTERN_MODES                  0x0e19
-    SHADING_AVAILABLE_MODES                              0x1002
-    STATISTICS_INFO_AVAILABLE_FACE_DETECT_MODES          0x1200
-    STATISTICS_INFO_MAX_FACE_COUNT                       0x1202
-    STATISTICS_INFO_AVAILABLE_HOT_PIXEL_MAP_MODES        0x1206
-    STATISTICS_INFO_AVAILABLE_LENS_SHADING_MAP_MODES     0x1207
-    TONEMAP_MAX_CURVE_POINTS                             0x1304
-    TONEMAP_AVAILABLE_TONE_MAP_MODES                     0x1305
-    LED_AVAILABLE_LEDS                                   0x1401
-    INFO_SUPPORTED_HARDWARE_LEVEL                        0x1500
-    SYNC_MAX_LATENCY                                     0x1701
-    DEPTH_MAX_DEPTH_SAMPLES                              0x1900
-    DEPTH_AVAILABLE_DEPTH_STREAM_CONFIGURATIONS          0x1901
-    DEPTH_AVAILABLE_DEPTH_MIN_FRAME_DURATIONS            0x1902
-    DEPTH_AVAILABLE_DEPTH_STALL_DURATIONS                0x1903
-    DEPTH_DEPTH_IS_EXCLUSIVE                             0x1904
-    ==================================================   =======
+    ==================================================   =======  ==================================================   =======
+    Property Name                                        TAG      Property Name                                        TAG
+    ==================================================   =======  ==================================================   =======
+    COLOR_CORRECTION_AVAILABLE_ABERRATION_MODES          0x0004   SCALER_AVAILABLE_JPEG_SIZES                          0x0d03
+    CONTROL_AE_AVAILABLE_ANTIBANDING_MODES               0x0112   SCALER_AVAILABLE_MAX_DIGITAL_ZOOM                    0x0d04
+    CONTROL_AE_AVAILABLE_MODES                           0x0113   SCALER_AVAILABLE_PROCESSED_MIN_DURATIONS             0x0d05
+    CONTROL_AE_AVAILABLE_TARGET_FPS_RANGES               0x0114   SCALER_AVAILABLE_PROCESSED_SIZES                     0x0d06
+    CONTROL_AE_COMPENSATION_RANGE                        0x0115   SCALER_AVAILABLE_RAW_MIN_DURATIONS                   0x0d07
+    CONTROL_AE_COMPENSATION_STEP                         0x0116   SCALER_AVAILABLE_RAW_SIZES                           0x0d08
+    CONTROL_AF_AVAILABLE_MODES                           0x0117   SCALER_AVAILABLE_INPUT_OUTPUT_FORMATS_MAP            0x0d09
+    CONTROL_AVAILABLE_EFFECTS                            0x0118   SCALER_AVAILABLE_STREAM_CONFIGURATIONS               0x0d0a
+    CONTROL_AVAILABLE_SCENE_MODES                        0x0119   SCALER_AVAILABLE_MIN_FRAME_DURATIONS                 0x0d0b
+    CONTROL_AVAILABLE_VIDEO_STABILIZATION_MODES          0x011a   SCALER_AVAILABLE_STALL_DURATIONS                     0x0d0c
+    CONTROL_AWB_AVAILABLE_MODES                          0x011b   SCALER_CROPPING_TYPE                                 0x0d0d
+    CONTROL_MAX_REGIONS                                  0x011c   SENSOR_INFO_ACTIVE_ARRAY_SIZE                        0x0f00
+    CONTROL_SCENE_MODE_OVERRIDES                         0x011d   SENSOR_INFO_SENSITIVITY_RANGE                        0x0f01
+    CONTROL_AVAILABLE_HIGH_SPEED_VIDEO_CONFIGURATIONS    0x0123   SENSOR_INFO_COLOR_FILTER_ARRANGEMENT                 0x0f02
+    CONTROL_AE_LOCK_AVAILABLE                            0x0124   SENSOR_INFO_EXPOSURE_TIME_RANGE                      0x0f03
+    CONTROL_AWB_LOCK_AVAILABLE                           0x0125   SENSOR_INFO_MAX_FRAME_DURATION                       0x0f04
+    CONTROL_AVAILABLE_MODES                              0x0126   SENSOR_INFO_PHYSICAL_SIZE                            0x0f05
+    FLASH_INFO_AVAILABLE                                 0x0500   SENSOR_INFO_PIXEL_ARRAY_SIZE                         0x0f06
+    HOT_PIXEL_AVAILABLE_HOT_PIXEL_MODES                  0x0601   SENSOR_INFO_WHITE_LEVEL                              0x0f07
+    JPEG_AVAILABLE_THUMBNAIL_SIZES                       0x0707   SENSOR_INFO_TIMESTAMP_SOURCE                         0x0f08
+    JPEG_MAX_SIZE                                        0x0708   SENSOR_INFO_LENS_SHADING_APPLIED                     0x0f09
+    LENS_FACING                                          0x0805   SENSOR_INFO_PRE_CORRECTION_ACTIVE_ARRAY_SIZE         0x0f0a
+    LENS_POSE_ROTATION                                   0x0806   SENSOR_CALIBRATION_TRANSFORM1                        0x0e05
+    LENS_POSE_TRANSLATION                                0x0807   SENSOR_CALIBRATION_TRANSFORM2                        0x0e06
+    LENS_INFO_AVAILABLE_APERTURES                        0x0900   SENSOR_COLOR_TRANSFORM1                              0x0e07
+    LENS_INFO_AVAILABLE_FILTER_DENSITIES                 0x0901   SENSOR_COLOR_TRANSFORM2                              0x0e08
+    LENS_INFO_AVAILABLE_FOCAL_LENGTHS                    0x0902   SENSOR_FORWARD_MATRIX1                               0x0e09
+    LENS_INFO_AVAILABLE_OPTICAL_STABILIZATION            0x0903   SENSOR_FORWARD_MATRIX2                               0x0e0a
+    LENS_INFO_HYPERFOCAL_DISTANCE                        0x0904   SENSOR_BLACK_LEVEL_PATTERN                           0x0e0c
+    LENS_INFO_MINIMUM_FOCUS_DISTANCE                     0x0905   SENSOR_MAX_ANALOG_SENSITIVITY                        0x0e0d
+    LENS_INFO_SHADING_MAP_SIZE                           0x0906   SENSOR_ORIENTATION                                   0x0e0e
+    LENS_INFO_FOCUS_DISTANCE_CALIBRATION                 0x0907   SENSOR_PROFILE_HUE_SAT_MAP_DIMENSIONS                0x0e0f
+    LENS_INTRINSIC_CALIBRATION                           0x080a   SENSOR_AVAILABLE_TEST_PATTERN_MODES                  0x0e19
+    LENS_RADIAL_DISTORTION                               0x080b   SHADING_AVAILABLE_MODES                              0x1002
+    QUIRKS_METERING_CROP_REGION                          0x0b00   STATISTICS_INFO_AVAILABLE_FACE_DETECT_MODES          0x1200
+    QUIRKS_TRIGGER_AF_WITH_AUTO                          0x0b01   STATISTICS_INFO_MAX_FACE_COUNT                       0x1202
+    QUIRKS_USE_ZSL_FORMAT                                0x0b02   STATISTICS_INFO_AVAILABLE_HOT_PIXEL_MAP_MODES        0x1206
+    QUIRKS_USE_PARTIAL_RESULT                            0x0b03   STATISTICS_INFO_AVAILABLE_LENS_SHADING_MAP_MODES     0x1207
+    REQUEST_MAX_NUM_OUTPUT_STREAMS                       0x0c06   TONEMAP_MAX_CURVE_POINTS                             0x1304
+    REQUEST_MAX_NUM_REPROCESS_STREAMS                    0x0c07   TONEMAP_AVAILABLE_TONE_MAP_MODES                     0x1305
+    REQUEST_PIPELINE_MAX_DEPTH                           0x0c0a   LED_AVAILABLE_LEDS                                   0x1401
+    REQUEST_PARTIAL_RESULT_COUNT                         0x0c0b   INFO_SUPPORTED_HARDWARE_LEVEL                        0x1500
+    REQUEST_AVAILABLE_CAPABILITIES                       0x0c0c   SYNC_MAX_LATENCY                                     0x1701
+    REQUEST_AVAILABLE_REQUEST_KEYS                       0x0c0d   DEPTH_MAX_DEPTH_SAMPLES                              0x1900
+    REQUEST_AVAILABLE_RESULT_KEYS                        0x0c0e   DEPTH_AVAILABLE_DEPTH_STREAM_CONFIGURATIONS          0x1901
+    REQUEST_AVAILABLE_CHARACTERISTICS_KEYS               0x0c0f   DEPTH_AVAILABLE_DEPTH_MIN_FRAME_DURATIONS            0x1902
+    SCALER_AVAILABLE_FORMATS                             0x0d01   DEPTH_AVAILABLE_DEPTH_STALL_DURATIONS                0x1903
+    SCALER_AVAILABLE_JPEG_MIN_DURATIONS                  0x0d02   DEPTH_DEPTH_IS_EXCLUSIVE                             0x1904
+    ==================================================   =======  ==================================================   =======
 ..
 
 Greybus Camera Device Class specific capabilities tags are defined in Table
@@ -1243,71 +1195,43 @@ system documentation.
     :nofig:
     :label: table-camera-capture-tags
     :caption: Camera Device Class Capture Settings IDs
-    :spec: l l
+    :spec: l l l l
 
-    ==================================================   =======
-    Property Name                                        TAG
-    ==================================================   =======
-    COLOR_CORRECTION_MODE                                0x0000
-    COLOR_CORRECTION_TRANSFORM                           0x0001
-    COLOR_CORRECTION_GAINS                               0x0002
-    COLOR_CORRECTION_ABERRATION_MODE                     0x0003
-    CONTROL_AE_ANTIBANDING_MODE                          0x0100
-    CONTROL_AE_EXPOSURE_COMPENSATION                     0x0101
-    CONTROL_AE_LOCK                                      0x0102
-    CONTROL_AE_MODE                                      0x0103
-    CONTROL_AE_REGIONS                                   0x0104
-    CONTROL_AE_TARGET_FPS_RANGE                          0x0105
-    CONTROL_AE_PRECAPTURE_TRIGGER                        0x0106
-    CONTROL_AF_MODE                                      0x0107
-    CONTROL_AF_REGIONS                                   0x0108
-    CONTROL_AF_TRIGGER                                   0x0109
-    CONTROL_AWB_LOCK                                     0x010a
-    CONTROL_AWB_MODE                                     0x010b
-    CONTROL_AWB_REGIONS                                  0x010c
-    CONTROL_CAPTURE_INTENT                               0x010d
-    CONTROL_EFFECT_MODE                                  0x010e
-    CONTROL_MODE                                         0x010f
-    CONTROL_SCENE_MODE                                   0x0110
-    CONTROL_VIDEO_STABILIZATION_MODE                     0x0111
-    FLASH_MODE                                           0x0402
-    HOT_PIXEL_MODE                                       0x0600
-    JPEG_GPS_COORDINATES                                 0x0700
-    JPEG_GPS_PROCESSING_METHOD                           0x0701
-    JPEG_GPS_TIMESTAMP                                   0x0702
-    JPEG_ORIENTATION                                     0x0703
-    JPEG_QUALITY                                         0x0704
+    ==================================================   =======    ==================================================   =======
+    Property Name                                        TAG	    Property Name                                        TAG
+    ==================================================   =======    ==================================================   =======
+    COLOR_CORRECTION_MODE                                0x0000     JPEG_THUMBNAIL_SIZE                                  0x0706
+    COLOR_CORRECTION_TRANSFORM                           0x0001	    LENS_APERTURE                                        0x0800
+    COLOR_CORRECTION_GAINS                               0x0002	    LENS_FILTER_DENSITY                                  0x0801
+    COLOR_CORRECTION_ABERRATION_MODE                     0x0003	    LENS_FOCAL_LENGTH                                    0x0802
+    CONTROL_AE_ANTIBANDING_MODE                          0x0100	    LENS_FOCUS_DISTANCE                                  0x0803
+    CONTROL_AE_EXPOSURE_COMPENSATION                     0x0101	    LENS_OPTICAL_STABILIZATION_MODE                      0x0804
+    CONTROL_AE_LOCK                                      0x0102	    REQUEST_FRAME_COUNT                                  0x0c00
+    CONTROL_AE_MODE                                      0x0103	    REQUEST_ID                                           0x0c01
+    CONTROL_AE_REGIONS                                   0x0104	    REQUEST_INPUT_STREAMS                                0x0c02
+    CONTROL_AE_TARGET_FPS_RANGE                          0x0105	    REQUEST_OUTPUT_STREAMS                               0x0c04
+    CONTROL_AE_PRECAPTURE_TRIGGER                        0x0106	    REQUEST_TYPE                                         0x0c05
+    CONTROL_AF_MODE                                      0x0107	    SCALER_CROP_REGION                                   0x0d00
+    CONTROL_AF_REGIONS                                   0x0108	    SENSOR_EXPOSURE_TIME                                 0x0e00
+    CONTROL_AF_TRIGGER                                   0x0109	    SENSOR_FRAME_DURATION                                0x0e01
+    CONTROL_AWB_LOCK                                     0x010a	    SENSOR_SENSITIVITY                                   0x0e02
+    CONTROL_AWB_MODE                                     0x010b	    SENSOR_TEST_PATTERN_DATA                             0x0e17
+    CONTROL_AWB_REGIONS                                  0x010c	    SENSOR_TEST_PATTERN_MODE                             0x0e18
+    CONTROL_CAPTURE_INTENT                               0x010d	    SHADING_MODE                                         0x1000
+    CONTROL_EFFECT_MODE                                  0x010e	    STATISTICS_FACE_DETECT_MODE                          0x1100
+    CONTROL_MODE                                         0x010f	    STATISTICS_HOT_PIXEL_MAP_MODE                        0x1103
+    CONTROL_SCENE_MODE                                   0x0110	    STATISTICS_LENS_SHADING_MAP_MODE                     0x1110
+    CONTROL_VIDEO_STABILIZATION_MODE                     0x0111	    TONEMAP_CURVE_BLUE                                   0x1300
+    FLASH_MODE                                           0x0402	    TONEMAP_CURVE_GREEN                                  0x1301
+    HOT_PIXEL_MODE                                       0x0600	    TONEMAP_CURVE_RED                                    0x1302
+    JPEG_GPS_COORDINATES                                 0x0700	    TONEMAP_MODE                                         0x1303
+    JPEG_GPS_PROCESSING_METHOD                           0x0701	    TONEMAP_GAMMA                                        0x1306
+    JPEG_GPS_TIMESTAMP                                   0x0702	    TONEMAP_PRESET_CURVE                                 0x1307
+    JPEG_ORIENTATION                                     0x0703	    LED_TRANSMIT                                         0x1400
+    JPEG_QUALITY                                         0x0704	    BLACK_LEVEL_LOCK                                     0x1600
     JPEG_THUMBNAIL_QUALITY                               0x0705
-    JPEG_THUMBNAIL_SIZE                                  0x0706
-    LENS_APERTURE                                        0x0800
-    LENS_FILTER_DENSITY                                  0x0801
-    LENS_FOCAL_LENGTH                                    0x0802
-    LENS_FOCUS_DISTANCE                                  0x0803
-    LENS_OPTICAL_STABILIZATION_MODE                      0x0804
-    REQUEST_FRAME_COUNT                                  0x0c00
-    REQUEST_ID                                           0x0c01
-    REQUEST_INPUT_STREAMS                                0x0c02
-    REQUEST_OUTPUT_STREAMS                               0x0c04
-    REQUEST_TYPE                                         0x0c05
-    SCALER_CROP_REGION                                   0x0d00
-    SENSOR_EXPOSURE_TIME                                 0x0e00
-    SENSOR_FRAME_DURATION                                0x0e01
-    SENSOR_SENSITIVITY                                   0x0e02
-    SENSOR_TEST_PATTERN_DATA                             0x0e17
-    SENSOR_TEST_PATTERN_MODE                             0x0e18
-    SHADING_MODE                                         0x1000
-    STATISTICS_FACE_DETECT_MODE                          0x1100
-    STATISTICS_HOT_PIXEL_MAP_MODE                        0x1103
-    STATISTICS_LENS_SHADING_MAP_MODE                     0x1110
-    TONEMAP_CURVE_BLUE                                   0x1300
-    TONEMAP_CURVE_GREEN                                  0x1301
-    TONEMAP_CURVE_RED                                    0x1302
-    TONEMAP_MODE                                         0x1303
-    TONEMAP_GAMMA                                        0x1306
-    TONEMAP_PRESET_CURVE                                 0x1307
-    LED_TRANSMIT                                         0x1400
-    BLACK_LEVEL_LOCK                                     0x1600
-    ==================================================   =======
+    ==================================================   =======    ==================================================   =======
+
 ..
 
 Metadata
@@ -1339,97 +1263,56 @@ description are provided by the Android system documentation.
     :nofig:
     :label: table-camera-metadata-tags
     :caption: Camera Device Class Metadata IDs
-    :spec: l l
+    :spec: l l l l
 
-    ==================================================   =======
-    Property Name                                        TAG
-    ==================================================   =======
-    COLOR_CORRECTION_MODE                                0x0000
-    COLOR_CORRECTION_TRANSFORM                           0x0001
-    COLOR_CORRECTION_GAINS                               0x0002
-    COLOR_CORRECTION_ABERRATION_MODE                     0x0003
-    CONTROL_AE_PRECAPTURE_ID                             0x011e
-    CONTROL_AE_ANTIBANDING_MODE                          0x0100
-    CONTROL_AE_EXPOSURE_COMPENSATION                     0x0101
-    CONTROL_AE_LOCK                                      0x0102
-    CONTROL_AE_MODE                                      0x0103
-    CONTROL_AE_REGIONS                                   0x0104
-    CONTROL_AE_TARGET_FPS_RANGE                          0x0105
-    CONTROL_AE_PRECAPTURE_TRIGGER                        0x0106
-    CONTROL_AE_STATE                                     0x011f
-    CONTROL_AF_MODE                                      0x0107
-    CONTROL_AF_REGIONS                                   0x0108
-    CONTROL_AF_TRIGGER                                   0x0109
-    CONTROL_AF_STATE                                     0x0120
-    CONTROL_AF_TRIGGER_ID                                0x0121
-    CONTROL_AWB_LOCK                                     0x010a
-    CONTROL_AWB_MODE                                     0x010b
-    CONTROL_AWB_REGIONS                                  0x010c
-    CONTROL_CAPTURE_INTENT                               0x010d
-    CONTROL_AWB_STATE                                    0x0122
-    CONTROL_EFFECT_MODE                                  0x010e
-    CONTROL_MODE                                         0x010f
-    CONTROL_SCENE_MODE                                   0x0110
-    CONTROL_VIDEO_STABILIZATION_MODE                     0x0111
-    FLASH_MODE                                           0x0402
-    FLASH_STATE                                          0x0405
-    HOT_PIXEL_MODE                                       0x0600
-    JPEG_GPS_COORDINATES                                 0x0700
-    JPEG_GPS_PROCESSING_METHOD                           0x0701
-    JPEG_GPS_TIMESTAMP                                   0x0702
-    JPEG_ORIENTATION                                     0x0703
-    JPEG_QUALITY                                         0x0704
-    JPEG_THUMBNAIL_QUALITY                               0x0705
-    JPEG_THUMBNAIL_SIZE                                  0x0706
-    LENS_APERTURE                                        0x0800
-    LENS_FILTER_DENSITY                                  0x0801
-    LENS_FOCAL_LENGTH                                    0x0802
-    LENS_FOCUS_DISTANCE                                  0x0803
-    LENS_OPTICAL_STABILIZATION_MODE                      0x0804
+    ==================================================   =======    ==================================================   =======
+    Property Name                                        TAG	    Property Name                                        TAG
+    ==================================================   =======    ==================================================   =======
+    COLOR_CORRECTION_MODE                                0x0000     LENS_POSE_TRANSLATION                                0x0807
+    COLOR_CORRECTION_TRANSFORM                           0x0001	    LENS_INTRINSIC_CALIBRATION                           0x080a
+    COLOR_CORRECTION_GAINS                               0x0002	    LENS_RADIAL_DISTORTION                               0x080b
+    COLOR_CORRECTION_ABERRATION_MODE                     0x0003	    QUIRKS_PARTIAL_RESULT                                0x0b04
+    CONTROL_AE_PRECAPTURE_ID                             0x011e	    REQUEST_ID                                           0x0c01
+    CONTROL_AE_ANTIBANDING_MODE                          0x0100	    REQUEST_OUTPUT_STREAMS                               0x0c04
+    CONTROL_AE_EXPOSURE_COMPENSATION                     0x0101	    REQUEST_PIPELINE_DEPTH                               0x0c09
+    CONTROL_AE_LOCK                                      0x0102	    SCALER_CROP_REGION                                   0x0d00
+    CONTROL_AE_MODE                                      0x0103	    SENSOR_EXPOSURE_TIME                                 0x0e00
+    CONTROL_AE_REGIONS                                   0x0104	    SENSOR_FRAME_DURATION                                0x0e01
+    CONTROL_AE_TARGET_FPS_RANGE                          0x0105	    SENSOR_SENSITIVITY                                   0x0e02
+    CONTROL_AE_PRECAPTURE_TRIGGER                        0x0106	    SENSOR_TIMESTAMP                                     0x0e10
+    CONTROL_AE_STATE                                     0x011f	    SENSOR_NEUTRAL_COLOR_POINT                           0x0e12
+    CONTROL_AF_MODE                                      0x0107	    SENSOR_NOISE_PROFILE                                 0x0e13
+    CONTROL_AF_REGIONS                                   0x0108	    SENSOR_PROFILE_HUE_SAT_MAP                           0x0e14
+    CONTROL_AF_TRIGGER                                   0x0109	    SENSOR_PROFILE_TONE_CURVE                            0x0e15
+    CONTROL_AF_STATE                                     0x0120	    SENSOR_TEST_PATTERN_DATA                             0x0e17
+    CONTROL_AF_TRIGGER_ID                                0x0121	    SENSOR_TEST_PATTERN_MODE                             0x0e18
+    CONTROL_AWB_LOCK                                     0x010a	    SENSOR_ROLLING_SHUTTER_SKEW                          0x0e1a
+    CONTROL_AWB_MODE                                     0x010b	    SHADING_MODE                                         0x1000
+    CONTROL_AWB_REGIONS                                  0x010c	    STATISTICS_FACE_DETECT_MODE                          0x1100
+    CONTROL_CAPTURE_INTENT                               0x010d	    STATISTICS_FACE_LANDMARKS                            0x1105
+    CONTROL_AWB_STATE                                    0x0122	    STATISTICS_FACE_RECTANGLES                           0x1106
+    CONTROL_EFFECT_MODE                                  0x010e	    STATISTICS_FACE_SCORES                               0x1107
+    CONTROL_MODE                                         0x010f	    STATISTICS_LENS_SHADING_CORRECTION_MAP               0x110a
+    CONTROL_SCENE_MODE                                   0x0110	    STATISTICS_LENS_SHADING_MAP                          0x110b
+    CONTROL_VIDEO_STABILIZATION_MODE                     0x0111	    STATISTICS_PREDICTED_COLOR_GAINS                     0x110c
+    FLASH_MODE                                           0x0402	    STATISTICS_PREDICTED_COLOR_TRANSFORM                 0x110d
+    FLASH_STATE                                          0x0405	    STATISTICS_SCENE_FLICKER                             0x110e
+    HOT_PIXEL_MODE                                       0x0600	    STATISTICS_HOT_PIXEL_MAP_MODE                        0x1103
+    JPEG_GPS_COORDINATES                                 0x0700	    STATISTICS_HOT_PIXEL_MAP                             0x110f
+    JPEG_GPS_PROCESSING_METHOD                           0x0701	    STATISTICS_LENS_SHADING_MAP_MODE                     0x1110
+    JPEG_GPS_TIMESTAMP                                   0x0702	    TONEMAP_CURVE_BLUE                                   0x1300
+    JPEG_ORIENTATION                                     0x0703	    TONEMAP_CURVE_GREEN                                  0x1301
+    JPEG_QUALITY                                         0x0704	    TONEMAP_CURVE_RED                                    0x1302
+    JPEG_THUMBNAIL_QUALITY                               0x0705	    TONEMAP_MODE                                         0x1303
+    JPEG_THUMBNAIL_SIZE                                  0x0706	    TONEMAP_GAMMA                                        0x1306
+    LENS_APERTURE                                        0x0800	    TONEMAP_PRESET_CURVE                                 0x1307
+    LENS_FILTER_DENSITY                                  0x0801	    LED_TRANSMIT                                         0x1400
+    LENS_FOCAL_LENGTH                                    0x0802	    BLACK_LEVEL_LOCK                                     0x1600
+    LENS_FOCUS_DISTANCE                                  0x0803	    SYNC_FRAME_NUMBER                                    0x1700
+    LENS_OPTICAL_STABILIZATION_MODE                      0x0804	    REPROCESS_EFFECTIVE_EXPOSURE_FACTOR                  0x1800
     LENS_POSE_ROTATION                                   0x0806
-    LENS_POSE_TRANSLATION                                0x0807
-    LENS_INTRINSIC_CALIBRATION                           0x080a
-    LENS_RADIAL_DISTORTION                               0x080b
-    QUIRKS_PARTIAL_RESULT                                0x0b04
-    REQUEST_ID                                           0x0c01
-    REQUEST_OUTPUT_STREAMS                               0x0c04
-    REQUEST_PIPELINE_DEPTH                               0x0c09
-    SCALER_CROP_REGION                                   0x0d00
-    SENSOR_EXPOSURE_TIME                                 0x0e00
-    SENSOR_FRAME_DURATION                                0x0e01
-    SENSOR_SENSITIVITY                                   0x0e02
-    SENSOR_TIMESTAMP                                     0x0e10
-    SENSOR_NEUTRAL_COLOR_POINT                           0x0e12
-    SENSOR_NOISE_PROFILE                                 0x0e13
-    SENSOR_PROFILE_HUE_SAT_MAP                           0x0e14
-    SENSOR_PROFILE_TONE_CURVE                            0x0e15
-    SENSOR_TEST_PATTERN_DATA                             0x0e17
-    SENSOR_TEST_PATTERN_MODE                             0x0e18
-    SENSOR_ROLLING_SHUTTER_SKEW                          0x0e1a
-    SHADING_MODE                                         0x1000
-    STATISTICS_FACE_DETECT_MODE                          0x1100
-    STATISTICS_FACE_LANDMARKS                            0x1105
-    STATISTICS_FACE_RECTANGLES                           0x1106
-    STATISTICS_FACE_SCORES                               0x1107
-    STATISTICS_LENS_SHADING_CORRECTION_MAP               0x110a
-    STATISTICS_LENS_SHADING_MAP                          0x110b
-    STATISTICS_PREDICTED_COLOR_GAINS                     0x110c
-    STATISTICS_PREDICTED_COLOR_TRANSFORM                 0x110d
-    STATISTICS_SCENE_FLICKER                             0x110e
-    STATISTICS_HOT_PIXEL_MAP_MODE                        0x1103
-    STATISTICS_HOT_PIXEL_MAP                             0x110f
-    STATISTICS_LENS_SHADING_MAP_MODE                     0x1110
-    TONEMAP_CURVE_BLUE                                   0x1300
-    TONEMAP_CURVE_GREEN                                  0x1301
-    TONEMAP_CURVE_RED                                    0x1302
-    TONEMAP_MODE                                         0x1303
-    TONEMAP_GAMMA                                        0x1306
-    TONEMAP_PRESET_CURVE                                 0x1307
-    LED_TRANSMIT                                         0x1400
-    BLACK_LEVEL_LOCK                                     0x1600
-    SYNC_FRAME_NUMBER                                    0x1700
-    REPROCESS_EFFECTIVE_EXPOSURE_FACTOR                  0x1800
-    ==================================================   =======
+    ==================================================   =======    ==================================================   =======
+
 ..
 
 Greybus Camera Image Formats (Informative)
