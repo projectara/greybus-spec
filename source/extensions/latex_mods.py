@@ -76,6 +76,8 @@ class DocTranslator(BaseTranslator):
         if 'p{' in colspec or 'm{' in colspec or 'b{' in colspec:
             self.body.append('\n\\bodyspacing\n')
 
+        self.body.append('\n\\begin{adjustbox}{max size={\\textwidth}{0.5\\textheight}, keepaspectratio}')
+
         self.body.append('\n\\begin{tabular}')
 
         if colspec:
@@ -101,6 +103,7 @@ class DocTranslator(BaseTranslator):
         self.body.append('\\bottomrule\n')
 
         self.body.append('\n\\end{tabular}\n')
+        self.body.append('\n\\end{adjustbox}\n')
 
         self.table = None
         self.tablebody = None
