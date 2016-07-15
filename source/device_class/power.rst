@@ -544,9 +544,9 @@ scopes available for Greybus power supply adapters.
     ============================================  ======
     Power Supply Scope                            Value
     ============================================  ======
-    GB_POWER_SUPPLY_COPE_UNKNOWN                  0x0000
-    GB_POWER_SUPPLY_COPE_SYSTEM                   0x0001
-    GB_POWER_SUPPLY_COPE_DEVICE                   0x0002
+    GB_POWER_SUPPLY_SCOPE_UNKNOWN                 0x0000
+    GB_POWER_SUPPLY_SCOPE_SYSTEM                  0x0001
+    GB_POWER_SUPPLY_SCOPE_DEVICE                  0x0002
     ============================================  ======
 
 ..
