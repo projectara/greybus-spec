@@ -391,7 +391,7 @@ corresponding modes for each Greybus Power Supply type.
     GB_POWER_SUPPLY_PROP_CALIBRATE                      0x3D                  Calibration status
     GB_POWER_SUPPLY_PROP_USB_HC                         0x3E                  High Current USB
     GB_POWER_SUPPLY_PROP_USB_OTG                        0x3F   RC,WC          OTG boost property
-    GB_POWER_SUPPLY_PROP_CHARGE_ENABLED                 0x40   RC,WC          Control charging status
+    GB_POWER_SUPPLY_PROP_CHARGING_ENABLED               0x40   RC,WC          Control charging status
     =================================================== ====== ============== ========================
 
 ..
