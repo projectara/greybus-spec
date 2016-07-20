@@ -998,21 +998,24 @@ request_id matching the request_id of the first
     :caption: Firmware Interface Backend Firmware Update Status
     :spec: l l l
 
-    ==================  ===========================================  ==========
-    Update Status       Brief Description                            Value
-    ==================  ===========================================  ==========
-    STATUS_INVALID      Invalid Status.                              0x00
-    STATUS_SUCCESS      Interface Backend Firmware package           0x01
-                        successfully updated.
-    STATUS_FAIL_FIND    Failed to find Interface Backend Firmware    0x02
-                        package.
-    STATUS_FAIL_FETCH   Failed to fetch Interface Backend Firmware   0x03
-                        package.
-    STATUS_FAIL_WRITE   Failed to write downloaded Interface         0x04
-                        Backend Firmware package.
-    STATUS_FAIL_INT     Failed due to internal errors.               0x05
-    |_|                 (Reserved Range)                             0x06..0xFF
-    ==================  ===========================================  ==========
+    =====================  ===========================================  ==========
+    Update Status          Brief Description                            Value
+    =====================  ===========================================  ==========
+    STATUS_INVALID         Invalid Status.                              0x00
+    STATUS_SUCCESS         Interface Backend Firmware package           0x01
+                           successfully updated.
+    STATUS_FAIL_FIND       Failed to find Interface Backend Firmware    0x02
+                           package.
+    STATUS_FAIL_FETCH      Failed to fetch Interface Backend Firmware   0x03
+                           package.
+    STATUS_FAIL_WRITE      Failed to write downloaded Interface         0x04
+                           Backend Firmware package.
+    STATUS_FAIL_INT        Failed due to internal errors.               0x05
+    STATUS_RETRY           Not ready to respond currently, retry.       0x06
+    STATUS_NOT_SUPPORTED   Firmware not required for functioning of
+                           Interface Backend devices.                   0x07
+    |_|                    (Reserved Range)                             0x08..0xFF
+    =====================  ===========================================  ==========
 
 ..
 
