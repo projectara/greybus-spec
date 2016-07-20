@@ -422,7 +422,7 @@ are:
     Below Operations are specific to the :term:`Interface Backend
     Firmware` for an Interface.
 
-.. c:function:: int interface_backend_firmware_version(u8 firmware_tag[10], u16 *major, u16 *minor);
+.. c:function:: int interface_backend_firmware_version(u8 firmware_tag[10], u16 *major, u16 *minor, u8 *status);
 
     This Operation can be initiated only by the AP to get the current
     version of a specific Interface Backend Firmware package available
@@ -768,26 +768,32 @@ Greybus Firmware Management Interface Backend Firmware Version Response
 Table :num:`table-interface-backend-firmware-version-response` defines
 the Greybus Firmware Management Interface Backend Firmware Version
 Response payload.  The Response contains two 2-byte numbers, major and
-minor.
+minor, and a 1-byte status.
+
+The major and minor numbers shall be ignored by the AP if the status
+contains value other than STATUS_SUCCESS.
 
 If the Interface doesn't require the specific Interface Backend Firmware
-package for its functioning, then the Interface shall send GB_OP_INVALID
-in the status byte of the Response header.
+package for its functioning, then the Interface shall set the status to
+STATUS_NOT_SUPPORTED.
 
 If the Interface doesn't have the specific Interface Backend Firmware
-package available with it, then it shall set both major and minor fields
-in its Response with zero.
+package available with it, then it shall set the status to
+STATUS_NOT_AVAILABLE.
 
-The Interface may take some time before providing the version of the
+Otherwise, the Interface shall set both major and minor fields in its
+Response with the major and minor version of its Interface Backend
+Firmware.
+
+The Interface may require some time before providing the version of the
 Interface Backend Firmware package.  This may happen, for example, if
 the Interface needs to boot the Backend Device Processors before getting
 the version of the available Interface Backend Firmware.  On such an
-event, the Interface shall send GB_OP_RETRY in the status byte of the
-Response header.
+event, the Interface shall set the status to STATUS_RETRY.
 
-On receiving GB_OP_RETRY from the Interface, the AP may re-initiate this
-Operation after an implementation-defined time interval.  The AP may
-keep sending this Request until the time it receives the Interface
+On receiving STATUS_RETRY from the Interface, the AP may re-initiate
+this Operation after an implementation-defined time interval.  The AP
+may keep sending this Request until the time it receives the Interface
 Backend Firmware version, or the Request fails and returns some other
 error value.
 
@@ -802,7 +808,30 @@ error value.
     =======  ==================  ===========  =======  ===========================
     0        major               2            Number   Major version number of the Interface Backend Firmware package.
     2        minor               2            Number   Minor version number of the Interface Backend Firmware package.
+    4        status              1            Number   Status of the Interface Backend Firmware version
+                                                       operation is defined by the table
+                                                       :num:`table-interface-backend-firmware-version-status`.
     =======  ==================  ===========  =======  ===========================
+..
+
+.. figtable::
+    :nofig:
+    :label: table-interface-backend-firmware-version-status
+    :caption: Firmware Interface Backend Firmware Version Status
+    :spec: l l l
+
+    =====================  ===========================================  ==========
+    Update Status          Brief Description                            Value
+    =====================  ===========================================  ==========
+    STATUS_INVALID         Invalid Status.                              0x00
+    STATUS_SUCCESS         Firmware version successfully retrieved.     0x01
+    STATUS_NOT_AVAILABLE   Firmware not available.                      0x02
+    STATUS_NOT_SUPPORTED   Firmware not required for functioning of
+                           Interface Backend devices.                   0x03
+    STATUS_RETRY           Not ready to respond currently, retry.       0x04
+    |_|                    (Reserved Range)                             0x05..0xFF
+    =====================  ===========================================  ==========
+
 ..
 
 .. _interface-backend-firmware-update-operation:
