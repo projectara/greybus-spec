@@ -910,9 +910,6 @@ The AP may use this Operation to request a Bundle to enter the
 associated with this Bundle are closed by the AP but the Bundle's
 context may be preserved in an implementation-defined way.
 
-The AP shall not send this Request unless the concerned Bundle is in
-the :ref:`hardware-model-bundle-active` state.
-
 The AP shall close all Connections associated with this Bundle (as
 described in :ref:`lifecycles_connection_closure`) before sending the
 Bundle Suspend Request.
@@ -928,6 +925,14 @@ Table :num:`table-control-bundle-suspend-request` defines the Greybus
 Control Bundle Suspend Request payload. The Request contains a
 one-byte Bundle ID corresponding with the Bundle IDs received in the
 Manifest as described in :ref:`manifest-description`.
+
+The AP may send this Request to a Bundle which is in the
+:ref:`hardware-model-bundle-active` state. An Interface shall send
+a Response containing the GB_CONTROL_BUNDLE_PM_OK if the AP requests
+to suspend a Bundle which is already suspended. Sending this Request
+to a Bundle which is in the :ref:`hardware-model-bundle-off` state
+shall result in the Bundle Suspend Response containing the
+GB_CONTROL_BUNDLE_PM_NA error code.
 
 Upon reception of this Request the Bundle indicated by the bundle_id
 field in the Request payload should perform implementation-defined
@@ -989,9 +994,6 @@ The AP may use this Operation to request a specific Bundle to
 transition from the :ref:`hardware-model-bundle-suspended` state to
 the :ref:`hardware-model-bundle-active` state.
 
-The AP shall not send this Request unless the Bundle specified in the
-Request Payload is in the :ref:`hardware-model-bundle-suspended` state.
-
 Greybus Control Bundle Resume Request
 """""""""""""""""""""""""""""""""""""
 
@@ -999,6 +1001,14 @@ Table :num:`table-control-bundle-resume-request` defines the Greybus
 Control Bundle Resume Request payload. The Request contains a
 one-byte Bundle ID corresponding with the Bundle IDs received in the
 Manifest as described in :ref:`manifest-description`.
+
+The AP may send this Request to a Bundle which is in the
+:ref:`hardware-model-bundle-suspended` state. An Interface shall send
+a Response containing the GB_CONTROL_BUNDLE_PM_OK if the AP requests
+to resume a Bundle which is already active. Sending this Request to
+a Bundle which is in the :ref:`hardware-model-bundle-off` state shall
+result in the Bundle Resume Response containing the
+GB_CONTROL_BUNDLE_PM_NA error code.
 
 Upon reception of this Request the Bundle indicated by the bundle_id
 field in the Request payload shall perform implementation-defined
@@ -1061,9 +1071,6 @@ associated with this Bundle are closed by the AP, the underlying
 hardware is powered off and the Bundle implementation-defined context
 is lost.
 
-The AP shall not send this Request unless the concerned Bundle is in
-the :ref:`hardware-model-bundle-active` state.
-
 The AP shall close all Connections associated with this Bundle (as
 described in :ref:`lifecycles_connection_closure`) before sending the
 Bundle Deactivate Request.
@@ -1079,6 +1086,14 @@ Table :num:`table-control-bundle-deactivate-request` defines the
 Greybus Control Bundle Deactivate Request payload. The Request
 contains a one-byte Bundle ID corresponding with the Bundle IDs
 received in the Manifest as described in :ref:`manifest-description`.
+
+The AP may send this Request to a Bundle which is in the
+:ref:`hardware-model-bundle-active` state. An Interface shall send
+a Response containing the GB_CONTROL_BUNDLE_PM_OK if the AP requests
+to deactivate a Bundle which is already off. Sending this Request to
+a Bundle which is in the :ref:`hardware-model-bundle-suspended` state
+shall result in the Bundle Deactivate Response containing the
+GB_CONTROL_BUNDLE_PM_NA error code.
 
 Upon reception of this Request the Bundle indicated by the bundle_id
 field in the Request payload should perform implementation-defined
@@ -1140,9 +1155,6 @@ The AP may use this Operation to request a specific Bundle to
 transition from the :ref:`hardware-model-bundle-off` state to
 the :ref:`hardware-model-bundle-active` state.
 
-The AP shall not send this Request unless the Bundle specified in the
-Request Payload is in the :ref:`hardware-model-bundle-off` state.
-
 Greybus Control Bundle Activate Request
 """""""""""""""""""""""""""""""""""""""
 
@@ -1150,6 +1162,14 @@ Table :num:`table-control-bundle-activate-request` defines the Greybus
 Control Bundle Activate Request payload. The Request contains a
 one-byte Bundle ID corresponding with the Bundle IDs received in the
 Manifest as described in :ref:`manifest-description`.
+
+The AP may send this Request to a Bundle which is in the
+:ref:`hardware-model-bundle-off` state. An Interface shall send
+a Response containing the GB_CONTROL_BUNDLE_PM_OK if the AP requests
+to activate a Bundle which is already active. Sending this Request to
+a Bundle which is in the :ref:`hardware-model-bundle-suspended` state
+shall result in the Bundle Activate Response containing the
+GB_CONTROL_BUNDLE_PM_NA error code.
 
 Upon reception of this Request the Bundle indicated by the bundle_id
 field in the Request payload shall perform implementation-defined
