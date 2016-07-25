@@ -831,7 +831,8 @@ error value.
     STATUS_NOT_SUPPORTED   Firmware not required for functioning of
                            Interface Backend devices.                   0x03
     STATUS_RETRY           Not ready to respond currently, retry.       0x04
-    |_|                    (Reserved Range)                             0x05..0xFF
+    STATUS_FAIL_INT        Failed due to internal errors.               0x05
+    |_|                    (Reserved Range)                             0x06..0xFF
     =====================  ===========================================  ==========
 
 ..
