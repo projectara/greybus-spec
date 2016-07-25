@@ -1198,37 +1198,37 @@ system documentation.
     :spec: l l l l
 
     ==================================================   =======    ==================================================   =======
-    Property Name                                        TAG	    Property Name                                        TAG
+    Property Name                                        TAG        Property Name                                        TAG
     ==================================================   =======    ==================================================   =======
     COLOR_CORRECTION_MODE                                0x0000     JPEG_THUMBNAIL_SIZE                                  0x0706
-    COLOR_CORRECTION_TRANSFORM                           0x0001	    LENS_APERTURE                                        0x0800
-    COLOR_CORRECTION_GAINS                               0x0002	    LENS_FILTER_DENSITY                                  0x0801
-    COLOR_CORRECTION_ABERRATION_MODE                     0x0003	    LENS_FOCAL_LENGTH                                    0x0802
-    CONTROL_AE_ANTIBANDING_MODE                          0x0100	    LENS_FOCUS_DISTANCE                                  0x0803
-    CONTROL_AE_EXPOSURE_COMPENSATION                     0x0101	    LENS_OPTICAL_STABILIZATION_MODE                      0x0804
-    CONTROL_AE_LOCK                                      0x0102	    REQUEST_FRAME_COUNT                                  0x0c00
-    CONTROL_AE_MODE                                      0x0103	    REQUEST_ID                                           0x0c01
-    CONTROL_AE_REGIONS                                   0x0104	    REQUEST_INPUT_STREAMS                                0x0c02
-    CONTROL_AE_TARGET_FPS_RANGE                          0x0105	    REQUEST_OUTPUT_STREAMS                               0x0c04
-    CONTROL_AE_PRECAPTURE_TRIGGER                        0x0106	    REQUEST_TYPE                                         0x0c05
-    CONTROL_AF_MODE                                      0x0107	    SCALER_CROP_REGION                                   0x0d00
-    CONTROL_AF_REGIONS                                   0x0108	    SENSOR_EXPOSURE_TIME                                 0x0e00
-    CONTROL_AF_TRIGGER                                   0x0109	    SENSOR_FRAME_DURATION                                0x0e01
-    CONTROL_AWB_LOCK                                     0x010a	    SENSOR_SENSITIVITY                                   0x0e02
-    CONTROL_AWB_MODE                                     0x010b	    SENSOR_TEST_PATTERN_DATA                             0x0e17
-    CONTROL_AWB_REGIONS                                  0x010c	    SENSOR_TEST_PATTERN_MODE                             0x0e18
-    CONTROL_CAPTURE_INTENT                               0x010d	    SHADING_MODE                                         0x1000
-    CONTROL_EFFECT_MODE                                  0x010e	    STATISTICS_FACE_DETECT_MODE                          0x1100
-    CONTROL_MODE                                         0x010f	    STATISTICS_HOT_PIXEL_MAP_MODE                        0x1103
-    CONTROL_SCENE_MODE                                   0x0110	    STATISTICS_LENS_SHADING_MAP_MODE                     0x1110
-    CONTROL_VIDEO_STABILIZATION_MODE                     0x0111	    TONEMAP_CURVE_BLUE                                   0x1300
-    FLASH_MODE                                           0x0402	    TONEMAP_CURVE_GREEN                                  0x1301
-    HOT_PIXEL_MODE                                       0x0600	    TONEMAP_CURVE_RED                                    0x1302
-    JPEG_GPS_COORDINATES                                 0x0700	    TONEMAP_MODE                                         0x1303
-    JPEG_GPS_PROCESSING_METHOD                           0x0701	    TONEMAP_GAMMA                                        0x1306
-    JPEG_GPS_TIMESTAMP                                   0x0702	    TONEMAP_PRESET_CURVE                                 0x1307
-    JPEG_ORIENTATION                                     0x0703	    LED_TRANSMIT                                         0x1400
-    JPEG_QUALITY                                         0x0704	    BLACK_LEVEL_LOCK                                     0x1600
+    COLOR_CORRECTION_TRANSFORM                           0x0001     LENS_APERTURE                                        0x0800
+    COLOR_CORRECTION_GAINS                               0x0002     LENS_FILTER_DENSITY                                  0x0801
+    COLOR_CORRECTION_ABERRATION_MODE                     0x0003     LENS_FOCAL_LENGTH                                    0x0802
+    CONTROL_AE_ANTIBANDING_MODE                          0x0100     LENS_FOCUS_DISTANCE                                  0x0803
+    CONTROL_AE_EXPOSURE_COMPENSATION                     0x0101     LENS_OPTICAL_STABILIZATION_MODE                      0x0804
+    CONTROL_AE_LOCK                                      0x0102     REQUEST_FRAME_COUNT                                  0x0c00
+    CONTROL_AE_MODE                                      0x0103     REQUEST_ID                                           0x0c01
+    CONTROL_AE_REGIONS                                   0x0104     REQUEST_INPUT_STREAMS                                0x0c02
+    CONTROL_AE_TARGET_FPS_RANGE                          0x0105     REQUEST_OUTPUT_STREAMS                               0x0c04
+    CONTROL_AE_PRECAPTURE_TRIGGER                        0x0106     REQUEST_TYPE                                         0x0c05
+    CONTROL_AF_MODE                                      0x0107     SCALER_CROP_REGION                                   0x0d00
+    CONTROL_AF_REGIONS                                   0x0108     SENSOR_EXPOSURE_TIME                                 0x0e00
+    CONTROL_AF_TRIGGER                                   0x0109     SENSOR_FRAME_DURATION                                0x0e01
+    CONTROL_AWB_LOCK                                     0x010a     SENSOR_SENSITIVITY                                   0x0e02
+    CONTROL_AWB_MODE                                     0x010b     SENSOR_TEST_PATTERN_DATA                             0x0e17
+    CONTROL_AWB_REGIONS                                  0x010c     SENSOR_TEST_PATTERN_MODE                             0x0e18
+    CONTROL_CAPTURE_INTENT                               0x010d     SHADING_MODE                                         0x1000
+    CONTROL_EFFECT_MODE                                  0x010e     STATISTICS_FACE_DETECT_MODE                          0x1100
+    CONTROL_MODE                                         0x010f     STATISTICS_HOT_PIXEL_MAP_MODE                        0x1103
+    CONTROL_SCENE_MODE                                   0x0110     STATISTICS_LENS_SHADING_MAP_MODE                     0x1110
+    CONTROL_VIDEO_STABILIZATION_MODE                     0x0111     TONEMAP_CURVE_BLUE                                   0x1300
+    FLASH_MODE                                           0x0402     TONEMAP_CURVE_GREEN                                  0x1301
+    HOT_PIXEL_MODE                                       0x0600     TONEMAP_CURVE_RED                                    0x1302
+    JPEG_GPS_COORDINATES                                 0x0700     TONEMAP_MODE                                         0x1303
+    JPEG_GPS_PROCESSING_METHOD                           0x0701     TONEMAP_GAMMA                                        0x1306
+    JPEG_GPS_TIMESTAMP                                   0x0702     TONEMAP_PRESET_CURVE                                 0x1307
+    JPEG_ORIENTATION                                     0x0703     LED_TRANSMIT                                         0x1400
+    JPEG_QUALITY                                         0x0704     BLACK_LEVEL_LOCK                                     0x1600
     JPEG_THUMBNAIL_QUALITY                               0x0705
     ==================================================   =======    ==================================================   =======
 
@@ -1266,50 +1266,50 @@ description are provided by the Android system documentation.
     :spec: l l l l
 
     ==================================================   =======    ==================================================   =======
-    Property Name                                        TAG	    Property Name                                        TAG
+    Property Name                                        TAG        Property Name                                        TAG
     ==================================================   =======    ==================================================   =======
     COLOR_CORRECTION_MODE                                0x0000     LENS_POSE_TRANSLATION                                0x0807
-    COLOR_CORRECTION_TRANSFORM                           0x0001	    LENS_INTRINSIC_CALIBRATION                           0x080a
-    COLOR_CORRECTION_GAINS                               0x0002	    LENS_RADIAL_DISTORTION                               0x080b
-    COLOR_CORRECTION_ABERRATION_MODE                     0x0003	    QUIRKS_PARTIAL_RESULT                                0x0b04
-    CONTROL_AE_PRECAPTURE_ID                             0x011e	    REQUEST_ID                                           0x0c01
-    CONTROL_AE_ANTIBANDING_MODE                          0x0100	    REQUEST_OUTPUT_STREAMS                               0x0c04
-    CONTROL_AE_EXPOSURE_COMPENSATION                     0x0101	    REQUEST_PIPELINE_DEPTH                               0x0c09
-    CONTROL_AE_LOCK                                      0x0102	    SCALER_CROP_REGION                                   0x0d00
-    CONTROL_AE_MODE                                      0x0103	    SENSOR_EXPOSURE_TIME                                 0x0e00
-    CONTROL_AE_REGIONS                                   0x0104	    SENSOR_FRAME_DURATION                                0x0e01
-    CONTROL_AE_TARGET_FPS_RANGE                          0x0105	    SENSOR_SENSITIVITY                                   0x0e02
-    CONTROL_AE_PRECAPTURE_TRIGGER                        0x0106	    SENSOR_TIMESTAMP                                     0x0e10
-    CONTROL_AE_STATE                                     0x011f	    SENSOR_NEUTRAL_COLOR_POINT                           0x0e12
-    CONTROL_AF_MODE                                      0x0107	    SENSOR_NOISE_PROFILE                                 0x0e13
-    CONTROL_AF_REGIONS                                   0x0108	    SENSOR_PROFILE_HUE_SAT_MAP                           0x0e14
-    CONTROL_AF_TRIGGER                                   0x0109	    SENSOR_PROFILE_TONE_CURVE                            0x0e15
-    CONTROL_AF_STATE                                     0x0120	    SENSOR_TEST_PATTERN_DATA                             0x0e17
-    CONTROL_AF_TRIGGER_ID                                0x0121	    SENSOR_TEST_PATTERN_MODE                             0x0e18
-    CONTROL_AWB_LOCK                                     0x010a	    SENSOR_ROLLING_SHUTTER_SKEW                          0x0e1a
-    CONTROL_AWB_MODE                                     0x010b	    SHADING_MODE                                         0x1000
-    CONTROL_AWB_REGIONS                                  0x010c	    STATISTICS_FACE_DETECT_MODE                          0x1100
-    CONTROL_CAPTURE_INTENT                               0x010d	    STATISTICS_FACE_LANDMARKS                            0x1105
-    CONTROL_AWB_STATE                                    0x0122	    STATISTICS_FACE_RECTANGLES                           0x1106
-    CONTROL_EFFECT_MODE                                  0x010e	    STATISTICS_FACE_SCORES                               0x1107
-    CONTROL_MODE                                         0x010f	    STATISTICS_LENS_SHADING_CORRECTION_MAP               0x110a
-    CONTROL_SCENE_MODE                                   0x0110	    STATISTICS_LENS_SHADING_MAP                          0x110b
-    CONTROL_VIDEO_STABILIZATION_MODE                     0x0111	    STATISTICS_PREDICTED_COLOR_GAINS                     0x110c
-    FLASH_MODE                                           0x0402	    STATISTICS_PREDICTED_COLOR_TRANSFORM                 0x110d
-    FLASH_STATE                                          0x0405	    STATISTICS_SCENE_FLICKER                             0x110e
-    HOT_PIXEL_MODE                                       0x0600	    STATISTICS_HOT_PIXEL_MAP_MODE                        0x1103
-    JPEG_GPS_COORDINATES                                 0x0700	    STATISTICS_HOT_PIXEL_MAP                             0x110f
-    JPEG_GPS_PROCESSING_METHOD                           0x0701	    STATISTICS_LENS_SHADING_MAP_MODE                     0x1110
-    JPEG_GPS_TIMESTAMP                                   0x0702	    TONEMAP_CURVE_BLUE                                   0x1300
-    JPEG_ORIENTATION                                     0x0703	    TONEMAP_CURVE_GREEN                                  0x1301
-    JPEG_QUALITY                                         0x0704	    TONEMAP_CURVE_RED                                    0x1302
-    JPEG_THUMBNAIL_QUALITY                               0x0705	    TONEMAP_MODE                                         0x1303
-    JPEG_THUMBNAIL_SIZE                                  0x0706	    TONEMAP_GAMMA                                        0x1306
-    LENS_APERTURE                                        0x0800	    TONEMAP_PRESET_CURVE                                 0x1307
-    LENS_FILTER_DENSITY                                  0x0801	    LED_TRANSMIT                                         0x1400
-    LENS_FOCAL_LENGTH                                    0x0802	    BLACK_LEVEL_LOCK                                     0x1600
-    LENS_FOCUS_DISTANCE                                  0x0803	    SYNC_FRAME_NUMBER                                    0x1700
-    LENS_OPTICAL_STABILIZATION_MODE                      0x0804	    REPROCESS_EFFECTIVE_EXPOSURE_FACTOR                  0x1800
+    COLOR_CORRECTION_TRANSFORM                           0x0001     LENS_INTRINSIC_CALIBRATION                           0x080a
+    COLOR_CORRECTION_GAINS                               0x0002     LENS_RADIAL_DISTORTION                               0x080b
+    COLOR_CORRECTION_ABERRATION_MODE                     0x0003     QUIRKS_PARTIAL_RESULT                                0x0b04
+    CONTROL_AE_PRECAPTURE_ID                             0x011e     REQUEST_ID                                           0x0c01
+    CONTROL_AE_ANTIBANDING_MODE                          0x0100     REQUEST_OUTPUT_STREAMS                               0x0c04
+    CONTROL_AE_EXPOSURE_COMPENSATION                     0x0101     REQUEST_PIPELINE_DEPTH                               0x0c09
+    CONTROL_AE_LOCK                                      0x0102     SCALER_CROP_REGION                                   0x0d00
+    CONTROL_AE_MODE                                      0x0103     SENSOR_EXPOSURE_TIME                                 0x0e00
+    CONTROL_AE_REGIONS                                   0x0104     SENSOR_FRAME_DURATION                                0x0e01
+    CONTROL_AE_TARGET_FPS_RANGE                          0x0105     SENSOR_SENSITIVITY                                   0x0e02
+    CONTROL_AE_PRECAPTURE_TRIGGER                        0x0106     SENSOR_TIMESTAMP                                     0x0e10
+    CONTROL_AE_STATE                                     0x011f     SENSOR_NEUTRAL_COLOR_POINT                           0x0e12
+    CONTROL_AF_MODE                                      0x0107     SENSOR_NOISE_PROFILE                                 0x0e13
+    CONTROL_AF_REGIONS                                   0x0108     SENSOR_PROFILE_HUE_SAT_MAP                           0x0e14
+    CONTROL_AF_TRIGGER                                   0x0109     SENSOR_PROFILE_TONE_CURVE                            0x0e15
+    CONTROL_AF_STATE                                     0x0120     SENSOR_TEST_PATTERN_DATA                             0x0e17
+    CONTROL_AF_TRIGGER_ID                                0x0121     SENSOR_TEST_PATTERN_MODE                             0x0e18
+    CONTROL_AWB_LOCK                                     0x010a     SENSOR_ROLLING_SHUTTER_SKEW                          0x0e1a
+    CONTROL_AWB_MODE                                     0x010b     SHADING_MODE                                         0x1000
+    CONTROL_AWB_REGIONS                                  0x010c     STATISTICS_FACE_DETECT_MODE                          0x1100
+    CONTROL_CAPTURE_INTENT                               0x010d     STATISTICS_FACE_LANDMARKS                            0x1105
+    CONTROL_AWB_STATE                                    0x0122     STATISTICS_FACE_RECTANGLES                           0x1106
+    CONTROL_EFFECT_MODE                                  0x010e     STATISTICS_FACE_SCORES                               0x1107
+    CONTROL_MODE                                         0x010f     STATISTICS_LENS_SHADING_CORRECTION_MAP               0x110a
+    CONTROL_SCENE_MODE                                   0x0110     STATISTICS_LENS_SHADING_MAP                          0x110b
+    CONTROL_VIDEO_STABILIZATION_MODE                     0x0111     STATISTICS_PREDICTED_COLOR_GAINS                     0x110c
+    FLASH_MODE                                           0x0402     STATISTICS_PREDICTED_COLOR_TRANSFORM                 0x110d
+    FLASH_STATE                                          0x0405     STATISTICS_SCENE_FLICKER                             0x110e
+    HOT_PIXEL_MODE                                       0x0600     STATISTICS_HOT_PIXEL_MAP_MODE                        0x1103
+    JPEG_GPS_COORDINATES                                 0x0700     STATISTICS_HOT_PIXEL_MAP                             0x110f
+    JPEG_GPS_PROCESSING_METHOD                           0x0701     STATISTICS_LENS_SHADING_MAP_MODE                     0x1110
+    JPEG_GPS_TIMESTAMP                                   0x0702     TONEMAP_CURVE_BLUE                                   0x1300
+    JPEG_ORIENTATION                                     0x0703     TONEMAP_CURVE_GREEN                                  0x1301
+    JPEG_QUALITY                                         0x0704     TONEMAP_CURVE_RED                                    0x1302
+    JPEG_THUMBNAIL_QUALITY                               0x0705     TONEMAP_MODE                                         0x1303
+    JPEG_THUMBNAIL_SIZE                                  0x0706     TONEMAP_GAMMA                                        0x1306
+    LENS_APERTURE                                        0x0800     TONEMAP_PRESET_CURVE                                 0x1307
+    LENS_FILTER_DENSITY                                  0x0801     LED_TRANSMIT                                         0x1400
+    LENS_FOCAL_LENGTH                                    0x0802     BLACK_LEVEL_LOCK                                     0x1600
+    LENS_FOCUS_DISTANCE                                  0x0803     SYNC_FRAME_NUMBER                                    0x1700
+    LENS_OPTICAL_STABILIZATION_MODE                      0x0804     REPROCESS_EFFECTIVE_EXPOSURE_FACTOR                  0x1800
     LENS_POSE_ROTATION                                   0x0806
     ==================================================   =======    ==================================================   =======
 
