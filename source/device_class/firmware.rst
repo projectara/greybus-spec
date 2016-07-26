@@ -773,15 +773,15 @@ Response payload.  The Response contains two 2-byte numbers, major and
 minor, and a 1-byte status.
 
 The major and minor numbers shall be ignored by the AP if the status
-contains value other than STATUS_SUCCESS.
+contains value other than FW_STATUS_SUCCESS.
 
 If the Interface doesn't require the specific Interface Backend Firmware
 package for its functioning, then the Interface shall set the status to
-STATUS_NOT_SUPPORTED.
+FW_STATUS_NOT_SUPPORTED.
 
 If the Interface doesn't have the specific Interface Backend Firmware
 package available with it, then it shall set the status to
-STATUS_NOT_AVAILABLE.
+FW_STATUS_NOT_AVAILABLE.
 
 Otherwise, the Interface shall set both major and minor fields in its
 Response with the major and minor version of its Interface Backend
@@ -791,9 +791,9 @@ The Interface may require some time before providing the version of the
 Interface Backend Firmware package.  This may happen, for example, if
 the Interface needs to boot the Backend Device Processors before getting
 the version of the available Interface Backend Firmware.  On such an
-event, the Interface shall set the status to STATUS_RETRY.
+event, the Interface shall set the status to FW_STATUS_RETRY.
 
-On receiving STATUS_RETRY from the Interface, the AP may re-initiate
+On receiving FW_STATUS_RETRY from the Interface, the AP may re-initiate
 this Operation after an implementation-defined time interval.  The AP
 may keep sending this Request until the time it receives the Interface
 Backend Firmware version, or the Request fails and returns some other
@@ -822,18 +822,18 @@ error value.
     :caption: Firmware Interface Backend Firmware Version Status
     :spec: l l l
 
-    =====================  ===========================================  ==========
-    Update Status          Brief Description                            Value
-    =====================  ===========================================  ==========
-    STATUS_INVALID         Invalid Status.                              0x00
-    STATUS_SUCCESS         Firmware version successfully retrieved.     0x01
-    STATUS_NOT_AVAILABLE   Firmware not available.                      0x02
-    STATUS_NOT_SUPPORTED   Firmware not required for functioning of
-                           Interface Backend devices.                   0x03
-    STATUS_RETRY           Not ready to respond currently, retry.       0x04
-    STATUS_FAIL_INT        Failed due to internal errors.               0x05
-    |_|                    (Reserved Range)                             0x06..0xFF
-    =====================  ===========================================  ==========
+    ========================  ===========================================  ==========
+    Update Status             Brief Description                            Value
+    ========================  ===========================================  ==========
+    FW_STATUS_INVALID         Invalid Status.                              0x00
+    FW_STATUS_SUCCESS         Firmware version successfully retrieved.     0x01
+    FW_STATUS_NOT_AVAILABLE   Firmware not available.                      0x02
+    FW_STATUS_NOT_SUPPORTED   Firmware not required for functioning of
+                              Interface Backend devices.                   0x03
+    FW_STATUS_RETRY           Not ready to respond currently, retry.       0x04
+    FW_STATUS_FAIL_INTERNAL   Failed due to internal errors.               0x05
+    |_|                       (Reserved Range)                             0x06..0xFF
+    ========================  ===========================================  ==========
 
 ..
 
@@ -1001,24 +1001,24 @@ request_id matching the request_id of the first
     :caption: Firmware Interface Backend Firmware Update Status
     :spec: l l l
 
-    =====================  ===========================================  ==========
-    Update Status          Brief Description                            Value
-    =====================  ===========================================  ==========
-    STATUS_INVALID         Invalid Status.                              0x00
-    STATUS_SUCCESS         Interface Backend Firmware package           0x01
-                           successfully updated.
-    STATUS_FAIL_FIND       Failed to find Interface Backend Firmware    0x02
-                           package.
-    STATUS_FAIL_FETCH      Failed to fetch Interface Backend Firmware   0x03
-                           package.
-    STATUS_FAIL_WRITE      Failed to write downloaded Interface         0x04
-                           Backend Firmware package.
-    STATUS_FAIL_INT        Failed due to internal errors.               0x05
-    STATUS_RETRY           Not ready to respond currently, retry.       0x06
-    STATUS_NOT_SUPPORTED   Firmware not required for functioning of
-                           Interface Backend devices.                   0x07
-    |_|                    (Reserved Range)                             0x08..0xFF
-    =====================  ===========================================  ==========
+    ========================  ===========================================  ==========
+    Update Status             Brief Description                            Value
+    ========================  ===========================================  ==========
+    FW_STATUS_INVALID         Invalid Status.                              0x00
+    FW_STATUS_SUCCESS         Interface Backend Firmware package           0x01
+                              successfully updated.
+    FW_STATUS_FAIL_FIND       Failed to find Interface Backend Firmware    0x02
+                              package.
+    FW_STATUS_FAIL_FETCH      Failed to fetch Interface Backend Firmware   0x03
+                              package.
+    FW_STATUS_FAIL_WRITE      Failed to write downloaded Interface         0x04
+                              Backend Firmware package.
+    FW_STATUS_FAIL_INTERNAL   Failed due to internal errors.               0x05
+    FW_STATUS_RETRY           Not ready to respond currently, retry.       0x06
+    FW_STATUS_NOT_SUPPORTED   Firmware not required for functioning of
+                              Interface Backend devices.                   0x07
+    |_|                       (Reserved Range)                             0x08..0xFF
+    ========================  ===========================================  ==========
 
 ..
 
