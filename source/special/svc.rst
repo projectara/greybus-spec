@@ -21,9 +21,9 @@ conditions).
 
 Conceptually, the operations in the Greybus SVC Protocol are:
 
-.. c:function:: int ping(void);
+.. c:function:: int cport_shutdown(u8 phase);
 
-    See :ref:`greybus-protocol-ping-operation`.
+    See :ref:`greybus-protocol-cport-shutdown-operation`.
 
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
@@ -141,6 +141,10 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     The AP Module uses this operation to request the SVC to perform
     the necessary action to eject a Module having the given primary
     interface id.
+
+.. c:function:: int ping(void);
+
+    An exchange of Messages with empty Greybus payloads.
 
 .. c:function:: int pwrmon_rail_count_get(u8 *rail_count);
 
@@ -270,7 +274,7 @@ response type values are shown.
     ==================================  =============  ==============
     SVC Operation Type                  Request Value  Response Value
     ==================================  =============  ==============
-    Ping                                0x00           0x80
+    CPort Shutdown                      0x00           0x80
     Protocol Version                    0x01           0x81
     SVC Hello                           0x02           0x82
     Interface Device ID                 0x03           0x83
@@ -289,7 +293,7 @@ response type values are shown.
     Interface Set Power Mode            0x10           0x90
     Module Eject                        0x11           0x91
     Reserved                            0x12           N/A
-    Reserved                            0x13           0x93
+    Ping                                0x13           0x93
     Power Monitor Get Rail Count        0x14           0x94
     Power Monitor Get Rail Names        0x15           0x95
     Power Monitor Get Sample            0x16           0x96
@@ -358,15 +362,14 @@ to signal errors specific to SVC Protocol.
 
 ..
 
-.. _svc-ping:
+.. _svc-cport-shutdown:
 
-Greybus SVC Ping Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus SVC CPort Shutdown Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus SVC Ping Operation is the
-:ref:`greybus-protocol-ping-operation` for the SVC Protocol.
-It consists of a request containing no payload, and a response
-with no payload that indicates a successful result.
+The Greybus SVC CPort Shutdown Operation is the
+:ref:`greybus-protocol-cport-shutdown-operation` for the SVC
+Protocol.
 
 .. _svc-protocol-version:
 
@@ -1591,12 +1594,12 @@ Before transmitting this request, the AP shall:
   Connection to intf2_id, unless intf2_id is an AP Interface ID, and
   receive a successful response.
 
-- Ensure that a :ref:`greybus-protocol-ping-operation` is successfully
-  exchanged on the connection.
+- Ensure that a :ref:`greybus-protocol-cport-shutdown-operation` is
+  successfully exchanged on the Connection.
 
   If either intf1_id or intf2_id is an AP interface ID, the AP may
-  ensure the Ping Operation is exchanged by sending the ping request
-  from its end of the connection, and receiving the response.
+  ensure the CPort Shutdown Operation is exchanged by sending the Request
+  from its end of the Connection, and receiving the Response.
 
 This sequence is depicted in :ref:`lifecycles_connection_management`.
 
@@ -2065,6 +2068,23 @@ the RELEASE pulse may fail to eject the Module.
 If the release pulse is successful, the AP will receive a subsequent
 notification from the SVC in the form of a :ref:`svc-module-removed`
 request.
+
+Greybus SVC Ping Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SVC Ping Operation is an exchange of Messages, neither of
+which contains payload data.
+
+Greybus SVC Ping Request
+""""""""""""""""""""""""
+
+The Greybus SVC Ping Request Message contains no payload.
+
+Greybus SVC Ping Response
+"""""""""""""""""""""""""
+
+The Greybus SVC Ping Response Message contains no payload. The status
+byte in the Response :term:`Message Header` shall be GB_OP_SUCCESS.
 
 .. _svc-power-monitor-get-rail-count:
 

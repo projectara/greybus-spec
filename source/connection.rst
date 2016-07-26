@@ -160,31 +160,48 @@ document which define individual Connection Protocols specify the
 values of these fields for this Operation according to the particular
 Protocol defined in each section.
 
-.. _greybus-protocol-ping-operation:
+.. _greybus-protocol-cport-shutdown-operation:
 
-Common Greybus Protocol Ping Operation
---------------------------------------
+Common Greybus Protocol CPort Shutdown Operation
+------------------------------------------------
 
-With some exceptions, every Connection Protocol shall implement a
-simple "ping" operation.
+With some exceptions, every :term:`Connection Protocol` implements a
+"CPort Shutdown" :term:`Operation`. This Operation is used as part of
+a sequence that closes a :term:`Greybus Connection`, as described in
+:ref:`lifecycles_connection_management`.
 
-This operation consists of the minimal request sent by
-the AP Module, followed by a response message from an Interface; the
-response status shall equal GB_OP_SUCCESS.  The operation
-implements a simple round-trip message exchange over a connection,
-and can be used to verify a link is still operational.  This
-operation is also used as part of a sequence that quiesces activity
-on a connection prior to disconnection.
+Common Greybus Protocol CPort Shutdown Request
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Common Greybus Protocol Ping Request
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Table :num:`table-common-greybus-protocol-cport-shutdown-request`
+defines the Request payload for a Protocol's CPort Shutdown
+Operation. The value of the phase field in the Request
+payload shall equal one.
 
-The Greybus Ping request message contains no payload.
+This Request shall only be sent by the AP. The AP should not send this
+Request except as described in
+:ref:`lifecycles_connection_management`. The results of sending this
+Request under other circumstances are undefined.
 
-Common Greybus Protocol Ping Response
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. figtable::
+   :nofig:
+   :label: table-common-greybus-protocol-cport-shutdown-request
+   :caption: Common Greybus Protocol CPort Shutdown Request
+   :spec: l l c c l
 
-The Greybus Ping response message contains no payload.
+   =======  ==============  ======  ========  ==============================
+   Offset   Field           Size    Value     Description
+   =======  ==============  ======  ========  ==============================
+   0        phase           1       1         Current phase in the closure sequence
+   =======  ==============  ======  ========  ==============================
+
+Common Greybus Protocol CPort Shutdown Response
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A Protocol's CPort Shutdown Response contains no payload.
+
+The status byte in the Response's :term:`Message Header` shall equal
+GB_OP_SUCCESS.
 
 .. _connection-tx-restrictions:
 

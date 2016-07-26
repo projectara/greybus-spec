@@ -6,17 +6,17 @@ msc {
   AP, SVC, Control [ label = "Control Connection" ], CPort [ label = "Connection" ];
 
   AP->Control [ label = "gb_control_disconnecting(CPID)" ];
-  AP note AP [ label = "\nGuarantees AP will not send any more non-ping requests\n" ];
+  AP note AP [ label = "\nGuarantees AP will not send any more non-CPort Shutdown requests\n" ];
   Control->AP [ label = "gb_control_disconnecting_rsp[GB_OP_SUCCESS]" ],
   |||;
-  --- [ label = "No new non-ping requests on Closing Connection" ];
+  --- [ label = "No new non-CPort Shutdown requests on Closing Connection" ];
   |||;
-  AP->CPort [ label = "gb_protocol_ping()" ];
-  CPort->AP [ label = "gb_protocol_ping_rsp[GB_OP_SUCCESS]" ];
+  AP->CPort [ label = "gb_protocol_cport_shutdown(1)" ];
+  CPort->AP [ label = "gb_protocol_cport_shutdown_rsp[GB_OP_SUCCESS]" ];
   |||;
   AP->SVC [ label = "gb_svc_connection_quiescing(AP_IID, AP_CPID, IID, CPID)" ];
   SVC->AP [ label = "gb_svc_connection_quiescing_rsp[GB_OP_SUCCESS]" ];
   |||;
-  AP->CPort [ label = "gb_protocol_ping()" ];
-  CPort->AP [ label = "gb_protocol_ping_rsp[GB_OP_SUCCESS]" ];
+  AP->CPort [ label = "gb_protocol_cport_shutdown(1)" ];
+  CPort->AP [ label = "gb_protocol_cport_shutdown_rsp[GB_OP_SUCCESS]" ];
 }

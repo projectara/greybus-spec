@@ -19,9 +19,9 @@ Two forms of authentication are currently defined:
 Conceptually, the Operations in the Component Authentication Protocol
 are:
 
-.. c:function:: int ping(void);
+.. c:function:: int cport_shutdown(u8 phase);
 
-    See :ref:`greybus-protocol-ping-operation`.
+    See :ref:`greybus-protocol-cport-shutdown-operation`.
 
 .. c:function:: int get_endpoint_uid(u8 endpoint_uid[8]);
 
@@ -61,7 +61,7 @@ Authentication Operation Types and their values.
     ========================================  =============  =================
     Component Authentication Operation Type   Request Value  Response Value
     ========================================  =============  =================
-    Ping                                      0x00           0x80
+    CPort Shutdown                            0x00           0x80
     Get Endpoint UID                          0x01           0x81
     Get IMS Certificate                       0x02           0x82
     Authenticate                              0x03           0x83
@@ -70,13 +70,14 @@ Authentication Operation Types and their values.
     ========================================  =============  =================
 ..
 
-Greybus Component Authentication Ping Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. _component-authentication-cport-shutdown:
 
-The Greybus Component Authentication Ping Operation is the
-:ref:`greybus-protocol-ping-operation` for the Component Authentication
-Protocol. It consists of a Request containing no payload, and a Response
-with no payload that indicates a successful result.
+Greybus Component Authentication CPort Shutdown Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Component Authentication CPort Shutdown Operation is the
+:ref:`greybus-protocol-cport-shutdown-operation` for the Component
+Authentication Protocol.
 
 .. _cap-get-endpoint-uid:
 

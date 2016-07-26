@@ -255,9 +255,9 @@ Greybus Camera Management Protocol
 
 Conceptually, the Operations in the Greybus Camera Management Protocol are:
 
-.. c:function:: int ping(void);
+.. c:function:: int cport_shutdown(u8 phase);
 
-    See :ref:`greybus-protocol-ping-operation`.
+    See :ref:`greybus-protocol-cport-shutdown-operation`.
 
 .. c:function:: int capabilities(u8 *capabilities);
 
@@ -298,7 +298,7 @@ Message Types and their values.
     ===========================  =============  ==============
     Camera Operation Type        Request Value  Response Value
     ===========================  =============  ==============
-    Ping                         0x00           0x80
+    CPort Shutdown               0x00           0x80
     Reserved                     0x01           0x81
     Capabilities                 0x02           0x82
     Configure Streams            0x03           0x83
@@ -314,13 +314,14 @@ Message Types and their values.
    please make the response value column just "N/A" -- it's not reserved, it
    just doesn't exist.
 
-Greybus Camera Management Ping Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. _camera-cport-shutdown-operation:
 
-The Greybus Camera Management Ping Operation is the
-:ref:`greybus-protocol-ping-operation` for the Greybus Camera Device Class
-Protocol. It consists of a Request containing no payload, and a Response
-with no payload that indicates a successful result.
+Greybus Camera Management CPort Shutdown Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Camera Management CPort Shutdown Operation is the
+:ref:`greybus-protocol-cport-shutdown-operation` for the Camera
+Management Protocol.
 
 .. _camera-capabilities-operation:
 

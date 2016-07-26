@@ -8,9 +8,9 @@ defined here.
 
 The operations in the Greybus Lights Protocol are:
 
-.. c:function:: int ping(void);
+.. c:function:: int cport_shutdown(u8 phase);
 
-    See :ref:`greybus-protocol-ping-operation`.
+    See :ref:`greybus-protocol-cport-shutdown-operation`.
 
 .. c:function:: int get_lights(u8 *lights_count);
 
@@ -91,7 +91,7 @@ operation is a request or a response.
     ===========================  =============  ==============
     Lights Operation Type        Request Value  Response Value
     ===========================  =============  ==============
-    Ping                         0x00           0x80
+    CPort Shutdown               0x00           0x80
     Reserved                     0x01           0x81
     Get Lights                   0x02           0x82
     Get Light Config             0x03           0x83
@@ -112,13 +112,14 @@ operation is a request or a response.
 
 ..
 
-Greybus Lights Ping Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. _lights-cport-shutdown:
 
-The Greybus Lights Ping Operation is the
-:ref:`greybus-protocol-ping-operation` for the Lights Protocol.
-It consists of a request containing no payload, and a response
-with no payload that indicates a successful result.
+Greybus Lights CPort Shutdown Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Lights CPort Shutdown Operation is the
+:ref:`greybus-protocol-cport-shutdown-operation` for the Lights
+Protocol.
 
 Greybus Lights Get Lights Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

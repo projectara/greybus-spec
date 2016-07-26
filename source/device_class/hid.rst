@@ -91,9 +91,9 @@ message formats are defined here.
 
 Conceptually, the operations in the greybus HID Protocol are:
 
-.. c:function:: int ping(void);
+.. c:function:: int cport_shutdown(u8 phase);
 
-    See :ref:`greybus-protocol-ping-operation`.
+    See :ref:`greybus-protocol-cport-shutdown-operation`.
 
 .. c:function:: int get_descriptor(struct gb_hid_desc_response *desc);
 
@@ -139,7 +139,7 @@ flag (0x80) indicating whether the operation is a request or a response.
     ===========================  =============  ==============
     HID Operation Type           Request Value  Response Value
     ===========================  =============  ==============
-    Ping                         0x00           0x80
+    CPort Shutdown               0x00           0x80
     Reserved                     0x01           0x81
     Get Descriptor               0x02           0x82
     Get Report Descriptor        0x03           0x83
@@ -154,13 +154,15 @@ flag (0x80) indicating whether the operation is a request or a response.
 
 ..
 
-Greybus HID Ping Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. _hid-cport-shutdown:
 
-The Greybus HID Ping Operation is the
-:ref:`greybus-protocol-ping-operation` for the HID Protocol.
-It consists of a request containing no payload, and a response
-with no payload that indicates a successful result.
+Greybus HID CPort Shutdown Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus HID CPort Shutdown Operation is the
+:ref:`greybus-protocol-cport-shutdown-operation` for the HID
+Protocol.
+
 
 Greybus HID Get Descriptor Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

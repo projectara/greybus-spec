@@ -9,9 +9,9 @@ here.
 
 Conceptually, the operations in the Greybus Power Supply Protocol are:
 
-.. c:function:: int ping(void);
+.. c:function:: int cport_shutdown(u8 phase);
 
-    See :ref:`greybus-protocol-ping-operation`.
+    See :ref:`greybus-protocol-cport-shutdown-operation`.
 
 .. c:function:: int get_power_supplies(u8 *psy_count);
 
@@ -64,7 +64,7 @@ operation is a request or a response.
     ===========================  =============  ==============
     Power Supply Operation Type  Request Value  Response Value
     ===========================  =============  ==============
-    Ping                         0x00           0x80
+    CPort Shutdown               0x00           0x80
     Reserved                     0x01           0x81
     Get Power Supplies           0x02           0x82
     Get Description              0x03           0x83
@@ -78,13 +78,14 @@ operation is a request or a response.
 
 ..
 
-Greybus Power Supply Ping Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. _power-supply-cport-shutdown:
 
-The Greybus Power Supply Ping Operation is the
-:ref:`greybus-protocol-ping-operation` for the Power Supply Protocol.
-It consists of a request containing no payload, and a response
-with no payload that indicates a successful result.
+Greybus Power Supply CPort Shutdown Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Power Supply CPort Shutdown Operation is the
+:ref:`greybus-protocol-cport-shutdown-operation` for the Power Supply
+Protocol.
 
 Greybus Power Supply Get Power Supplies Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

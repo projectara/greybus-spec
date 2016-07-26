@@ -375,7 +375,7 @@ The following values are used in this sub-sequence:
    responses after this step.
 
 3. The AP Interface shall exchange a
-   :ref:`greybus-protocol-ping-operation` with the Interface on the
+   :ref:`greybus-protocol-cport-shutdown-operation` with the Interface on the
    Closing Connection.
 
 4. The AP Interface shall initiate a :ref:`svc-connection-quiescing`
@@ -389,8 +389,9 @@ The following values are used in this sub-sequence:
    If this Operation fails, the connection closure prologue
    sub-sequence has failed. Go directly to step 6.
 
-5. The AP shall exchange a :ref:`greybus-protocol-ping-operation` with the
-   Interface on the Closing Connection.
+5. The AP shall exchange a
+   :ref:`greybus-protocol-cport-shutdown-operation` with the Interface
+   on the Closing Connection.
 
    The connection closure prologue sub-sequence has succeeded.
 

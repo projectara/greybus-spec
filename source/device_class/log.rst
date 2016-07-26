@@ -8,9 +8,9 @@ by the AP's system logger (e.g. ``dmesg``).
 
 The Operations in the Greybus Log Protocol are:
 
-.. c:function:: int ping(void);
+.. c:function:: int cport_shutdown(u8 phase);
 
-    See :ref:`greybus-protocol-ping-operation`.
+    See :ref:`greybus-protocol-cport-shutdown-operation`.
 
 .. c:function:: int send_log(u16 len, char *log);
 
@@ -32,7 +32,7 @@ flag (0x80) indicating whether the Operation is a Request or a Response.
     ===========================  =============  ==============
     Log Operation Type           Request Value  Response Value
     ===========================  =============  ==============
-    Ping                         0x00           0x80
+    CPort Shutdown               0x00           0x80
     Reserved                     0x01           0x81
     Send Log                     0x02           0x82
     (all other values reserved)  0x03..0x7e     0x83..0xfe
@@ -41,12 +41,14 @@ flag (0x80) indicating whether the Operation is a Request or a Response.
 
 ..
 
-Greybus Log Ping Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. _log-cport-shutdown:
 
-The Greybus Log Ping Operation is the :ref:`greybus-protocol-ping-operation` for
-the Log Protocol.  It consists of a Request containing no payload, and a
-Response with no payload that indicates a successful result.
+Greybus Log CPort Shutdown Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Log CPort Shutdown Operation is the
+:ref:`greybus-protocol-cport-shutdown-operation` for the Log
+Protocol.
 
 Greybus Log Send Log Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

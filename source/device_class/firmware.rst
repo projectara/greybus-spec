@@ -17,9 +17,9 @@ firmware package using a :ref:`release-firmware-operation`.
 Conceptually, the Operations in the Greybus Firmware Download Protocol
 are:
 
-.. c:function:: int ping(void);
+.. c:function:: int cport_shutdown(u8 phase);
 
-    See :ref:`greybus-protocol-ping-operation`.
+    See :ref:`greybus-protocol-cport-shutdown-operation`.
 
 .. c:function:: int find_firmware(u8 firmware_tag[10], u8 *firmware_id, u32 *size);
 
@@ -59,7 +59,7 @@ Request type and the Response type values are shown below.
     =================================  =============  ===============
     Firmware Operation Type            Request Value  Response Value
     =================================  =============  ===============
-    Ping                               0x00           0x80
+    CPort Shutdown                     0x00           0x80
     Find Firmware                      0x01           0x81
     Fetch Firmware                     0x02           0x82
     Release Firmware                   0x03           0x83
@@ -68,13 +68,14 @@ Request type and the Response type values are shown below.
     =================================  =============  ===============
 ..
 
-Greybus Firmware Download Ping Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. _firmware-download-cport-shutdown:
 
-The Greybus Firmware Download Ping Operation is the
-:ref:`greybus-protocol-ping-operation` for the Firmware Download
-Protocol.  It consists of a Request containing no payload, and a
-Response with no payload that indicates a successful result.
+Greybus Firmware Download CPort Shutdown Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Firmware Download CPort Shutdown Operation is the
+:ref:`greybus-protocol-cport-shutdown-operation` for the Firmware Download
+Protocol.
 
 .. _find-firmware-operation:
 
@@ -391,9 +392,9 @@ The rest of this section defines the Firmware Management Protocol.
 Conceptually, the Operations of the Greybus Firmware Management Protocol
 are:
 
-.. c:function:: int ping(void);
+.. c:function:: int cport_shutdown(u8 phase);
 
-    See :ref:`greybus-protocol-ping-operation`.
+    See :ref:`greybus-protocol-cport-shutdown-operation`.
 
 .. note::
     Below Operations are specific to the :term:`Interface Firmware`
@@ -462,7 +463,7 @@ Both the Request type and the Response type values are shown below.
     =====================================  =============  =================
     Firmware Management Operation Type     Request Value  Response Value
     =====================================  =============  =================
-    Ping                                   0x00           0x80
+    CPort Shutdown                         0x00           0x80
     Interface Firmware Version             0x01           0x81
     Interface Firmware Load and Validate   0x02           0x82
     Interface Firmware Loaded              0x03           0x83
@@ -474,13 +475,14 @@ Both the Request type and the Response type values are shown below.
     =====================================  =============  =================
 ..
 
-Greybus Firmware Management Ping Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. _firmware-management-cport-shutdown:
 
-The Greybus Firmware Management Ping Operation is the
-:ref:`greybus-protocol-ping-operation` for the Firmware Management
-Protocol.  It consists of a Request containing no payload, and a
-Response with no payload that indicates a successful result.
+Greybus Firmware Management CPort Shutdown Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Firmware Management CPort Shutdown Operation is the
+:ref:`greybus-protocol-cport-shutdown-operation` for the Firmware
+Management Protocol.
 
 .. _interface-firmware-version-operation:
 

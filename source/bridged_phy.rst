@@ -28,9 +28,9 @@ specifies the line to which the operation applies.
 
 Conceptually, the GPIO Protocol operations are:
 
-.. c:function:: int ping(void);
+.. c:function:: int cport_shutdown(u8 phase);
 
-    See :ref:`greybus-protocol-ping-operation`.
+    See :ref:`greybus-protocol-cport-shutdown-operation`.
 
 .. c:function:: int line_count(u8 *count);
 
@@ -117,7 +117,7 @@ response type values are shown.
     ===========================  =============  ==============
     GPIO Operation Type          Request Value  Response Value
     ===========================  =============  ==============
-    Ping                         0x00           0x80
+    CPort Shutdown               0x00           0x80
     Reserved                     0x01           0x81
     Line Count                   0x02           0x82
     Activate                     0x03           0x83
@@ -138,13 +138,14 @@ response type values are shown.
 
 ..
 
-Greybus GPIO Ping Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. _gpio-cport-shutdown:
 
-The Greybus GPIO Ping Operation is the
-:ref:`greybus-protocol-ping-operation` for the GPIO Protocol.
-It consists of a request containing no payload, and a response
-with no payload that indicates a successful result.
+Greybus GPIO CPort Shutdown Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus GPIO CPort Shutdown Operation is the
+:ref:`greybus-protocol-cport-shutdown-operation` for the GPIO
+Protocol.
 
 Greybus GPIO Line Count Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -650,9 +651,9 @@ section.
 
 Conceptually, the operations in the Greybus SPI Protocol are:
 
-.. c:function:: int ping(void);
+.. c:function:: int cport_shutdown(u8 phase);
 
-    See :ref:`greybus-protocol-ping-operation`.
+    See :ref:`greybus-protocol-cport-shutdown-operation`.
 
 .. c:function:: int master_config(u16 *mode, u16 *flags, u32 *bpw_mask, u16 *num_chipselect, u32 *min_speed_hz, u32 *max_speed_hz);
 
@@ -689,7 +690,7 @@ operation is a request or a response.
     ===========================  =============  ==============
     SPI Operation Type           Request Value  Response Value
     ===========================  =============  ==============
-    Ping                         0x00           0x80
+    CPort Shutdown               0x00           0x80
     Reserved                     0x01           0x81
     Master Config                0x02           0x82
     Device Config                0x03           0x83
@@ -700,13 +701,14 @@ operation is a request or a response.
 
 ..
 
-Greybus SPI Ping Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. _spi-cport-shutdown:
 
-The Greybus SPI Ping Operation is the
-:ref:`greybus-protocol-ping-operation` for the SPI Protocol.
-It consists of a request containing no payload, and a response
-with no payload that indicates a successful result.
+Greybus SPI CPort Shutdown Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SPI CPort Shutdown Operation is the
+:ref:`greybus-protocol-cport-shutdown-operation` for the SPI
+Protocol.
 
 Greybus SPI Protocol Master Config Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1032,9 +1034,9 @@ consists of the operations defined in this section.
 The operations that can be performed on a Greybus UART controller are
 conceptually:
 
-.. c:function:: int ping(void);
+.. c:function:: int cport_shutdown(u8 phase);
 
-    See :ref:`greybus-protocol-ping-operation`.
+    See :ref:`greybus-protocol-cport-shutdown-operation`.
 
 .. c:function:: int send_data(u16 size, u8 *data);
 
@@ -1096,7 +1098,7 @@ operation is a request or a response.
     ===========================  =============  ==============
     UART Operation Type          Request Value  Response Value
     ===========================  =============  ==============
-    Ping                         0x00           0x80
+    CPort Shutdown               0x00           0x80
     Reserved                     0x01           0x81
     Send Data                    0x02           0x82
     Receive Data                 0x03           0x83
@@ -1112,13 +1114,14 @@ operation is a request or a response.
 
 ..
 
-Greybus UART Ping Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. _uart-cport-shutdown:
 
-The Greybus UART Ping Operation is the
-:ref:`greybus-protocol-ping-operation` for the UART Protocol.
-It consists of a request containing no payload, and a response
-with no payload that indicates a successful result.
+Greybus UART CPort Shutdown Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus UART CPort Shutdown Operation is the
+:ref:`greybus-protocol-cport-shutdown-operation` for the UART
+Protocol.
 
 Greybus UART Send Data Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1571,9 +1574,9 @@ operations defined in this section.
 
 Conceptually, the PWM Protocol operations are:
 
-.. c:function:: int ping(void);
+.. c:function:: int cport_shutdown(u8 phase);
 
-    See :ref:`greybus-protocol-ping-operation`.
+    See :ref:`greybus-protocol-cport-shutdown-operation`.
 
 .. c:function:: int pwm_count(u8 *count);
 
@@ -1633,7 +1636,7 @@ are shown.
     ===========================  =============  ==============
     PWM Operation Type           Request Value  Response Value
     ===========================  =============  ==============
-    Ping                         0x00           0x80
+    CPort Shutdown               0x00           0x80
     Reserved                     0x01           0x81
     PWM count                    0x02           0x82
     Activate                     0x03           0x83
@@ -1648,13 +1651,14 @@ are shown.
 
 ..
 
-Greybus PWM Ping Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. _pwm-cport-shutdown:
 
-The Greybus PWM Ping Operation is the
-:ref:`greybus-protocol-ping-operation` for the PWM Protocol.
-It consists of a request containing no payload, and a response
-with no payload that indicates a successful result.
+Greybus PWM CPort Shutdown Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus PWM CPort Shutdown Operation is the
+:ref:`greybus-protocol-cport-shutdown-operation` for the PWM
+Protocol.
 
 Greybus PWM Count Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1901,9 +1905,9 @@ here.
 
 Conceptually, the five operations in the Greybus I2C Protocol are:
 
-.. c:function:: int ping(void);
+.. c:function:: int cport_shutdown(u8 phase);
 
-    See :ref:`greybus-protocol-ping-operation`.
+    See :ref:`greybus-protocol-cport-shutdown-operation`.
 
 .. c:function:: int get_functionality(u32 *functionality);
 
@@ -1938,7 +1942,7 @@ operation is a request or a response.
     ===========================  =============  ==============
     I2C Operation Type           Request Value  Response Value
     ===========================  =============  ==============
-    Ping                         0x00           0x80
+    CPort Shutdown               0x00           0x80
     Reserved                     0x01           0x81
     Functionality                0x02           0x82
     Reserved                     0x03           0x83
@@ -1950,13 +1954,14 @@ operation is a request or a response.
 
 ..
 
-Greybus I2C Ping Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. _i2c-cport-shutdown:
 
-The Greybus I2C Ping Operation is the
-:ref:`greybus-protocol-ping-operation` for the I2C Protocol.
-It consists of a request containing no payload, and a response
-with no payload that indicates a successful result.
+Greybus I2C CPort Shutdown Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus I2C CPort Shutdown Operation is the
+:ref:`greybus-protocol-cport-shutdown-operation` for the I2C
+Protocol.
 
 Greybus I2C Functionality Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2163,9 +2168,9 @@ formats are defined here.
 
 Conceptually, the operations in the Greybus SDIO Protocol are:
 
-.. c:function:: int ping(void);
+.. c:function:: int cport_shutdown(u8 phase);
 
-    See :ref:`greybus-protocol-ping-operation`.
+    See :ref:`greybus-protocol-cport-shutdown-operation`.
 
 .. c:function:: int get_capabilities(u32 *caps, u32 *ocr, u16 *max_blk_count, u16 *max_blk_size);
 
@@ -2216,7 +2221,7 @@ and response type values are shown.
     ===========================  =============  ==============
     SDIO Operation Type          Request Value  Response Value
     ===========================  =============  ==============
-    Ping                         0x00           0x80
+    CPort Shutdown               0x00           0x80
     Reserved                     0x01           0x81
     Get Capabilities             0x02           0x82
     Set Ios                      0x03           0x83
@@ -2229,13 +2234,14 @@ and response type values are shown.
 
 ..
 
-Greybus SDIO Ping Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. _sdio-cport-shutdown:
 
-The Greybus SDIO Ping Operation is the
-:ref:`greybus-protocol-ping-operation` for the SDIO Protocol.
-It consists of a request containing no payload, and a response
-with no payload that indicates a successful result.
+Greybus SDIO CPort Shutdown Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus SDIO CPort Shutdown Operation is the
+:ref:`greybus-protocol-cport-shutdown-operation` for the SDIO
+Protocol.
 
 Greybus SDIO Get Capabilities Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

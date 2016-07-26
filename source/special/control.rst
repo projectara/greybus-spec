@@ -32,9 +32,9 @@ the AP.
 
 Conceptually, the Operations in the Greybus Control Protocol are:
 
-.. c:function:: int ping(void);
+.. c:function:: int cport_shutdown(u8 phase);
 
-    See :ref:`greybus-protocol-ping-operation`.
+    See :ref:`greybus-protocol-cport-shutdown-operation`.
 
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
@@ -168,7 +168,7 @@ type and response type values are shown.
     ==============================  =============  ==============
     Control Operation Type          Request Value  Response Value
     ==============================  =============  ==============
-    Ping                            0x00           0x80
+    CPort Shutdown                  0x00           0x80
     Protocol Version                0x01           0x81
     Reserved                        0x02           0x82
     Get Manifest Size               0x03           0x83
@@ -195,15 +195,14 @@ type and response type values are shown.
     ==============================  =============  ==============
 ..
 
-.. _control-ping:
+.. _control-cport-shutdown:
 
-Greybus Control Ping Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Greybus Control CPort Shutdown Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Greybus Control Ping Operation is the
-:ref:`greybus-protocol-ping-operation` for the Control Protocol.
-It consists of a request containing no payload, and a response
-with no payload that indicates a successful result.
+The Greybus Control CPort Shutdown Operation is the
+:ref:`greybus-protocol-cport-shutdown-operation` for the Control
+Protocol.
 
 .. _control-protocol-version:
 
@@ -529,8 +528,8 @@ if one or more of the following conditions hold:
 
 - when issuing responses to requests it has already received on the
   Connection,
-- when exchanging :ref:`Ping Operations <greybus-protocol-ping-operation>`
-  with the Interface, or
+- when exchanging :ref:`CPort Shutdown Operations
+  <greybus-protocol-cport-shutdown-operation>` with the Interface, or
 - when transmitting |unipro| Flow Control Tokens.
 
 The AP Interface shall otherwise halt Segment transmission on the CPort.
@@ -548,7 +547,7 @@ conditions hold:
 - when issuing responses on the Connection to Operations whose
   requests it received before the Control Disconnecting Operation
   Request,
-- when exchanging Ping Operations with the AP, or
+- when exchanging CPort Shutdown Operations with the AP, or
 - when transmitting |unipro| Flow Control Tokens.
 
 The receiving Interface shall otherwise halt Segment transmission on
@@ -568,7 +567,7 @@ The response status shall equal GB_OP_SUCCESS.
 Before issuing a response to a Disconnecting request, the Interface
 shall ensure that any further |unipro| Messages received on the CPort
 associated with its side of the Connection are immediately discarded,
-unless the Messages are well-formed Greybus Ping requests.
+unless the Messages are well-formed Greybus CPort Shutdown Requests.
 
 .. _control-disconnected:
 

@@ -8,9 +8,9 @@ and maps almost directly to the Android HAL vibrator interface.
 
 The operations in the Greybus vibrator Protocol are:
 
-.. c:function:: int ping(void);
+.. c:function:: int cport_shutdown(u8 phase);
 
-    See :ref:`greybus-protocol-ping-operation`.
+    See :ref:`greybus-protocol-cport-shutdown-operation`.
 
 .. c:function:: int vibrator_on(u16 timeout_ms);
 
@@ -37,7 +37,7 @@ operation is a request or a response.
     ===========================  =============  ==============
     Vibrator Operation Type      Request Value  Response Value
     ===========================  =============  ==============
-    Ping                         0x00           0x80
+    CPort Shutdown               0x00           0x80
     Reserved                     0x01           0x81
     Vibrator On                  0x02           0x82
     Vibrator Off                 0x03           0x83
@@ -47,13 +47,14 @@ operation is a request or a response.
 
 ..
 
-Greybus Vibrator Ping Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. _vibrator-cport-shutdown:
 
-The Greybus Vibrator Ping Operation is the
-:ref:`greybus-protocol-ping-operation` for the Vibrator Protocol.
-It consists of a request containing no payload, and a response
-with no payload that indicates a successful result.
+Greybus Vibrator CPort Shutdown Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Vibrator CPort Shutdown Operation is the
+:ref:`greybus-protocol-cport-shutdown-operation` for the Vibrator
+Protocol.
 
 Greybus Vibrator On Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
