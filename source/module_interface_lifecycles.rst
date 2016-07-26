@@ -605,10 +605,10 @@ undefined.
 
 If the sequence fails, the results are undefined.
 
-.. _lifecycles_control_closure_power_down:
+.. _lifecycles_control_closure_power_mgmt:
 
-Control Connection Closure for power_down
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Control Connection Closure for Power Management
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. SW-4659 + any sub-tasks track adding multiple AP Interfaces, and
    SW-4660 + any sub-tasks track adding module/module connections.
@@ -633,16 +633,18 @@ Control Connection is established.  The AP can subsequently close the
 Control Connection to the Interface.
 
 The following sequence may be used to close the control Connection to
-an Interface while the Interface is entering the OFF state.
+an Interface while the Interface is entering the either the SUSPENDED
+state or the OFF state.
 
-.. image:: /img/msc/control_connection_closure_power_down.png
+.. image:: /img/msc/control_connection_closure_power_mgmt.png
    :align: center
 
 Though the AP may follow this sequence at any time, the AP should only
-do so if the Interface is ENUMERATED, during the "power_down" Interface
-Lifecycle state machine transition, which causes the Interface to exit
-the ENUMERATED Lifecycle State as described in
-:ref:`lifecycles_power_down`.
+do so if the Interface is ENUMERATED, during either the "suspend" or
+"power_down" Interface Lifecycle state machine transitions, which
+cause the Interface to exit the ENUMERATED Lifecycle State as
+described in :ref:`lifecycles_suspend` and
+:ref:`lifecycles_power_down`, respectively.
 
 If the AP follows this sequence at other times, the results are
 undefined.
@@ -675,107 +677,25 @@ The following value is used in this sub-sequence:
 
    If it succeeds, the SVC shall set the UNIPRO Interface State to
    UPRO_HIBERNATE. The SVC shall wait an implementation-defined
-   duration in this step to allow the Interface to power down
-   internally in the next step.
+   duration in this step to allow the Interface to power down or
+   suspend internally in the next step.
 
    If the Operation succeeds, this procedure has succeeded.
 
 4. The Interface shall be capable of receiving notification that
-   UNIPRO became UPRO_HIBERNATE. The Interface may now perform
-   implementation-defined procedures used during shutdown. No
-   provision is made within the Greybus Specification to determine
-   whether these procedures, if any, are complete, other than the
-   delay in the previous step.
+   UNIPRO became UPRO_HIBERNATE.
 
-5. The sequence is now complete, and has succeeded or failed.
+   The Interface shall have previously been notified whether the
+   change to UPRO_HIBERNATE denotes suspend or power down as described
+   below in :ref:`lifecycles_suspend`.
 
-.. _lifecycles_control_closure_suspend:
+   If the Interface is suspending, it shall perform
+   implementation-specific procedures to ensure it can be resumed
+   successfully if it remains SUSPENDED, then the procedure defined in
+   :ref:`lifecycles_resume` is subsequently followed.
 
-Control Connection Closure for suspend
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. SW-4659 + any sub-tasks track adding multiple AP Interfaces, and
-   SW-4660 + any sub-tasks track adding module/module connections.
-
-.. note::
-
-   The content in this section is defined under the following assumptions:
-
-   - there is exactly one :ref:`AP Interface
-     <hardware-model-ap-module-requirements>` in the Greybus System.
-
-   - The Connection being closed is between that AP Interface and
-     another Interface in the System.
-
-   The results if there are multiple AP Interfaces, or in the case of
-   non-AP to non-AP Interfaces, are undefined.
-
-.. TODO add an MSC here for the successful case
-
-If an Interface is :ref:`hardware-model-lifecycle-enumerated`, its
-Control Connection is established.  The AP can subsequently close the
-Control Connection to the Interface.
-
-The following sequence may be used to close the control Connection to
-an Interface while the Interface is entering the SUSPENDED state.
-
-.. image:: /img/msc/control_connection_closure_suspend.png
-   :align: center
-
-Though the AP may follow this sequence at any time, the AP should only
-do so if the Interface is ENUMERATED, during the "suspend" Interface
-Lifecycle state machine transition, which causes the Interface to exit
-the ENUMERATED Lifecycle State as described in
-:ref:`lifecycles_suspend`.
-
-If the AP follows this sequence at other times, the results are
-undefined.
-
-The following value is used in this sub-sequence:
-
-- The Interface ID of the other Interface is interface_id.
-
-1. The :ref:`lifecycles_connection_closure_prologue` sub-sequence is
-   followed. The Closing Connection for that sub-sequence is the
-   Control Connection for the other Interface.  If the sub-sequence
-   fails, this sequence has failed. If it has failed, go directly to
-   step 5.
-
-2. The :ref:`lifecycles_connection_closure_epilogue` sub-sequence is
-   followed. The Closing Connection for that sub-sequence is the
-   Control Connection for the other Interface. If the sub-sequence
-   fails, this sequence has failed. If it has failed, go directly to
-   step 5.
-
-3. The AP shall exchange a :ref:`svc-interface-set-power-mode` with
-   the SVC.
-
-   The intf_id field in the request payload shall equal interface_id.
-   The tx_mode and rx_mode fields shall both equal
-   UNIPRO_HIBERNATE_MODE.
-
-   If the Operation fails, this procedure has failed. Go directly to
-   step 5.
-
-   If it succeeds, the SVC shall set the UNIPRO Interface State to
-   UPRO_HIBERNATE. The SVC shall wait an implementation-defined
-   duration in this step to allow the Interface to power down
-   internally in the next step.
-
-   If the Operation succeeds, this procedure has suceeded.
-
-4. The Interface shall be capable of receiving notification that
-   UNIPRO became UPRO_HIBERNATE. The Interface may now perform
-   implementation-defined procedures used during shutdown.
-
-   The Interface shall have previously been notified that the change
-   to UPRO_HIBERNATE denotes suspend rather than power down as
-   described below in :ref:`lifecycles_suspend`.
-
-   The Interface shall perform implementation-specific procedures to
-   ensure it can be resumed successfully if it remains SUSPENDED, then
-   the procedure defined in :ref:`lifecycles_resume` is subsequently
-   followed.
+   Otherwise, the Interface may now perform implementation-defined
+   procedures used during shutdown.
 
 5. The sequence is now complete, and has succeeded or failed.
 
@@ -990,7 +910,7 @@ The following values are used in this procedure:
 
 7. The AP shall attempt to close the Control Connection to the
    Interface as described in
-   :ref:`lifecycles_control_closure_power_down`. Regardless of the
+   :ref:`lifecycles_control_closure_power_mgmt`. Regardless of the
    Operation's success or failure, go to the next step.
 
 8. The AP shall perform the procedure described in below in
@@ -1093,7 +1013,7 @@ The following values are used in this procedure:
    procedure has failed.
 
 3. The sequence defined in
-   :ref:`lifecycles_control_closure_suspend` shall be followed to
+   :ref:`lifecycles_control_closure_power_mgmt` shall be followed to
    close the Control Connection to the Interface.
 
    If the sequence fails, this procedure has failed. The results are
@@ -1303,7 +1223,7 @@ The following values are used in this procedure:
    procedure has failed.
 
 3. The sequence defined in
-   :ref:`lifecycles_control_closure_power_down` shall be followed to
+   :ref:`lifecycles_control_closure_power_mgmt` shall be followed to
    close the Control Connection to the Interface.
 
    If the sequence fails, this procedure has failed. The results are

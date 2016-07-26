@@ -1,4 +1,4 @@
-# MSC for Control Connection Closure for Suspend Sequence
+# MSC for Control Connection Closure for Power Management Sequence
 
 msc {
   hscale = "1.5", arcgradient = "0";
@@ -14,6 +14,6 @@ msc {
   SVC->AP [ label = "gb_svc_intf_set_power_mode_rsp[GB_SVC_OP_SUCCESS]" ],
   Comments note Comments [ label = "UNIPRO = UPRO_HIBERNATE" ];
   |||;
-  Comments rbox Comments [ label = "Interface Suspend Procedure" ];
+  Comments rbox Comments [ label = "Interface Suspend or Shutdown Procedure" ];
   |||;
 }
