@@ -165,8 +165,10 @@ Protocol defined in each section.
 Common Greybus Protocol Ping Operation
 --------------------------------------
 
-Every Connection Protocol shall implement a simple "ping"
-operation.  This operation consists of the minimal request sent by
+With some exceptions, every Connection Protocol shall implement a
+simple "ping" operation.
+
+This operation consists of the minimal request sent by
 the AP Module, followed by a response message from an Interface; the
 response status shall equal GB_OP_SUCCESS.  The operation
 implements a simple round-trip message exchange over a connection,

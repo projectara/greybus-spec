@@ -56,10 +56,6 @@ additional requirements or exceptions hold:
 
 The Operations in the Greybus Bootrom Protocol are:
 
-.. c:function:: int ping(void);
-
-    See :ref:`greybus-protocol-ping-operation`.
-
 .. c:function:: int version(u8 offer_major, u8 offer_minor, u8 *major, u8 *minor);
 
     Refer to :ref:`greybus-protocol-version-operation`.
@@ -116,7 +112,7 @@ Response.
     ===========================  =============  ==============
     Bootrom Operation Type       Request Value  Response Value
     ===========================  =============  ==============
-    Ping                         0x00           0x80
+    Invalid                      0x00           0x80
     Protocol Version             0x01           0x81
     Firmware Size                0x02           0x82
     Get Firmware                 0x03           0x83
@@ -127,14 +123,6 @@ Response.
     ===========================  =============  ==============
 
 ..
-
-Greybus Bootrom Ping Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The Greybus Bootrom Ping Operation is the
-:ref:`greybus-protocol-ping-operation` for the Bootrom Protocol.  It
-consists of a Request containing no payload, and a Response with no
-payload that indicates a successful result.
 
 Greybus Bootrom Protocol Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
