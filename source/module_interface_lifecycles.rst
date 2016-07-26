@@ -374,29 +374,11 @@ The following values are used in this sub-sequence:
    received on the Closing Connection. It shall not issue any such
    responses after this step.
 
-3. The AP Interface shall exchange a
-   :ref:`greybus-protocol-cport-shutdown-operation` with the Interface on the
-   Closing Connection.
-
-4. The AP Interface shall initiate a :ref:`svc-connection-quiescing`
-   on the SVC Connection.
-
-   The intf1_id and cport1_id fields in the request payload shall
-   respectively equal ap_interface_id and ap_cport_id.  The intf2_id
-   and cport2_id fields in the request payload shall respectively
-   equal interface_id and interface_cport_id.
-
-   If this Operation fails, the connection closure prologue
-   sub-sequence has failed. Go directly to step 6.
-
-5. The AP shall exchange a
+3. The AP shall exchange a
    :ref:`greybus-protocol-cport-shutdown-operation` with the Interface
    on the Closing Connection.
 
    The connection closure prologue sub-sequence has succeeded.
-
-6. The connection closure prologue sub-sequence is complete, and has
-   succeeded or failed.
 
 .. _lifecycles_connection_closure_epilogue:
 

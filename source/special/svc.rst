@@ -171,11 +171,6 @@ Conceptually, the operations in the Greybus SVC Protocol are:
     The AP uses this operation to power down the SVC and all the devices it
     controls.
 
-.. c:function:: int connection_quiescing(u8 intf1_id, u16 cport1_id, u8 intf2_id, u16 cport2_id);
-
-    The AP uses this operation to notify the SVC that a connection
-    being torn down is quiescing.
-
 .. c:function:: int module_inserted(u8 primary_intf_id, u8 intf_count, u16 flags);
 
     The SVC uses this operation to notify the AP Module of the
@@ -302,7 +297,7 @@ response type values are shown.
     TimeSync Wake Pins Release          0x19           0x99
     TimeSync Ping                       0x1a           0x9a
     Power Down                          0x1d           0x9d
-    Connection Quiescing                0x1e           0x9e
+    Reserved                            0x1e           0x9e
     Module Inserted                     0x1f           0x9f
     Module Removed                      0x20           0xa0
     Interface V_SYS Enable              0x21           0xa1
@@ -1530,131 +1525,6 @@ given by intf1_id and intf2_id in Request payload.
     :nofig:
     :label: table-svc-connection-create-response
     :caption: SVC Protocol Connection Create Response
-    :spec: l l c c l
-
-    =======  ==============  ===========  ================  =========================================
-    Offset   Field           Size         Value             Description
-    =======  ==============  ===========  ================  =========================================
-    0        status          1            Number            :ref:`svc-protocol-op-status`
-    =======  ==============  ===========  ================  =========================================
-
-..
-
-.. _svc-connection-quiescing:
-
-Greybus SVC Connection Quiescing Operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The AP Module sends this to the SVC to indicate that a connection
-being torn down has entered its quiescing stage before being
-disconnected. The AP shall ensure that no Operations are in flight on
-the Connection before sending this request.
-
-The SVC Connection Quiescing Operation allows the SVC to prepare the
-underlying |unipro| connection for an orderly shutdown before it is
-finally disconnected. In particular, it allows the AP to later ensure
-that all |unipro| data flow associated with the connection has been
-completed, allowing both users of the connection to later release any
-resources consumed by that connection.
-
-Greybus SVC Connection Quiescing Request
-""""""""""""""""""""""""""""""""""""""""
-
-Table :num:`table-svc-connection-quiescing-request` defines the Greybus
-SVC Connection Quiescing Request payload.  The Greybus SVC
-Connection Quiescing request is sent only by the AP Module to the
-SVC. The first Interface ID intf1_id and first CPort ID cport1_id define
-one end of the connection to be quiesced, and the second
-Interface ID intf2_id and CPort ID cport2_id define the other end.
-
-.. figtable::
-    :nofig:
-    :label: table-svc-connection-quiescing-request
-    :caption: SVC Protocol Connection Quiescing Request
-    :spec: l l c c l
-
-    =======  ==============  ======  ==================  ===========================
-    Offset   Field           Size    Value               Description
-    =======  ==============  ======  ==================  ===========================
-    0        intf1_id        1       Number              First Interface
-    1        cport1_id       2       Number              CPort on first Interface
-    3        intf2_id        1       Number              Second Interface
-    4        cport2_id       2       Number              CPort on second Interface
-    =======  ==============  ======  ==================  ===========================
-
-..
-
-Before transmitting this request, the AP shall:
-
-- Send a :ref:`control-disconnecting` request on the the Control
-  Connection to intf1_id, unless intf1_id is an AP Interface ID, and
-  receive a successful response.
-
-- Send a :ref:`control-disconnecting` request on the the Control
-  Connection to intf2_id, unless intf2_id is an AP Interface ID, and
-  receive a successful response.
-
-- Ensure that a :ref:`greybus-protocol-cport-shutdown-operation` is
-  successfully exchanged on the Connection.
-
-  If either intf1_id or intf2_id is an AP interface ID, the AP may
-  ensure the CPort Shutdown Operation is exchanged by sending the Request
-  from its end of the Connection, and receiving the Response.
-
-This sequence is depicted in :ref:`lifecycles_connection_management`.
-
-Upon receiving a Connection Quiescing request, the SVC shall check
-that the :ref:`Interface State <hardware-model-interface-states>` with
-ID intf_id has DETECT equal to DETECT_ACTIVE, and UNIPRO equal to
-UPRO_UP.
-
-If these conditions do not hold, the SVC cannot satisfy the request,
-and shall send a response signaling an error as described below. The
-SVC shall take no further action related to such an unsatisfiable
-request beyond sending the response.
-
-Otherwise, the SVC shall perform the *connection-quiesce sequence* by
-temporarily disconnecting both ends of the Connection, then
-reconfiguring them as follows before reconnecting them:
-
-- ensuring :ref:`E2EFC, CSD, and CSV <svc-connection-create-flags>`
-  are all disabled, and
-
-- clearing estimates of local and peer buffer space, as well as credits
-  to send.
-
-Greybus SVC Connection Quiescing Response
-"""""""""""""""""""""""""""""""""""""""""
-
-Table :num:`table-svc-connection-quiescing-response` defines the Greybus SVC
-Connection Quiescing Response payload. If the Response message header as the
-:ref:`greybus-operation-status` not equal to GB_OP_SUCCESS, the value in
-the status field in the Operation Response payload is undefined and shall be
-ignored.
-
-The SVC shall return the following errors in the status field of the Operation
-Response payload depending on the sub-state values of the
-:ref:`hardware-model-interface-states` with Interface IDs given by intf1_id
-and intf2_id in the request payload:
-
-- If DETECT is not DETECT_ACTIVE, the response shall have status
-  GB_SVC_INTF_NOT_DETECTED.
-
-- If UNIPRO is not UPRO_UP, the response shall have status
-  GB_SVC_INTF_NO_UPRO_LINK.
-
-If during the handling of the request, the SVC is unable to perform
-the connection quiesce sequence due to fatal errors exchanging
-|unipro| traffic with either end of the Connection, the status field in the
-Operation Response payload shall equal GB_SVC_OP_UNKNOWN_ERROR. When this
-occurs, the value of the UNIPRO sub-state of the
-:ref:`hardware-model-interface-states` with Interface IDs given by intf1_id
-and intf2_id in Request payload is unpredictable.
-
-.. figtable::
-    :nofig:
-    :label: table-svc-connection-quiescing-response
-    :caption: SVC Protocol Connection Quiescing Response
     :spec: l l c c l
 
     =======  ==============  ===========  ================  =========================================

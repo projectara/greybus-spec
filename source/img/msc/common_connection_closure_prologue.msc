@@ -13,10 +13,4 @@ msc {
   |||;
   AP->CPort [ label = "gb_protocol_cport_shutdown(1)" ];
   CPort->AP [ label = "gb_protocol_cport_shutdown_rsp[GB_OP_SUCCESS]" ];
-  |||;
-  AP->SVC [ label = "gb_svc_connection_quiescing(AP_IID, AP_CPID, IID, CPID)" ];
-  SVC->AP [ label = "gb_svc_connection_quiescing_rsp[GB_OP_SUCCESS]" ];
-  |||;
-  AP->CPort [ label = "gb_protocol_cport_shutdown(1)" ];
-  CPort->AP [ label = "gb_protocol_cport_shutdown_rsp[GB_OP_SUCCESS]" ];
 }
