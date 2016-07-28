@@ -1,8 +1,13 @@
+.. only:: html
+
+   Bibliography
+   ============
+
 .. Note that this appears in a chapter named "Bibliography" in the
-   LaTeX PDF output, but we don't actually specify that here. The
-   LaTeX translator seems to want to collect all references throughout
-   the document and consolidate them in a section at the end under
-   that title.
+   LaTeX PDF output, but we don't actually specify that here. The LaTeX
+   translator seems to want to collect all references throughout the document
+   and consolidate them in a section at the end under that title. Hence the
+   chapter is only specified here for html format.
 
    By convention, add all new bibliography entries here for
    readability of the Specification's source code.
