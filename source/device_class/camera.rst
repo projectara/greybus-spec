@@ -5,9 +5,10 @@ System Architecture (Informative)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus Camera Device Class Protocol defines how Camera Modules communicate
-with AP Modules in an Ara system. MIPI has specified two interface protocols
-for camera integration relevant to Ara systems, CSI-2 and CSI-3.
+with AP Modules in a Greybus System.
 
+MIPI has specified two interface protocols for camera integration relevant for
+Greybus Systems, CSI-2 and CSI-3.
 CSI-2 is a high-speed point-to-point unidirectional data transfer protocol.
 It defines an interface between a camera peripheral device and a host processor.
 CSI-2 usage is widespread in the mobile industry and is natively supported by
@@ -1536,7 +1537,7 @@ These formats transmit pixels encoded in YUV with 8 bits per component and a
 4:2:2 subsampling. The image width shall be a multiple of two pixels.
 The number of chroma line is equal to the number of luma lines.
 
-The semi-planar YUV 4:2:2 formats are Ara-specific, they are not defined in
+The semi-planar YUV 4:2:2 formats are Greybus specific, they are not defined in
 [CSI-2]_. They come in eight variants with all combinations of number of Data
 Types, U/V ordering and interleaving mode.
 
@@ -1577,7 +1578,7 @@ These formats transmit pixels encoded in YUV with 8 bits per component and a
 The number of chroma lines is half the number of luma lines. Each chroma line
 stores values related to two lines of pixels.
 
-The semi-planar YUV 4:2:0 formats are Ara-specific, they are not defined in
+The semi-planar YUV 4:2:0 formats are Greybus specific, they are not defined in
 [CSI-2]_. They come in eight variants with all combinations of number of Data
 Types, U/V ordering and interleaving mode.
 
@@ -1621,7 +1622,7 @@ These formats transmit pixels encoded in YUV with 8 bits per component and a
 4:2:2 subsampling. The image width shall be a multiple of two pixels. The
 number of chroma line is equal to the number of luma lines.
 
-The planar YUV 4:2:2 formats are Ara-specific, they are not defined in
+The planar YUV 4:2:2 formats are Greybus specific, they are not defined in
 [CSI-2]_. They come in two variants for U/V ordering.
 
 Only plane-interleaved is supported. All luma lines are sent first, followed
@@ -1647,7 +1648,7 @@ These formats transmit pixels encoded in YUV with 8 bits per component and a
 The number of chroma lines is half the number of luma lines. Each chroma line
 stores values related to two lines of pixels.
 
-The planar YUV 4:2:0 formats are Ara-specific, they are not defined in
+The planar YUV 4:2:0 formats are Greybus specific, they are not defined in
 [CSI-2]_. They come in two variants for U\/V ordering.
 
 Only plane-interleaved is supported. All luma lines are sent first, followed
