@@ -247,6 +247,10 @@ Conceptually, the operations in the Greybus SVC Protocol are:
    :ref:`hardware-model-vchg` sub-state of
    :ref:`hardware-model-interface-states` for intf_id to V_CHG_OFF.
 
+.. c:function:: int intf_set_vsys_power_limit(u8 intf_id, u16 mw)
+
+   The AP Module uses this Operation to set a limit for the power
+   delivered to an Interface.
 
 Greybus SVC Operations
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -312,7 +316,8 @@ response type values are shown.
     Interface Oops                      0x2a           0xaa
     Interface V_CHG Enable              0x2b           0xab
     Interface V_CHG Disable             0x2c           0xac
-    (all other values reserved)         0x2d..0x7e     0xad..0xfe
+    Interface Set V_SYS  Power Limit    0x2d           0xad
+    (all other values reserved)         0x2e..0x7e     0xae..0xfe
     Invalid                             0x7f           0xff
     ==================================  =============  ==============
 
@@ -352,7 +357,8 @@ to signal errors specific to SVC Protocol.
     GB_SVC_INTF_BAD_MBOX             0x0d             Interface set MAILBOX to illegal value
     GB_SVC_INTF_OP_TIMEOUT           0x0e             SVC Interface operation timed out
     GB_SVC_PWRMON_OP_NOT_PRESENT     0x0f             Measurable power rails are not present
-    Reserved                         0x10 to 0xff     Reserved for future use
+    GB_SVC_PWRMON_ERROR              0x10             Error occurred while configuring power rail
+    Reserved                         0x11 to 0xff     Reserved for future use
     ===============================  ===============  ======================================
 
 ..
@@ -3793,3 +3799,73 @@ particular, V_CHG is V_CHG_OFF if Response message header has the
 field in the Operation Response payload is V_CHG_OK. V_CHG shall not have
 changed value as a result of processing the Request in any other combination of
 these two fields.
+
+.. _svc-interface-set-vsys-power-limit:
+
+Greybus SVC Interface Set V_SYS Power Limit Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The AP Module uses this Operation to set a limit to the power
+delivered to an Interface. If this Operation is successfully
+exchanged, and the Interface draws more power through the V_SYS
+power bus than the amount specified in the Request, the Frame
+shall disable power delivery to the Interface by setting V_SYS
+to V_SYS_OFF. The SVC shall detect this event, and subsequently
+exchange a :ref:`svc-interface-oops`, with the AP Module in order
+to notify the AP Module about the overconsumption event. If this
+Operation fails the Interface power limit shall be set to the default
+limit and an error shall be sent to the AP.
+
+.. _svc-interface-set-vsys-power-limit-request:
+
+Greybus SVC Interface Set V_SYS Power Limit Request
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-intf-set-vsys-power-limit-request` defines the Greybus SVC
+Interface Set Power Limit Request payload.
+
+The Greybus SVC Interface Set V_SYS Power Limit Request shall be sent only by
+the AP Module to the SVC. The Interface ID informs the SVC of the Interface
+it has to impose the power limit on. The mw field specifies the power limit
+in milli-watts.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-intf-set-vsys-power-limit-request
+    :caption: SVC Protocol Interface Set V_SYS Power Limit Request
+    :spec: l l c c l
+
+    =======  ==============  ======  ============    =========================================
+    Offset   Field           Size    Value           Description
+    =======  ==============  ======  ============    =========================================
+    0        intf_id         1       Number          Interface whose power consumption to limit
+    1        mw              2       Number          Power limit to be set in milli-watts
+    =======  ==============  ======  ============    =========================================
+
+
+..
+
+.. _svc-interface-set-vsys-power-limit-response:
+
+Greybus SVC Interface Set V_SYS Power Limit Response
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-svc-intf-set-vsys-power-limit-response` defines the Greybus SVC
+Interface Set V_SYS Power Limit Response.
+
+The Response contains the status of the Operation. For more information refer to
+:ref:`svc-protocol-op-status`.
+
+.. figtable::
+    :nofig:
+    :label: table-svc-intf-set-vsys-power-limit-response
+    :caption: SVC Protocol Interface Set V_SYS Power Limit Response
+    :spec: l l c c l
+
+    =======  ==============  ===========  ================  =========================================
+    Offset   Field           Size         Value             Description
+    =======  ==============  ===========  ================  =========================================
+    0        status          1            Number            :ref:`svc-protocol-op-status`
+    =======  ==============  ===========  ================  =========================================
+
+..
