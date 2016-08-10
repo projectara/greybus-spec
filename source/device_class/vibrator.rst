@@ -12,9 +12,9 @@ The operations in the Greybus vibrator Protocol are:
 
     See :ref:`greybus-protocol-cport-shutdown-operation`.
 
-.. c:function:: int vibrator_on(u16 timeout_ms);
+.. c:function:: int vibrator_on(void);
 
-   Turns on the vibrator for the number of specified milliseconds.
+   Turns on the vibrator.
 
 .. c:function:: int vibrator_off(void);
 
@@ -60,28 +60,12 @@ Greybus Vibrator On Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Greybus vibrator on operation allows the AP Module to request the
-vibrator be enabled for the specified number of milliseconds.
+vibrator be enabled.
 
 Greybus Vibrator On Request
 """""""""""""""""""""""""""
 
-Table :num:`table-vibrator-on-request` defines the Greybus Vibrator
-On request.  The request supplies the amount of time that the
-vibrator should now be enabled for.
-
-.. figtable::
-    :nofig:
-    :label: table-vibrator-on-request
-    :caption: Vibrator Protocol On Request
-    :spec: l l c c l
-
-    =======  ==============  ======  ==========      ===========================
-    Offset   Field           Size    Value           Description
-    =======  ==============  ======  ==========      ===========================
-    0        timeout_ms      2       Number          timeout in milliseconds
-    =======  ==============  ======  ==========      ===========================
-
-..
+The Greybus vibrator on request message has no payload.
 
 Greybus Vibrator On Response
 """"""""""""""""""""""""""""
