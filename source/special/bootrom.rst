@@ -278,7 +278,7 @@ header.
     ======  =====  ====== ======  =================================
     Offset  Field  Size   Value   Description
     ======  =====  ====== ======  =================================
-    4       data   *size* Data    Data from the firmware blob
+    0       data   *size* Data    Data from the firmware blob
     ======  =====  ====== ======  =================================
 
 ..
