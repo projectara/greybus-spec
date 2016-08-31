@@ -16,6 +16,8 @@ this specification:
 * Jun Li               -- BSquare
 * Phong Tran           -- BSquare
 * Winnie Wang          -- BSquare
+* Chris Myerchin       -- BSquare
+* Jason Hung           -- BSquare
 * Jeffrey Carlyle      -- Google
 * Paul Eremenko        -- Google
 * David Fishman        -- Google
@@ -47,6 +49,8 @@ this specification:
 * Rui Silva            -- Linaro
 * John Stultz          -- Linaro
 * Glen Valante         -- Linaro
+* Pankaj Bharadiya     -- Linaro
+* Vaibhav Agarwal      -- Linaro
 * Greg Kroah-Hartman   -- Linux Solutions
 * Blagovest Kolenichev -- MM Solutions
 * Georgi Dobrev        -- MM Solutions
