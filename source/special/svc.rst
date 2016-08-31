@@ -317,7 +317,10 @@ response type values are shown.
     Interface V_CHG Enable              0x2b           0xab
     Interface V_CHG Disable             0x2c           0xac
     Interface Set V_SYS  Power Limit    0x2d           0xad
-    (all other values reserved)         0x2e..0x7e     0xae..0xfe
+    Reserved                            0x30           0xb0
+    Reserved                            0x31           N/A
+    Reserved                            0x32           0xb2
+    (all other values reserved)         0x33..0x7e     0xb3..0xfe
     Invalid                             0x7f           0xff
     ==================================  =============  ==============
 
