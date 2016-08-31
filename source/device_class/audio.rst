@@ -270,26 +270,30 @@ route structures.
     :caption: Audio Get Topology Response
     :spec: l l c c l
 
-    ========================= ============ ==== ========= ============================
-    Offset                    Field        Size Value     Description
-    ========================= ============ ==== ========= ============================
-    0                         num_dais     1    Number    Number of DAI structures
-    1                         num_controls 1    Number    Number of control structures
-    2                         num_widgets  1    Number    Number of widget structures
-    3                         num_routes   1    Number    Number of route structures
-    4                         dai[1]       120  Structure :ref:`audio-dai-struct`
-    ...                       ...          120  Structure :ref:`audio-dai-struct`
-    4+120*(I-1)               dai[I]       120  Structure :ref:`audio-dai-struct`
-    4+120*I                   control[1]   54   Structure :ref:`audio-control-struct`
-    ...                       ...          54   Structure :ref:`audio-control-struct`
-    4+120*I+54*(J-1)          control[J]   54   Structure :ref:`audio-control-struct`
-    4+120*I+54*J              widget[1]    43   Structure :ref:`audio-widget-struct`
-    ...                       ...          43   Structure :ref:`audio-widget-struct`
-    4+120*I+54*(J-1)+43*(K-1) widget[K]    43   Structure :ref:`audio-widget-struct`
-    4+120*I+54*J+43*K         route[1]     3    Structure :ref:`audio-route-struct`
-    ...                       ...          3    Structure :ref:`audio-route-struct`
-    4+120*I+54*J+43*K+3*(L-1) route[L]     3    Structure :ref:`audio-route-struct`
-    ========================= ============ ==== ========= ============================
+    =============================================== ============= ==== ========= ============================
+    Offset                                          Field         Size Value     Description
+    =============================================== ============= ==== ========= ============================
+    0                                               num_dais      1    Number    Number of DAI structures
+    1                                               num_controls  1    Number    Number of control structures
+    2                                               num_widgets   1    Number    Number of widget structures
+    3                                               num_routes    1    Number    Number of route structures
+    4                                               size_dais     4    Number    Size of audio_dais
+    8                                               size_controls 4    Number    Size of audio_controls
+    12                                              size_widgets  4    Number    Size of audio_widgets
+    16                                              size_routes   4    Number    Size of audio_routes
+    20                                              dai[1]        120  Structure :ref:`audio-dai-struct`
+    ...                                             ...           120  Structure :ref:`audio-dai-struct`
+    20+120*(I-1)                                    dai[I]        120  Structure :ref:`audio-dai-struct`
+    20+size_dais                                    control[1]    XX   Structure :ref:`audio-control-struct`
+    ...                                             ...           XX   Structure :ref:`audio-control-struct`
+    20+size_dais+XX*(J-1)                           control[J]    XX   Structure :ref:`audio-control-struct`
+    20+size_dais+size_controls                      widget[1]     YY   Structure :ref:`audio-widget-struct`
+    ...                                             ...           YY   Structure :ref:`audio-widget-struct`
+    20+size_dais+size_controls+YY*(K-1)             widget[K]     YY   Structure :ref:`audio-widget-struct`
+    20+size_dais+size_controls+size_widgets         route[1]      4    Structure :ref:`audio-route-struct`
+    ...                                             ...           4    Structure :ref:`audio-route-struct`
+    20+size_dais+size_controls+size_widgets+4*(L-1) route[L]      4    Structure :ref:`audio-route-struct`
+    =============================================== ============= ==== ========= ============================
 
 ..
 
@@ -433,9 +437,10 @@ control information for Audio Modules.
     32     id            1    Number    Control ID
     33     iface         1    Number    :ref:`audio-control-iface-type`
     34     dai_cport     2    Number    DAI CPort
-    36     access        1    Bit Mask  :ref:`audio-control-access-rights-flags`
-    37     count         1    Number    Number of elements of this type
-    38     info          XX   Structure :ref:`audio-ctl-elem-info`
+    36     access        4    Bit Mask  :ref:`audio-control-access-rights-flags`
+    40     count         1    Number    Number of elements of this type
+    41     count_values  1    Number    Number of values (max=2, L/R)
+    42     info          XX   Structure :ref:`audio-ctl-elem-info`
     ====== ============= ==== ========= ========================================
 
 ..
@@ -508,40 +513,12 @@ structure containing control element information for Audio Modules.
     ====== ============= ==== ========= ========================================
     Offset Field         Size Value     Description
     ====== ============= ==== ========= ========================================
-    0      id            47   Structure :ref:`audio-ctl-elem-id`
-    47     type          1    Bit Mask  :ref:`audio-ctl-elem-type`
-    48     access        1    Bit Mask  :ref:`audio-control-access-rights-flags`
-    49     count         1    Number    Number of values
-    50     dimen[1]      2    Number    First dimension
+    0      type          1    Bit Mask  :ref:`audio-ctl-elem-type`
+    1      dimen[1]      2    Number    First dimension
     ...    ...           2    Number    ...
-    56     dimen[4]      2    Number    Fourth dimension
-    58     value         XX   Union     :ref:`audio-ctl-elem-val-range-union`
+    7      dimen[4]      2    Number    Fourth dimension
+    9      value         XX   Union     :ref:`audio-ctl-elem-val-range-union`
     ====== ============= ==== ========= ========================================
-
-..
-
-.. _audio-ctl-elem-id:
-
-Greybus Audio Control Element ID Structure
-""""""""""""""""""""""""""""""""""""""""""
-
-Table :num:`table-audio-ctl-elem-id-structure` describes the
-structure containing a control element ID value for Audio Modules.
-
-.. figtable::
-    :nofig:
-    :label: table-audio-ctl-elem-id-structure
-    :caption: Audio Control Element ID Structure
-    :spec: l l c c l
-
-    ====== ============= ==== ========= =================
-    Offset Field         Size Value     Description
-    ====== ============= ==== ========= =================
-    0      numid         1    Number    Numeric ID
-    1      iface         1    Number    :ref:`audio-control-iface-type`
-    2      name          44   UTF-8     Name
-    46     index         46   Number    index of element
-    ====== ============= ==== ========= =================
 
 ..
 
@@ -661,8 +638,8 @@ Audio Modules.
     Offset Field         Size Value     Description
     ====== ============= ==== ========= ======================
     0      items         4    Number    Number of items
-    4      names_length  4    Number    Length of names field
-    8      names         XX   UTF-8     Enumerated type names
+    4      names_length  2    Number    Length of names field
+    6      names         XX   UTF-8     Enumerated type names
     ====== ============= ==== ========= ======================
 
 ..
@@ -681,15 +658,17 @@ widget information for Audio Modules.
     :caption: Audio Widget Structure
     :spec: l l c c l
 
-    ====== =========== ==== ======== =============================
-    Offset Field       Size Value    Description
-    ====== =========== ==== ======== =============================
-    0      name        32   UTF-8    Widget Name
-    32     id          1    Number   Widget ID
-    33     type        1    Number   :ref:`audio-widget-type`
-    34     state       1    Number   :ref:`audio-widget-state`
-    35     control_ids 8    Bit Mask Control IDs
-    ====== =========== ==== ======== =============================
+    ====== =========== ==== ========= =============================
+    Offset Field       Size Value     Description
+    ====== =========== ==== ========= =============================
+    0      name        32   UTF-8     Widget Name
+    32     name        32   UTF-8     Widget Stream Name
+    64     id          1    Number    Widget ID
+    65     type        1    Number    :ref:`audio-widget-type`
+    66     state       1    Number    :ref:`audio-widget-state`
+    67     ncontrols   1    Number    Number of widget controls
+    68     ctl         XX   Structure :ref:`audio-control-struct`
+    ====== =========== ==== ========= =============================
 
 ..
 
@@ -780,13 +759,14 @@ route information for Audio Modules.
     :caption: Audio Route Structure
     :spec: l l c c l
 
-    ====== ============== ==== ====== ========================
+    ====== ============== ==== ====== =====================================
     Offset Field          Size Value  Description
-    ====== ============== ==== ====== ========================
+    ====== ============== ==== ====== =====================================
     0      source_id      1    Number ID of source widget
     1      destination_id 1    Number ID of destination widget
     2      control_id     1    Number Control ID
-    ====== ============== ==== ====== ========================
+    3      index          1    Number Index within the [enumerated] control
+    ====== ============== ==== ====== =====================================
 
 ..
 
@@ -813,6 +793,7 @@ one-byte control ID which uniquely identifies the audio control.
     Offset Field      Size Value  Description
     ====== ========== ==== ====== ===========
     0      control_id 1    Number Control ID
+    1      index      1    Number Index
     ====== ========== ==== ====== ===========
 
 ..
@@ -855,9 +836,8 @@ control element identification and values for Audio Modules.
     ====== ========== ==== ========= ========================================
     Offset Field      Size Value     Description
     ====== ========== ==== ========= ========================================
-    0      id         47   Structure :ref:`audio-ctl-elem-id`
-    47     timestamp  8    Number    Timestamp
-    55     value      8    Union     :ref:`audio-ctl-elem-val-union`
+    0      timestamp  8    Number    Timestamp
+    8      value      8    Union     :ref:`audio-ctl-elem-val-union`
     ====== ========== ==== ========= ========================================
 
 ..
@@ -879,9 +859,9 @@ union containing control element values for Audio Modules.
     ====== ============= ==== ========= ============================
     Offset Field         Size Value     Description
     ====== ============= ==== ========= ============================
-    0      integer       4    Number    The 32-bit integer value
-    0      integer64     8    Number    The 64-bit integer value
-    0      enumerated    4    Number    Enumerated type item index
+    0      integer       8    Number    The 32-bit integer value
+    0      integer64     16   Number    The 64-bit integer value
+    0      enumerated    8    Number    Enumerated type item index
     ====== ============= ==== ========= ============================
 
 ..
@@ -910,7 +890,8 @@ and a 63-byte structure that specifies the new value.
     Offset Field      Size Value     Description
     ====== ========== ==== ========= ========================================
     0      control_id 1    Number    Control ID
-    1      value      63   Structure :ref:`audio-ctl-elem-val-struct`
+    1      index      1    Number    Index
+    2      value      63   Structure :ref:`audio-ctl-elem-val-struct`
     ====== ========== ==== ========= ========================================
 
 ..
@@ -1375,7 +1356,7 @@ a one-byte widget type, and the one-byte event being reported.
     =======  ==========  ====  ======== ================================
     Offset   Field       Size  Value    Description
     =======  ==========  ====  ======== ================================
-    0        widget id   1     Number   Widget ID
+    0        widget_id   1     Number   Widget ID
     1        type        1     Number   :ref:`audio-widget-type`
     2        event       1     Number   :ref:`audio-jack-events`
     =======  ==========  ====  ======== ================================
@@ -1432,8 +1413,8 @@ a one-byte button ID, and the one-byte button event being reported.
     =======  ==========  ====  ======== ================================
     Offset   Field       Size  Value    Description
     =======  ==========  ====  ======== ================================
-    0        widget id   1     Number   Widget ID
-    1        button id   1     Number   Button ID
+    0        widget_id   1     Number   Widget ID
+    1        button_id   1     Number   Button ID
     2        event       1     Number   :ref:`audio-button-events`
     =======  ==========  ====  ======== ================================
 
