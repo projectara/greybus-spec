@@ -82,53 +82,53 @@ The operations in the Greybus Audio Protocol are:
 
    Disables the specified widget.
 
-.. c:function:: int get_pcm(u16 dai_cport, u64 *format, u32 *rate, u8 *channels u8 sig_bits);
+.. c:function:: int get_pcm(u16 data_cport, u64 *format, u32 *rate, u8 *channels u8 sig_bits);
 
    Returns the current PCM values of the specified DAI.
 
-.. c:function:: int set_pcm(u16 dai_cport, u64 format, u32 rate, u8 channels u8 ig_bits);
+.. c:function:: int set_pcm(u16 data_cport, u64 format, u32 rate, u8 channels u8 ig_bits);
 
    Sets the PCM values of the specified DAI.
 
-.. c:function:: int set_tx_data_size(u16 dai_cport, u16 size);
+.. c:function:: int set_tx_data_size(u16 data_cport, u16 size);
 
    Sets the number of bytes in the audio data portion of Greybus
    audio messages going from the AP Module to the Audio Module.
 
-.. c:function:: int get_tx_delay(u16 dai_cport, u32 *delay);
+.. c:function:: int get_tx_delay(u16 data_cport, u32 *delay);
 
    Returns the delay from the time the Audio Module receives the
    first Greybus Audio Messages until the first sound can be heard
    in microseconds.
 
-.. c:function:: int activate_tx(u16 dai_cport);
+.. c:function:: int activate_tx(u16 data_cport);
 
    Requests that the Audio Module begin accepting Greybus audio messages
    and output them on the configured audio widget.
 
-.. c:function:: int deactivate_tx(u16 dai_cport);
+.. c:function:: int deactivate_tx(u16 data_cport);
 
    Requests that the Audio Module stop accepting Greybus audio messages
    and stop outputting them on the configured audio endpoint.
 
-.. c:function:: int set_rx_data_size(u16 dai_cport, u16 size);
+.. c:function:: int set_rx_data_size(u16 data_cport, u16 size);
 
    Sets the number of bytes in the audio data portion of Greybus
    audio messages going from the Audio Module to the AP Module.
 
-.. c:function:: int get_rx_delay(u16 dai_cport, u32 *delay);
+.. c:function:: int get_rx_delay(u16 data_cport, u32 *delay);
 
    Returns the delay from the time the Audio Module first
    receives a Activate RX Message until the first Greybus audio
    message is sent in microseconds (given the current PCM and
    RX data size configuration).
 
-.. c:function:: int activate_rx(u16 dai_cport);
+.. c:function:: int activate_rx(u16 data_cport);
 
    Requests that the Audio Module begin capturing audio data
    and sending it to the AP Module.
 
-.. c:function:: int deactivate_rx(u16 dai_cport);
+.. c:function:: int deactivate_rx(u16 data_cport);
 
    Requests that the Audio Module stop capturing audio data
    and sending it to the AP Module.
@@ -141,7 +141,7 @@ The operations in the Greybus Audio Protocol are:
 
    Reports a jack related event to the AP Module.
 
-.. c:function:: int streaming_event(u16 dai_cport, u8 *event);
+.. c:function:: int streaming_event(u16 data_cport, u8 *event);
 
    Reports a streaming related event to the AP Module.
 
@@ -436,7 +436,7 @@ control information for Audio Modules.
     0      name          32   UTF-8     Control Name
     32     id            1    Number    Control ID
     33     iface         1    Number    :ref:`audio-control-iface-type`
-    34     dai_cport     2    Number    DAI CPort
+    34     data_cport    2    Number    Data CPort
     36     access        4    Bit Mask  :ref:`audio-control-access-rights-flags`
     40     count         1    Number    Number of elements of this type
     41     count_values  1    Number    Number of values (max=2, L/R)
@@ -937,11 +937,11 @@ is being queried.
     :caption: Audio Get PCM Request
     :spec: l l c c l
 
-    ====== ========= ==== ======== ================================
-    Offset Field     Size Value    Description
-    ====== ========= ==== ======== ================================
-    0      dai_cport 2    Number   DAI's CPort
-    ====== ========= ==== ======== ================================
+    ====== ========== ==== ======== ================================
+    Offset Field      Size Value    Description
+    ====== ========== ==== ======== ================================
+    0      data_cport 2    Number   Data CPort
+    ====== ========== ==== ======== ================================
 
 ..
 
@@ -992,15 +992,15 @@ is being set.
     :caption: Audio Set PCM Request
     :spec: l l c c l
 
-    =======  =========  ====  ======== ==================================
+    =======  ========== ====  ======== ==================================
     Offset   Field      Size  Value    Description
-    =======  =========  ====  ======== ==================================
-    0        dai_cport  2     Number   DAI's CPort
+    =======  ========== ====  ======== ==================================
+    0        data_cport 2     Number   Data CPort
     2        format     4     Bit mask :ref:`audio-pcm-format-flags`
     6        rate       4     Bit mask :ref:`audio-pcm-rate-flags`
     10       channels   1     Number   Number of audio channels
     11       sig_bits   1     Number   Number of significant bits of data
-    =======  =========  ====  ======== ==================================
+    =======  ========== ====  ======== ==================================
 
 ..
 
@@ -1035,12 +1035,12 @@ number of channels).
     :caption: Audio Set TX Data Size Request
     :spec: l l c c l
 
-    =======  =========  ====  ======== ================================
+    =======  ========== ====  ======== ================================
     Offset   Field      Size  Value    Description
-    =======  =========  ====  ======== ================================
-    0        dai_cport  2     Number   DAI's CPort
+    =======  ========== ====  ======== ================================
+    0        data_cport 2     Number   Data CPort
     2        size       2     Number   Number of audio data bytes
-    =======  =========  ====  ======== ================================
+    =======  ========== ====  ======== ================================
 
 ..
 
@@ -1070,11 +1070,11 @@ DAI CPort which uniquely identifies the DAI.
     :caption: Audio Get TX Delay Request
     :spec: l l c c l
 
-    ====== ========= ==== ======== ================================
-    Offset Field     Size Value    Description
-    ====== ========= ==== ======== ================================
-    0      dai_cport 2    Number   DAI's CPort
-    ====== ========= ==== ======== ================================
+    ====== ========== ==== ======== ================================
+    Offset Field      Size Value    Description
+    ====== ========== ==== ======== ================================
+    0      data_cport 2    Number   Data CPort
+    ====== ========== ==== ======== ================================
 
 ..
 
@@ -1124,11 +1124,11 @@ DAI CPort which uniquely identifies the DAI.
     :caption: Audio Activate TX Request
     :spec: l l c c l
 
-    =======  =========  ====  ======== ================================
+    =======  ========== ====  ======== ================================
     Offset   Field      Size  Value    Description
-    =======  =========  ====  ======== ================================
-    0        dai_cport  2     Number   DAI's CPort
-    =======  =========  ====  ======== ================================
+    =======  ========== ====  ======== ================================
+    0        data_cport 2     Number   Data CPort
+    =======  ========== ====  ======== ================================
 
 ..
 
@@ -1159,11 +1159,11 @@ DAI CPort which uniquely identifies the DAI.
     :caption: Audio Deactivate TX Request
     :spec: l l c c l
 
-    =======  =========  ====  ======== ================================
+    =======  ========== ====  ======== ================================
     Offset   Field      Size  Value    Description
-    =======  =========  ====  ======== ================================
-    0        dai_cport  2     Number   DAI's CPort
-    =======  =========  ====  ======== ================================
+    =======  ========== ====  ======== ================================
+    0        data_cport 2     Number   Data CPort
+    =======  ========== ====  ======== ================================
 
 ..
 
@@ -1198,12 +1198,12 @@ number of channels).
     :caption: Audio Set RX Data Size Request
     :spec: l l c c l
 
-    =======  =========  ====  ======== ================================
+    =======  ========== ====  ======== ================================
     Offset   Field      Size  Value    Description
-    =======  =========  ====  ======== ================================
-    0        dai_cport  2     Number   DAI's CPort
+    =======  ========== ====  ======== ================================
+    0        data_cport 2     Number   Data CPort
     2        size       2     Number   Number of audio data bytes
-    =======  =========  ====  ======== ================================
+    =======  ========== ====  ======== ================================
 
 ..
 
@@ -1233,11 +1233,11 @@ DAI CPort which uniquely identifies the DAI.
     :caption: Audio Get RX Delay Request
     :spec: l l c c l
 
-    ====== ========= ==== ======== ================================
-    Offset Field     Size Value    Description
-    ====== ========= ==== ======== ================================
-    0      dai_cport 2    Number   DAI's CPort
-    ====== ========= ==== ======== ================================
+    ====== ========== ==== ======== ================================
+    Offset Field      Size Value    Description
+    ====== ========== ==== ======== ================================
+    0      data_cport 2    Number   Data CPort
+    ====== ========== ==== ======== ================================
 
 ..
 
@@ -1287,11 +1287,11 @@ DAI CPort which uniquely identifies the DAI.
     :caption: Audio Activate RX Request
     :spec: l l c c l
 
-    =======  =========  ====  ======== ================================
+    =======  ========== ====  ======== ================================
     Offset   Field      Size  Value    Description
-    =======  =========  ====  ======== ================================
-    0        dai_cport  2     Number   DAI's CPort
-    =======  =========  ====  ======== ================================
+    =======  ========== ====  ======== ================================
+    0        data_cport 2     Number   Data CPort
+    =======  ========== ====  ======== ================================
 
 ..
 
@@ -1321,11 +1321,11 @@ DAI CPort which uniquely identifies the DAI.
     :caption: Audio Deactivate RX Request
     :spec: l l c c l
 
-    =======  =========  ====  ======== ================================
+    =======  ========== ====  ======== ================================
     Offset   Field      Size  Value    Description
-    =======  =========  ====  ======== ================================
-    0        dai_cport  2     Number   DAI's CPort
-    =======  =========  ====  ======== ================================
+    =======  ========== ====  ======== ================================
+    0        data_cport 2     Number   Data CPort
+    =======  ========== ====  ======== ================================
 
 ..
 
@@ -1467,12 +1467,12 @@ identifies the DAI, and the one-byte event being reported.
     :caption: Audio Streaming Event Request
     :spec: l l c c l
 
-    =======  =========  ====  ========= ================================
+    =======  ========== ====  ========= ================================
     Offset   Field      Size  Value     Description
-    =======  =========  ====  ========= ================================
-    0        dai_cport  2     Number    DAI's CPort
+    =======  ========== ====  ========= ================================
+    0        data_cport 2     Number    Data CPort
     2        event      1     Number    :ref:`audio-streaming-events`
-    =======  =========  ====  ========= ================================
+    =======  ========== ====  ========= ================================
 
 ..
 
