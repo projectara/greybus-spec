@@ -910,12 +910,60 @@ enable a widget on an Audio Module.
 Greybus Audio Enable Widget Request
 """""""""""""""""""""""""""""""""""
 
-The Greybus Audio Enable Widget request has no payload.
+Table :num:`table-audio-enable-widget-request` describes the
+Greybus Audio Enable Widget request. The request supplies the
+widget_id which uniquely identifies the widget.
+
+.. figtable::
+    :nofig:
+    :label: table-audio-enable-widget-request
+    :caption: Audio Enable Widget Request
+    :spec: l l c c l
+
+    =======  ========== ====  ======== ================================
+    Offset   Field      Size  Value    Description
+    =======  ========== ====  ======== ================================
+    0        widget_id  1     Number   Widget Id
+    =======  ========== ====  ======== ================================
+
+..
 
 Greybus Audio Enable Widget Response
 """"""""""""""""""""""""""""""""""""
 
 The Greybus Audio Enable Widget response has no payload.
+
+Greybus Audio Disable Widget Operation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Greybus Audio Disable Widget operation allows the requester to
+disable a widget on an Audio Module.
+
+Greybus Audio Disable Widget Request
+""""""""""""""""""""""""""""""""""""
+
+Table :num:`table-audio-disable-widget-request` describes the
+Greybus Audio Disable Widget request. The request supplies the
+widget_id which uniquely identifies the widget.
+
+.. figtable::
+    :nofig:
+    :label: table-audio-disable-widget-request
+    :caption: Audio Disable Widget Request
+    :spec: l l c c l
+
+    =======  ========== ====  ======== ================================
+    Offset   Field      Size  Value    Description
+    =======  ========== ====  ======== ================================
+    0        widget_id  1     Number   Widget Id
+    =======  ========== ====  ======== ================================
+
+..
+
+Greybus Audio Disable Widget Response
+"""""""""""""""""""""""""""""""""""""
+
+The Greybus Audio Disable Widget response has no payload.
 
 Greybus Audio Get PCM Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
