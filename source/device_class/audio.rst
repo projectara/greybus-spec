@@ -281,19 +281,56 @@ route structures.
     8                                               size_controls 4    Number    Size of audio_controls
     12                                              size_widgets  4    Number    Size of audio_widgets
     16                                              size_routes   4    Number    Size of audio_routes
-    20                                              dai[1]        120  Structure :ref:`audio-dai-struct`
+    20                                              jack_type     4    Bit Mask  :ref:`audio-jack-type-flags`
+    24                                              dai[1]        120  Structure :ref:`audio-dai-struct`
     ...                                             ...           120  Structure :ref:`audio-dai-struct`
-    20+120*(I-1)                                    dai[I]        120  Structure :ref:`audio-dai-struct`
-    20+size_dais                                    control[1]    XX   Structure :ref:`audio-control-struct`
+    24+120*(I-1)                                    dai[I]        120  Structure :ref:`audio-dai-struct`
+    24+size_dais                                    control[1]    XX   Structure :ref:`audio-control-struct`
     ...                                             ...           XX   Structure :ref:`audio-control-struct`
-    20+size_dais+XX*(J-1)                           control[J]    XX   Structure :ref:`audio-control-struct`
-    20+size_dais+size_controls                      widget[1]     YY   Structure :ref:`audio-widget-struct`
+    24+size_dais+XX*(J-1)                           control[J]    XX   Structure :ref:`audio-control-struct`
+    24+size_dais+size_controls                      widget[1]     YY   Structure :ref:`audio-widget-struct`
     ...                                             ...           YY   Structure :ref:`audio-widget-struct`
-    20+size_dais+size_controls+YY*(K-1)             widget[K]     YY   Structure :ref:`audio-widget-struct`
-    20+size_dais+size_controls+size_widgets         route[1]      4    Structure :ref:`audio-route-struct`
+    24+size_dais+size_controls+YY*(K-1)             widget[K]     YY   Structure :ref:`audio-widget-struct`
+    24+size_dais+size_controls+size_widgets         route[1]      4    Structure :ref:`audio-route-struct`
     ...                                             ...           4    Structure :ref:`audio-route-struct`
-    20+size_dais+size_controls+size_widgets+4*(L-1) route[L]      4    Structure :ref:`audio-route-struct`
+    24+size_dais+size_controls+size_widgets+4*(L-1) route[L]      4    Structure :ref:`audio-route-struct`
     =============================================== ============= ==== ========= ============================
+
+..
+
+.. _audio-jack-type-flags:
+
+Greybus Audio jack type Flag Bits
+"""""""""""""""""""""""""""""""""
+
+Table :num:`table-audio-jack-type-flag-bits` describes the audio jack types.
+
+.. figtable::
+    :nofig:
+    :label: table-audio-jack-type-flag-bits
+    :caption: Audio Jack type Flag Bits
+    :spec: l l l
+
+    =========================== ========================= ==========
+    Symbol                      Brief Description         Mask Value
+    =========================== ========================= ==========
+    GB_AUDIO_JACK_HEADPHONE     Headphone                 0x0000001
+    GB_AUDIO_JACK_MICROPHONE    Mic                       0x0000002
+    GB_AUDIO_JACK_HEADSET       Headphone+Mic             0x0000003
+    GB_AUDIO_JACK_LINEOUT       Lineout                   0x0000004
+    GB_AUDIO_JACK_MECHANICAL    Mechanical jack           0x0000008
+    GB_AUDIO_JACK_VIDEOOUT      Videoout                  0x0000010
+    GB_AUDIO_JACK_AVOUT         Lineout+Videoout          0x0000014
+    GB_AUDIO_JACK_LINEIN        LineIn                    0x0000020
+    GB_AUDIO_JACK_OC_HPHL       HPHL                      0x0000040
+    GB_AUDIO_JACK_OC_HPHR       HPHR                      0x0000080
+    GB_AUDIO_JACK_MICROPHONE2   Mic2                      0x0000200
+    GB_AUDIO_JACK_ANC_HEADPHONE Headphone+Mic+Mic2        0x0000203
+    GB_AUDIO_JACK_BTN_0         Media key                 0x4000000
+    GB_AUDIO_JACK_BTN_1         Voicecommand key          0x2000000
+    GB_AUDIO_JACK_BTN_2         Volumeup key              0x1000000
+    GB_AUDIO_JACK_BTN_3         Volumedown key            0x0800000
+    =========================== ========================= ==========
 
 ..
 
