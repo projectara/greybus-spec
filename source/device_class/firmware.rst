@@ -21,7 +21,7 @@ are:
 
     See :ref:`greybus-protocol-cport-shutdown-operation`.
 
-.. c:function:: int find_firmware(u8 firmware_tag[10], u8 *firmware_id, u32 *size);
+.. c:function:: int find_firmware(u8 firmware_tag[10], u8 format[10], u8 *firmware_id, u32 *size);
 
     This Operation can be initiated only by an Interface to request the
     AP to find a firmware package for the Interface.
@@ -86,9 +86,9 @@ The Greybus Firmware Download Find Firmware Operation Request can be
 sent only by an Interface to request the AP to find a firmware package
 for the Interface.
 
-The Interface provides a firmware_tag to the AP as part of the request,
-which may be used by the AP in an implementation-defined way to find the
-firmware package for the Interface.
+The Interface provides a firmware_tag and its format to the AP as part
+of the request, which may be used by the AP in an implementation-defined
+way to find the firmware package for the Interface.
 
 In response, the AP locates a matching firmware package and returns to
 the Interface the size of the firmware package and a unique firmware_id
@@ -135,9 +135,9 @@ Greybus Firmware Download Find Firmware Request
 
 Table :num:`table-firmware-download-find-firmware-request` defines the
 Greybus Firmware Download Find Firmware Request payload.  The Request
-contains a 10-byte firmware_tag of the firmware package requested for
-download.  This may be used by the AP in an implementation-defined way
-to find the requested firmware package.
+contains a 10-byte firmware_tag and a 10-byte format of the firmware
+package requested for download.  This may be used by the AP in an
+implementation-defined way to find the requested firmware package.
 
 .. figtable::
     :nofig:
@@ -149,6 +149,7 @@ to find the requested firmware package.
     Offset  Field          Size    Value        Description
     ======  =============  ======  ===========  ===========================
     0       firmware_tag   10      [US-ASCII]_  A null-terminated character string used to identify the firmware package.
+    10      format         10      [US-ASCII]_  A null-terminated character string used to identify the format of firmware package.
     ======  =============  ======  ===========  ===========================
 ..
 
