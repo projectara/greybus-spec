@@ -423,16 +423,16 @@ are:
     Below Operations are specific to the :term:`Interface Backend
     Firmware` for an Interface.
 
-.. c:function:: int interface_backend_firmware_version(u8 firmware_tag[10], u16 *major, u16 *minor, u8 *status);
+.. c:function:: int interface_backend_firmware_version(u16 *major, u16 *minor, u8 *status);
 
     This Operation can be initiated only by the AP to get the current
-    version of a specific Interface Backend Firmware package available
-    locally with an Interface.
+    version of the Interface Backend Firmware packages available locally
+    with an Interface.
 
-.. c:function:: int interface_backend_firmware_update(u8 request_id, u8 firmware_tag[10]);
+.. c:function:: int interface_backend_firmware_update(u8 request_id);
 
     This Operation can be initiated only by the AP to request an
-    Interface to update a specific Interface Backend Firmware package.
+    Interface to update the Interface Backend Firmware packages.
 
 .. c:function:: int interface_backend_firmware_updated(u8 request_id, u8 status);
 
@@ -737,32 +737,15 @@ Greybus Firmware Management Interface Backend Firmware Version Operation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The Greybus Firmware Management Interface Backend Firmware Version
 Operation Request can be sent only by the AP to an Interface, to request
-the version of a specific Interface Backend Firmware available locally
-with the Interface.
+the version of the Interface Backend Firmware Packages available locally
+with the Interface. The same version shall apply to all the Backend
+Firmware Packages.
 
 Greybus Firmware Management Interface Backend Firmware Version Request
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-Table :num:`table-interface-backend-firmware-version-request` defines
-the Greybus Firmware Management Interface Backend Firmware Version
-Request payload.  The Request contains a 10-byte firmware_tag of the
-Interface Backend Firmware package, whose version is requested by the
-AP.  The firmware_tag may be used by the AP in an implementation-defined
-way for each requested Interface Backend Firmware package.
-
-.. figtable::
-    :nofig:
-    :label: table-interface-backend-firmware-version-request
-    :caption: Firmware Management Interface Backend Firmware Version Request
-    :spec: l l c c l
-
-    ======  =============  ======  ===========  ===========================
-    Offset  Field          Size    Value        Description
-    ======  =============  ======  ===========  ===========================
-    0       firmware_tag   10      [US-ASCII]_  A null-terminated character string used to identify the Interface Backend Firmware package.
-    ======  =============  ======  ===========  ===========================
-..
-
+The Greybus Firmware Management Interface Backend Firmware Version
+Request has no payload.
 
 Greybus Firmware Management Interface Backend Firmware Version Response
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -775,20 +758,20 @@ minor, and a 1-byte status.
 The major and minor numbers shall be ignored by the AP if the status
 contains value other than FW_STATUS_SUCCESS.
 
-If the Interface doesn't require the specific Interface Backend Firmware
-package for its functioning, then the Interface shall set the status to
+If the Interface doesn't require any Interface Backend Firmware package
+for its functioning, then the Interface shall set the status to
 FW_STATUS_NOT_SUPPORTED.
 
-If the Interface doesn't have the specific Interface Backend Firmware
-package available with it, then it shall set the status to
+If the Interface doesn't have all Interface Backend Firmware package
+available with it, then it shall set the status to
 FW_STATUS_NOT_AVAILABLE.
 
 Otherwise, the Interface shall set both major and minor fields in its
 Response with the major and minor version of its Interface Backend
-Firmware.
+Firmware packages.
 
 The Interface may require some time before providing the version of the
-Interface Backend Firmware package.  This may happen, for example, if
+Interface Backend Firmware packages.  This may happen, for example, if
 the Interface needs to boot the Backend Device Processors before getting
 the version of the available Interface Backend Firmware.  On such an
 event, the Interface shall set the status to FW_STATUS_RETRY.
@@ -808,8 +791,8 @@ error value.
     =======  ==================  ===========  =======  ===========================
     Offset   Field               Size         Value    Description
     =======  ==================  ===========  =======  ===========================
-    0        major               2            Number   Major version number of the Interface Backend Firmware package.
-    2        minor               2            Number   Minor version number of the Interface Backend Firmware package.
+    0        major               2            Number   Major version number of the Interface Backend Firmware packages.
+    2        minor               2            Number   Minor version number of the Interface Backend Firmware packages.
     4        status              1            Number   Status of the Interface Backend Firmware version
                                                        operation is defined by the table
                                                        :num:`table-interface-backend-firmware-version-status`.
@@ -828,8 +811,8 @@ error value.
     FW_STATUS_INVALID         Invalid Status.                              0x00
     FW_STATUS_SUCCESS         Firmware version successfully retrieved.     0x01
     FW_STATUS_NOT_AVAILABLE   Firmware not available.                      0x02
-    FW_STATUS_NOT_SUPPORTED   Firmware not required for functioning of
-                              Interface Backend devices.                   0x03
+    FW_STATUS_NOT_SUPPORTED   No Backend Firmware is required for
+                              functioning of Interface.                    0x03
     FW_STATUS_RETRY           Not ready to respond currently, retry.       0x04
     FW_STATUS_FAIL_INTERNAL   Failed due to internal errors.               0x05
     |_|                       (Reserved Range)                             0x06..0xFF
@@ -844,17 +827,18 @@ Greybus Firmware Management Interface Backend Firmware Update Operation
 
 The Greybus Firmware Management Interface Backend Firmware Update
 Operation Request can be sent only by the AP to request an Interface, to
-update a specific Interface Backend Firmware package.
+update the Interface Backend Firmware packages.
 
-The Interface shall update the Interface Backend Firmware package.
+The Interface shall update all the Interface Backend Firmware packages.
 
 If the Interface can not service the Interface Backend Firmware Update
-Request or if the Interface doesn't require the specified Interface
-Backend Firmware for its functioning, then it shall send GB_OP_INVALID
-in the status field of the Response header.
+Request or if the Interface doesn't require any Interface Backend
+Firmware for its functioning, then it shall send GB_OP_INVALID in the
+status field of the Response header.
 
 Otherwise, the Interface shall immediately respond to this Request and
-start downloading the Interface Backend Firmware package from the AP.
+start downloading the Interface Backend Firmware packages from the AP,
+in any order it finds suitable.
 
 If the Interface is designed to use the
 :ref:`firmware-download-protocol` for downloading firmware packages,
@@ -885,8 +869,8 @@ request_id.
 The AP may wait for an implementation-defined time interval, for the
 Interface to initiate a
 :ref:`interface-backend-firmware-updated-operation`.  In case the AP
-times out waiting for it, the AP may re-initiate this Operation for the
-same firmware_tag, with a different request_id.
+times out waiting for it, the AP may re-initiate this Operation with a
+different request_id.
 
 If the Interface receives another Interface Backend Firmware Update
 Request before it has initiated a
@@ -895,20 +879,15 @@ Interface Backend Firmware Update Request, the Interface shall abort the
 previous Interface Backend Firmware Update Request and start servicing
 the new Request.
 
-The AP may initiate multiple Interface Backend Firmware Update
-Operations in parallel with different firmware_tag values, in order to
-update multiple Interface Backend Firmware packages together.
+The Module can download Interface Backend Firmware packages in parallel
+on receiving this request.
 
 Greybus Firmware Management Interface Backend Firmware Update Request
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Table :num:`table-interface-backend-firmware-update-request` defines the
 Greybus Firmware Management Interface Backend Firmware Update Request
-payload.  The Request contains a one-byte request_id, and a 10-byte
-firmware_tag of the Interface Backend Firmware package, which is
-requested to be updated.  The firmware_tag may be used by the AP in an
-implementation-defined way for each requested Interface Backend Firmware
-package.
+payload.  The Request contains a one-byte request_id.
 
 The request_id is unique and the same request_id shall not be used by
 the AP in another :ref:`interface-backend-firmware-update-operation`
@@ -926,7 +905,6 @@ request_id.
     Offset  Field          Size    Value        Description
     ======  =============  ======  ===========  ===========================
     0       request_id     1       Number       Unique Request Identifier.
-    1       firmware_tag   10      [US-ASCII]_  A null-terminated character string used to identify the Interface Backend Firmware package.
     ======  =============  ======  ===========  ===========================
 ..
 
@@ -954,8 +932,7 @@ update the requested Interface Backend Firmware package.  It shall
 specify the reason of the failure in the status field of the Request.
 
 The AP may initiate another
-:ref:`interface-backend-firmware-update-operation` with same
-firmware_tag now.
+:ref:`interface-backend-firmware-update-operation` now.
 
 Greybus Firmware Management Interface Backend Firmware Updated Request
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -1015,8 +992,8 @@ request_id matching the request_id of the first
                               Backend Firmware package.
     FW_STATUS_FAIL_INTERNAL   Failed due to internal errors.               0x05
     FW_STATUS_RETRY           Not ready to respond currently, retry.       0x06
-    FW_STATUS_NOT_SUPPORTED   Firmware not required for functioning of
-                              Interface Backend devices.                   0x07
+    FW_STATUS_NOT_SUPPORTED   No Backend Firmware is required for
+                              functioning of Interface.                    0x07
     |_|                       (Reserved Range)                             0x08..0xFF
     ========================  ===========================================  ==========
 
