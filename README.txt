@@ -2,7 +2,7 @@ This is the Greybus Specification.
 
 Requirements:
 
-- Sphinx: http://sphinx-doc.org/contents.html
+- Sphinx (Version 1.4): http://sphinx-doc.org/contents.html
 - LaTeX (and pdflatex, and various LaTeX packages)
 - Graphviz (in particular, "dot"): http://www.graphviz.org/
 - Mscgen: http://www.mcternan.me.uk/mscgen/
@@ -10,7 +10,7 @@ Requirements:
 
 On Ubuntu:
 
-# apt-get install python-sphinx texlive texlive-latex-extra texlive-humanities graphviz mscgen imagemagick librsvg2-bin
+# apt-get install texlive texlive-latex-extra texlive-humanities graphviz mscgen imagemagick librsvg2-bin; pip install Sphinx==1.4
 
 Then:
 
