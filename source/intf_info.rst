@@ -156,7 +156,10 @@ values are described in Table :num:`table-descriptor-type`.
     String                          0x02
     Bundle                          0x03
     CPort                           0x04
-    (All other values reserved)     0x05..0xff
+    Mikrobus                        0x05
+    Property                        0x06
+    Device                          0x07
+    (All other values reserved)     0x08..0xff
     ============================    ==========
 
 ..
@@ -446,6 +449,172 @@ typically should not be used.)
     Raw                             0xfe
     Vendor Specific                 0xff
     ============================    ==========
+
+..
+
+.. _mikrobus-descriptor:
+
+Mikrobus Descriptor
+^^^^^^^^^^^^^^^^
+
+A mikroBUS describes a configuration of the corresponding pin on the mikroBUS addon board in a clockwise direction starting from the PWM pin omitting power (VCC and ground) pins as same as the default state of the pin.
+
+There are mikroBUS addon boards that use some dedicated SPI, UART, PWM, and I2C pins as GPIO pins, so it is necessary to redefine the default pin configuration of that pins on the host system. Also, sometimes it is required the pull-up on the host pin for correct functionality. This descriptor provides that information to the host system.
+
+The mikroBUS descriptor is of fixed size (12 bytes) and is defined in Table :num:`table-mikrobus-descriptor`.
+
+.. figtable::
+    :nofig:
+    :label: table-mikrobus-descriptor
+    :caption: mikroBUS Descriptor
+    :alt: mikroBUS Descriptor
+    :spec: l l c c l
+
+    ============  ==============  ========  ==========  =========================================
+    Offset        Field           Size      Value       Description
+    ============  ==============  ========  ==========  =========================================
+    0             pwm-state       1         Number      See Table :num:`table-mikrobus-pin-state`
+    1             int-state       1         Number      See Table :num:`table-mikrobus-pin-state`
+    2             rx-state        1         Number      See Table :num:`table-mikrobus-pin-state`
+    3             tx-state        1         Number      See Table :num:`table-mikrobus-pin-state`
+    4             scl-state       1         Number      See Table :num:`table-mikrobus-pin-state`
+    5             sda-state       1         Number      See Table :num:`table-mikrobus-pin-state`
+    6             mosi-state      1         Number      See Table :num:`table-mikrobus-pin-state`
+    7             miso-state      1         Number      See Table :num:`table-mikrobus-pin-state`
+    8             sck-state       1         Number      See Table :num:`table-mikrobus-pin-state`
+    9             cs-state        1         Number      See Table :num:`table-mikrobus-pin-state`
+    10            rst-state       1         Number      See Table :num:`table-mikrobus-pin-state`
+    11            an-state        1         Number      See Table :num:`table-mikrobus-pin-state`
+    ============  ==============  ========  ==========  =========================================
+
+..
+
+.. figtable::
+    :nofig:
+    :label: table-mikrobus-pin-state
+    :caption: mikroBUS Pin State Numbers
+    :alt: mikroBUS Pin State Numbers
+    :spec: l c
+
+    ============================    ==========
+    Pin State                       Value
+    ============================    ==========
+    Input                           0x01
+    Output High                     0x02
+    Output Low                      0x03
+    PWM                             0x04
+    SPI                             0x05
+    I2C                             0x06
+    UART                            0x07
+    (All other values reserved)     0x08..0xff
+    ============================    ==========
+
+..
+
+.. _property-descriptor:
+
+Property Descriptor
+^^^^^^^^^^^^^^^^^^^
+
+A property descriptor describes named properties or named GPIOs to the host. The host system uses this information to properly configure specific mikroBUS addon board drivers by passing the properties and GPIO name. There can be multiple instances of property descriptors per add-on board manifest.
+
+The property descriptor is of variable size and is defined in Table :num:`table-property-descriptor`.
+
+.. figtable::
+    :nofig:
+    :label: table-property-descriptor
+    :caption: Property Descriptor
+    :alt: Property Descriptor
+    :spec: l l c c l
+
+    ============  ==============  ==================  ==========  =========================================
+    Offset        Field           Size                Value       Description
+    ============  ==============  ==================  ==========  =========================================
+    0             length          1                   Number      Nuber of values in the property
+    1             id              1                   ID          Property ID
+    2             name-id         1                   ID          String ID for the property name
+    3             type            1                   Number      See Table :num:`table-property-type`
+    4             value           length * type_size  type        Value of the property
+    ============  ==============  ==================  ==========  =========================================
+
+..
+
+.. figtable::
+    :nofig:
+    :label: table-property-type
+    :caption: Property Type Numbers
+    :alt: Property Type Numbers
+    :spec: l c
+
+    ======================================================   ==========
+    Type                                                     Value
+    ======================================================   ==========
+    mikroBUS                                                 0x00
+    Property (array of references to children properties)    0x01
+    GPIO (array of references pio names string descriptor)   0x02
+    U8                                                       0x03
+    U16                                                      0x04
+    U32                                                      0x05
+    U64                                                      0x06
+    (All other values reserved)                              0x07..0xff
+    ======================================================   ==========
+
+..
+
+.. _device-descritor:
+
+Device Descriptor
+^^^^^^^^^^^^^^^^^
+
+A Device Descriptor describes a device on the mikroBUS port. The device descriptor is a fixed-length descriptor, and there can be multiple instances of device descriptors in an add-on board manifest in cases where the add-on board presents more than one device to the host.
+
+The device descriptor is defined in Table :num:`table-device-descriptor`.
+
+.. figtable::
+    :nofig:
+    :label: table-device-descriptor
+    :caption: Device Descriptor
+    :alt: Device Descriptor
+    :spec: l l c c l
+
+    ============  ==============  ==================  ==========  =========================================
+    Offset        Field           Size                Value       Description
+    ============  ==============  ==================  ==========  =========================================
+    0             id              1                   ID          Device Descriptor ID
+    1             driver_id       1                   ID          String ID for the device driver id
+    2             protocol        1                   Number      See Table :num:`table-device-protocol`
+    3             reg             1                   Number      i2c device address or alternative CS pin for SPI
+    4             speed_hz        4                   Number      max SPI speed in HZ
+    8             irq             1                   Number      relative position for GPIO interrupt if exists
+    9             irq_type        1                   Number      a type of interrupt
+    10            mode            1                   Number      SPI mode of operation
+    11            prop_link       1                   ID          Property ID that contains a list of properties
+    12            gpio_link       1                   ID          Property ID that contains a list of GPIO pin names
+    13            reg_link        1                   ID          Property ID that contains a list of regulators
+    14            clock_link      1                   ID          Property ID that contains a list of clocks
+    15            (pad)           1                   0           Reserved (pad to 8 bytes)
+    ============  ==============  ==================  ==========  =========================================
+
+..
+
+.. figtable::
+    :nofig:
+    :label: table-device-protocol
+    :caption: Device Protocol Numbers
+    :alt: Device Protocol Numbers
+    :spec: l c
+
+    ======  ==========
+    Type    Value
+    ======  ==========
+    GPIO    0x02
+    I2C     0x03
+    UART    0x04
+    PWM     0x09
+    SPI     0x0b
+    RAW     0xfe
+    VENDOR  0xfe
+    ======  ==========
 
 ..
 
